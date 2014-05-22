@@ -1,0 +1,58 @@
+<div class="row-fluid">
+	<div  class="span4 sortable">
+		<!-- END GRID SAMPLE PORTLET-->
+		<!-- BEGIN GRID SAMPLE PORTLET-->
+		<div class="widget">
+			<div class="widget-title">
+				<h4><i class="icon-reorder"></i>Plugins Testing Mode</h4>
+				<span class="tools">
+				</span>							
+			</div>
+			<div class="widget-body">	
+					<ul id="registered-plugins" class="chats">
+						
+					</ul>
+			</div>
+		</div>
+		<!-- END GRID SAMPLE PORTLET-->
+	</div>
+	<div class="span4 sortable">
+		<!-- BEGIN GRID SAMPLE PORTLET-->
+		<div class="widget">
+			<div class="widget-title">
+				<h4><i class="icon-reorder"></i>Active Gateway</h4>
+				<span class="tools">
+				</span>							
+			</div>
+			<div class="widget-body">
+				<div  class="control-group activeGateaway">
+					<label class="control-label" for="activeGateway">{{activeGateway}}</label>
+					<div class="controls">
+						<select class="input-large m-wrap" id="activeGateway"  name="activeGateway"></select>
+					</div>
+				</div>
+				<div id='recurring' class="alert alert-block alert-warning fade in">
+					<h4 class="alert-heading">Recurring</h4>
+					<br/>
+					<p id='recurring-message'>
+						
+						{{recurringDisabled}}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+
+
+
+
+<div class="alert">
+	<strong>Warning!</strong> Be careful modifying these settings
+</div>
+<div class="form-actions">
+	<button class="btn btn-primary" id="save"><i class="icon-save"></i>&nbsp;Save</button>
+</div>

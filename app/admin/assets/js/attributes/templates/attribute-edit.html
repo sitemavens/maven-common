@@ -1,0 +1,45 @@
+<div class="row-fluid">
+	<div class="widget widget-tabs widget-tabs-left">
+		<div class="widget-title">
+			<span class="tools"></span>
+		</div>
+		<div class="widget-body">
+			<div class="form-horizontal">
+				<div class="tabbable portlet-tabs">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#attribute_data" data-toggle="tab"><i class="icon-map-marker"></i>&nbsp;{{tabEditAttribute}}</a></li>
+					</ul>
+					<div class="tab-content" >
+						<div class="tab-pane fade in active" id="attribute_data">
+							<div  class="control-group">
+								<label class="control-label" for="name">{{name}}:</label>
+								<div class="controls"><input class="input-xlarge" type="text" name="name" id="name" data-error-style="inline"/></div>
+							</div>
+							<div  class="control-group">
+								<label class="control-label" for="name">{{defaultPrice}}:</label>
+								<div class="controls"><input class="input-xlarge" type="text" name="defaultAmount" id="defaultAmount" data-error-style="inline"/></div>
+							</div>
+							<div  class="control-group">
+								<label class="control-label" for="name">{{defaultWholesalePrice}}:</label>
+								<div class="controls"><input class="input-xlarge" type="text" name="defaultWholesaleAmount" id="defaultWholesaleAmount" data-error-style="inline"/></div>
+							</div>
+							
+							<div  class="control-group">
+								<label class="control-label" for="description">{{description}}:</label>
+								<div class="controls">
+									<textarea  class="simpleEditor span9 wysihtml5" rows="20" cols="20" name="description" id="description"></textarea>
+								</div>
+							</div>
+						</div>							
+					</div>					
+				</div>
+				<div class="form-actions">
+					<button class="btn btn-success" id="save"><i class="icon-save"></i>&nbsp;{{buttonSaveAttribute}}</button>
+					<button class="btn" id="cancel"><i class="icon-remove"></i>&nbsp;{{buttonCancelEditAttribute}}</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>

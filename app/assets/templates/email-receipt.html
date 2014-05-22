@@ -1,0 +1,237 @@
+
+<html>
+	<body style="margin: 0; padding: 0; background: #e1ddcf;">
+		<?php if($admin): ?>
+		<p>
+			Dear admin, a new Order has been placed. Details Below.
+		</p>
+		<?php endif; ?>
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td align="center" style="margin: 0;">
+					<table cellpadding="0" cellspacing="0" border="0" align="center" width="560" style="font-family:Helvetica, Arial, sans-serif; color: #000000;">
+						<tr>
+							<td height="40" bgcolor="#118d84">
+								<p style="color:#ffffff;text-align:center;">Receipt for Order #<?php echo $order->getNumber(); ?> </p>   
+							</td>
+						</tr>            
+						<tr>
+							<td bgcolor="#ffffff;" style="background-color:#ffffff;">
+								<table cellpadding="0" cellspacing="0" border="0" align="center" width="560" style="line-height:20px;">
+									<tr>
+										<td height="130">
+											<p style="color:#000000;font-size:13px;">Dear <?php echo $order->getContact()->getFirstName(); ?> <?php echo $order->getContact()->getLastName(); ?>,</p>
+											<p style="color:#000000;font-size:13px;">Thank you for your recent order. The details of your transaction are included below.</p>
+										</td>
+									</tr>
+									<tr>
+										<td width="560" align="center">
+											<table width="560" cellpadding="0" cellspacing="0" border="0" align="center" style="color: #828282;">
+												<tr>
+													<td width="100" style="color:#000000;font-weight:bold;font-size:14px;border-bottom: #c2c2c2; border-bottom-width:1px; border-bottom-style:solid;padding-bottom:10px;">Item(s)</td>
+													<td align="right" width="70" style="color:#000000;font-weight:bold;font-size:14px;border-bottom: #c2c2c2; border-bottom-width:1px; border-bottom-style:solid;padding-bottom:10px;">Price</td>
+												</tr>
+												<?php foreach($order->getItems() as $item): ?>
+												<tr>
+													<td width="100" height="50" style="color:#454545;border-bottom: #c2c2c2; border-bottom-width:1px; border-bottom-style:solid;font-size:13px;">
+														<p><?php echo $item->getName(); ?>( $<?php echo $item->getPrice(); ?> x <?php echo $item->getQuantity(); ?> ) </p>
+													</td>
+													<td align="right" width="70" height="50" style="color:#000000;font-size:13px;border-bottom: #c2c2c2; border-bottom-width:1px; border-bottom-style:solid;">$<?php echo number_format($item->getPrice() * $item->getQuantity(),2);?></td>
+												</tr>
+												<?php endforeach; ?>
+												<tr>
+													<td width="100" height="100" style="color:#454545;font-size:13px;">
+														<p style="margin-top:0;margin-bottom:5px;">Subtotal:</p>
+														<?php if($order->hasPromotions()): ?><!--Item promotions -->
+														<?php foreach($order->getPromotions() as $promotion): ?>
+														<?php if($promotion->isItemPromotion()): ?>
+														<p style="margin-top:0;margin-bottom:5px;">Coupon: <strong><?php echo $promotion->getName() ?></strong></p>
+														<?php endif; ?>
+														<?php endforeach; ?>
+														<?php endif; ?>
+														<p style="margin-top:0;margin-bottom:5px;">Shipping:</p>
+														<?php if($order->hasPromotions()): ?><!--Shipping promotions -->
+														<?php foreach($order->getPromotions() as $promotion): ?>
+														<?php if($promotion->isShippingPromotion()): ?>
+														<p style="margin-top:0;margin-bottom:5px;">Coupon: <strong><?php echo $promotion->getName() ?></strong></p>
+														<?php endif; ?>
+														<?php endforeach; ?>
+														<?php endif; ?>
+														<?php if($order->hasPromotions()): ?><!--Cart promotions -->
+														<?php foreach($order->getPromotions() as $promotion): ?>
+														<?php if($promotion->isCartPromotion()): ?>
+														<p style="margin-top:0;margin-bottom:5px;">Coupon: <strong><?php echo $promotion->getName() ?></strong></p>										
+														<?php endif; ?>
+														<?php endforeach; ?>					
+														<?php endif; ?>	
+														<p style="margin-top:0;margin-bottom:5px;"><strong>Total:</strong></p>
+													</td>
+													<td align="right" width="70" height="100" style="color:#000000;font-size:13px;">
+														<p style="margin-top:0;margin-bottom:5px;">$<?php echo number_format($order->getSubtotal(),2); ?></p>
+														<?php if($order->hasPromotions()): ?><!--Item promotions -->
+														<?php foreach($order->getPromotions() as $promotion): ?>
+														<?php if($promotion->isItemPromotion()): ?>
+														<p style="margin-top:0;margin-bottom:5px;">$<?php echo  money_format('-%.2n',$promotion->getDiscountAmount()); ?></p>
+														<?php endif; ?>
+														<?php endforeach; ?>
+														<?php endif; ?>
+														<p style="margin-top:0;margin-bottom:5px;">$<?php echo number_format($order->getShippingAmount(),2); ?></p>
+														<?php if($order->hasPromotions()): ?><!--Shipping promotions -->
+														<?php foreach($order->getPromotions() as $promotion): ?>
+														<?php if($promotion->isShippingPromotion()): ?>
+														<p style="margin-top:0;margin-bottom:5px;">$<?php echo  money_format('-%.2n',$promotion->getDiscountAmount()); ?></p>
+														<?php endif; ?>
+														<?php endforeach; ?>
+														<?php endif; ?>
+														<?php if($order->hasPromotions()): ?><!--Cart promotions -->
+														<?php foreach($order->getPromotions() as $promotion): ?>
+														<?php if($promotion->isCartPromotion()): ?>
+														<p style="margin-top:0;margin-bottom:5px;">$<?php echo  money_format('-%.2n',$promotion->getDiscountAmount()); ?></p>
+														<?php endif; ?>
+														<?php endforeach; ?>					
+														<?php endif; ?>	
+														<p style="margin-top:0;margin-bottom:5px;"><strong>$<?php echo number_format($order->getTotal(),2); ?></strong></p>
+													</td>
+												</tr>
+											</table>                      
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td bgcolor="#ffffff">
+								<table width="560" cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="#ffffff" style="color: #000000; font-size: 13px;border-top:1px solid #e8e8e8;padding-top:30px;padding-bottom:20px;">
+									<tr>
+										<?php if($order->getContact() && strlen($order->getContact()->getEmail())>0 ): ?> 
+										<td width="33%" valign="top" style="color:#565656;line-height:22px;padding-right: 12px;">
+											<h3 style="color: #000000;font-size:17px;">Contact</h3>
+											<div itemscope itemtype="http://schema.org/Person">
+												<div itemprop="name"><strong style="display:block;margin-bottom:5px;text-transform:uppercase;"><?php echo $order->getBillingContact()->getFirstName(); ?> <?php echo $order->getBillingContact()->getLastName(); ?></strong></div>
+												<div itemprop="email"><?php echo $order->getContact()->getEmail(); ?></div>
+												<div itemprop="phone"><?php echo $order->getContact()->getPhone(); ?></div>
+												<!--<div itemprop="gender"><?php echo Maven\Core\Domain\ProfileSex::getSex($order->getContact()->getSex()); ?></div>-->
+												<div style="display:none;" itemscope itemtype="http://schema.org/Organization">
+													<span itemprop="name"><?php echo $order->getContact()->getCompany(); ?></span>
+												</div>
+												<!--<div itemprop="jobtitle" style="display:none;">CEO</div>-->
+												<?php if($order->getContact()->getPrimaryAddress()): ?>
+												<?php $address=$order->getContact()->getPrimaryAddress(); ?>
+												<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+													<div itemprop="streetAddress"><?php echo $address->getAddress(); ?></div>
+													<span><span itemprop="addressLocality"><?php echo $address->getCity(); ?></span>, <span itemprop="addressRegion"><?php echo $address->getState(); ?></span></span>
+													<span itemprop="postalCode"><?php echo $address->getZipcode(); ?></span>
+													<div itemprop="addressCountry"><?php echo $address->getCountry(); ?></div>
+												</div>
+												<?php endif; ?>
+											</div>											
+										</td>
+										<?php endif; ?>
+										<?php if($order->getBillingContact() && strlen($order->getBillingContact()->getEmail())>0 ): ?> 
+										<td width="33%" valign="top" style="color:#565656;line-height:22px;padding-right: 12px;">
+											<h3 style="color: #000000;font-size:17px;">Billing Address</h3>
+											<div itemscope itemtype="http://schema.org/Person">
+												<div itemprop="name"><strong style="display:block;margin-bottom:5px;text-transform:uppercase;"><?php echo $order->getBillingContact()->getFirstName(); ?> <?php echo $order->getBillingContact()->getLastName(); ?></strong></div>
+												<div itemprop="email"><?php echo $order->getBillingContact()->getEmail(); ?></div>
+												<div itemprop="phone"><?php echo $order->getBillingContact()->getPhone(); ?></div>
+												<!--<div itemprop="gender"><?php echo Maven\Core\Domain\ProfileSex::getSex($order->getBillingContact()->getSex()); ?></div>-->
+												<div style="display:none;" itemscope itemtype="http://schema.org/Organization">
+													<span itemprop="name"><?php echo $order->getBillingContact()->getCompany(); ?></span>
+												</div>
+												<!--<div itemprop="jobtitle" style="display:none;">CEO</div>-->
+												<?php if($order->getBillingContact()->getBillingAddress()): ?>
+												<?php $baddress=$order->getBillingContact()->getBillingAddress(); ?>
+												<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+													<div itemprop="streetAddress"><?php echo $baddress->getAddress(); ?></div>
+													<span><span itemprop="addressLocality"><?php echo $baddress->getCity(); ?></span>, <span itemprop="addressRegion"><?php echo $baddress->getState(); ?></span></span>
+													<span itemprop="postalCode"><?php echo $baddress->getZipcode(); ?></span>
+													<div itemprop="addressCountry"><?php echo $baddress->getCountry(); ?></div>
+												</div>
+												<?php endif; ?>
+											</div>
+										</td>
+										<?php endif; ?>
+										<?php if($order->getShippingContact() && strlen($order->getShippingContact()->getEmail())>0 ): ?>
+										<td width="33%" valign="top" style="color:#565656;line-height:22px;padding-right: 12px;">
+											<h3 style="color: #000000;font-size:17px;">Ship To</h3>
+
+											<div itemscope itemtype="http://schema.org/Person">
+												<div itemprop="name"><strong style="display:block;margin-bottom:5px;text-transform:uppercase;"><?php echo $order->getShippingContact()->getFirstName(); ?> <?php echo $order->getShippingContact()->getLastName(); ?></strong></div>
+												<div itemprop="email"><?php echo $order->getShippingContact()->getEmail(); ?></div>
+												<div itemprop="phone"><?php echo $order->getShippingContact()->getPhone(); ?></div>
+												<!--<div itemprop="gender"><?php echo Maven\Core\Domain\ProfileSex::getSex($order->getShippingContact()->getSex()); ?></div>-->
+												<div style="display:none;" itemscope itemtype="http://schema.org/Organization">
+													<span itemprop="name"><?php echo $order->getShippingContact()->getCompany(); ?></span>
+												</div>
+												<!--<div itemprop="jobtitle" style="display:none;">CEO</div>-->
+												<?php if($order->getShippingContact()->getShippingAddress()): ?>
+												<?php $saddress=$order->getShippingContact()->getShippingAddress(); ?>
+												<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+													<div itemprop="streetAddress"><?php echo $saddress->getAddress(); ?></div>
+													<span><span itemprop="addressLocality"><?php echo $saddress->getCity(); ?></span>, <span itemprop="addressRegion"><?php echo $saddress->getState(); ?></span></span>
+													<span itemprop="postalCode"><?php echo $saddress->getZipcode(); ?></span>
+													<div itemprop="addressCountry"><?php echo $saddress->getCountry(); ?></div>
+												</div>
+												<?php endif; ?>
+											</div>
+										</td>
+										<?php endif; ?>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td bgcolor="#ffffff">
+								<table width="560" cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="#ffffff" style="color: #000000; font-size: 13px;border-top:1px solid #e8e8e8;padding-top:20px;padding-bottom:20px;">
+									<tr>
+										<td width="50%" valign="top" style="padding-bottom:20px;color:#595959;font-size:13px;">
+											<h3 style="color: #000000;font-size:17px;">Payment Method</h3>
+											<?php if($order->hasCreditCard()): ?>
+											<p style="margin:0;font-size:12px;color:#454545;">Credit Card (XXXX-XXXX-XXXX-<?php echo $order->getCreditCard()->getLast4Digits(); ?>)</p>
+											<?php endif; ?>
+										</td>
+										<?php if($order->getDescription()): ?>
+										<td width="49%" valign="top" style="padding-bottom:20px;color:#595959;font-size:13px;">
+											<h3 style="color: #000000;font-size:17px;">Notes</h3>
+											<p style="margin:0;font-size:12px;color:#454545;"><?php echo $order->getDescription(); ?></p>
+
+										</td>
+										<?php endif; ?>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<?php if($order->getExtraFields()): ?>
+						<?php foreach($order->getExtraFields() as $extraField){
+						$groupedExtraFields[$extraField->getGroup()][]=$extraField;
+						}?>
+						<tr>
+							<td bgcolor="#ffffff">
+								<table width="560" cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="#ffffff" style="color: #000000; font-size: 13px;border-top:1px solid #e8e8e8;padding-top:20px;padding-bottom:20px;">
+
+									<tr>
+										<?php foreach($groupedExtraFields as $groupName => $fields): ?>
+									<div style="float:left;width:260px;padding:0 10px 20px;color:#595959;font-size:13px;">
+										<h3 style="color: #000000;font-size:17px;"><?php echo $groupName; ?></h3>
+										<?php foreach($fields as $field): ?>
+										<p style="margin:0;font-size:12px;color:#454545;"><?php echo "<b>" . $field->getLabel() . "</b>: " . $field->getValue()  ?></p>
+										<?php endforeach; ?>
+									</div>
+									<?php endforeach; ?>
+						</tr>
+						<?php endif; ?>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td height="40" bgcolor="#ffffff"></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>

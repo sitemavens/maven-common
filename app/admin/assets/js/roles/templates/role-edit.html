@@ -1,0 +1,31 @@
+<div class="row-fluid">
+	<div class="widget widget-tabs widget-tabs-left">
+		<div class="widget-title">
+			<span class="tools"></span>
+		</div>
+		<div class="widget-body">
+			<div class="form-horizontal">
+				<div class="tabbable portlet-tabs">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#role_data" data-toggle="tab"><i class="icon-map-marker"></i>&nbsp;{{tabEditRole}}</a></li>
+					</ul>
+					<div class="tab-content" >
+						<div class="tab-pane fade in active" id="role_data">
+							<div  class="control-group">
+								<label class="control-label" for="name">{{name}}:</label>
+								<div class="controls"><input class="input-xlarge" type="text" name="name" id="name" data-error-style="inline"/></div>
+							</div>
+							
+						</div>							
+					</div>					
+				</div>
+				<div class="form-actions">
+					<button class="btn btn-success" id="save"><i class="icon-save"></i>&nbsp;{{buttonSaveRole}}</button>
+					<button class="btn" id="cancel"><i class="icon-remove"></i>&nbsp;{{buttonCancelEditRole}}</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>

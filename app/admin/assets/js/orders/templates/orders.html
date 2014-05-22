@@ -1,0 +1,36 @@
+<!-- // orders/app/templates/orders.html -->
+<div id="ordersStats" class="row-fluid span6 stats-overview-cont">	
+</div>
+<div id="ordersStatsTotal" class="row-fluid span6 stats-overview-cont">	
+</div>
+<div class="row-fluid">
+	<div class="widget">
+		<div class="widget-title">
+			<h4><i class="icon-reorder"></i>
+				{{ titleOrders}}</h4>
+			<span class="tools">
+				<a href="javascript:void(0)" class="filter active"><i class="icon-cog"></i></a>
+				<!--<button class="btn btn-success" id="add"><i class="icon-plus"></i>&nbsp;{{ buttonAddOrder }}</button>-->
+			</span>
+		</div>
+		<div class="filter-wrap">
+			<span class="input-append">
+				<input id="fieldNumber" name="fieldNumber" type="text" class="input-small" placeholder="{{columnNumber}}" style="margin: 0 auto;"  />
+				<span id="searchNumber" class="btn"><i class="icon-search"></i></span>
+			</span>&nbsp;
+			<select id="searchStatus" class="input-large">
+			</select>&nbsp;
+			<button class="btn" id="form-date-range">
+				<i class="icon-calendar"></i>
+				&nbsp;<span></span> 
+				<b class="caret"></b>
+			</button>&nbsp;
+			<button class="btn" id="btnLastOrders">{{ allOrders }}</button>
+		</div>
+		<div class="widget-body">
+			<div id="orders"></div>
+		</div>
+	</div>
+</div>
+
+

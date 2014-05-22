@@ -1,0 +1,34 @@
+
+
+<div class="row-fluid">
+	
+	<div  class="control-group">
+		<label class="control-label" for="enabled" > Enabled </label>
+		<div class="controls">
+			<div class="toggle-button">
+				<input type="checkbox" class="toggle" name="enabled" id="enabled" />
+			</div>
+		</div>
+	</div>
+	
+	<div class="control-group">
+		<label class="control-label">{{sendReportTo}}</label>
+		<div class="controls">
+			<input id="sendReportTo" name="sendReportTo" type="text" class="m-wra tags" value="" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">When</label>
+		<div class="controls">
+			<select class="m-wrap" name="daysOfTheWeek" id="daysOfTheWeek" multiple="multiple" data-placeholder="Choose the days" >
+			 </select>
+		</div>
+	</div>
+	
+	
+	<div class="form-actions">
+		<button class="btn btn-primary" id="save"><i class="icon-save"></i>&nbsp;Save</button>
+	</div>
+
+
+</div>

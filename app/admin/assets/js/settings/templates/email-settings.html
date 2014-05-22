@@ -1,0 +1,63 @@
+<div  class="control-group">
+	<label class="control-label" for="senderEmail">{{senderEmail}}</label>
+	<div class="controls">
+		<input  class="m-wra tags" type="text" id="senderEmail" name="senderEmail" />
+	</div>
+</div>
+<div  class="control-group">
+	<label class="control-label" for="senderName">{{senderName}}</label>
+	<div class="controls">
+		<input  class="m-wra tags" type="text" id="senderName" name="senderName" />
+	</div>
+</div>
+<div  class="control-group">
+	<label class="control-label" for="contactEmail">{{contactEmail}}</label>
+	<div class="controls">
+		<input  class="m-wra tags" type="text" id="contactEmail" name="contactEmail" />
+		<span id="mandrill-warning" class="help-inline" style="">{{contactEmailHelp}}</span>
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">{{bccNotificationsTo}}</label>
+	<div class="controls">
+		<input id="bccNotificationsTo" type="text" class="m-wra tags" value="" />
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">{{organizationLogo}}</label>
+	<div class="controls input-icon">
+		<img src='' class='preview upload_image_button' />
+		<span class="input-info tooltips" data-original-title="{{ organizationLogo }}">
+			<i class="icon-exclamation-sign"></i>
+		</span>
+
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">{{emailBackgroundColor}}</label>
+	<div class="controls">
+		<input id="emailBackgroundColor" type="text" class="m-wra" value="" />
+	</div>
+</div>
+<div  class="control-group">
+	<label class="control-label" for="emailTemplate">{{emailTemplate}}</label>
+	<!-- <div class="controls">
+		<select class="input-large m-wrap" id="emailTemplate"  name="emailTemplate"></select>
+	</div> -->
+	<div class="controls" id="emailTemplates">
+		
+	</div>
+</div>
+
+
+<div class="form-actions">
+	<a href="#" role="button" class="btn btn-warning" id="test-email">Test Email</a>
+	<button class="btn btn-primary" id="save"><i class="icon-save"></i>&nbsp;Save</button>
+</div>
+
+<div id="email-tester-modal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
+
+
+ 

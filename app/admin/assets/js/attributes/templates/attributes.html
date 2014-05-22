@@ -1,0 +1,24 @@
+<!-- // donations/app/templates/donations.html -->
+
+<div class="row-fluid">
+	<div class="widget">
+		<div class="widget-title">
+			<h4><i class="icon-reorder"></i>
+				{{ titleAttributes }}</h4>
+			<span class="tools">
+				<a href="javascript:void(0)" class="filter active"><i class="icon-cog"></i></a>
+				<button class="btn btn-success" id="add"><i class="icon-plus"></i>&nbsp;{{ buttonAddAttribute }}</button>
+			</span>
+		</div>
+		<div class="filter-wrap">
+			<input id="fieldName" name="fieldName" type="text" class="input-medium" placeholder="{{columnName}}" style="margin: 0 auto;"  />&nbsp;
+			<span id="search" class="btn"><i class="icon-search"></i></span>&nbsp;
+			<span id="cleanSearch" class="btn"><i class="icon-undo"></i></span>			
+		</div>
+		<div class="widget-body">
+			<div id="attributesContainer"></div>
+		</div>
+	</div>
+</div>
+
+

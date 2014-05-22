@@ -1,0 +1,32 @@
+<td><img id="statusImage" /></td>
+<td id="number"></td>
+<td id="customer"></td>
+<td id="orderDate"></td>
+<td id="total"></td>
+<td>
+	<button class="btn btn-primary btn-mini" id="edit"><i class="icon-edit"></i>&nbsp;{{ buttonEditOrder }}</button>
+	<a id="confirmDeleteButton" class="btn btn-mini" role="button"><i class="icon-trash"></i>&nbsp;{{ buttonDeleteOrder }}</a>
+	<div aria-hidden="true" aria-labelledby="myModalLabel3" role="dialog" 
+	     tabindex="-1" class="modal fade" id="confirmDeleteModal" style="display: none;">
+		<div class="modal-header">
+			<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+			<h3 id="myModalLabel3">{{ deleteConfirmationMessage }}</h3>
+		</div>
+		<div class="modal-body">
+			<p><strong>{{ columnNumber }}:&nbsp;</strong><span id="number"></span></p>
+			<p><strong>{{ columnOrderDate }}:&nbsp;</strong><span id="orderDate"></span></p>
+			<p><strong>{{ columnTotal }}:&nbsp;</strong><span id="total"></span></p>
+			<div class="alert alert-block alert-error fade in">
+				<!--<button data-dismiss="alert" class="close" type="button">×</button>-->
+				<h4 class="alert-heading">{{orderDeleteWarning}}</h4>
+				<p>
+					{{orderDeleteWarningMessage}}
+				</p>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button aria-hidden="true" data-dismiss="modal" class="btn">{{ buttonCloseModal }}</button>
+			<button class="btn btn-danger" id="performDelete" data-dismiss="modal">{{ buttonConfirmDelete }}</button>
+		</div>
+	</div>
+</td>

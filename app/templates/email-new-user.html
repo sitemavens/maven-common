@@ -1,0 +1,30 @@
+<html>
+	<body style="margin: 0; padding: 0; background: #e1ddcf;">
+
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td align="center" style="margin: 0;">
+					<table cellpadding="0" cellspacing="0" border="0" align="center" width="600" style="font-family:Helvetica, Arial, sans-serif; color: #000000;">
+						<tr><td height="30"></td></tr>
+						<tr>
+							<td bgcolor="#ffffff;" style="background-color:#ffffff;">
+								<table cellpadding="0" cellspacing="0" border="0" align="center" width="560" style="line-height:20px;">
+									<tr>
+										<td height="130">
+											<p style="color:#000000;font-size:13px;"><h3>Hi <?php echo $profile->getFirstName(); ?>,</h3></p>
+											<p style="color:#000000;font-size:13px;">Thank you so much for registering with <?php echo $siteName; ?>!</p>
+											<p style="color:#000000;font-size:13px;">You can access to your account at <a href='<?php echo $accountUrl; ?>'><?php echo $accountUrl; ?></a>.</p>
+											<p style="color:#000000;font-size:13px;">Feel free to contact us at <a href='mailto:<?php echo $emailContact; ?>'><?php echo $emailContact; ?></a> anytime!</p>
+											<p style="color:#000000;font-size:13px; text-align: right;padding-top: 25px;"><?php echo $signature; ?></p>
+
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

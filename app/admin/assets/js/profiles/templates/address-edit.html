@@ -1,0 +1,75 @@
+<div class="accordion-heading">
+	<span style="float: right;padding: 6px 6px 0 0;">
+		<button class="btn btn-danger btn-mini" id="delete"><i class="icon-remove-circle"></i>&nbsp;{{ buttonDelete }}</button>
+	</span>
+	<a href="#collapse_1" data-parent="#attendee_address" data-toggle="collapse" class="accordion-toggle collapsed">
+		<i class="icon-home"></i>
+		<strong><span id="title"></span></strong><span id="title-first-line"></span><span id="title-city"></span><span id="title-state"></span><span id="title-country"></span><span id="title-primary"></span>
+	</a>
+
+</div>
+<div class="accordion-body collapse"  style="height: 0px;">
+	<div class="accordion-inner">
+		<div  class="control-group">
+			<label class="control-label" for="type">{{type}}:</label>
+			<div class="controls"><select class="input-xlarge"  name="type" id="type" ></select></div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="primary">{{primary}}:</label>
+			<div class="controls">
+				<div class="toggle-button address-toggle-button">
+					<input type="checkbox" class="toggle" name="primary" id="primary"/></div>
+				<span class="help-inline">{{primaryHelp}}</span>
+			</div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="name">{{name}}:</label>
+			<div class="controls"><input class="input-xlarge" type="text" name="name" id="name" /></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="description">{{description}}:</label>
+			<div class="controls"><input class="input-xlarge" type="text" name="description" id="description" /></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="firstLine">{{address}}:</label>
+			<div class="controls"><input class="input-xlarge" type="text" name="firstLine" id="firstLine" /></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="secondLine">{{address2}}:</label>
+			<div class="controls"><input class="input-xlarge" type="text" name="secondLine" id="secondLine" /></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="neighborhood">{{neighborhood}}:</label>
+			<div class="controls"><input class="input-xlarge" type="text" name="neighborhood" id="neighborhood" /></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="city">{{city}}:</label>
+			<div class="controls"><input class="input-large" type="text" name="city" id="city" /></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="state">{{state}}:</label>
+			<div class="controls"><input class="input-large" type="text" name="state" id="state" /></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="country">{{country}}:</label>
+			<div class="controls"><select class="input-xlarge" name="country" id="country"></select></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="zipcode">{{zipcode}}:</label>
+			<div class="controls"><input class="input-large" type="text" name="zipcode" id="zipcode" /></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="notes">{{notes}}:</label>
+			<div class="controls"><input class="input-large" type="text" name="notes" id="notes" /></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="addressPhone">{{phone}}:</label>
+			<div class="controls"><input class="input-large" type="text" name="addressPhone" id="addressPhone" /></div>
+		</div>
+		<div  class="control-group">
+			<label class="control-label" for="phoneAlternative">{{phoneAlternative}}:</label>
+			<div class="controls"><input class="input-large" type="text" name="phoneAlternative" id="phoneAlternative" /></div>
+		</div>
+	</div>
+</div>
+

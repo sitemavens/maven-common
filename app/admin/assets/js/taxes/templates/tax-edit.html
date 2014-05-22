@@ -1,0 +1,72 @@
+<div class="row-fluid">
+	<div class="widget widget-tabs widget-tabs-left">
+		<div class="widget-title">
+			<span class="tools"></span>
+		</div>
+		<div class="widget-body">
+			<div class="form-horizontal">
+				<div class="tabbable portlet-tabs">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tax_data" data-toggle="tab"><i class="icon-tag"></i>&nbsp;{{tabEditTax}}</a></li>
+					</ul>
+					<div class="tab-content" >
+						<div class="tab-pane fade in active" id="promotion_data">
+							<div  class="control-group">
+								<label class="control-label" for="enabled">{{enabled}}:</label>
+								<div class="controls">
+									<div class="toggle-button">
+										<input type="checkbox" class="toggle" name="enabled" id="enabled"/>
+									</div>
+								</div>
+							</div>
+							<div  class="control-group">
+								<label class="control-label" for="name">{{name}}:</label>
+								<div class="controls"><input class="input-xxlarge" type="text" name="name" id="name" data-error-style="inline"/></div>
+							</div>
+							<!--<div  class="control-group">
+								<label class="control-label" for="country">{{country}}:</label>
+								<div class="controls"><input class="input-xlarge" type="text" name="country" id="country" /></div>
+							</div>-->
+							<div  class="control-group">
+								<label class="control-label" for="country">{{country}}:</label>
+								<div class="controls"><select class="input-xlarge" name="country" id="country"></select></div>
+							</div>
+							<div  class="control-group">
+								<label class="control-label" for="state">{{state}}:</label>
+								<div class="controls"><input class="input-xlarge" type="text" name="state" id="state" /></div>
+							</div>
+							<div  class="control-group">
+								<label class="control-label" for="value">{{value}}:</label>
+								<div class="controls"><div class="input-prepend"><span id="typeSymbol" class="add-on">%</span><input class="input-medium" type="text" name="value" id="value" data-error-style="inline"/></div></div>
+							</div>
+							<div  class="control-group">
+								<label class="control-label" for="forShipping">{{forShipping}}:</label>
+								<div class="controls">
+									<div class="toggle-button">
+										<input type="checkbox" class="toggle" name="forShipping" id="forShipping"/></div>
+								</div>
+
+
+							</div>
+							<div  class="control-group">
+								<label class="control-label" for="compound">{{compound}}:</label>
+								<div class="controls">
+									<div class="toggle-button">
+										<input type="checkbox" class="toggle" name="compound" id="compound"/></div>
+								</div>
+
+
+							</div>							
+						</div>	
+					</div>
+				</div>
+				<div class="form-actions">
+					<button class="btn btn-success" id="save"><i class="icon-save"></i>&nbsp;{{buttonSaveTax}}</button>
+					<button class="btn" id="cancel"><i class="icon-remove"></i>&nbsp;{{buttonCancelEditTax}}</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>

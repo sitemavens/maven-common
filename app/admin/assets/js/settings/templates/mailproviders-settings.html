@@ -1,0 +1,27 @@
+<div class="row-fluid">
+	
+	<div class="span4 sortable">
+		<!-- BEGIN GRID SAMPLE PORTLET-->
+		<div class="widget">
+			<div class="widget-title">
+				<h4><i class="icon-reorder"></i>Active Email Provider</h4>
+				<span class="tools">
+				</span>							
+			</div>
+			<div class="widget-body">
+				<div  class="control-group">
+					<label class="control-label" for="emailProvider">{{emailProvider}}</label>
+					<div class="controls">
+						<select class="input-large m-wrap" id="emailProvider"  name="emailProvider"></select>
+						<span id="mandrill-warning" style="display:none;" class="help-inline">Mandrill's API only accept one BCC address. The other addresses supplied will be silently discarted </span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="form-actions">
+	<button class="btn btn-primary" id="save"><i class="icon-save"></i>&nbsp;Save</button>
+</div>

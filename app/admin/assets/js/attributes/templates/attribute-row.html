@@ -1,0 +1,29 @@
+<td id="name"></td>
+<td>
+	<!--<a id="edit"><i class="icon-edit"></i>&nbsp;Edit</a>-->
+	<button class="btn btn-primary btn-mini" id="edit"><i class="icon-edit"></i>&nbsp;{{ buttonEditAttribute }}</button>
+	<a id="confirmDeleteButton" class="btn btn-mini" role="button"><i class="icon-trash"></i>&nbsp;{{ buttonDeleteAttribute }}</a>
+	<div aria-hidden="true" aria-labelledby="myModalLabel3" role="dialog" 
+	     tabindex="-1" class="modal fade" id="confirmDeleteModal" style="display: none;">
+		<div class="modal-header">
+			<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+			<h3 id="myModalLabel3">{{ deleteConfirmationMessage }}</h3>
+		</div>
+		<div class="modal-body">
+			<p><strong>{{ columnName }}:&nbsp;</strong><span id="name"></span></p>
+			<p><strong>{{ columnDefaultPrice }}:&nbsp;</strong><span id="defaultAmount"></span></p>
+			<p><strong>{{ columnDefaultWholesalePrice }}:&nbsp;</strong><span id="defaultWholeAmount"></span></p>
+			<div class="alert alert-block alert-error fade in">
+				<!--<button data-dismiss="alert" class="close" type="button">×</button>-->
+				<h4 class="alert-heading">{{attributeDeleteWarning}}</h4>
+				<p>
+					{{attributeDeleteWarningMessage}}
+				</p>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button aria-hidden="true" data-dismiss="modal" class="btn">{{ buttonCloseModal }}</button>
+			<button class="btn btn-danger loading" id="performDelete" data-dismiss="modal">{{ buttonConfirmDelete }}</button>
+		</div>
+	</div>
+</td>
