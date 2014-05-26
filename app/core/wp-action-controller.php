@@ -52,7 +52,7 @@ class WpActionController implements ActionController, ActionControllerObservable
 		$this->hookManager = $hookManager;
 		$this->resourceManager = $resourceManager;
 
-		$this->hookManager->addInit( array( &$this, 'validRequest' ) );
+		$this->hookManager->addInit( array( $this, 'validRequest' ) );
 
 
 		/**
@@ -62,41 +62,46 @@ class WpActionController implements ActionController, ActionControllerObservable
 		 * we we can have all the wp components availables.
 		 */
 		if ( $this->request->isPost() ) {
-			$this->hookManager->addInit( array( &$this, 'handleRequestInit' ) );
+			$this->hookManager->addInit( array( $this, 'handleRequestInit' ) );
 
-			$this->hookManager->addAdminInit( array( &$this, 'handleRequestAdminInit' ) );
+			$this->hookManager->addAdminInit( array( $this, 'handleRequestAdminInit' ) );
 		}
 	}
 
 	private function isDoingAjax() {
 
-		return defined( 'DOING_AJAX' ) && DOING_AJAX;
+		return $this->request->isDoingAjax();
 	}
 
 	function validRequest() {
 
-		if ( $this->currentComponent )
+		if ( $this->currentComponent ) {
 			return true;
+		}
 
-		if ( ! $this->componentManager )
+		if ( !$this->componentManager ) {
 			throw new \Exception( "No component manager setted" );
+		}
 
 
 
-		if ( $this->isDoingAjax() )
+		if ( $this->isDoingAjax() ) {
 			$key = $this->request->getProperty( 'component' );
-		else
+		} else {
 		//Let's see if it is a regular request
 			$key = $this->request->getProperty( 'page' );
+		}
 
-		if ( ! $key )
+		if ( !$key ) {
 			return false;
+		}
 
 		// Is there any registered component for the current page?
 		$component = $this->componentManager->getComponent( $key );
 
-		if ( ! $component )
+		if ( !$component ) {
 			return false;
+		}
 
 		//Let people know that there is a component trying to do something
 		$this->notify( $component );

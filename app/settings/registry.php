@@ -170,7 +170,8 @@ abstract class Registry {
 	public function getOptions() {
 		return $this->options;
 	}
-
+	 
+	
 	public function getKeys() {
 		return array_keys( $this->options );
 	}

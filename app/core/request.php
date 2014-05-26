@@ -86,15 +86,33 @@ class Request {
 		return false;
 	}
 	
+	/**
+	 * Verify if it's doing a wp ajax call
+	 * @return boolean
+	 */
 	public function isDoingAjax(){
 		return defined('DOING_AJAX') && DOING_AJAX;
 	}
+	
+	/**
+	 * Verify if it's doing a post auto save
+	 * @return boolean
+	 */
+	public function isDoingAutoSave(){
+		return defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
+	}
+	
+	/**
+	 * Check if the given key exists
+	 * @param string $key
+	 * @return boolean
+	 */
 	public function exists( $key ) {
 		
-		if ( isset($this->properties[$key]) )  
+		if ( isset( $this->properties[ $key ] ) ) {
 			return true;
-				
-		
+		}
+
 		return false;
 	}
 
