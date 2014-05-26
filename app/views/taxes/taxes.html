@@ -1,0 +1,29 @@
+<h1>Taxes <button class="button" ng-click="newTax()">New</button> </h1>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Country</th>
+			<th>State</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="tax in taxes">
+			<td>
+				{{tax.name}}
+			</td>
+			<td>
+				{{tax.country}}
+			</td>
+			<td>
+				{{tax.state}}
+			</td>
+			<td>
+				{{tax.value}}
+			</td>
+		</tr>
+	</tbody>
+
+</table>

@@ -84,7 +84,6 @@ class MavenRegistry extends WordpressRegistry {
 
 			self::$instance = new self( );
 			self::$instance->setOptions( $defaultOptions );
-			 
 		}
 
 		return self::$instance;
@@ -137,12 +136,10 @@ class MavenRegistry extends WordpressRegistry {
 	public function getWebSiteUrl() {
 		return get_site_url();
 	}
-	
-	public function setLoginPage( $loginPage ){
-		$this->set('loginPage', $loginPage);
+
+	public function setLoginPage( $loginPage ) {
+		$this->set( 'loginPage', $loginPage );
 	}
-	
-	 
 
 	public function getOrganizationName() {
 		return $this->getValue( 'organizationName' );
@@ -197,12 +194,12 @@ class MavenRegistry extends WordpressRegistry {
 		// Register the plugin for gateways
 		$registedPlugins = $this->getValue( 'registeredPluginsGateway' );
 
-		if ( !is_array( $registedPlugins ) ) {
+		if ( ! is_array( $registedPlugins ) ) {
 			$registedPlugins = array();
 		}
 
-		if ( !isset( $registedPlugins[ $registry->getPluginKey() ] ) ) {
-		//By default is testing mode
+		if ( ! isset( $registedPlugins[ $registry->getPluginKey() ] ) ) {
+			//By default is testing mode
 			$registedPlugins[ $registry->getPluginKey() ] = true;
 		}
 
@@ -211,12 +208,12 @@ class MavenRegistry extends WordpressRegistry {
 		// Register the plugin for licensing
 		$registedPlugins = $this->getValue( 'registeredPluginsLicensing' );
 
-		if ( !is_array( $registedPlugins ) ) {
+		if ( ! is_array( $registedPlugins ) ) {
 			$registedPlugins = array();
 		}
 
-		if ( !isset( $registedPlugins[ $registry->getPluginKey() ] ) ) {
-		//By default is testing mode
+		if ( ! isset( $registedPlugins[ $registry->getPluginKey() ] ) ) {
+			//By default is testing mode
 			$registedPlugins[ $registry->getPluginKey() ] = '';
 		}
 
@@ -299,7 +296,7 @@ class MavenRegistry extends WordpressRegistry {
 
 	public function getDateFormat() {
 
-		if ( !parent::getDateFormat() ) {
+		if ( ! parent::getDateFormat() ) {
 			parent::setDateFormat( get_option( 'date_format' ) );
 		}
 
@@ -345,7 +342,7 @@ class MavenRegistry extends WordpressRegistry {
 	public function getCartUrl() {
 		return $this->getValue( 'cartUrl' );
 	}
-
+	
 	public function init() {
 
 		// We need to build the logo path in the init method
@@ -353,9 +350,6 @@ class MavenRegistry extends WordpressRegistry {
 		$this->set( 'organizationLogo', $this->getPluginUrl() . "assets/images/default-logo.gif" );
 
 		parent::init();
-		
-		
-		
 	}
 
 }

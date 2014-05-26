@@ -322,7 +322,25 @@ abstract class Registry {
 		
 	}
 	
+	public function isDevEnv(){
+		return defined( 'DEV_ENV' ) && DEV_ENV;
+	}
 	
+	public function getBowerComponentUrl() {
+		return $this->getPluginUrl() . "bower_components/";
+	}
+
+	public function getScriptsUrl() {
+		return $this->getPluginUrl() . "scripts/";
+	}
+
+	public function getStylesUrl() {
+		return $this->getPluginUrl() . "styles/";
+	}
+
+	public function getViewsUrl(){
+		return $this->getPluginUrl() . "views/";
+	}
 	
 	abstract function getEmailNotificationsTo();
 

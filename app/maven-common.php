@@ -126,6 +126,8 @@ $hookManager->addLogoutAction( array( $cart, 'logout' ) );
 
 Front\AjaxFrontEnd::registerFrontEndHooks();
 
+$hookManager->addAction( 'wp_json_server_before_serve', array( 'Maven\Admin\Controllers\AdminController', 'commonApiInit' ) );
+	
 
 if ( ! is_admin() ) {
 	// Instantiate the front end
@@ -150,6 +152,8 @@ if ( is_admin() ) {
 	// Initialize WP features
 	$hookManager->addAdminInit( array( '\Maven\Admin\Wp\Loader', 'adminInit' ) );
 
+	Admin\Main::init();
+	
 	$componentManager = $director->getComponentManager( $registry );
 
 	/** Settings * */
