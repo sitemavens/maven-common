@@ -145,19 +145,39 @@ class AdminController extends \Maven\Admin\Controllers\MavenAdminController {
 
 		$taxes = $manager->getTaxes( $filter );
 
-		$this->getOutput()->sendData( $taxes );
+		$this->getOutput()->sendApiResponse( $taxes );
 	}
 
-	public function newTax() {
-		
+	public function newTax( $data ) {
+		$manager = new \Maven\Core\TaxManager();
+
+		$tax = new \Maven\Core\Domain\Tax();
+
+		$tax->load( $data );
+
+		$tax = $manager->addTax( $tax );
+
+		$this->getOutput()->sendApiResponse( $tax );
 	}
 
 	public function getTax( $id ) {
-		
+		$manager = new \Maven\Core\TaxManager();
+		$tax = $manager->get( $id );
+
+		$this->getOutput()->sendApiResponse( $tax );
 	}
 
-	public function editTax( $id ) {
-		
+	public function editTax( $id, $data ) {
+
+		$manager = new \Maven\Core\TaxManager();
+
+		$tax = new \Maven\Core\Domain\Tax();
+
+		$tax->load( $data );
+
+		$tax = $manager->addTax( $tax );
+
+		$this->getOutput()->sendApiResponse( $tax );
 	}
 
 	public function deleteTax( $id ) {

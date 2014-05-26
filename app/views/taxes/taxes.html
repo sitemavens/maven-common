@@ -1,8 +1,9 @@
-<h1>Taxes <button class="button" ng-click="newTax()">New</button> </h1>
+<h1>Taxes <button class="btn btn-default" ng-click="newTax()">New</button> </h1>
 
 <table class="table table-striped">
 	<thead>
 		<tr>
+			<th></th>
 			<th>Name</th>
 			<th>Country</th>
 			<th>State</th>
@@ -11,6 +12,9 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="tax in taxes">
+			<td>
+				<button class="btn btn-primary btn-xs" ng-click="editTax(tax.id)">Edit</button>
+			</td>
 			<td>
 				{{tax.name}}
 			</td>

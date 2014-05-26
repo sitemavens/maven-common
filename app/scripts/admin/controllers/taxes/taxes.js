@@ -1,18 +1,18 @@
 'use strict';
 angular.module('mavenApp')
 	.controller('TaxesCtrl',
-		['$scope', '$location', 'TaxesFilterService', 'TaxesService',
-			function($scope, $location, TaxesFilterService, TaxesService) {
+		['$scope', '$location', 'TaxesFilterService', 'Tax',
+			function($scope, $location, TaxesFilterService, Tax) {
 				$scope.filter = TaxesFilterService;
 
-				TaxesService.getList($scope.filter, function(data) {
-					$scope.taxes = data;
-				});
-
-				$scope.message = "Probando!";
+				$scope.taxes = Tax.query();
 
 
 				$scope.newTax = function() {
 					$location.path('taxes/new');
+				}
+
+				$scope.editTax = function(taxId) {
+					$location.path('taxes/edit/' + taxId);
 				}
 			}]);
