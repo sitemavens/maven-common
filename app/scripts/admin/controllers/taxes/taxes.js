@@ -15,4 +15,8 @@ angular.module('mavenApp')
 				$scope.editTax = function(taxId) {
 					$location.path('taxes/edit/' + taxId);
 				}
+				
+				$scope.testTax=function(){
+					Tax.getStats();
+				}
 			}]);

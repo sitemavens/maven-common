@@ -22,18 +22,15 @@ class AdminController extends \Maven\Admin\Controllers\MavenAdminController {
 		$this->getHookManager()->addAction( 'admin_enqueue_scripts', array( $this, 'registerScripts' ), 10, 1 );
 
 		//$this->getHookManager()->addAjaxAction( 'mvn_getTaxes', array( $this, 'getTaxes' ) );
-		\Maven\Loggers\Logger::log()->message( "Admin Init" );
 	}
 
 	static function commonApiInit() {
-		\Maven\Loggers\Logger::log()->message( "API INIT" );
 		$admin = new AdminController();
 
 		add_filter( 'json_endpoints', array( $admin, 'registerRoutes' ) );
 	}
 
 	function registerRoutes( $routes ) {
-		\Maven\Loggers\Logger::log()->message( "Register Routes" );
 		$routes[ '/common/taxes' ] = array(
 		    array( array( $this, 'getTaxes' ), \WP_JSON_Server::READABLE ),
 		    array( array( $this, 'newTax' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),

@@ -1,13 +1,10 @@
 'use strict';
-
 var admin = angular.module('mavenApp.services', ['ngResource']);
-
 admin.factory('TaxesFilterService', [function() {
 		return {
 			search: null
 		};
 	}]);
-
 admin.factory('TaxesService', ['$http', function($http) {
 
 		return {
@@ -16,7 +13,6 @@ admin.factory('TaxesService', ['$http', function($http) {
 					action: 'mvn_getTax',
 					taxId: taxId
 				};
-
 				$http({
 					cache: false,
 					method: 'POST',
@@ -31,7 +27,6 @@ admin.factory('TaxesService', ['$http', function($http) {
 					action: 'mvn_getTaxes',
 					search: filter.search
 				};
-
 				$http({
 					cache: false,
 					method: 'POST',
@@ -43,12 +38,12 @@ admin.factory('TaxesService', ['$http', function($http) {
 			}
 		};
 	}]);
-
 admin.factory('Tax', ['$resource', function($resource) {
-		return $resource('/wp-json/common/taxes/:id');
+		return $resource('/wp-json/common/taxes/:id', 
+		{}, 
+		{getStats: {method: 'PIPI', params: {getStats: true}, isArray: true}}
+		);
 	}]);
-
-
 /*services.factory('Forms', ['$http', function($http) {
  return {
  getForms: function(callback) {
