@@ -165,11 +165,8 @@ if ( is_admin() ) {
 	$menuManager = $director->getMenuManager( $registry );
 
 	$menuManager->registerMenu( $settings, "Maven", $registry->getAssetsUrl() . "images/icon.png" );
-	$menuManager->registerMenu( $taxes  );
+	$menuManager->registerMenu( $taxes );
 	
-	
-	
-	 
 	
 	
 } else {

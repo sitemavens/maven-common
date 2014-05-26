@@ -76,42 +76,6 @@ class ComponentManager {
 		return $component;
 	}
 	
-	/**
-	 * Create a component
-	 * @param string $title
-	 * @param string $group
-	 * @return \Maven\Core\Component 
-	 */
-	public function createSettingsComponent( $title ){
-		
-		$component = new Component();
-		
-		$slug = "";
-		// We need to get the 5 first letters of the title to use as a slug. 
-		// Remember WP let you use til 10
-		if ( strlen( $title )> 5)
-			$slug = strtolower( substr( $title, 0,5 ) );
-		
-		$component->setTitle( $title );
-		$component->setSlug ( $this->registry->concatShortName ( $slug ) );
-		
-		$component->setType( '\\Maven\\Core\Ui\\SettingsController' );
-		$component->setDefaultAction( 'showForm' );
-		$component->addAction( 'save' );
-		
-		//We need to tell the SettingManager what registry have to use.
-		$component->setRegistry( $this->registry );
-		
-		// Register the component
-		$this->components[ $component->getSlug() ] = &$component;
-		
-		
-		
-		return $component;
-	}
-	
-	
-	
 	
 	/**
 	 * Get a component by slug
