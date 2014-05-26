@@ -21,6 +21,11 @@ class Output {
 	 */
 	private $outputTranslator = null;
 
+	/**
+	 * 
+	 * @param string $pluginPath
+	 * @param array $data
+	 */
 	public function __construct( $pluginPath = "", $data = array() ) {
 
 		//TODO: I don't like the idea of gettint the registry directly here, but...

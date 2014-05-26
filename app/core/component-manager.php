@@ -58,18 +58,19 @@ class ComponentManager {
 		
 		// We need to get the 5 first letters of the title to use as a slug. 
 		// Remember WP let you use til 10
-		if ( strlen( $title )> 5)
-			$slug = strtolower( substr( $title, 0,5 ) );
-		
+//		if ( strlen( $title ) > 5 ) {
+//			$slug = strtolower( substr( $title, 0, 5 ) );
+//		}
+
 		$component->setTitle( $title );
-		$component->setSlug ( $this->registry->concatShortName ( $slug ) );
+		$component->setSlug ( $slug );
 		
 		
 		// Register the component
 		$this->components[ $component->getSlug() ] = $component;
 		
 		// Register the component using the key, it's just to have a faster way to search a component
-		$this->componentsByKey[ $component->getKey() ] = &$component;
+		$this->componentsByKey[ $component->getKey() ] = $component;
 		
 		
 		return $component;

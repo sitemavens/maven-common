@@ -15,7 +15,7 @@ class AdminController extends \Maven\Admin\Controllers\MavenAdminController {
 	}
 
 	public function init() {
-		$this->getHookManager()->addAction( 'admin_menu', array( $this, 'register_menu_page' ) );
+//		$this->getHookManager()->addAction( 'admin_menu', array( $this, 'register_menu_page' ) );
 
 		$this->getHookManager()->addAction( 'admin_enqueue_scripts', array( $this, 'registerStyles' ), 10, 1 );
 
@@ -33,6 +33,7 @@ class AdminController extends \Maven\Admin\Controllers\MavenAdminController {
 	}
 
 	function registerRoutes( $routes ) {
+		
 		\Maven\Loggers\Logger::log()->message( "Register Routes" );
 		$routes[ '/common/taxes' ] = array(
 		    array( array( $this, 'getTaxes' ), \WP_JSON_Server::READABLE ),
@@ -97,8 +98,7 @@ class AdminController extends \Maven\Admin\Controllers\MavenAdminController {
 
 		$me = new self();
 		$this->page_hook = \add_menu_page( 'Maven&copy;', 'Maven&copy;', 'manage_options', 'mvn_maven_new', array( $me, 'showList' ) );
-
-		//var_dump( $this->page_hook );
+ 
 	}
 
 	/**

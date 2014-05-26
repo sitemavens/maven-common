@@ -46,7 +46,7 @@ class MenuManager{
 		$this->actionController		= $actionController;
 		$this->registry			= $registry;
 		
-		$this->addAdminMenu( array( &$this,'registerMenues' ) );
+		$this->addAdminMenu( array( $this,'registerMenues' ) );
 		
 	}
 	
@@ -83,25 +83,39 @@ class MenuManager{
 	
 	public function registerMenues(){
 		
-		if ( ! $this->actionController )
-			throw new \Exception("No action controller defined");
-		
-		
-		foreach( $this->menues as &$menu ){
-			
-			if ( ! $menu->getParent() )
-				add_menu_page( $menu->getPageTitle(), $menu->getMenuTitle(), null, $this->registry->getPluginKey(), array( &$this->actionController, 'handleRequest' ), $menu->getIcon() ) ;
-			else
-				add_submenu_page ($menu->getParent(), $menu->getPageTitle(), $menu->getMenuTitle(), $menu->getCapability(),  $menu->getSlug() , array( &$this->actionController, 'handleRequest' ) );
-			
+		if ( !$this->actionController ) {
+			throw new \Exception( "No action controller defined" );
 		}
+		
+		foreach( $this->menues as $menu ){
+			
+			if ( !$menu->getParent() ) {
+				add_menu_page( $menu->getPageTitle(), $menu->getMenuTitle(), 'manage_options', $this->registry->getPluginKey(), array( $this, 'showApp' ), $menu->getIcon() );
+			} else {
+				add_submenu_page( $menu->getParent(), $menu->getPageTitle(), $menu->getMenuTitle(), $menu->getCapability(), $this->registry->getPluginKey()."#".$menu->getSlug(), array( $this, 'showApp' ) );
+			}
+		}
+
 	}
 	
+	public function showApp(){
+		
+		$output= new Ui\Output($this->registry->getPluginDir());
+		echo $output->getAdminView( "admin" );
+		
+	}
+	
+	/**
+	 * 
+	 * @param type $component
+	 * @param string $group
+	 * @param string $icon
+	 */
 	public function registerMenu( $component, $group = false, $icon = ""  ){
 				
-		if ( $group )
+		if ( $group ) {
 			$this->addMenu( $group, $group, $icon );
-
+		}
 
 		$this->addSubMenu( $component->getTitle(), $component->getTitle(), $component->getSlug() );
 	
