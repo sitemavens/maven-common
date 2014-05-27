@@ -14,12 +14,17 @@ angular.module('mavenApp')
 
 				$scope.saveTax = function() {
 					console.log('saving?');
-					Tax.save({id: $scope.tax.id}, $scope.tax,
-						function(tax) {
-							$location.path('/taxes/edit/' + tax.id).replace();
-						});
+					$scope.tax.$save();
+					/*Tax.save({id: $scope.tax.id}, $scope.tax,
+					 function(tax) {
+					 $location.path('/taxes/edit/' + tax.id).replace();
+					 });*/
 
 
+				}
+
+				$scope.cancelEdit = function() {
+					$location.path('/taxes/');
 				}
 			}]);
 

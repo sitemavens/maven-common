@@ -129,6 +129,8 @@ Front\AjaxFrontEnd::registerFrontEndHooks();
 
 $hookManager->addAction( 'wp_json_server_before_serve', array( 'Maven\Admin\Controllers\AdminController', 'commonApiInit' ) );
 	
+$adminController = new Admin\Controllers\AdminController();
+$hookManager->addAction( 'admin_enqueue_scripts', array( $adminController, 'registerScripts' ), 10, 1 );
 
 if ( ! is_admin() ) {
 	// Instantiate the front end
@@ -140,10 +142,6 @@ if ( Core\Request::current()->isDoingAjax() ) {
 	$hookManager->addPublicAjaxAction( 'mavenAjaxCartHandler', array( '\Maven\Front\FrontEndManager', 'init' ) );
 }
 
-$adminBarMenu = new Core\AdminBarMenu( 'Maven', '/wp-admin/admin.php?page=m-setti' );
-$adminBarMenu->addSubMenu( 'Profiles', '/wp-admin/admin.php?page=m-profi' );
-$adminBarMenu->addSubMenu( 'Orders', '/wp-admin/admin.php?page=m-profi' );
-$adminBarMenu->addSubMenu( 'Https', '/wp-admin/admin.php?page=m-https' );
 
 if ( is_admin() ) {
 
@@ -153,8 +151,6 @@ if ( is_admin() ) {
 	// Initialize WP features
 	$hookManager->addAdminInit( array( '\Maven\Admin\Wp\Loader', 'adminInit' ) );
 
-	Admin\Main::init();
-	
 	$componentManager = $director->getComponentManager( $registry );
 
 	/** Settings * */
@@ -166,8 +162,6 @@ if ( is_admin() ) {
 
 	$menuManager->registerMenu( $settings, "Maven", $registry->getAssetsUrl() . "images/icon.png" );
 	$menuManager->registerMenu( $taxes );
-	
-	
 	
 } else {
 

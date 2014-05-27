@@ -8,17 +8,28 @@ if ( !defined( 'ABSPATH' ) )
 
 class AdminController extends \Maven\Admin\Controllers\MavenAdminController {
 
-	private $page_hook = '';
 
 	public function __construct () {
 		parent::__construct();
 	}
 
 	public function init () {
-//		$this->getHookManager()->addAction( 'admin_menu', array( $this, 'register_menu_page' ) );
 
-		
-		//$this->getHookManager()->addAjaxAction( 'mvn_getTaxes', array( $this, 'getTaxes' ) );
+	}
+
+	public function registerScripts( $hook ){
+ 
+		$registry = $this->getRegistry();
+
+		wp_enqueue_script( 'mavenApp', $registry->getScriptsUrl() . "admin/app.js", 'angular', $registry->getPluginVersion() );
+		wp_enqueue_script( 'admin/directives/loading.js', $registry->getScriptsUrl() . "admin/directives/loading.js", 'mavenApp', $registry->getPluginVersion() );
+		wp_enqueue_script( 'admin/services/admin-services.js', $registry->getScriptsUrl() . "admin/services/admin-services.js", 'mavenApp', $registry->getPluginVersion() );
+		wp_enqueue_script( 'admin/controllers/main-nav.js', $registry->getScriptsUrl() . "admin/controllers/main-nav.js", 'mavenApp', $registry->getPluginVersion() );
+		wp_enqueue_script( 'admin/controllers/dashboard.js', $registry->getScriptsUrl() . "admin/controllers/dashboard.js", 'mavenApp', $registry->getPluginVersion() );
+		wp_enqueue_script( 'admin/controllers/settings.js', $registry->getScriptsUrl() . "admin/controllers/settings.js", 'mavenApp', $registry->getPluginVersion() );
+		wp_enqueue_script( 'admin/controllers/taxes/taxes.js', $registry->getScriptsUrl() . "admin/controllers/taxes/taxes.js", 'mavenApp', $registry->getPluginVersion() );
+		wp_enqueue_script( 'admin/controllers/taxes/taxes-edit.js', $registry->getScriptsUrl() . "admin/controllers/taxes/taxes-edit.js", 'mavenApp', $registry->getPluginVersion() );
+
 	}
 
 
@@ -30,13 +41,15 @@ class AdminController extends \Maven\Admin\Controllers\MavenAdminController {
 	}
 
 
+
 	function registerRoutes( $routes ) {
 
-		$routes[ '/common/taxes' ] = array(
+
+		$routes[ '/maven/taxes' ] = array(
 			array( array( $this, 'getTaxes' ), \WP_JSON_Server::READABLE ),
 			array( array( $this, 'newTax' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
-		$routes[ '/common/taxes/(?P<id>\d+)' ] = array(
+		$routes[ '/maven/taxes/(?P<id>\d+)' ] = array(
 			array( array( $this, 'getTax' ), \WP_JSON_Server::READABLE ),
 			array( array( $this, 'editTax' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
 			array( array( $this, 'deleteTax' ), \WP_JSON_Server::DELETABLE ),
@@ -135,7 +148,11 @@ class AdminController extends \Maven\Admin\Controllers\MavenAdminController {
 	}
 
 	public function deleteTax ( $id ) {
+		$manager = new \Maven\Core\TaxManager();
 		
+		$manager->delete($id);
+		
+		$this->getOutput()->sendApiResponse( new \stdClass() );
 	}
 
 }

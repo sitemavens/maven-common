@@ -15,8 +15,12 @@ angular.module('mavenApp')
 				$scope.editTax = function(taxId) {
 					$location.path('taxes/edit/' + taxId);
 				}
-				
-				$scope.testTax=function(){
-					Tax.getStats();
+
+				$scope.deleteTax = function(idx) {
+					var tax = $scope.taxes[idx];
+					tax.$delete().then(
+						function() {
+							$scope.taxes.splice(idx, 1);
+						});
 				}
 			}]);

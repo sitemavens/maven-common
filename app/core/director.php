@@ -28,8 +28,9 @@ class Director implements ActionControllerObserver {
 	 */
 	public function getInstance() {
 
-		if ( !self::$instance )
+		if ( !self::$instance ) {
 			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}
@@ -104,7 +105,7 @@ class Director implements ActionControllerObserver {
 	 * @param string $key
 	 * @return \Maven\Core\MavenPlugin
 	 */
-	private function &getPlugin( $key ) {
+	private function getPlugin( $key ) {
 		if ( !isset( $this->plugins[ $key ] ) )
 			$this->plugins[ $key ] = new MavenPlugin();
 

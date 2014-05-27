@@ -39,7 +39,7 @@ admin.factory('TaxesService', ['$http', function($http) {
 		};
 	}]);
 admin.factory('Tax', ['$resource', function($resource) {
-		return $resource('/wp-json/common/taxes/:id');
+		return $resource('/wp-json/maven/taxes/:id', {id: '@id'});
 	}]);
 /*services.factory('Forms', ['$http', function($http) {
  return {
