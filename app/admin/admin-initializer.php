@@ -30,7 +30,7 @@ class AdminInitializer {
 		}
 	}
 
-	static function registerRouters () {
+	public function registerRouters () {
 
 		$taxes = new Controllers\Taxes();
 		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $taxes, 'registerRoutes' ) );
