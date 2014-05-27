@@ -128,8 +128,8 @@ $hookManager->addLogoutAction( array( $cart, 'logout' ) );
 Front\AjaxFrontEnd::registerFrontEndHooks();
 
 $adminInitizalizer = new Admin\AdminInitializer();
-$hookManager->addAction( 'wp_json_server_before_serve', array($adminInitizalizer, 'registerRouters' ) );
-	 
+$hookManager->addAction( 'wp_json_server_before_serve', array( $adminInitizalizer, 'registerRouters' ) );
+
 if ( ! is_admin() ) {
 	// Instantiate the front end
 	$hookManager->addInit( array( '\Maven\Front\FrontEndManager', 'init' ), 999 );
@@ -153,14 +153,16 @@ if ( is_admin() ) {
 
 	/** Settings * */
 	$settings = $componentManager->createComponent( 'Settings', 'Maven\\Admin\\Controllers\\Settings' );
-	
+
+	$orders = $componentManager->createComponent( 'Orders', 'Maven\\Admin\\Controllers\\Orders' );
+
 	$taxes = $componentManager->createComponent( 'Taxes', 'Maven\\Admin\\Controllers\\Taxes' );
-	
+
 	$menuManager = $director->getMenuManager( $registry );
 
 	$menuManager->registerMenu( $settings, "Maven", $registry->getAssetsUrl() . "images/icon.png" );
+	$menuManager->registerMenu( $orders );
 	$menuManager->registerMenu( $taxes );
-	
 } else {
 
 	// TODO: We need to improve it
@@ -173,6 +175,5 @@ if ( is_admin() ) {
 	$hookManager->addFilter( 'wp_get_attachment_url', array( $ssl, 'forceSslImages' ) );
 	$hookManager->addFilter( 'wp_get_attachment_image_attributes', array( $ssl, 'forceSslImages' ) );
 	$hookManager->addFilter( 'wp_get_attachment_url', array( $ssl, 'forceSslImages' ) );
-	
 }
  

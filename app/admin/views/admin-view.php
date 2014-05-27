@@ -3,6 +3,7 @@
 	<div class="header" ng-controller='MainNavCtrl'>
 		<ul class="nav nav-pills pull-right" >
 			<li class="" ng-class="{active:isActive('/')}"><a ng-href="#/">Dashboard</a></li>
+			<li class="" ng-class="{active:isActive('/orders')}"><a ng-href="#/orders"><i class="glyphicon glyphicon-shopping-cart"></i>&nbsp; Orders</a></li>
 			<li class="" ng-class="{active:isActive('/taxes')}"><a ng-href="#/taxes">Taxes</a></li>
 			<li class="" ng-class="{active:isActive('/settings')}"><a ng-href="#/settings">Settings</a></li>
 		</ul>

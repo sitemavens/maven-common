@@ -41,6 +41,18 @@ admin.factory('TaxesService', ['$http', function($http) {
 admin.factory('Tax', ['$resource', function($resource) {
 		return $resource('/wp-json/maven/taxes/:id', {id: '@id'});
 	}]);
+
+admin.factory('OrderFilter', [function() {
+		return {
+			page: 0,
+			number:null,
+			status:null
+		};
+	}]);
+
+admin.factory('Order', ['$resource', function($resource) {
+		return $resource('/wp-json/maven/orders/:id', {id: '@id'});
+	}]);
 /*services.factory('Forms', ['$http', function($http) {
  return {
  getForms: function(callback) {

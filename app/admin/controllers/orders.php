@@ -12,8 +12,114 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		parent::__construct();
 	}
 
-	public function admin_init() {
-		
+	public function registerRoutes( $routes ) {
+
+		$routes[ '/maven/orders' ] = array(
+		    array( array( $this, 'getOrders' ), \WP_JSON_Server::READABLE ),
+			//array( array( $this, 'newOrder' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		);
+		$routes[ '/maven/orders/(?P<id>\d+)' ] = array(
+		    array( array( $this, 'getOrder' ), \WP_JSON_Server::READABLE ),
+		    array( array( $this, 'editOrder' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		    array( array( $this, 'deleteOrder' ), \WP_JSON_Server::DELETABLE ),
+		);
+
+		return $routes;
+	}
+
+	public function getOrders( $filter = array(), $page = 0 ) {
+		$manager = new \Maven\Core\OrderManager();
+
+		$orderFilter = new \Maven\Core\Domain\OrderFilter();
+
+		if ( key_exists( 'number', $filter ) && $filter[ 'number' ] ) {
+			$orderFilter->setNumber( $filter[ 'number' ] );
+		}
+
+		if ( key_exists( 'start', $filter ) && $filter[ 'start' ] ) {
+			$orderFilter->setOrderDateFrom( $filter[ 'start' ] );
+		}
+
+		if ( key_exists( 'end', $filter ) && $filter[ 'end' ] ) {
+			$orderFilter->setOrderDateTo( $filter[ 'end' ] );
+		}
+
+		if ( key_exists( 'status', $filter ) && $filter[ 'status' ] ) {
+			$orderFilter->setStatusID( $filter[ 'status' ] );
+		}
+
+		$perPage = 10; //$data[ 'per_page' ];
+		$sortBy = 'order_date';
+		/* if ( $data && key_exists( 'sort_by', $data ) ) {
+		  $sortBy = \Maven\Core\Utils::unCamelize( $data[ 'sort_by' ], '_' );
+		  } */
+
+		$order = '';
+		/* if ( $data && key_exists( 'order', $data ) ) {
+		  $order = $data[ 'order' ];
+		  } */
+
+		$orders = $manager->getOrders( $orderFilter, $sortBy, $order, ($page * $perPage ), $perPage );
+		//$count = $manager->getOrdersCount( $orderFilter );
+
+		/* foreach ( $orders as $row ) {
+		  $temp = $row->toArray();
+
+		  $temp[ 'number' ] = intval( $temp[ 'number' ] );
+		  $temp[ 'total' ] = floatval( $temp[ 'total' ] );
+
+		  $response[] = $temp;
+		  }
+
+		  $out[] = array( 'total_entries' => intval( $count ) );
+		  $out[] = $response; */
+
+		$this->getOutput()->sendApiResponse( $orders );
+	}
+
+	public function newOrder( $data ) {
+		return new \WP_Error( 'maven_common_order_not_implemented_method', __( 'Not implemented.' ), array( 'status' => 500 ) );
+	}
+
+	public function getOrder( $id ) {
+		$manager = new \Maven\Core\OrderManager();
+
+		$order = $manager->get( $id );
+
+		$this->getOutput()->sendApiResponse( $order );
+	}
+
+	public function editOrder( $id, $data ) {
+
+		$manager = new \Maven\Core\OrderManager();
+
+		$order = new \Maven\Core\Domain\Order();
+
+		$order->load( $data );
+		$addStatus = false;
+		if ( key_exists( 'sendNotice', $data ) && $data[ 'sendNotice' ] === 'true' ) {
+
+			$status = $manager->sendShipmentNotice( $order );
+
+			if ( $status ) {
+				$order->setStatus( $status );
+				$addStatus = true;
+			} else {
+				return new \WP_Error( 'maven_common_order_shipment', __( 'Error sending shipment notice.' ), array( 'status' => 500 ) );
+			}
+		}
+
+		$order = $manager->addOrder( $order, $addStatus );
+
+		$this->getOutput()->sendApiResponse( $order );
+	}
+
+	public function deleteOrder( $id ) {
+		$manager = new \Maven\Core\OrderManager();
+
+		$manager->delete( $id );
+
+		$this->getOutput()->sendApiResponse( new \stdClass() );
 	}
 
 	public function showForm() {

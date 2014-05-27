@@ -14,6 +14,14 @@ angular
 				templateUrl: Maven.viewsUrl + 'dashboard.html',
 				controller: 'DashboardCtrl'
 			})
+			.when('/orders', {
+				templateUrl: Maven.viewsUrl + 'orders/orders.php',
+				controller: 'OrdersCtrl'
+			})
+			.when('/orders/edit/:id', {
+				templateUrl: Maven.viewsUrl + 'orders/orders-edit.php',
+				controller: 'OrdersEditCtrl'
+			})
 			.when('/taxes', {
 				templateUrl: Maven.viewsUrl + 'taxes/taxes.html',
 				controller: 'TaxesCtrl'
