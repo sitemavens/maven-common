@@ -35,7 +35,7 @@ angular
 				controller: 'TaxesEditCtrl'
 			})
 			.when('/settings', {
-				templateUrl: Maven.adminViewsUrl + 'settings.php',
+				templateUrl: Maven.adminViewsUrl + 'settings/settings.php',
 				controller: 'SettingsCtrl'
 			})
 			.otherwise({
