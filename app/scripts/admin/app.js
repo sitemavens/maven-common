@@ -11,7 +11,7 @@ angular
 	.config(function($routeProvider) {
 		$routeProvider
 			.when('/', {
-				templateUrl: Maven.adminViewsUrl + 'dashboard.html',
+				templateUrl: Maven.adminViewsUrl + 'dashboard.php',
 				controller: 'DashboardCtrl'
 			})
 			.when('/orders', {
@@ -23,19 +23,19 @@ angular
 				controller: 'OrdersEditCtrl'
 			})
 			.when('/taxes', {
-				templateUrl: Maven.adminViewsUrl + 'taxes/taxes.html',
+				templateUrl: Maven.adminViewsUrl + 'taxes/taxes.php',
 				controller: 'TaxesCtrl'
 			})
 			.when('/taxes/new', {
-				templateUrl: Maven.adminViewsUrl + 'taxes/taxes-edit.html',
+				templateUrl: Maven.adminViewsUrl + 'taxes/taxes-edit.php',
 				controller: 'TaxesEditCtrl'
 			})
 			.when('/taxes/edit/:id', {
-				templateUrl: Maven.adminViewsUrl + 'taxes/taxes-edit.html',
+				templateUrl: Maven.adminViewsUrl + 'taxes/taxes-edit.php',
 				controller: 'TaxesEditCtrl'
 			})
 			.when('/settings', {
-				templateUrl: Maven.adminViewsUrl + 'settings.html',
+				templateUrl: Maven.adminViewsUrl + 'settings.php',
 				controller: 'SettingsCtrl'
 			})
 			.otherwise({
