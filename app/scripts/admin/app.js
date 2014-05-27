@@ -11,7 +11,7 @@ angular
 	.config(function($routeProvider) {
 		$routeProvider
 			.when('/', {
-				templateUrl: Maven.adminViewsUrl + 'dashboard.php',
+				templateUrl: Maven.adminViewsUrl + 'dashboard/dashboard.php',
 				controller: 'DashboardCtrl'
 			})
 			.when('/orders', {

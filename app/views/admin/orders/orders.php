@@ -28,6 +28,7 @@
 		</tr>
 	</tbody>
 </table>
+<div pagination></div>
 <div class="row">
 	<div class="col-md-offset-8 col-md-4">
 
