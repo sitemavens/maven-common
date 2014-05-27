@@ -127,11 +127,9 @@ $hookManager->addLogoutAction( array( $cart, 'logout' ) );
 
 Front\AjaxFrontEnd::registerFrontEndHooks();
 
-$hookManager->addAction( 'wp_json_server_before_serve', array( 'Maven\Admin\Controllers\AdminController', 'commonApiInit' ) );
-	
-$adminController = new Admin\Controllers\AdminController();
-$hookManager->addAction( 'admin_enqueue_scripts', array( $adminController, 'registerScripts' ), 10, 1 );
-
+$adminInitizalizer = new Admin\AdminInitializer();
+$hookManager->addAction( 'wp_json_server_before_serve', array($adminInitizalizer, 'registerRouters' ) );
+	 
 if ( ! is_admin() ) {
 	// Instantiate the front end
 	$hookManager->addInit( array( '\Maven\Front\FrontEndManager', 'init' ), 999 );
@@ -175,5 +173,6 @@ if ( is_admin() ) {
 	$hookManager->addFilter( 'wp_get_attachment_url', array( $ssl, 'forceSslImages' ) );
 	$hookManager->addFilter( 'wp_get_attachment_image_attributes', array( $ssl, 'forceSslImages' ) );
 	$hookManager->addFilter( 'wp_get_attachment_url', array( $ssl, 'forceSslImages' ) );
+	
 }
  
