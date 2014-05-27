@@ -334,6 +334,10 @@ abstract class Registry {
 	public function getScriptsUrl() {
 		return $this->getPluginUrl() . "scripts/";
 	}
+	
+	public function getScriptsDir() {
+		return $this->getPluginDir() . "scripts/";
+	}
 
 	public function getStylesUrl() {
 		return $this->getPluginUrl() . "styles/";

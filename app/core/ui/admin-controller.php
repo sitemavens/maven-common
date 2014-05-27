@@ -179,15 +179,5 @@ abstract class AdminController {
 		
 	}
 	
-	/**
-	 * @return \Maven\Core\Ui\ActionResponse 
-	 */
-	abstract function showForm();
-
-	/**
-	 * @return \Maven\Core\Ui\ActionResponse 
-	 */
-	abstract function showList();
-
 	
 }

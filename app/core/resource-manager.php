@@ -50,14 +50,14 @@ class ResourceManager implements ActionControllerObserver {
 	public function __construct( \Maven\Core\HookManager $hookManager ){
 	
 		$this->hookManager = $hookManager;
-		$this->hookManager->addInit( array( &$this, 'registerGlobalScripts' ) );
+		$this->hookManager->addInit( array( $this, 'registerGlobalScripts' ) );
 		
 		if (is_admin()){
-			$this->hookManager->addAdminInit( array( &$this, 'registerAdminScripts' ) );
-			$this->hookManager->addAdminInit( array( &$this, 'registerAdminStyles' ) );
-			$this->hookManager->addAdminInit( array( &$this, 'localizeScripts' ) );
+			$this->hookManager->addAdminInit( array( $this, 'registerAdminScripts' ) );
+			$this->hookManager->addAdminInit( array( $this, 'registerAdminStyles' ) );
+			$this->hookManager->addAdminInit( array( $this, 'localizeScripts' ) );
 		} else{
-			$this->hookManager->addInit( array( &$this, 'localizeScripts' ) );
+			$this->hookManager->addInit( array( $this, 'localizeScripts' ) );
 		}
 		
 		
@@ -177,12 +177,10 @@ class ResourceManager implements ActionControllerObserver {
 	public function addLocalizedScript( $scriptKey, $domain, $data ){
 		
 		// If the script already exists, we just merge the data
-		if ( isset( $this->localizedScripts[ $scriptKey ] ) )
-			$this->localizedScripts[ $scriptKey ]->setData( array_merge( $data, $this->localizedScripts[ $scriptKey ]->getData () ) );
-		else
+		if ( isset( $this->localizedScripts[ $scriptKey ] ) ) {
+			$this->localizedScripts[ $scriptKey ]->setData( array_merge( $data, $this->localizedScripts[ $scriptKey ]->getData() ) );
+		} else
 			$this->localizedScripts[ $scriptKey ] = new LocalizedScript( $scriptKey, $domain, $data );
-		
-		
 	}
 	
 	/**
@@ -195,9 +193,10 @@ class ResourceManager implements ActionControllerObserver {
 	 */
 	public function addGlobalScript( $jsFile, $version, $deps = array(), $key = '', $registerOnly = false ){
 		
-		if ( ! $key )
-			$key = "mvn-".sanitize_key ( basename($jsFile,'.js') );
-		
+		if ( !$key ) {
+			$key = "mvn-" . sanitize_key( basename( $jsFile, '.js' ) );
+		}
+
 		$this->globalScripts[] = new \Maven\Core\Resource( $key, $jsFile, $version, $deps, true, $registerOnly );
 		
 	}

@@ -5,7 +5,7 @@ namespace Maven\Admin\Controllers;
 // Exit if accessed directly 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-abstract class MavenAdminController extends \Maven\Core\UI\AdminController{
+abstract class MavenAdminController extends \Maven\Core\Ui\AdminController{
 	
 	public function __construct(){
 		
