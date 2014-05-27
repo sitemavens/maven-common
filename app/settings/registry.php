@@ -349,6 +349,10 @@ abstract class Registry {
 	
 	abstract function getEmailNotificationsTo();
 
-	
+	public function getRegistries () {
+		return $this->registries;
+	}
+ 
+
 	
 }

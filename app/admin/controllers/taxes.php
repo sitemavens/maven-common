@@ -12,7 +12,7 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController {
 		parent::__construct();
 	}
 	
-	public function registerRoutes(){
+	public function registerRoutes( $routes ){
 		
 		$routes[ '/common/taxes' ] = array(
 			array( array( $this, 'getTaxes' ), \WP_JSON_Server::READABLE ),
@@ -25,9 +25,57 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController {
 		);
 		
 		return $routes;
-		
-		
 	}
 	
+	public function getTaxes () {
+		$manager = new \Maven\Core\TaxManager();
+
+		$filter = new \Maven\Core\Domain\TaxFilter();
+		$filter->setAll( TRUE );
+
+		$taxes = $manager->getTaxes( $filter );
+
+		$this->getOutput()->sendApiResponse( $taxes );
+	}
+
+	public function newTax ( $data ) {
+		$manager = new \Maven\Core\TaxManager();
+
+		$tax = new \Maven\Core\Domain\Tax();
+
+		$tax->load( $data );
+
+		$tax = $manager->addTax( $tax );
+
+		$this->getOutput()->sendApiResponse( $tax );
+	}
+
+	public function getTax ( $id ) {
+		$manager = new \Maven\Core\TaxManager();
+		$tax = $manager->get( $id );
+
+		$this->getOutput()->sendApiResponse( $tax );
+	}
+
+	public function editTax ( $id, $data ) {
+
+		$manager = new \Maven\Core\TaxManager();
+
+		$tax = new \Maven\Core\Domain\Tax();
+
+		$tax->load( $data );
+
+		$tax = $manager->addTax( $tax );
+
+		$this->getOutput()->sendApiResponse( $tax );
+	}
+
+	public function deleteTax ( $id ) {
+		$manager = new \Maven\Core\TaxManager();
+		
+		$manager->delete($id);
+		
+		$this->getOutput()->sendApiResponse( new \stdClass() );
+	}
  
 }

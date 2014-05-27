@@ -91,6 +91,7 @@ class MenuManager {
 			if ( !$menu->getParent() ) {
 				if ( !$this->mainSlug ) {
 					$this->mainSlug = add_menu_page( $menu->getPageTitle(), $menu->getMenuTitle(), 'manage_options', $this->registry->getPluginKey(), array( $this, 'showApp' ), $menu->getIcon() );
+					
 				}else{
 					add_menu_page( $menu->getPageTitle(), $menu->getMenuTitle(), 'manage_options', $this->registry->getPluginKey(), array( $this, 'showApp' ), $menu->getIcon() );
 				}
@@ -128,7 +129,7 @@ class MenuManager {
 				wp_enqueue_style( 'bootstrap', $registry->getBowerComponentUrl() . "bootstrap/dist/css/bootstrap.css", null, $registry->getPluginVersion() );
 				wp_enqueue_style( 'bootstrap-theme', $registry->getBowerComponentUrl() . "bootstrap/dist/css/bootstrap-theme.css", null, $registry->getPluginVersion() );
 
-				wp_enqueue_style( 'main', $registry->getStylesUrl() . "main.css", array( 'bootstrap', 'bootstrap-theme' ), $registry->getPluginVersion() );
+				
 			} else {
 				wp_enqueue_style( 'mainCss', $registry->getStylesUrl() . "main.min.css", array(), $registry->getPluginVersion() );
 			}
