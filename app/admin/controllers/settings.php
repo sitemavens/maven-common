@@ -18,7 +18,28 @@ class Settings extends MavenAdminController {
 			array( array( $this, 'getSettings' ), \WP_JSON_Server::READABLE )
 		);
 		
+		$routes[ '/maven/settings/(?P<id>\d+)' ] = array(
+			array( array( $this, 'getSettings' ), \WP_JSON_Server::READABLE ),
+			array( array( $this, 'edit' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		);
+		
+		 
 		return $routes;
+	}
+	
+	public function edit ( $id, $data ) {
+
+		$settings = \Maven\Settings\MavenRegistry::instance()->getOptions();
+
+		foreach( $settings as $setting ){
+			if ( isset(  $data[$setting->getName()]) ){
+				$setting->setValue( $data[$setting->getName()] );
+			}
+		}
+		
+		\Maven\Settings\MavenRegistry::instance()->saveOptions($settings);
+
+		$this->getOutput()->sendApiResponse( $settings );
 	}
 	
 	public function getSettings () {
@@ -34,6 +55,8 @@ class Settings extends MavenAdminController {
 		
 		$this->getOutput()->sendApiResponse( $entity );
 	}
+	
+	
 	
 }
 
