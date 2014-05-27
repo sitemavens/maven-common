@@ -55,7 +55,12 @@ admin.factory('Order', ['$resource', function($resource) {
 	}]);
 
 admin.factory('Setting', ['$resource', function($resource) {
-		return $resource('/wp-json/maven/settings/:id', {id: '@id'});
+		return $resource('/wp-json/maven/settings/:id', {id: '@id'},{
+			get:{
+				 method: "GET",
+				cache: true
+			}
+		});
 	}]);
 
 /*services.factory('Forms', ['$http', function($http) {

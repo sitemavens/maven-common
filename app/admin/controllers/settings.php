@@ -22,6 +22,8 @@ class Settings extends MavenAdminController {
 	}
 	
 	public function getSettings () {
+		
+		
 		$registry = \Maven\Settings\MavenRegistry::instance();
 		
 		$options = $registry->getOptions();
