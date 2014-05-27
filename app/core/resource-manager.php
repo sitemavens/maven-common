@@ -75,6 +75,7 @@ class ResourceManager implements ActionControllerObserver {
 		$this->addLocalizedScript( 'maven', 'Maven', array(
 		    'adminUrl' => admin_url(),
 		    'viewsUrl' => $registry->getViewsUrl(),
+			'adminViewsUrl' => $registry->getAdminViewsUrl(),
 		    'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 			'loadingImagePath' => $registry->getImagesUrl()."loading.gif"
 			)

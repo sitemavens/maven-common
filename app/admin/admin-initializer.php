@@ -41,6 +41,9 @@ class AdminInitializer {
 	
 		$orders = new Controllers\Orders();
 		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $orders, 'registerRoutes' ) );
+		
+		$settings = new Controllers\Settings();
+		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $settings, 'registerRoutes' ) );
 	
 	}
 

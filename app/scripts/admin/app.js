@@ -11,31 +11,31 @@ angular
 	.config(function($routeProvider) {
 		$routeProvider
 			.when('/', {
-				templateUrl: Maven.viewsUrl + 'dashboard.html',
+				templateUrl: Maven.adminViewsUrl + 'dashboard.html',
 				controller: 'DashboardCtrl'
 			})
 			.when('/orders', {
-				templateUrl: Maven.viewsUrl + 'orders/orders.php',
+				templateUrl: Maven.adminViewsUrl + 'orders/orders.php',
 				controller: 'OrdersCtrl'
 			})
 			.when('/orders/edit/:id', {
-				templateUrl: Maven.viewsUrl + 'orders/orders-edit.php',
+				templateUrl: Maven.adminViewsUrl + 'orders/orders-edit.php',
 				controller: 'OrdersEditCtrl'
 			})
 			.when('/taxes', {
-				templateUrl: Maven.viewsUrl + 'taxes/taxes.html',
+				templateUrl: Maven.adminViewsUrl + 'taxes/taxes.html',
 				controller: 'TaxesCtrl'
 			})
 			.when('/taxes/new', {
-				templateUrl: Maven.viewsUrl + 'taxes/taxes-edit.html',
+				templateUrl: Maven.adminViewsUrl + 'taxes/taxes-edit.html',
 				controller: 'TaxesEditCtrl'
 			})
 			.when('/taxes/edit/:id', {
-				templateUrl: Maven.viewsUrl + 'taxes/taxes-edit.html',
+				templateUrl: Maven.adminViewsUrl + 'taxes/taxes-edit.html',
 				controller: 'TaxesEditCtrl'
 			})
 			.when('/settings', {
-				templateUrl: Maven.viewsUrl + 'settings.html',
+				templateUrl: Maven.adminViewsUrl + 'settings.html',
 				controller: 'SettingsCtrl'
 			})
 			.otherwise({
