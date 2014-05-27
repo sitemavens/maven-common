@@ -18,7 +18,7 @@ class AdminInitializer {
 
 		$registry = \Maven\Settings\MavenRegistry::instance();
 		 
-		if ( $hook == 'toplevel_page_mavencommon' ) {
+		if ( $hook == 'toplevel_page_maven' ) {
 			wp_enqueue_script( 'mavenApp', $registry->getScriptsUrl() . "admin/app.js", 'angular', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/directives/loading.js', $registry->getScriptsUrl() . "admin/directives/loading.js", 'mavenApp', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/services/admin-services.js', $registry->getScriptsUrl() . "admin/services/admin-services.js", 'mavenApp', $registry->getPluginVersion() );

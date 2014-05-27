@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Plugin Name: Maven Common
+  Plugin Name: Maven
   Plugin URI:
   Description:
   Author: Site Mavens
@@ -14,8 +14,6 @@ namespace Maven;
 // Exit if accessed directly 
 if ( ! defined( 'ABSPATH' ) )
 	exit;
-
-
 
 //These are the only require_once needed. Then you should use the Loader class
 require_once plugin_dir_path( __FILE__ ) . '/core/loader.php';
@@ -38,9 +36,8 @@ $files = array(
 //	'core/ui/output',
     'core/ui/html-component',
     'core/observable',
-    'core/observer'
-
-//	'core/ui/admin-controller'
+    'core/observer',
+	'gateways/gateway'
 );
 
 
@@ -53,10 +50,10 @@ $registry->setPluginDir( plugin_dir_path( __FILE__ ) );
 
 // We can't use plugin_dir_url(__FILE__) since we are using symbolic links to develop, so we have to 
 // hardcode the plugin dir, which isn't so bad :)
-$registry->setPluginDirectoryName( "maven-common" );
-$registry->setPluginUrl( defined( 'DEV_ENV' ) && DEV_ENV ? WP_PLUGIN_URL . "/maven-common/" : plugin_dir_url( __FILE__ )  );
+$registry->setPluginDirectoryName( "maven" );
+$registry->setPluginUrl( defined( 'DEV_ENV' ) && DEV_ENV ? WP_PLUGIN_URL . "/maven/" : plugin_dir_url( __FILE__ )  );
 $registry->setPluginVersion( "0.4.2.1" );
-$registry->setPluginName( 'Maven Common' );
+$registry->setPluginName( 'Maven' );
 $registry->setPluginShortName( 'm' );
 $registry->init();
 
