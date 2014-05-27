@@ -39,10 +39,7 @@ admin.factory('TaxesService', ['$http', function($http) {
 		};
 	}]);
 admin.factory('Tax', ['$resource', function($resource) {
-		return $resource('/wp-json/common/taxes/:id', 
-		{}, 
-		{getStats: {method: 'PIPI', params: {getStats: true}, isArray: true}}
-		);
+		return $resource('/wp-json/common/taxes/:id');
 	}]);
 /*services.factory('Forms', ['$http', function($http) {
  return {
