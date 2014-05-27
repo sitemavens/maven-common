@@ -53,6 +53,11 @@ admin.factory('OrderFilter', [function() {
 admin.factory('Order', ['$resource', function($resource) {
 		return $resource('/wp-json/maven/orders/:id', {id: '@id'});
 	}]);
+
+admin.factory('Setting', ['$resource', function($resource) {
+		return $resource('/wp-json/maven/settings/:id', {id: '@id'});
+	}]);
+
 /*services.factory('Forms', ['$http', function($http) {
  return {
  getForms: function(callback) {

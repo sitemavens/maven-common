@@ -26,9 +26,7 @@ class MavenRegistry extends WordpressRegistry {
 			$adminEmail = get_bloginfo( 'admin_email' );
 
 			$defaultOptions = array(
-			    new Option(
-				    "activeThemeName", "Active Theme", 'conquer', '', OptionType::Input
-			    ), new Option(
+			     new Option(
 				    "emailProvider", "Email Provider", 'wordpress', '', OptionType::Input
 			    ), new Option(
 				    "exceptionNotification", "Exception Notification", $adminEmail, '', OptionType::Input
@@ -95,10 +93,6 @@ class MavenRegistry extends WordpressRegistry {
 
 	public function getActiveMaillist() {
 		return $this->getValue( 'activeMaillist' );
-	}
-
-	public function getActiveThemeName() {
-		return $this->getValue( 'activeThemeName' );
 	}
 
 	public function getEmailProvider() {

@@ -35,17 +35,11 @@ class Output {
 			$pluginPath = $registry->getPluginDir();
 		}
 
-		$themeName = $registry->getActiveThemeName();
-		$mavenDir = $registry->getPluginDirectoryName();
-		$this->baseAdminView = ABSPATH . "wp-content/plugins/{$mavenDir}/themes/{$themeName}/views/base-admin-view.php";
-		$this->themePath = ABSPATH . "wp-content/plugins/{$mavenDir}/themes/{$themeName}/";
 		$this->pluginPath = $pluginPath;
 		$this->templatePath = $registry->getTemplatePath();
 		$this->outputTranslator = new OutputTranslator();
 		$this->data = $data;
-		//$this->pluginPath = $settings["pluginPath"];
-		//$this->maven_html = new maven_html();
-		//$this->data["html"] = $this->maven_html;
+		 
 	}
 
 	public function sendData( $data ) {
