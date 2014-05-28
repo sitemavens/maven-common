@@ -75,7 +75,7 @@
 		</div>	
 		<div class="row">
 			<div class="col-md-4">
-			<button type="submit" ng-disabled="formSettings.$invalid" class="btn btn-primary">Submit</button>
+				<button type="submit" ng-disabled="formSettings.$invalid" ng-click="saveSettings" class="btn btn-primary">Submit</button>
 			</div>
 		</div>
 	</div>
