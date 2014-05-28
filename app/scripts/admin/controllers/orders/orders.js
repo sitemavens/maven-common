@@ -23,6 +23,9 @@ angular.module('mavenApp')
 					$scope.orders = Order.query(OrderFilter);
 				}
 
+				$scope.printUrl = function(id) {
+					return Maven.printUrl + 'order/' + id;
+				}
 				/*$scope.deleteTax = function(idx) {
 				 var tax = $scope.taxes[idx];
 				 tax.$delete().then(

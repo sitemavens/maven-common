@@ -111,6 +111,7 @@ class Installer {
 				`google_plus` varchar(500) DEFAULT NULL,
 				`linked_in` varchar(500) DEFAULT NULL,
 				`sex` varchar(5) NOT NULL,
+				`auto_login_key` varchar(60) DEFAULT NULL,
 				`wholesale` tinyint(4) DEFAULT NULL,
 				`created_on` timestamp NOT NULL DEFAULT 0,
 				PRIMARY KEY (`id`),

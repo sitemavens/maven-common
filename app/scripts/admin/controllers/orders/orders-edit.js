@@ -5,6 +5,7 @@ angular.module('mavenApp')
 		['$scope', '$routeParams', '$location', 'Order',
 			function($scope, $routeParams, $location, Order) {
 				$scope.order = {};
+				$scope.showSendShipment = false;
 
 				if ($routeParams.id) {
 					$scope.order = Order.get({id: $routeParams.id});
@@ -22,7 +23,9 @@ angular.module('mavenApp')
 
 
 				};
-
+				$scope.calculateTotal = function(item) {
+					return item.quantity * item.price;
+				}
 				$scope.cancelEdit = function() {
 					$location.path('/orders/');
 				};

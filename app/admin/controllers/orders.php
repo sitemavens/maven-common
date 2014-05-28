@@ -54,7 +54,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		  $sortBy = \Maven\Core\Utils::unCamelize( $data[ 'sort_by' ], '_' );
 		  } */
 
-		$order = '';
+		$order = 'desc';
 		/* if ( $data && key_exists( 'order', $data ) ) {
 		  $order = $data[ 'order' ];
 		  } */
