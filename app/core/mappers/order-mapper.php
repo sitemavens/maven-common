@@ -272,7 +272,8 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 				    'thing_id' => $item->getThingId(),
 				    'sku' => $item->getSku(),
 				    'plugin_key' => $item->getPluginKey(),
-				    'thing_variation_id' => $item->getThingVariationId()
+				    'thing_variation_id' => $item->getThingVariationId(),
+				    'attributes' => serialize($item->getAttributes())
 				);
 
 				$format = array(
@@ -284,6 +285,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 				    '%s', //sku
 				    '%s', //plugin_key
 				    '%d', //thing_variation_id
+				    '%s' //attributes
 				);
 
 				if ( ! $item->getId() ) {

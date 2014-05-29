@@ -163,7 +163,7 @@ class OrderItem extends \Maven\Core\DomainObject {
 	}
 	
 	/**
-	 * 
+	 * @serialized
 	 * @return \Maven\Core\Domain\OrderItemAttribute[]
 	 */
 	public function getAttributes () {
