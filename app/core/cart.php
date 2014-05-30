@@ -420,6 +420,7 @@ class Cart {
 		$gateway->setCCNumber( $order->getCreditCard()->getNumber() );
 		$gateway->setCcType( $order->getCreditCard()->getType() );
 
+
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Gateway Execute:' . date( 'h:i:s' ) );
 		//if ( $order->getTotal() !== 0 ) {
 		$gateway->execute();

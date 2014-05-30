@@ -90,6 +90,13 @@ class ShippingMethodManager extends Manager{
 		
 		}
 		
+		
+		//TODO @emiliano: What if there's no default shipping method
+		if ( !$shippingMethod || !$shippingMethod->getMethod() ) {
+			//There isnt a default shipping method, just return 0
+			return 0;
+		}
+		
 		$destinations = array();
 		if ( $shippingMethod->getMethod()->hasDestinations() ) {
 			$destinations = $shippingMethod->getMethod()->getDestinations();

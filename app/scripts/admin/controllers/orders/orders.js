@@ -20,17 +20,12 @@ angular.module('mavenApp')
 
 					OrderFilter.page = page;
 
-					$scope.orders = Order.query(OrderFilter);
+					Order.query(OrderFilter, function(orders) {
+						$scope.orders = orders;
+					});
 				}
 
 				$scope.printUrl = function(id) {
 					return Maven.printUrl + 'order/' + id;
 				}
-				/*$scope.deleteTax = function(idx) {
-				 var tax = $scope.taxes[idx];
-				 tax.$delete().then(
-				 function() {
-				 $scope.taxes.splice(idx, 1);
-				 });
-				 }*/
 			}]);

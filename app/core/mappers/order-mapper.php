@@ -273,7 +273,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 				    'sku' => $item->getSku(),
 				    'plugin_key' => $item->getPluginKey(),
 				    'thing_variation_id' => $item->getThingVariationId(),
-				    'attributes' => serialize($item->getAttributes())
+				    'attributes' => serialize( $item->getAttributes() )
 				);
 
 				$format = array(
@@ -372,7 +372,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		    'shipping_contact' => serialize( $order->getShippingContact() ),
 		    'extra_fields' => serialize( $order->getExtraFields() ),
 		    'status_id' => $order->getStatusId() ? $order->getStatusId() : $order->getStatus()->getId(),
-		    'promotions' => $order->hasPromotions() ? serialize( $order->getPromotions() ) : '',
+		    'promotions' => serialize( $order->getPromotions() ),
 		    'credit_card' => $creditCard,
 		    'transaction_id' => $order->getTransactionId(),
 		    'user' => '',
