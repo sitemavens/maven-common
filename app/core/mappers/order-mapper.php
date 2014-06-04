@@ -154,19 +154,19 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 
 	/**
 	 * Return the last pending order
-	 * @param int $profileId
+	 * @param int $userId
 	 * @return \Maven\Core\Domain\Order
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function getLastPendingOrder( $profileId ) {
+	public function getLastPendingOrder( $userId ) {
 
 		$order = new \Maven\Core\Domain\Order();
 
-		if ( ! $profileId ) {
-			throw new \Maven\Exceptions\MissingParameterException( 'Profile: is required' );
+		if ( ! $userId ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'User Id: is required' );
 		}
 
-		$query = $this->prepare( "SELECT * FROM mvn_orders WHERE  ( status_id <> 'completed' and status_id <> 'shipped' ) and contact_id = %d order by order_date limit 1", $profileId );
+		$query = $this->prepare( "SELECT * FROM mvn_orders WHERE  ( status_id <> 'completed' and status_id <> 'shipped' ) and user_id = %d order by order_date DESC limit 1", $userId );
 
 		$row = $this->getQueryRow( $query );
 
