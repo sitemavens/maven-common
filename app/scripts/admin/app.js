@@ -27,6 +27,18 @@ angular
 						}]
 				},
 			})
+			.when('/promotions', {
+				templateUrl: Maven.adminViewsUrl + 'promotions/promotions.php',
+				controller: 'PromotionsCtrl'
+			})
+			.when('/promotions/new', {
+				templateUrl: Maven.adminViewsUrl + 'promotions/promotions-edit.php',
+				controller: 'PromotionsEditCtrl'
+			})
+			.when('/promotions/edit/:id', {
+				templateUrl: Maven.adminViewsUrl + 'promotions/promotions-edit.php',
+				controller: 'PromotionsEditCtrl'
+			})
 			.when('/taxes', {
 				templateUrl: Maven.adminViewsUrl + 'taxes/taxes.php',
 				controller: 'TaxesCtrl'

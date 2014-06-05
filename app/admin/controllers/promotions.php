@@ -12,8 +12,125 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController {
 		parent::__construct();
 	}
 
-	public function admin_init() {
+	public function registerRoutes( $routes ) {
+
+		$routes[ '/maven/promotions' ] = array(
+		    array( array( $this, 'getPromotions' ), \WP_JSON_Server::READABLE ),
+		    array( array( $this, 'newPromotion' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		);
+		$routes[ '/maven/promotions/(?P<id>\d+)' ] = array(
+		    array( array( $this, 'getPromotion' ), \WP_JSON_Server::READABLE ),
+		    array( array( $this, 'editPromotion' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		    array( array( $this, 'deletePromotion' ), \WP_JSON_Server::DELETABLE ),
+		);
+
+		return $routes;
+	}
+
+	public function getPromotions( ) {
 		
+		$export=$this->getRequest()->getProperty('export');
+		
+		$manager = new \Maven\Core\PromotionManager();
+
+		$filter = new \Maven\Core\Domain\PromotionFilter();
+
+		$promotions = $manager->getPromotions( $filter );
+
+		if ( $export ) {
+			// 'browser' tells the library to stream the data directly to the browser.
+			// other options are 'file' or 'string'
+			// 'test.xls' is the filename that the browser will use when attempting to 
+			// save the download
+			$exporter = new \Maven\Libs\Export\ExportDataExcel( 'browser', 'promotions.xls' );
+			//$exporter->filename = ;
+
+			$exporter->initialize(); // starts streaming data to web browser
+			// pass addRow() an array and it converts it to Excel XML format and sends 
+			// it to the browser
+			$exporter->addHeadingRow( array(
+			    "Status",
+			    "Name",
+			    "Code",
+			    "Section",
+			    "Amount",
+			    "From",
+			    "To",
+			    "Uses",
+			    "Limit of Use"
+			) );
+
+			foreach ( $promotions as $promotion ) {
+				$status = 'Disabled';
+				if ( $promotion->isEnabled() ) {
+					$status = 'Enabled';
+				}
+				$operand = '';
+				switch ( $promotion->getType() ) {
+					case 'amount':$operand = '$';
+						break;
+					case 'percentage':$operand = '%';
+						break;
+				}
+
+				$exporter->addRow( array(
+				    $status,
+				    $promotion->getName(),
+				    $promotion->getCode(),
+				    $promotion->getSection(),
+				    $promotion->getValue() . $operand,
+				    $promotion->getFrom(),
+				    $promotion->getTo(),
+				    $promotion->getUses(),
+				    $promotion->getLimitOfUse()
+				) );
+			}
+
+			$exporter->finalize(); // writes the footer, flushes remaining data to browser.
+		} else {
+
+			$this->getOutput()->sendApiResponse( $promotions );
+		}
+	}
+
+	public function newPromotion( $data ) {
+		$manager = new \Maven\Core\PromotionManager();
+
+		$promotion = new \Maven\Core\Domain\Promotion();
+
+		$promotion->load( $data );
+
+		$promotion = $manager->addPromotion( $promotion );
+
+		$this->getOutput()->sendApiResponse( $promotion );
+	}
+
+	public function getPromotion( $id ) {
+		$manager = new \Maven\Core\PromotionManager();
+		$promotion = $manager->get( $id );
+
+		$this->getOutput()->sendApiResponse( $promotion );
+	}
+
+	public function editPromotion( $id, $data ) {
+
+		$manager = new \Maven\Core\PromotionManager();
+
+		$promotion = new \Maven\Core\Domain\Promotion();
+
+		$promotion->load( $data );
+
+		$promotion = $manager->addPromotion( $promotion );
+
+		$this->getOutput()->sendApiResponse( $promotion );
+	}
+
+	public function deletePromotion( $id ) {
+		$manager = new \Maven\Core\PromotionManager();
+
+		$manager->delete( $id );
+
+		$this->getOutput()->sendApiResponse( new \stdClass() );
 	}
 
 	public function showForm() {
@@ -116,20 +233,20 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController {
 						if ( $promotion->isEnabled() ) {
 							$status = 'Enabled';
 						}
-						$operand='';
-						switch ($promotion->getType()){
-							case 'amount':$operand='$';
+						$operand = '';
+						switch ( $promotion->getType() ) {
+							case 'amount':$operand = '$';
 								break;
-							case 'percentage':$operand='%';
+							case 'percentage':$operand = '%';
 								break;
 						}
-						
+
 						$exporter->addRow( array(
 						    $status,
 						    $promotion->getName(),
 						    $promotion->getCode(),
 						    $promotion->getSection(),
-						    $promotion->getValue().$operand,
+						    $promotion->getValue() . $operand,
 						    $promotion->getFrom(),
 						    $promotion->getTo(),
 						    $promotion->getUses(),

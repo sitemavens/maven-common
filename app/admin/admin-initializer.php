@@ -30,6 +30,10 @@ class AdminInitializer {
 			wp_enqueue_script( 'admin/controllers/taxes/taxes.js', $registry->getScriptsUrl() . "admin/controllers/taxes/taxes.js", 'mavenApp', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/controllers/taxes/taxes-edit.js', $registry->getScriptsUrl() . "admin/controllers/taxes/taxes-edit.js", 'mavenApp', $registry->getPluginVersion() );
 
+			wp_enqueue_script( 'admin/controllers/promotions/promotions.js', $registry->getScriptsUrl() . "admin/controllers/promotions/promotions.js", 'mavenApp', $registry->getPluginVersion() );
+			wp_enqueue_script( 'admin/controllers/promotions/promotions-edit.js', $registry->getScriptsUrl() . "admin/controllers/promotions/promotions-edit.js", 'mavenApp', $registry->getPluginVersion() );
+
+			
 			wp_enqueue_script( 'admin/controllers/orders/orders.js', $registry->getScriptsUrl() . "admin/controllers/orders/orders.js", 'mavenApp', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/controllers/orders/orders-edit.js', $registry->getScriptsUrl() . "admin/controllers/orders/orders-edit.js", 'mavenApp', $registry->getPluginVersion() );
 		}
@@ -39,6 +43,9 @@ class AdminInitializer {
 
 		$taxes = new Controllers\Taxes();
 		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $taxes, 'registerRoutes' ) );
+
+		$promotions = new Controllers\Promotions();
+		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $promotions, 'registerRoutes' ) );
 
 		$orders = new Controllers\Orders();
 		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $orders, 'registerRoutes' ) );

@@ -37,7 +37,7 @@ $files = array(
     'core/ui/html-component',
     'core/observable',
     'core/observer',
-	'gateways/gateway'
+    'gateways/gateway'
 );
 
 
@@ -153,12 +153,15 @@ if ( is_admin() ) {
 
 	$orders = $componentManager->createComponent( 'Orders', 'Maven\\Admin\\Controllers\\Orders' );
 
+	$promotions = $componentManager->createComponent( 'Promotions', 'Maven\\Admin\\Controllers\\Promotions' );
+
 	$taxes = $componentManager->createComponent( 'Taxes', 'Maven\\Admin\\Controllers\\Taxes' );
 
 	$menuManager = $director->getMenuManager( $registry );
 
 	$menuManager->registerMenu( $settings, "Maven", $registry->getAssetsUrl() . "images/icon.png" );
 	$menuManager->registerMenu( $orders );
+	$menuManager->registerMenu( $promotions );
 	$menuManager->registerMenu( $taxes );
 } else {
 

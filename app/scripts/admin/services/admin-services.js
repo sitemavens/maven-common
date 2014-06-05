@@ -42,6 +42,12 @@ admin.factory('Tax', ['$resource', function($resource) {
 		return $resource('/wp-json/maven/taxes/:id', {id: '@id'});
 	}]);
 
+admin.factory('Promotion', ['$resource', function($resource) {
+		return $resource('/wp-json/maven/promotions/:id', {id: '@id'},
+		{export: {method: 'GET', params: {export: true}, isArray: false}});
+	}]);
+
+/* Helper to filter Order list*/
 admin.factory('OrderFilter', [function() {
 		return {
 			page: 0,
