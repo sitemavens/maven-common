@@ -285,7 +285,7 @@ class MavenRegistry extends WordpressRegistry {
 	}
 	
 	public function getAdminViewHandlerUrl() {
-		return "/wp-admin/maven/view/";
+		return "wp-admin/maven/view/";
 	}
 	
 	public function getFullViewHandlerUrl() {
