@@ -12,6 +12,7 @@ class EcommerceTransaction {
 	private $items = array( );
 	private $shipping;
 	private $taxes;
+	private $affiliation; 
 
 	public function getOrderId() {
 		return $this->orderId;
@@ -78,6 +79,14 @@ class EcommerceTransaction {
 		$this->taxes = $taxes;
 	}
 
+
+	public function getAffiliation () {
+		return $this->affiliation;
+	}
+
+	public function setAffiliation ( $affiliation ) {
+		$this->affiliation = $affiliation;
+	}
 
 
 

@@ -110,6 +110,11 @@ $hookManager->addInit( array( '\Maven\Core\AutoLoginHandler', 'init' ) );
 $hookManager->addQueryVarsFilter( array( '\Maven\Core\AutoLoginHandler', 'queryVars' ) );
 $hookManager->addParseRequest( array( '\Maven\Core\AutoLoginHandler', 'parseRequest' ) );
 
+$hookManager->addInit( array( '\Maven\Core\ViewHandler', 'init' ) );
+$hookManager->addQueryVarsFilter( array( '\Maven\Core\ViewHandler', 'queryVars' ) );
+$hookManager->addParseRequest( array( '\Maven\Core\ViewHandler', 'parseRequest' ) );
+
+
 Core\CronJobs::init();
 
 $hookManager->addInit( array( '\Maven\Core\MailFormatter', 'init' ) );

@@ -80,7 +80,6 @@ class Installer {
 				`thing_id` int(11) NOT NULL,
 				`thing_variation_id` int(11) NOT NULL,
 				`sku` varchar(100) NOT NULL,
-				`attributes` text,
 				PRIMARY KEY (`id`)
 			  )",
 			"CREATE TABLE IF NOT EXISTS `mvn_orders_status` (

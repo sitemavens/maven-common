@@ -362,13 +362,13 @@ class OrderManager {
 
 	/**
 	 * Return the last pending order
-	 * @param int $userId
+	 * @param int $profileId
 	 * @return \Maven\Core\Domain\Order
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function getLastPendingOrder( $userId ) {
+	public function getLastPendingOrder( $profileId ) {
 
-		return $this->mapper->getLastPendingOrder( $userId );
+		return $this->mapper->getLastPendingOrder( $profileId );
 	}
 
 	public function getByPlugin( $pluginKey ) {

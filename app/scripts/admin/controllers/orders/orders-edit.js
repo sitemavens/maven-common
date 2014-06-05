@@ -2,22 +2,26 @@
 
 angular.module('mavenApp')
 	.controller('OrdersEditCtrl',
-		['$scope', '$routeParams', '$location', 'order',
-			function($scope, $routeParams, $location, order) {
-				var prevShippingInfo = {};
-
-				$scope.order = order;
+		['$scope', '$routeParams', '$location', 'Order',
+			function($scope, $routeParams, $location, Order) {
+				$scope.order = {};
 				$scope.showSendShipment = false;
 
-				prevShippingInfo.shippingCarrier = $scope.order.shippingCarrier;
-				prevShippingInfo.shippingTrackingCode = $scope.order.shippingTrackingCode;
-				prevShippingInfo.shippingTrackingUrl = $scope.order.shippingTrackingUrl;
+				if ($routeParams.id) {
+					$scope.order = Order.get({id: $routeParams.id});
+				} else {
+					$scope.order = new Order({number: 0});
+				}
 
 				$scope.saveOrder = function() {
-					//disable send notice
-					$scope.order.sendNotice = false;
-				
-					$scope.order.$save();					
+					//console.log('saving?');
+					$scope.order.$save();
+					/*Tax.save({id: $scope.tax.id}, $scope.tax,
+					 function(tax) {
+					 $location.path('/taxes/edit/' + tax.id).replace();
+					 });*/
+
+
 				};
 				$scope.calculateTotal = function(item) {
 					return item.quantity * item.price;
@@ -25,27 +29,6 @@ angular.module('mavenApp')
 				$scope.cancelEdit = function() {
 					$location.path('/orders/');
 				};
-
-				$scope.showSendForm = function() {
-					$scope.showSendShipment = true;
-					$scope.order.shippingCarrier = '';
-					$scope.order.shippingTrackingCode = '';
-					$scope.order.shippingTrackingUrl = '';
-				}
-
-				$scope.sendShipmentInformation = function() {
-					$scope.order.sendNotice = true;
-					$scope.order.$save().then(function() {
-						$scope.showSendShipment = false;
-					});
-				}
-
-				$scope.cancelSend = function() {
-					$scope.showSendShipment = false;
-					$scope.order.shippingCarrier = prevShippingInfo.shippingCarrier;
-					$scope.order.shippingTrackingCode = prevShippingInfo.shippingTrackingCode;
-					$scope.order.shippingTrackingUrl = prevShippingInfo.shippingTrackingUrl;
-				}
 			}]);
 
 

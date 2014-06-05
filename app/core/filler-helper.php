@@ -39,7 +39,7 @@ class FillerHelper {
 						$value = true;
 					} elseif ( $value === '1' ) {
 						$value = true;
-					} elseif ( $value === '0' ) {
+					}elseif ( $value === '0' ) {
 						$value = false;
 					}
 				}
@@ -66,14 +66,6 @@ class FillerHelper {
 					if ( ! empty( $matches[ 1 ] ) ) {
 						$collectionType = $matches[ 1 ][ 0 ];
 
-						// Check if it is a serialized object
-						preg_match_all( '/@serialized:?\s+([^\s]+)/', $comment, $matches );
-
-						if ( ! empty( $matches[ 1 ] ) && ! is_array( $value ) ) {
-							//we need to unserialize
-							$value = unserialize( $value );
-						}
-
 						// If it is a collection, we need to iterate the items
 						if ( $collectionType ) {
 
@@ -85,15 +77,12 @@ class FillerHelper {
 							//throw new \Maven\Exceptions\MavenException('You need to instantiate the object:'.$collectionType);
 
 							foreach ( $value as $item ) {
-								if ( ! is_object( $item ) ) {
-									$itemObj = new $collectionType;
 
-									self::fill( $itemObj, $item );
+								$itemObj = new $collectionType;
 
-									$itemsObjs[] = $itemObj;
-								} else {
-									$itemsObjs[] = $item;
-								}
+								self::fill( $itemObj, $item );
+
+								$itemsObjs[] = $itemObj;
 							}
 
 							$object->{$setter}( $itemsObjs );

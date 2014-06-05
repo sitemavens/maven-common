@@ -420,7 +420,6 @@ class Cart {
 		$gateway->setCCNumber( $order->getCreditCard()->getNumber() );
 		$gateway->setCcType( $order->getCreditCard()->getType() );
 
-
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Gateway Execute:' . date( 'h:i:s' ) );
 		//if ( $order->getTotal() !== 0 ) {
 		$gateway->execute();
@@ -786,33 +785,43 @@ class Cart {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: User: ' . $user->getId() . " Email: " . $user->getEmail() );
 
-		$order = $this->order;
 
-		// If there is no order in session, lets try to find sometning in the db
-		if ( ! $this->hasOrder() || $this->order->isEmpty() ) {
+		if ( $user->hasProfile() ) {
 
-			$orderManager = new OrderManager();
-			$order = $orderManager->getLastPendingOrder( $user->getId() );
+			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Profile exists' );
 
-			if ( $order && ! $order->isEmpty() ) {
-				\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Order Id: ' . $order->getId() );
+			$order = $this->order;
 
-				// We need to ensure that the order will be placed to the logged user. Since he could start it without being logged.
-				$order->setUser( $user );
+			// If there is no order in session, lets try to find sometning in the db
+			if ( ! $this->hasOrder() || $this->order->isEmpty() ) {
 
-				$this->newOrder( $order );
+				$orderManager = new OrderManager();
+				$order = $orderManager->getLastPendingOrder( $user->getProfile()->getProfileId() );
+
+				if ( $order && ! $order->isEmpty() ) {
+					\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Order Id: ' . $order->getId() );
+
+					// We need to ensure that the order will be placed to the logged user. Since he could start it without being logged.
+					$order->setUser( $user );
+
+					$this->newOrder( $order );
+				}
 			}
-		}
 
 
-		if ( ( $this->order && $this->order->isEmpty() ) ) {
 
-			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Empty Order' );
 
-			//Does the user has a profile ? If so, lets populate the order with the profile
-			if ( $user->getProfile() ) {
-				$this->loadUserInformation( $user );
+			if ( ( $this->order && $this->order->isEmpty() ) ) {
+
+				\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Empty Order' );
+
+				//Does the user has a profile ? If so, lets populate the order with the profile
+				if ( $user->getProfile() ) {
+					$this->loadUserInformation( $user );
+				}
 			}
+		} else {
+			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: No profile' );
 		}
 	}
 
