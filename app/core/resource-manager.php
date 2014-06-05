@@ -71,7 +71,7 @@ class ResourceManager implements ActionControllerObserver {
 		    'adminUrl' => admin_url(),
 		    'viewsUrl' => $registry->getViewsUrl(),
 		    'adminViewsUrl' => $registry->getAdminViewsUrl(),
-			'viewHandlerUrl' => $registry->getWebSiteUrl().$registry->getAdminViewHandlerUrl(),
+			'viewHandlerUrl' => $registry->getWebSiteUrl()."/".$registry->getAdminViewHandlerUrl(),
 		    'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 		    'loadingImagePath' => $registry->getImagesUrl() . "loading.gif",
 		    'printUrl' => get_bloginfo( 'url' ) . '/' . $registry->getPrintUrl()
