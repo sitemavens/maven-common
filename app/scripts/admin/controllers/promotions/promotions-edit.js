@@ -5,6 +5,9 @@ angular.module('mavenApp')
 		['$scope', '$routeParams', '$location', 'Promotion',
 			function($scope, $routeParams, $location, Promotion) {
 				$scope.promotion = {};
+				$scope.sections = CachedSections;
+				$scope.types = CachedTypes;
+
 
 				if ($routeParams.id) {
 					$scope.promotion = Promotion.get({id: $routeParams.id});
@@ -13,19 +16,13 @@ angular.module('mavenApp')
 				}
 
 				$scope.savePromotion = function() {
-					//console.log('saving?');
 					$scope.promotion.$save();
-					/*Tax.save({id: $scope.tax.id}, $scope.tax,
-					 function(tax) {
-					 $location.path('/taxes/edit/' + tax.id).replace();
-					 });*/
-
 
 				}
 
 				$scope.cancelEdit = function() {
 					$location.path('/promotions/');
-				}
+				}				
 			}]);
 
 

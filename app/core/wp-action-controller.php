@@ -185,7 +185,7 @@ class WpActionController implements ActionController, ActionControllerObservable
 			else
 				$this->currentController = new $type;
 
-			if ( $this->currentController instanceof \Maven\Core\Ui\AdminController )
+			if ( $this->currentController instanceof \Maven\Core\UI\AdminController )
 				$this->currentController->setCurrentComponent( $component );
 
 			// Get the action

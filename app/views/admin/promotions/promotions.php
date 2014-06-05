@@ -1,6 +1,4 @@
-<h1>Promotions <button class="btn btn-default" ng-click="newPromotion()">New</button>
-&nbsp; <button class="btn btn-default" ng-click="exportPromotions()">Export</button>
-</h1>
+<h1>Promotions <button class="btn btn-default" ng-click="newPromotion()">New</button></h1>
 
 <table class="table table-striped">
 	<thead>

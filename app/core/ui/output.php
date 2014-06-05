@@ -1,6 +1,6 @@
 <?php
 
-namespace Maven\Core\Ui;
+namespace Maven\Core\UI;
 
 /**
  *
@@ -17,7 +17,7 @@ class Output {
 
 	/**
 	 *
-	 * @var \Maven\Core\Ui\OutputTranslator 
+	 * @var \Maven\Core\UI\OutputTranslator 
 	 */
 	private $outputTranslator = null;
 

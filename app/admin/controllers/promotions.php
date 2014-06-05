@@ -27,10 +27,25 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController {
 		return $routes;
 	}
 
-	public function getPromotions( ) {
-		
-		$export=$this->getRequest()->getProperty('export');
-		
+	public function getView( $view ) {
+		switch ( $view ) {
+			case "promotions-edit":
+				$manager = new \Maven\Core\PromotionManager();
+				$sections = $manager->getSections();
+				$types = $manager->getTypes();
+				$this->addJSONData( "cachedSections", $sections );
+				$this->addJSONData( "cachedTypes", $types );
+				return $this->getOutput()->getAdminView( "promotions/{$view}" );
+				break;
+		}
+
+		return $view;
+	}
+
+	public function getPromotions() {
+
+		$export = $this->getRequest()->getProperty( 'export' );
+
 		$manager = new \Maven\Core\PromotionManager();
 
 		$filter = new \Maven\Core\Domain\PromotionFilter();

@@ -21,12 +21,5 @@ angular.module('mavenApp')
 						function() {
 							$scope.promotions.splice(idx, 1);
 						});
-				}
-
-				$scope.exportPromotions = function() {
-					Promotion.export(function(data) {
-						var blob = new Blob([data], {type: "application/xls"});
-						saveAs(blob, "export.xls");
-					});
-				}
+				}				
 			}]);

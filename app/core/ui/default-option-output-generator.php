@@ -1,6 +1,6 @@
 <?php
 
-namespace Maven\Core\Ui;
+namespace Maven\Core\UI;
 use \Maven\Settings\OptionType;
 
  class DefaultOptionOutputGenerator extends OptionOutputGenerator {

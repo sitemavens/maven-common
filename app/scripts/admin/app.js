@@ -6,6 +6,7 @@ angular
 		'ngResource',
 		'ngSanitize',
 		'ngRoute',
+		'ui.bootstrap',
 		'mavenApp.services'
 	])
 	.config(function($routeProvider) {console.log(Maven);
@@ -27,11 +28,11 @@ angular
 				controller: 'PromotionsCtrl'
 			})
 			.when('/promotions/new', {
-				templateUrl: Maven.adminViewsUrl + 'promotions/promotions-edit.php',
+				templateUrl: Maven.viewHandlerUrl + 'maven/promotions-edit',
 				controller: 'PromotionsEditCtrl'
 			})
 			.when('/promotions/edit/:id', {
-				templateUrl: Maven.adminViewsUrl + 'promotions/promotions-edit.php',
+				templateUrl: Maven.viewHandlerUrl + 'maven/promotions-edit',
 				controller: 'PromotionsEditCtrl'
 			})
 			.when('/taxes', {

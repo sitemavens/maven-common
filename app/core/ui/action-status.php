@@ -1,6 +1,6 @@
 <?php
 
-namespace Maven\Core\Ui;
+namespace Maven\Core\UI;
 
 class ActionStatus {
 	//Solo dos estados: Redirect y Stay
