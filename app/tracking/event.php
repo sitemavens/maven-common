@@ -57,6 +57,10 @@ class Event {
 	public function addProperty( $key, $value ){
 		$this->properties[$key] = $value;
 	}
+	
+	public function toString(){
+		return "{$this->action}: {$this->label}: {$this->value}";
+	}
 
 }
 

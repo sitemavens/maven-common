@@ -8,10 +8,19 @@ if ( ! defined( 'ABSPATH' ) )
 
 class AdminInitializer {
 
+	private $classes= array();
 	public function __construct() {
 
-
 		\Maven\Core\HookManager::instance()->addAction( 'admin_enqueue_scripts', array( $this, 'registerScripts' ), 10, 1 );
+		
+		$registry = \Maven\Settings\MavenRegistry::instance();
+		$this->classes['settings'] = new Controllers\Settings();
+		$this->classes['taxes'] = new Controllers\Taxes();
+		$this->classes['orders'] = new Controllers\Orders();
+		
+		foreach($this->classes as $class ){
+			\Maven\Core\HookManager::instance()->addFilter( "maven/views/get/{$registry->getPluginKey()}", array( $class, 'getView' ) );
+		}
 	}
 
 	public function registerScripts( $hook ) {
@@ -36,15 +45,11 @@ class AdminInitializer {
 	}
 
 	public function registerRouters() {
-
-		$taxes = new Controllers\Taxes();
-		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $taxes, 'registerRoutes' ) );
-
-		$orders = new Controllers\Orders();
-		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $orders, 'registerRoutes' ) );
-
-		$settings = new Controllers\Settings();
-		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $settings, 'registerRoutes' ) );
+		
+		foreach($this->classes as $class ){
+			\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $class, 'registerRoutes' ) );
+		}
+		
 	}
 
 }

@@ -1,4 +1,4 @@
-
+<?php \Maven\Core\UI\HtmlComponent::jSonComponent('SettingsCached', $settingsCached); ?>
 
 <form role="form"  name="formSettings" ng-submit="saveSettings(settings)">
 

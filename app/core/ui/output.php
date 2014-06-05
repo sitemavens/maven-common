@@ -173,7 +173,7 @@ class Output {
 
 		ob_start();
 		extract( $this->data );
-		require_once($this->pluginPath . "admin/views/{$viewName}-view.php");
+		require_once($this->pluginPath . "/views/admin/{$viewName}.php");
 		$output = ob_get_clean();
 
 		return $output;

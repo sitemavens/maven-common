@@ -76,7 +76,7 @@
 						<a class="url fn" href="<?php echo $shippingContact->getWebsite(); ?>"><?php echo $shippingContact->getFullName() ?></a>
 						<div class="org"><?php echo $shippingContact->getCompany(); ?></div>
 						<a class="email" href="mailto:<?php echo $shippingContact->getEmail() ?>"><?php echo $shippingContact->getEmail() ?></a>
-						<?php $shippingAddress=$shippingContact->getShippingAddress()?>
+						<?php $shippingAddress=$shippingContact->getPrimaryAddress()?>
 						<div class="adr">
 							<div class="street-address"><?php echo $shippingAddress->getFirstLine() ?></div>
 							<span class="locality"><?php echo $shippingAddress->getCity() ?></span>
@@ -112,10 +112,7 @@
 						<tbody>
 							<?php foreach($order->getItems() as $item): ?>
 							<tr>
-								<th>
-									<?php echo $item->getName(); ?>
-									<em><div><?php echo $item->getAttributesNames(); ?></div></em>
-								</th>
+								<th><?php echo $item->getName(); ?></th>
 								<td><?php echo $item->getQuantity(); ?></td>
 								<td>$<?php echo number_format($item->getPrice(),2); ?></td>
 								<td>$<?php echo number_format($item->getTotal(),2); ?></td>

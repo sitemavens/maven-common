@@ -283,6 +283,14 @@ class MavenRegistry extends WordpressRegistry {
 	public function getPrintUrl() {
 		return "maven/print/";
 	}
+	
+	public function getAdminViewHandlerUrl() {
+		return "/wp-admin/maven/view/";
+	}
+	
+	public function getFullViewHandlerUrl() {
+		return $this->getPluginUrl()."maven/view/";
+	}
 
 	public function getAutoLoginUrl() {
 		return "maven/auto-login/";

@@ -77,5 +77,9 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController {
 		
 		$this->getOutput()->sendApiResponse( new \stdClass() );
 	}
+	
+	public function getView( $view){
+		return $view;
+	}
  
 }

@@ -8,7 +8,7 @@ angular
 		'ngRoute',
 		'mavenApp.services'
 	])
-	.config(function($routeProvider) {
+	.config(function($routeProvider) {console.log(Maven);
 		$routeProvider
 			.when('/', {
 				templateUrl: Maven.adminViewsUrl + 'dashboard/dashboard.php',
@@ -20,12 +20,7 @@ angular
 			})
 			.when('/orders/edit/:id', {
 				templateUrl: Maven.adminViewsUrl + 'orders/orders-edit.php',
-				controller: 'OrdersEditCtrl',
-				resolve: {
-					order: ['OrderLoader', function(OrderLoader) {
-							return OrderLoader();
-						}]
-				},
+				controller: 'OrdersEditCtrl'
 			})
 			.when('/taxes', {
 				templateUrl: Maven.adminViewsUrl + 'taxes/taxes.php',
@@ -40,7 +35,7 @@ angular
 				controller: 'TaxesEditCtrl'
 			})
 			.when('/settings', {
-				templateUrl: Maven.adminViewsUrl + 'settings/settings.php',
+				templateUrl: Maven.viewHandlerUrl + 'maven/settings/',
 				controller: 'SettingsCtrl'
 			})
 			.otherwise({

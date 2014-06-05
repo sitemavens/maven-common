@@ -42,8 +42,16 @@ class Settings extends MavenAdminController {
 		$this->getOutput()->sendApiResponse( $settings );
 	}
 	
-	public function getSettings () {
+	public function getView( $view ){
 		
+		switch($view){
+			case "settings":
+				$this->addJSONData("settingsCached", array("test"=>1234, "chau"=>false));
+				return $this->getOutput()->getAdminView("settings/{$view}");
+		}
+	}
+	
+	public function getSettings () {
 		
 		$registry = \Maven\Settings\MavenRegistry::instance();
 		

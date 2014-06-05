@@ -106,27 +106,21 @@
 	</div>
 	<div class="col-md-4">
 		<div class="panel panel-default">
-			<div class="panel-heading">Shipment Information <button class="btn btn-xs pull-right" ng-hide="showSendShipment" ng-click="showSendForm()">Send</button></div>
+			<div class="panel-heading">Shipment Information <button class="btn btn-xs pull-right" ng-hide="showSendShipment" ng-click="showSendShipment = true">Send</button></div>
 			<div class="panel-body" ng-hide="showSendShipment">
 				<p>{{order.shippingCarrier}}</p>
 				<p><a ng-href="{{order.shippingTrackingCodeUrl}}">{{order.shippingTrackingCode}}</a></p>
 
 			</div>
-			<form class="panel-body" name="sendForm" ng-show="showSendShipment">
-				<div class="alert alert-danger" ng-show="showSendShipment && sendForm.$invalid">
-					<div ng-show="sendForm.carrier.$error.required">Carrier is required</div>
-					<div ng-show="sendForm.trackingCode.$error.required">Tracking Code is required.</div>
-					<div ng-show="sendForm.trackingUrl.$error.url">Tracking url is not valid.</div>					
-				</div>
-				<p><input required name="carrier" type="text" class="form-control" ng-model="order.shippingCarrier" placeholder="Carrier"></p>
-				<p><input required name="trackingCode" type="text" class="form-control" ng-model="order.shippingTrackingCode" placeholder="Tracking Code"></p>
-				<p><input type="url" name="trackingUrl" class="form-control" ng-model="order.shippingTrackingUrl" placeholder="Tracking Code Url"></p>
-				<div class="alert alert-info">This will change the order status to "Shipped" and will send a notification to the customer</div>
+			<div class="panel-body" ng-show="showSendShipment">
+				<p><input type="text" class="form-control" ng-model="order.shippingCarrier" placeholder="Carrier"></p>
+				<p><input type="text" class="form-control" ng-model="order.shippingTrackingCode" placeholder="Tracking Code"></p>
+				<p><input type="url" class="form-control" ng-model="order.shippingTrackingCodeUrl" placeholder="Tracking Code Url"></p>
 				<p class="pull-right">
-					<button class="btn btn-xs btn-success" ng-disabled="sendForm.$invalid"  ng-click="sendShipmentInformation()">Send</button>
-					<button class="btn btn-xs" ng-click="cancelSend()">Cancel</button>
+					<button class="btn btn-xs btn-success">Send</button>
+					<button class="btn btn-xs" ng-click="showSendShipment = false">Cancel</button>
 				</p>
-			</form>
+			</div>
 		</div>
 	</div>
 </div>
@@ -147,11 +141,5 @@
 				</table>
 			</div>
 		</div>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-12">
-		<button class="btn btn-primary" ng-click="saveOrder()">Save</button>
-		<button class="btn btn-default" ng-click="cancelEdit()">Cancel</button>
 	</div>
 </div>
