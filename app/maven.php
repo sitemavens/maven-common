@@ -137,6 +137,8 @@ if ( ! is_admin() ) {
 	$hookManager->addInit( array( '\Maven\Front\FrontEndManager', 'init' ), 999 );
 }
 
+$hookManager->addAction( 'wp_json_server_before_serve', array( array( \Maven\Front\FrontEndManager::current(), 'registerRouters' ) ) );
+
 //if ( Core\Request::current()->isDoingAjax() ) {
 //	$hookManager->addAjaxAction( 'mavenAjaxCartHandler', array( '\Maven\Front\FrontEndManager', 'init' ) );
 //	$hookManager->addPublicAjaxAction( 'mavenAjaxCartHandler', array( '\Maven\Front\FrontEndManager', 'init' ) );

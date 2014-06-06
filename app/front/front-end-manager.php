@@ -29,6 +29,21 @@ class FrontEndManager {
 	public static function init() {
 		self::current()->manageRequest();
 	}
+	
+	public function registerRoutes( $routes ){
+		
+		$routes[ '/maven/cart/do-action' ] = array(
+			array( array( $this, 'manageRequest' ), \WP_JSON_Server::READABLE | \WP_JSON_Server::ACCEPT_JSON)
+		);
+//		
+//		$routes[ '/maven/settings/(?P<id>\d+)' ] = array(
+//			array( array( $this, 'getSettings' ), \WP_JSON_Server::READABLE ),
+//			array( array( $this, 'edit' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+//		);
+//		
+		 
+		return $routes;
+	}
 
 	/**
 	 * 
@@ -47,7 +62,7 @@ class FrontEndManager {
 	 * 
 	 * @return \Maven\Front\FrontEndManager
 	 */
-	private static function current() {
+	public static function current() {
 
 		if ( ! self::$instance ) {
 			self::$instance = new FrontEndManager();
@@ -106,7 +121,7 @@ class FrontEndManager {
 
 	function manageRequest() {
 
-
+//die(var_dump($_POST));
 		if ( ! $this->isMavenTransactionRequest() ) {
 			return false;
 		}
