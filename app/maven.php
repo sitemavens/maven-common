@@ -137,10 +137,10 @@ if ( ! is_admin() ) {
 	$hookManager->addInit( array( '\Maven\Front\FrontEndManager', 'init' ), 999 );
 }
 
-if ( Core\Request::current()->isDoingAjax() ) {
-	$hookManager->addAjaxAction( 'mavenAjaxCartHandler', array( '\Maven\Front\FrontEndManager', 'init' ) );
-	$hookManager->addPublicAjaxAction( 'mavenAjaxCartHandler', array( '\Maven\Front\FrontEndManager', 'init' ) );
-}
+//if ( Core\Request::current()->isDoingAjax() ) {
+//	$hookManager->addAjaxAction( 'mavenAjaxCartHandler', array( '\Maven\Front\FrontEndManager', 'init' ) );
+//	$hookManager->addPublicAjaxAction( 'mavenAjaxCartHandler', array( '\Maven\Front\FrontEndManager', 'init' ) );
+//}
 
 
 if ( is_admin() ) {

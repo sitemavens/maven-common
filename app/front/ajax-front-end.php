@@ -10,17 +10,17 @@ class AjaxFrontEnd {
 
 	public static function registerFrontEndHooks() {
 
-		$hookManager = \Maven\Core\HookManager::instance();
-		$hookManager->addEnqueueScripts( array( '\Maven\Front\AjaxFrontEnd', 'registerScript' ) );
-		
-		
-		$hookManager->addAjaxAction( 'mavenAjaxCountry', array( '\Maven\Front\AjaxFrontEnd', 'countryHandler' ) );
-		$hookManager->addPublicAjaxAction( 'mavenAjaxCountry', array( '\Maven\Front\AjaxFrontEnd', 'countryHandler' ) );
+//		$hookManager = \Maven\Core\HookManager::instance();
+//		$hookManager->addEnqueueScripts( array( '\Maven\Front\AjaxFrontEnd', 'registerScript' ) );
+//		
+//		
+//		$hookManager->addAjaxAction( 'mavenAjaxCountry', array( '\Maven\Front\AjaxFrontEnd', 'countryHandler' ) );
+//		$hookManager->addPublicAjaxAction( 'mavenAjaxCountry', array( '\Maven\Front\AjaxFrontEnd', 'countryHandler' ) );
 	}
 
 	public function registerScript() {
 
-		wp_enqueue_script( 'mavenCommonJS', \Maven\Settings\MavenRegistry::instance()->getAssetsUrl() . "js/maven-common.js", array( 'jquery' ), \Maven\Settings\MavenRegistry::instance()->getPluginVersion() );
+		//wp_enqueue_script( 'mavenCommonJS', \Maven\Settings\MavenRegistry::instance()->getAssetsUrl() . "js/maven-common.js", array( 'jquery' ), \Maven\Settings\MavenRegistry::instance()->getPluginVersion() );
 	}
 	
 	public static function countryHandler(){

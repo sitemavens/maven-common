@@ -8,7 +8,7 @@ angular
 		'ngRoute',
 		'mavenApp.services'
 	])
-	.config(function($routeProvider) {console.log(Maven);
+	.config(function($routeProvider) { 
 		$routeProvider
 			.when('/', {
 				templateUrl: Maven.adminViewsUrl + 'dashboard/dashboard.php',

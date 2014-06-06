@@ -110,6 +110,7 @@ class HookManager {
 
 		$this->addFilter( 'wp_login_failed', $function, $priority, $acceptedArgs );
 	}
+	
 
 	/**
 	 * 
