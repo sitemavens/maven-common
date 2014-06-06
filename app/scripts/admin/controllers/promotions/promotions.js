@@ -21,5 +21,5 @@ angular.module('mavenApp')
 						function() {
 							$scope.promotions.splice(idx, 1);
 						});
-				}				
+				}
 			}]);

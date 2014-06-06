@@ -43,26 +43,42 @@ admin.factory('Tax', ['$resource', function($resource) {
 	}]);
 
 admin.factory('Promotion', ['$resource', function($resource) {
-		return $resource('/wp-json/maven/promotions/:id', {id: '@id'});
+		return $resource('/wp-json/maven/promotions/:id', {id: '@id'},
+		{export: {method: 'GET', params: {export: true}, isArray: false}});
 	}]);
 
 /* Helper to filter Order list*/
 admin.factory('OrderFilter', [function() {
 		return {
 			page: 0,
-			number:null,
-			status:null
+			number: null,
+			status: null
 		};
 	}]);
-
+/* Order Services */
 admin.factory('Order', ['$resource', function($resource) {
 		return $resource('/wp-json/maven/orders/:id', {id: '@id'});
 	}]);
+//this allow for orders to be loaded before controller is instanciated
+admin.factory('OrderLoader', ['Order', '$route', '$q',
+	function(Order, $route, $q) {
+		return function() {
+			var delay = $q.defer();
+			Order.get({id: $route.current.params.id}, function(order) {
+				delay.resolve(order);
+			}, function() {
+				delay.reject('Unable to fetch order ' + $route.current.params.id);
+
+			});
+			return delay.promise;
+		};
+	}]);
+/* End Order Services */
 
 admin.factory('Setting', ['$resource', function($resource) {
-		return $resource('/wp-json/maven/settings/:id', {id: '@id'},{
-			get:{
-				 method: "GET",
+		return $resource('/wp-json/maven/settings/:id', {id: '@id'}, {
+			get: {
+				method: "GET",
 				cache: true
 			}
 		});

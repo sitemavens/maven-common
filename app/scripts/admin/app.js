@@ -9,7 +9,7 @@ angular
 		'ui.bootstrap',
 		'mavenApp.services'
 	])
-	.config(function($routeProvider) {console.log(Maven);
+	.config(function($routeProvider) {
 		$routeProvider
 			.when('/', {
 				templateUrl: Maven.adminViewsUrl + 'dashboard/dashboard.php',
@@ -21,7 +21,12 @@ angular
 			})
 			.when('/orders/edit/:id', {
 				templateUrl: Maven.adminViewsUrl + 'orders/orders-edit.php',
-				controller: 'OrdersEditCtrl'
+				controller: 'OrdersEditCtrl',
+				resolve: {
+					order: ['OrderLoader', function(OrderLoader) {
+							return OrderLoader();
+						}]
+				},
 			})
 			.when('/promotions', {
 				templateUrl: Maven.adminViewsUrl + 'promotions/promotions.php',

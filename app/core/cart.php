@@ -785,43 +785,33 @@ class Cart {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: User: ' . $user->getId() . " Email: " . $user->getEmail() );
 
+		$order = $this->order;
 
-		if ( $user->hasProfile() ) {
+		// If there is no order in session, lets try to find sometning in the db
+		if ( ! $this->hasOrder() || $this->order->isEmpty() ) {
 
-			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Profile exists' );
+			$orderManager = new OrderManager();
+			$order = $orderManager->getLastPendingOrder( $user->getId() );
 
-			$order = $this->order;
+			if ( $order && ! $order->isEmpty() ) {
+				\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Order Id: ' . $order->getId() );
 
-			// If there is no order in session, lets try to find sometning in the db
-			if ( ! $this->hasOrder() || $this->order->isEmpty() ) {
+				// We need to ensure that the order will be placed to the logged user. Since he could start it without being logged.
+				$order->setUser( $user );
 
-				$orderManager = new OrderManager();
-				$order = $orderManager->getLastPendingOrder( $user->getProfile()->getProfileId() );
-
-				if ( $order && ! $order->isEmpty() ) {
-					\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Order Id: ' . $order->getId() );
-
-					// We need to ensure that the order will be placed to the logged user. Since he could start it without being logged.
-					$order->setUser( $user );
-
-					$this->newOrder( $order );
-				}
+				$this->newOrder( $order );
 			}
+		}
 
 
+		if ( ( $this->order && $this->order->isEmpty() ) ) {
 
+			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Empty Order' );
 
-			if ( ( $this->order && $this->order->isEmpty() ) ) {
-
-				\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Empty Order' );
-
-				//Does the user has a profile ? If so, lets populate the order with the profile
-				if ( $user->getProfile() ) {
-					$this->loadUserInformation( $user );
-				}
+			//Does the user has a profile ? If so, lets populate the order with the profile
+			if ( $user->getProfile() ) {
+				$this->loadUserInformation( $user );
 			}
-		} else {
-			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: No profile' );
 		}
 	}
 
