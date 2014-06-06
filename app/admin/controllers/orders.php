@@ -97,7 +97,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 
 		$order->load( $data );
 		$addStatus = false;
-		if ( key_exists( 'sendNotice', $data ) && $data[ 'sendNotice' ] === 'true' ) {
+		if ( key_exists( 'sendNotice', $data ) && $data[ 'sendNotice' ]) {
 
 			$status = $manager->sendShipmentNotice( $order );
 
@@ -111,6 +111,10 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 
 		$order = $manager->addOrder( $order, $addStatus );
 
+		//get the order again, to catch all update 
+ 		//(this is wrong, but status change are not being updated on the orders
+ 		$order = $manager->get( $id );
+ 
 		$this->getOutput()->sendApiResponse( $order );
 	}
 

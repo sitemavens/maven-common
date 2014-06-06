@@ -1,6 +1,6 @@
 <?php
 
-namespace Maven\Core\Ui;
+namespace Maven\Core\UI;
 
 abstract class AdminController {
 
@@ -13,7 +13,7 @@ abstract class AdminController {
 
 	/**
 	 * 
-	 * @var \Maven\Core\Ui\Ouput 
+	 * @var \Maven\Core\UI\Ouput 
 	 */
 	private $output;
 
@@ -50,7 +50,7 @@ abstract class AdminController {
 	
 	public function __construct( \Maven\Settings\Registry $registry ) {
 
-		$this->output = new \Maven\Core\Ui\Output( $registry->getPluginDir() );
+		$this->output = new \Maven\Core\UI\Output( $registry->getPluginDir() );
 		$this->request = new \Maven\Core\Request();
 		$this->registry = $registry;
 		$this->lang = $this->registry->getLanguage();
@@ -105,7 +105,7 @@ abstract class AdminController {
 
 	/**
 	 * Get output object
-	 * @return \Maven\Core\Ui\Ouput 
+	 * @return \Maven\Core\UI\Ouput 
 	 */
 	protected function getOutput() {
 		return $this->output;

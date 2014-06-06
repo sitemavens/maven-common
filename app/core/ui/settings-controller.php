@@ -1,6 +1,6 @@
 <?php
 
-namespace Maven\Core\Ui;
+namespace Maven\Core\UI;
 
 class SettingsController extends AdminController{
 
@@ -26,7 +26,7 @@ class SettingsController extends AdminController{
 		
 		$this->getMessageManager()->addRegularMessage("Settings saved successfully.");
 		
-		return \Maven\Core\Ui\ActionStatus::redirect();
+		return \Maven\Core\UI\ActionStatus::redirect();
 	
 	}
 
@@ -38,7 +38,7 @@ class SettingsController extends AdminController{
 		
 		$this->getOutput()->loadThemeView( "settings" );
 		
-		return \Maven\Core\Ui\ActionStatus::stay();
+		return \Maven\Core\UI\ActionStatus::stay();
 		
 	}
 

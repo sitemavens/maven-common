@@ -45,7 +45,7 @@ class Director implements ActionControllerObserver {
 		$this->createResourceManager();
 
 		if ( !$this->themeManager ) {
-			$this->themeManager = new \Maven\Core\Ui\ThemeManager( $registry, $this->resourceManager );
+			$this->themeManager = new \Maven\Core\UI\ThemeManager( $registry, $this->resourceManager );
 		}
 		
 		

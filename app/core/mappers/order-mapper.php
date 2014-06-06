@@ -154,19 +154,19 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 
 	/**
 	 * Return the last pending order
-	 * @param int $profileId
+	 * @param int $userId
 	 * @return \Maven\Core\Domain\Order
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function getLastPendingOrder( $profileId ) {
+	public function getLastPendingOrder( $userId ) {
 
 		$order = new \Maven\Core\Domain\Order();
 
-		if ( ! $profileId ) {
-			throw new \Maven\Exceptions\MissingParameterException( 'Profile: is required' );
+		if ( ! $userId ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'User Id: is required' );
 		}
 
-		$query = $this->prepare( "SELECT * FROM mvn_orders WHERE  ( status_id <> 'completed' and status_id <> 'shipped' ) and contact_id = %d order by order_date limit 1", $profileId );
+		$query = $this->prepare( "SELECT * FROM mvn_orders WHERE  ( status_id <> 'completed' and status_id <> 'shipped' ) and user_id = %d order by order_date DESC limit 1", $userId );
 
 		$row = $this->getQueryRow( $query );
 
@@ -272,7 +272,8 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 				    'thing_id' => $item->getThingId(),
 				    'sku' => $item->getSku(),
 				    'plugin_key' => $item->getPluginKey(),
-				    'thing_variation_id' => $item->getThingVariationId()
+				    'thing_variation_id' => $item->getThingVariationId(),
+				    'attributes' => serialize( $item->getAttributes() )
 				);
 
 				$format = array(
@@ -284,6 +285,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 				    '%s', //sku
 				    '%s', //plugin_key
 				    '%d', //thing_variation_id
+				    '%s' //attributes
 				);
 
 				if ( ! $item->getId() ) {
@@ -370,7 +372,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		    'shipping_contact' => serialize( $order->getShippingContact() ),
 		    'extra_fields' => serialize( $order->getExtraFields() ),
 		    'status_id' => $order->getStatusId() ? $order->getStatusId() : $order->getStatus()->getId(),
-		    'promotions' => $order->hasPromotions() ? serialize( $order->getPromotions() ) : '',
+		    'promotions' => serialize( $order->getPromotions() ),
 		    'credit_card' => $creditCard,
 		    'transaction_id' => $order->getTransactionId(),
 		    'user' => '',

@@ -469,7 +469,8 @@ class Order extends \Maven\Core\DomainObject {
 	}
 
 	/**
-	 * Get the promotions
+	 * @collectionType: \Maven\Core\Domain\Promotion
+	 * @serialized
 	 * @return \Maven\Core\Domain\Promotion[] 
 	 */
 	public function getPromotions() {
@@ -637,8 +638,8 @@ class Order extends \Maven\Core\DomainObject {
 
 		$shippingAmount = $this->getShippingAmount();
 
-		$this->setShippingAmount($shippingAmount);
-		
+		$this->setShippingAmount( $shippingAmount );
+
 		\Maven\Loggers\Logger::log()->message( 'Order/calculateTotal: Shipping Amount: ' . $shippingAmount );
 
 		$shippingDiscount = 0;
@@ -785,7 +786,13 @@ class Order extends \Maven\Core\DomainObject {
 	}
 
 	public function setPromotions( $promotions ) {
-		$this->promotions = unserialize( $promotions );
+		//$this->promotions = $promotions;
+		
+		//I know this is ineficient, but we use promotion code as array key,
+		//and that information is not always available in the coming array.
+		foreach ( $promotions as $promo ) {
+			$this->addPromotion( $promo );
+		}
 	}
 
 	/**

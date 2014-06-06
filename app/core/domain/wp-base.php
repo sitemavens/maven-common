@@ -30,7 +30,7 @@ abstract class WpBase  {
 		$this->hookManager = \Maven\Core\HookManager::instance();
 		$this->registry = \Maven\Settings\MavenRegistry::instance();
 		$this->request = \Maven\Core\Request::current();
-		$this->output = new \Maven\Core\Ui\Output( $this->registry->getPluginDir() );
+		$this->output = new \Maven\Core\UI\Output( $this->registry->getPluginDir() );
 		
 	}
 	
@@ -57,7 +57,7 @@ abstract class WpBase  {
 	
 	/**
 	 * Get output object
-	 * @return \Maven\Core\Ui\Ouput 
+	 * @return \Maven\Core\UI\Ouput 
 	 */
 	protected function getOutput() {
 		return $this->output;
