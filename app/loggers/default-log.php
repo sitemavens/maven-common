@@ -10,6 +10,8 @@ class DefaultLog extends Log {
 			if ( is_object( $message ) ) {
 				$obj = serialize( $message );
 				error_log( $obj );
+			} else if ( is_array( $message ) ) {
+				error_log( print_r($message,true) );
 			} else {
 				error_log( $message );
 			}

@@ -132,12 +132,15 @@ Front\AjaxFrontEnd::registerFrontEndHooks();
 $adminInitizalizer = new Admin\AdminInitializer();
 $hookManager->addAction( 'wp_json_server_before_serve', array( $adminInitizalizer, 'registerRouters' ) );
 
+$frontEndManager = \Maven\Front\FrontEndManager::current();
+$hookManager->addAction( 'wp_json_server_before_serve', array( $frontEndManager, 'registerRestApi' )  );
+
+
 if ( ! is_admin() ) {
 	// Instantiate the front end
 	$hookManager->addInit( array( '\Maven\Front\FrontEndManager', 'init' ), 999 );
 }
 
-$hookManager->addAction( 'wp_json_server_before_serve', array( array( \Maven\Front\FrontEndManager::current(), 'registerRouters' ) ) );
 
 //if ( Core\Request::current()->isDoingAjax() ) {
 //	$hookManager->addAjaxAction( 'mavenAjaxCartHandler', array( '\Maven\Front\FrontEndManager', 'init' ) );
