@@ -369,6 +369,20 @@ class HtmlComponent {
 		</script>
 		<?php
 	}
+	
+	public static function jSonVar($variable, $object){
+		
+		$outputTranslator = new OutputTranslator();
+		?>
+	
+		<script type="text/javascript">
+			/* <![CDATA[ */
+			var <?php echo $variable ?> = <?php echo json_encode(  $outputTranslator->convert($object) ); ?>;
+		/* ]]> */
+
+		</script>
+		<?php
+	}
 
 //	private function create_label($css) {
 //		return "<label id='{$this->id}' {$css} name='{$this->id}' >{$this->value}</label>";

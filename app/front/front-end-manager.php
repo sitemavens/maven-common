@@ -40,6 +40,14 @@ class FrontEndManager {
 		$routes[ '/maven/cart/do-action' ] = array(
 			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
 		);
+		
+		$routes[ '/maven/cart/remove-item' ] = array(
+			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::DELETABLE | \WP_JSON_Server::ACCEPT_JSON)
+		);
+		
+//		$routes[ '/maven/cart/do-action' ] = array(
+//			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
+//		);
 		 
 		return $routes;
 	}
@@ -134,28 +142,13 @@ class FrontEndManager {
 		\Maven\Core\Request::simulate($simulatedRequest);
 		
 		$result = $this->manageRequest();
-		
-		if ( ! $result ){
-			//\Maven\Core\Request::current()->isPost();
-			$nonce = $this->request->getProperty( self::MavenTransactionKey );
-		
-//		return ( $this->getRequest()->isPost() && wp_verify_nonce( $nonce, self::MavenTransactionKey ) );
-//		echo ($nonce);
-//		echo ("\n");
-//		echo (self::MavenTransactionKey);"7a7d7f25d9"
-			echo(get_current_user_id());
-			 //wp_verify_nonce( "123123123", "mavenTransactionKey" );
-			die('fin');
-		}
-		
-		die('paso!');
+		 
 	}
 	
 	
 	function manageRequest(  ) {
 		
 
-//die(var_dump($_POST));
 		if ( ! $this->isMavenTransactionRequest() ) {
 			
 			return false;
@@ -182,13 +175,17 @@ class FrontEndManager {
 		$step->setActionResult( $result );
 
 		if ( $request->isDoingAjax() || $request->isDoingJSon()) {
+			
+			$output = new \Maven\Core\UI\OutputTranslator();
+			$transformedOrder = $output->convert( $cart->getOrder() );
+			
 			if ( $result->isSuccessful() ) {
-				$result = array( 'successful' => true, 'error' => false, 'description' => $result->getContent(), 'data' => $result->getData() );
+				$result = array( 'successful' => true, 'error' => false, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
 			} else {
-				$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent() );
+				$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent(), 'order' => $cart->getOrder() );
 			}
 
-			die( json_encode( $result ) );
+			die(json_encode( $result ) );
 		}
 
 

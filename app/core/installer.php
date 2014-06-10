@@ -65,8 +65,7 @@ class Installer {
 				`shipping_carrier` varchar(100) NOT NULL,
 				`shipping_tracking_code` varchar(100) NOT NULL,
 				`shipping_tracking_url` varchar(500) NOT NULL,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `number_UNIQUE` (`number`)
+				PRIMARY KEY (`id`) 
 			  )",
 			"CREATE TABLE IF NOT EXISTS `mvn_orders_items` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,

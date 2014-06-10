@@ -178,8 +178,9 @@ class Order extends \Maven\Core\DomainObject {
 			throw new \Maven\Exceptions\MissingParameterException( 'Plugin Key is required' );
 		}
 
+		//TODO: Check if the item exists, we have to remove it and add the new one.
 		if ( $this->itemExists( $item->getIdentifier() ) ) {
-			throw new \Maven\Exceptions\MavenException( 'The item already exists: ' . $item->getIdentifier() );
+			$this->removeItem( $this->order, $item );
 		}
 
 		if ( $item->getQuantity() && $item->getQuantity() <= 0 ) {
@@ -188,16 +189,11 @@ class Order extends \Maven\Core\DomainObject {
 
 		$this->items[ $item->getIdentifier() ] = $item;
 
-		$subTotal = 0;
-		foreach ( $this->items as $itemAux ) {
-			$subTotal += ( $itemAux->getPrice() * $itemAux->getQuantity() );
-		}
-
-
-		$this->setSubtotal( $subTotal );
+		$this->recalculateSubtotal();
 	}
 
 	public function recalculateSubtotal() {
+		
 		$subTotal = 0;
 		foreach ( $this->items as $itemAux ) {
 			$subTotal += ( $itemAux->getPrice() * $itemAux->getQuantity() );
@@ -226,20 +222,19 @@ class Order extends \Maven\Core\DomainObject {
 		return false;
 	}
 
+	/**
+	 * Remove item from order
+	 * @param int $id
+	 * @return boolean
+	 */
 	public function removeItem( $id ) {
 
 		if ( $this->itemExists( $id ) ) {
 
-			$item = $this->getItem( $id );
-
-			$total = $this->getTotal() - ( $item->getPrice() * $item->getQuantity() );
-
-			$this->setTotal( $total );
-
-			$this->setSubtotal( $total );
-
 			unset( $this->items[ $id ] );
 
+			$this->recalculateSubtotal();
+			
 			return true;
 		}
 
