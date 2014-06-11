@@ -39,9 +39,13 @@ class VariationGroupManager {
 		return $instance;
 	}
 
+	/**
+	 * 
+	 * @param int $thingId
+	 * @return Domain\VariationGroup[]
+	 */
 	public function getVariationGroups( $thingId ) {
 		return $this->mapper->getVariationGroups( $thingId );
-		;
 	}
 
 	/**

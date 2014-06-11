@@ -151,6 +151,7 @@ class VariationMapper extends \Maven\Core\Db\WordpressMapper {
 		if ( $variations ) {
 
 			foreach ( $variations as $variation ) {
+				$variation->setPluginKey( $this->pluginKey );
 
 				$variation = $this->save( $variation );
 
