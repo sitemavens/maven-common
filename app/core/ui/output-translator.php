@@ -137,19 +137,7 @@ class OutputTranslator {
 			return $object;
 		}
 
-		$return = array();
-		if ( is_array( $object ) ) {
-			foreach ( $object as $key => $value ) {
-				if ( !is_object( $value ) && !is_array( $value ) ) {
-					$return[$key] = $value;
-				} else {
-					$return[$key] = $this->toArrayMagic( $value );
-				}
-			}
-		}
-		else {
-			$return = $this->toArrayMagic( $object );
-		}
+		$return = $this->toArrayMagic( $object );
 
 
 		return $return;
