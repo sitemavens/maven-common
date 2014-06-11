@@ -135,9 +135,10 @@ class FrontEndManager {
 		$simulatedRequest[self::MavenTransactionKey] = $data['transaction'];
 		$simulatedRequest['mvn']['thing'] = $data['thing'];
 		$simulatedRequest['mvn']['step'] = $data['step'];
-		$simulatedRequest['mvn']['billingContact'] = isset($data['bilingContact'])?$data['bilingContact']:array();
+		$simulatedRequest['mvn']['billingContact'] = isset($data['billingContact'])?$data['billingContact']:array();
 		$simulatedRequest['mvn']['shippingContact'] = isset($data['shippingContact'])?$data['shippingContact']:array();
 		$simulatedRequest['mvn']['contact'] = isset($data['contact'])?$data['contact']:array();
+		$simulatedRequest['mvn']['creditCard'] = isset($data['creditCard'])?$data['creditCard']:array();
 		//$simulatedRequest['_wp_json_nonce'] = $data['step'];
 		
 		\Maven\Core\Request::simulate($simulatedRequest);
@@ -160,7 +161,7 @@ class FrontEndManager {
 
 		// Do we need to add some kind of validation?
 		$data = $request->getProperty( 'mvn' );
-die(print_r($data['billingContact']));
+
 		$step = self::setCurrentStep( $data );
 
 		//Lets fire the action

@@ -26,7 +26,7 @@ class UpdateCartAction extends Action {
 		);
 
 		$data = $this->getData();
-		die(print_r($data));
+		
 		$data = wp_parse_args( $data, array(
 		    Consts::CreditCard => array(),
 		    Consts::Contact => array(),
@@ -47,11 +47,12 @@ class UpdateCartAction extends Action {
 		$data[ Consts::Contact ] = wp_parse_args( $data[ Consts::Contact ], array(
 		    Consts::FirstName => "",
 		    Consts::LastName => "",
+			Consts::Phone => "",
 		    Consts::AddressFirstLine => "",
 		    Consts::AddressSecondLine => "",
 		    Consts::AddressCity => "",
 		    Consts::AddressCountry => "",
-		    Consts::Phone => "",
+		    Consts::AddressPhone => "",
 		    Consts::AddressState => "",
 		    Consts::AddressZipCode => "",
 		    Consts::Email => ""
@@ -60,11 +61,12 @@ class UpdateCartAction extends Action {
 		$data[ Consts::BillingContact ] = wp_parse_args( $data[ Consts::BillingContact ], array(
 		    Consts::FirstName => "",
 		    Consts::LastName => "",
+			Consts::Phone => "",
 		    Consts::AddressFirstLine => "",
 		    Consts::AddressSecondLine => "",
 		    Consts::AddressCity => "",
 		    Consts::AddressCountry => "",
-		    Consts::Phone => "",
+		    Consts::AddressPhone => "",
 		    Consts::AddressState => "",
 		    Consts::AddressZipCode => "",
 		    Consts::Email => ""
@@ -73,11 +75,12 @@ class UpdateCartAction extends Action {
 		$data[ Consts::ShippingContact ] = wp_parse_args( $data[ Consts::ShippingContact ], array(
 		    Consts::FirstName => "",
 		    Consts::LastName => "",
+			Consts::Phone => "",
 		    Consts::AddressFirstLine => "",
 		    Consts::AddressSecondLine => "",
 		    Consts::AddressCity => "",
 		    Consts::AddressCountry => "",
-		    Consts::Phone => "",
+		    Consts::AddressPhone => "",
 		    Consts::AddressState => "",
 		    Consts::AddressZipCode => "",
 		    Consts::Email => "",
@@ -274,6 +277,11 @@ class UpdateCartAction extends Action {
 			$this->collectData( $order );
 
 			$result = $cart->update( $order );
+			
+			\Maven\Loggers\Logger::log()->message( '\Maven\Front\Actions\UpdateCartAction\billingUpdated: '.$order->getBillingContact()->getBillingAddress()->getFullAddress() );
+			\Maven\Loggers\Logger::log()->message( '\Maven\Front\Actions\UpdateCartAction\shippingUpdated: '.$order->getShippingContact()->getShippingAddress()->getFullAddress() );
+			\Maven\Loggers\Logger::log()->message( '\Maven\Front\Actions\UpdateCartAction\contactUpdated: '.$order->getContact()->getPrimaryAddress()->getFullAddress() );
+			
 		}
 
 		if ( $this->getStep()->hasToCollect( DataToCollect::All ) || $this->getStep()->hasToCollect( DataToCollect::CreditCardInfo ) ) {
@@ -289,6 +297,8 @@ class UpdateCartAction extends Action {
 			$creditCard->setSecurityCode( $creditCardData[ Consts::SecurityCode ] );
 			$creditCard->setType( $creditCardData[ Consts::CreditCardType ] );
 
+			\Maven\Loggers\Logger::log()->message( '\Maven\Front\Actions\UpdateCartAction\ccInfo: '.$creditCard->getNumber() );
+			
 			$result = $cart->update( $order );
 		}
 
@@ -297,7 +307,7 @@ class UpdateCartAction extends Action {
 
 	function collectData( \Maven\Core\Domain\Order $order ) {
 		
-		\Maven\Loggers\Logger::log()->message( 'UpdateCartAction/collectData' );
+		\Maven\Loggers\Logger::log()->message( '\Maven\Front\Actions\UpdateCartAction\collectData' );
 		
 		if ( $this->getStep()->hasToCollect( DataToCollect::All ) || $this->getStep()->hasToCollect( DataToCollect::ContactInfo ) ) {
 
@@ -329,9 +339,9 @@ class UpdateCartAction extends Action {
 			$primaryAddress->setZipcode( $contactData[ Consts::AddressZipCode ] );
 			$primaryAddress->setCity( $contactData[ Consts::AddressCity ] );
 			$primaryAddress->setCountry( $contactData[ Consts::AddressCountry ] );
-			$primaryAddress->setPhone( $contactData[ Consts::Phone ] );
+			$primaryAddress->setPhone( $contactData[ Consts::AddressPhone ] );
 			
-			\Maven\Loggers\Logger::log()->message( 'UpdateCartAction/collectData: Contact updated: '.$contact->getEmail() );
+			\Maven\Loggers\Logger::log()->message( 'UpdateCartAction/collectData: Contact updated: '.$primaryAddress->getFullAddress() );
 		}
 
 		if ( $this->getStep()->hasToCollect( DataToCollect::All ) || $this->getStep()->hasToCollect( DataToCollect::BillingInfo ) ) {
@@ -364,9 +374,9 @@ class UpdateCartAction extends Action {
 			$billingAddress->setZipcode( $contactData[ Consts::AddressZipCode ] );
 			$billingAddress->setCity( $contactData[ Consts::AddressCity ] );
 			$billingAddress->setCountry( $contactData[ Consts::AddressCountry ] );
-			$billingAddress->setPhone( $contactData[ Consts::Phone ] );
+			$billingAddress->setPhone( $contactData[ Consts::AddressPhone ] );
 			
-			\Maven\Loggers\Logger::log()->message( 'UpdateCartAction/collectData: Billing updated: '.$billingContact->getEmail() );
+			\Maven\Loggers\Logger::log()->message( 'UpdateCartAction/collectData: Billing updated: '.$billingAddress->getFullAddress() );
 		}
 
 		if ( $this->getStep()->hasToCollect( DataToCollect::All ) || $this->getStep()->hasToCollect( DataToCollect::ShippingInfo ) ) {
@@ -389,9 +399,9 @@ class UpdateCartAction extends Action {
 			$shippingAddress->setZipcode( $contactData[ Consts::AddressZipCode ] );
 			$shippingAddress->setCity( $contactData[ Consts::AddressCity ] );
 			$shippingAddress->setCountry( $contactData[ Consts::AddressCountry ] );
-			$shippingAddress->setPhone( $contactData[ Consts::Phone ] );
+			$shippingAddress->setPhone( $contactData[ Consts::AddressPhone ] );
 			
-			\Maven\Loggers\Logger::log()->message( 'UpdateCartAction/collectData: Shipping updated: '.$shippingContact->getEmail() );
+			\Maven\Loggers\Logger::log()->message( 'UpdateCartAction/collectData: Shipping updated: '.$shippingAddress->getFullAddress() );
 		}
 
 		// If we have to collect all and the contact info isn't there, we clone the billing info
@@ -412,9 +422,9 @@ class UpdateCartAction extends Action {
 			$primaryAddress->setZipcode( $contactData[ Consts::AddressZipCode ] );
 			$primaryAddress->setCity( $contactData[ Consts::AddressCity ] );
 			$primaryAddress->setCountry( $contactData[ Consts::AddressCountry ] );
-			$primaryAddress->setPhone( $contactData[ Consts::Phone ] );
+			$primaryAddress->setPhone( $contactData[ Consts::AddressPhone ] );
 			
-			\Maven\Loggers\Logger::log()->message( 'UpdateCartAction/collectData: Contact updated from billing: '.$contact->getEmail() );
+			\Maven\Loggers\Logger::log()->message( 'UpdateCartAction/collectData: Contact updated from billing: '.$primaryAddress->getFullAddress() );
 		}
 	}
 

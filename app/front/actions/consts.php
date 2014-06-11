@@ -34,9 +34,10 @@ class Consts {
 	const AddressSecondLine = "addressSecondLine";
 	const AddressCity = "addressCity";
 	const AddressCountry = "addressCountry";
-	const Phone = "phone";
+	const AddressPhone = "addressPhone";
 	const AddressState = "addressState";
 	const AddressZipCode = "addressZipCode";
+	const Phone = "Phone";
 	const Email = "email";
 	const BillingContact = "billingContact";
 	const ShippingContact = "shippingContact";
