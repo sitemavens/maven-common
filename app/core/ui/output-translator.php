@@ -4,20 +4,20 @@ namespace Maven\Core\UI;
 
 class OutputTranslator {
 
-	public function __construct() {
+	public function __construct () {
 		;
 	}
 
-	public function sendApiResponse( $object ) {
+	public function sendApiResponse ( $object ) {
 		wp_send_json( $this->convert( $object ) );
 	}
 
-	public function sendData( $object ) {
+	public function sendData ( $object ) {
 
 		wp_send_json_success( $this->convert( $object ) );
 	}
 
-	public function sendError( $object ) {
+	public function sendError ( $object ) {
 
 		wp_send_json_error( $this->convert( $object ) );
 	}
@@ -44,11 +44,25 @@ class OutputTranslator {
 //		return $objToSend ? $objToSend : $object;
 //	}
 //	
-	
-	private function toArrayMagic( $obj ){
-		
-		$return = array();
 
+	private function toArrayMagic ( $obj ) {
+
+		$return = array();
+		
+		if ( is_array( $obj ) ) {
+			foreach ( $obj as $key => $value ) {
+				if ( !is_object( $value ) && !is_array( $value ) ) {
+					$return[$key] = $value;
+				} else {
+					$return[$key] = $this->toArrayMagic( $value );
+				}
+			}
+			
+			return $return;
+		}
+		
+		
+		
 		$reflect = new \ReflectionClass( $obj );
 		$props = $reflect->getProperties( \ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED );
 
@@ -64,51 +78,44 @@ class OutputTranslator {
 
 				$value = $obj->{$methodNameGet}();
 
-				if ( is_object( $value ) ){
+				if ( is_object( $value ) ) {
 					$return[ $prop->getName() ] = $this->toArrayMagic( $value );
-				}
-				elseif ( is_array( $value ) ) {
-					
-					$return[ $prop->getName() ] = array( );
+				} elseif ( is_array( $value ) ) {
+
+					$return[ $prop->getName() ] = array();
 					foreach ( $value as $newValue ) {
-						
+
 						if ( is_object( $newValue ) ) {
-							
-							$return[ $prop->getName() ][ ] = $this->toArrayMagic( $newValue );
-							
+
+							$return[ $prop->getName() ][] = $this->toArrayMagic( $newValue );
 						} elseif ( is_array( $value ) ) {
-							
-							$return[ $prop->getName() ] = array( );
-							
+
+							$return[ $prop->getName() ] = array();
+
 							foreach ( $value as $newValue ) {
-								
+
 								if ( is_object( $newValue ) ) {
-									
-									$return[ $prop->getName() ][ ] = $this->toArrayMagic( $newValue );
-									
+
+									$return[ $prop->getName() ][] = $this->toArrayMagic( $newValue );
 								} elseif ( is_array( $value ) ) {
-									
-									$return[ $prop->getName() ] = array( );
-									
+
+									$return[ $prop->getName() ] = array();
+
 									foreach ( $value as $newValue ) {
-										
+
 										if ( is_object( $newValue ) ) {
-											
-											$return[ $prop->getName() ][ ] = $this->toArrayMagic( $newValue );
-										}
-										else
+
+											$return[ $prop->getName() ][] = $this->toArrayMagic( $newValue );
+										} else
 											$return[ $prop->getName() ] = $value;
 									}
-								}
-								else
+								} else
 									$return[ $prop->getName() ] = $value;
 							}
-						}
-						else
+						} else
 							$return[ $prop->getName() ] = $value;
 					}
-				}
-				else
+				} else
 					$return[ $prop->getName() ] = $value;
 			}
 			else if ( is_callable( array( $obj, $methodNameIs ) ) ) {
@@ -116,32 +123,35 @@ class OutputTranslator {
 				$return[ $prop->getName() ] = ( bool ) $obj->{$methodNameIs}();
 			}
 		}
-		
+
 		//Not sure why it doesn't read the id property, so that's way we are adding it manually.
-		if ( is_callable( array( $obj, 'getId' )  ) )
+		if ( is_callable( array( $obj, 'getId' ) ) )
 			$return[ 'id' ] = $obj->getId();
 
 		return $return;
-		
 	}
-	public function convert( $object ) {
+
+	public function convert ( $object ) {
 		
-		if ( !is_object( $object ) && !is_array($object)) {
+		if ( !is_object( $object ) && !is_array( $object ) ) {
 			return $object;
 		}
- 
+
 		$return = array();
-		if ( is_array( $object )){
-			foreach( $object as $item){
-				$return[] = $this->toArrayMagic( $item );
+		if ( is_array( $object ) ) {
+			foreach ( $object as $key => $value ) {
+				if ( !is_object( $value ) && !is_array( $value ) ) {
+					$return[$key] = $value;
+				} else {
+					$return[$key] = $this->toArrayMagic( $value );
+				}
 			}
 		}
-		else 
-		{
+		else {
 			$return = $this->toArrayMagic( $object );
 		}
-		
-		
+
+
 		return $return;
 	}
 
