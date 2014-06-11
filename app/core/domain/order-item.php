@@ -8,26 +8,34 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class OrderItem extends \Maven\Core\DomainObject {
 
-	private $name; 
-	private $quantity;
-	private $orderId;
-	private $price;
-	private $thingVariationId;
-	private $sku;
-	private $thingId;
-	private $attributes;
+	protected $name; 
+	protected $quantity;
+	protected $orderId;
+	protected $price;
+	protected $thingVariationId;
+	protected $sku;
+	protected $thingId;
+	protected $attributes;
 	
 	/**
 	 * It will save the order item status
 	 * @var \Maven\Core\Message\Message
 	 */
-	private $status;
+	protected $status;
 	
 	/**
 	 *
 	 * @var string 
 	 */
-    private $pluginKey;
+    protected $pluginKey;
+	
+	
+	/**
+	 *
+	 * @var string 
+	 */
+    protected $identifier;
+	
 	
 	/**
 	 * Instantiate order item

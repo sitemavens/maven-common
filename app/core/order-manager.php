@@ -93,10 +93,8 @@ class OrderManager {
 
 	public function addItem( \Maven\Core\Domain\Order $order, \Maven\Core\Domain\OrderItem $item ) {
 
-		if ( $order->itemExists( $item->getIdentifier() ) ) {
-			return $order;
-		}
-
+		\Maven\Loggers\Logger::log()->message('Maven/OrderManager/addItem: Name: '.$item->getName() );
+		
 		// Add the item
 		$order->addItem( $item );
 

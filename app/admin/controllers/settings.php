@@ -29,6 +29,7 @@ class Settings extends MavenAdminController {
 
 	public function edit( $id, $data ) {
 
+		
 		$settings = \Maven\Settings\MavenRegistry::instance()->getOptions();
 
 		foreach ( $settings as $setting ) {
@@ -55,7 +56,7 @@ class Settings extends MavenAdminController {
 	}
 
 	public function getSettings() {
-
+		
 		$registry = \Maven\Settings\MavenRegistry::instance();
 
 		$options = $registry->getOptions();
@@ -65,6 +66,7 @@ class Settings extends MavenAdminController {
 		}
 
 		$this->getOutput()->sendApiResponse( $entity );
+		
 	}
 
 }

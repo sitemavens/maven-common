@@ -30,17 +30,29 @@ class FrontEndManager {
 		self::current()->manageRequest();
 	}
 	
-	public function registerRoutes( $routes ){
+	public function registerRestApi(  ){
+		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $this, 'registerRouters' ) );
 		
-		$routes[ '/maven/cart/do-action' ] = array(
-			array( array( $this, 'manageRequest' ), \WP_JSON_Server::READABLE | \WP_JSON_Server::ACCEPT_JSON)
+	}
+	
+	public function registerRouters( $routes ){
+		
+		$routes[ '/maven/v1/cart/do-action' ] = array(
+			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
 		);
-//		
-//		$routes[ '/maven/settings/(?P<id>\d+)' ] = array(
-//			array( array( $this, 'getSettings' ), \WP_JSON_Server::READABLE ),
-//			array( array( $this, 'edit' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		
+		$routes[ '/maven/v1/cart/remove-item' ] = array(
+			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::DELETABLE | \WP_JSON_Server::ACCEPT_JSON)
+		);
+		
+		$routes[ '/maven/v1/cart/apply-promotion' ] = array(
+			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
+		);
+		
+		
+//		$routes[ '/maven/cart/do-action' ] = array(
+//			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
 //		);
-//		
 		 
 		return $routes;
 	}
@@ -94,6 +106,7 @@ class FrontEndManager {
 
 	public function isMavenTransactionRequest() {
 		$nonce = $this->request->getProperty( self::MavenTransactionKey );
+		
 		return ( $this->getRequest()->isPost() && wp_verify_nonce( $nonce, self::MavenTransactionKey ) );
 	}
 
@@ -118,11 +131,31 @@ class FrontEndManager {
 
 		wp_nonce_field( self::MavenTransactionKey, self::MavenTransactionKey );
 	}
+	
+	public static function getTransactionNonce() {
+		return wp_create_nonce( self::MavenTransactionKey );
+	}
 
-	function manageRequest() {
+	function manageJsonRequest( $data  ){
+		
+		$simulatedRequest = array();
+		$simulatedRequest[self::MavenTransactionKey] = $data['transaction'];
+		$simulatedRequest['mvn']['thing'] = $data['thing'];
+		$simulatedRequest['mvn']['step'] = $data['step'];
+		//$simulatedRequest['_wp_json_nonce'] = $data['step'];
+		
+		\Maven\Core\Request::simulate($simulatedRequest);
+		
+		$result = $this->manageRequest();
+		 
+	}
+	
+	
+	function manageRequest(  ) {
+		
 
-//die(var_dump($_POST));
 		if ( ! $this->isMavenTransactionRequest() ) {
+			
 			return false;
 		}
 
@@ -146,14 +179,18 @@ class FrontEndManager {
 		// Save the result in the step
 		$step->setActionResult( $result );
 
-		if ( $request->isDoingAjax() ) {
+		if ( $request->isDoingAjax() || $request->isDoingJSon()) {
+			
+			$output = new \Maven\Core\UI\OutputTranslator();
+			$transformedOrder = $output->convert( $cart->getOrder() );
+			
 			if ( $result->isSuccessful() ) {
-				$result = array( 'successful' => true, 'error' => false, 'description' => $result->getContent(), 'data' => $result->getData() );
+				$result = array( 'successful' => true, 'error' => false, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
 			} else {
-				$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent() );
+				$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
 			}
 
-			die( json_encode( $result ) );
+			die(json_encode( $result ) );
 		}
 
 

@@ -87,6 +87,24 @@ class Cart {
 
 		return $this->order;
 	}
+	
+	public function updateItemQuantity( Domain\OrderItem $item){
+		
+		$order = $this->getOrder();
+		
+		if ( $order->itemExists( $item->getIdentifier() ) ) {
+			$orderItem = &$order->getItem( $item->getIdentifier() );
+			
+			$orderItem->setQuantity( $item->getQuantity() );
+			
+			$this->update();
+			
+			return \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Item updated' );
+		}
+		
+		return \Maven\Core\Message\MessageManager::createErrorMessage( 'Item not found' );
+		
+	}
 
 	public function loadExistingOrder( \Maven\Core\Domain\Order $order ) {
 
@@ -234,16 +252,11 @@ class Cart {
 
 		$orderApi = new OrdersApi();
 
-		//TODO: Check if the item exists, we have to remove it and add the new one.
-		if ( $this->order->itemExists( $item->getIdentifier() ) ) {
-			$orderApi->removeItem( $this->order, $item );
-		}
-
 		$this->order = $orderApi->addItem( $this->order, $item );
 
 		$this->update();
 
-		return Message\MessageManager::createRegularMessage( 'Item added sucessfully', $this->getCartInfo() );
+		return Message\MessageManager::createRegularMessage( 'Item added sucessfully', $this->order );
 	}
 
 	/**
@@ -268,6 +281,8 @@ class Cart {
 		}
 
 		$this->update();
+		
+		return Message\MessageManager::createRegularMessage( 'Item removed sucessfully', $this->order );
 	}
 
 	/**
@@ -669,7 +684,7 @@ class Cart {
 
 			$this->result = Message\MessageManager::createErrorMessage( 'Promotion already added' );
 
-			return false;
+			return $this->result;
 		}
 
 		$promotionApi = new \Maven\Core\PromotionsApi( );
@@ -682,14 +697,14 @@ class Cart {
 
 			$this->update();
 
-			return true;
+			return Message\MessageManager::createSuccessfulMessage( 'Promotion added' );
 		} else {
-			$this->result = Message\MessageManager::createErrorMessage( 'Promotion already added' );
+			$this->result = Message\MessageManager::createErrorMessage( 'Invalid promotion' );
 		}
 
 		$this->result = $result;
 
-		return false;
+		return $this->result;
 	}
 
 	private function loadUserInformation( Domain\User $user ) {

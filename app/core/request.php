@@ -23,8 +23,10 @@ class Request {
 	 */
 	public static function current(){
 		
-		if ( ! self::$instance ) self::$instance = new self();
-		
+		if ( !self::$instance ) {
+			self::$instance = new self();
+		}
+
 		return self::$instance;
 		
 	}
@@ -38,9 +40,10 @@ class Request {
 			
 			//We have to clean the existings properties
 			$current->properties = array();
-			foreach( $data as $key=>$value )
-				$current->setProperty($key, $value);
-			
+			foreach ( $data as $key => $value ) {
+				$current->setProperty( $key, $value );
+			}
+
 			return $current;
 		}
 		
@@ -93,6 +96,11 @@ class Request {
 	public function isDoingAjax(){
 		return defined('DOING_AJAX') && DOING_AJAX;
 	}
+	
+	public function isDoingJSon(){
+		return defined('JSON_REQUEST') && JSON_REQUEST;
+	}
+	
 	
 	/**
 	 * Verify if it's doing a post auto save

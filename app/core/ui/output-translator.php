@@ -22,24 +22,117 @@ class OutputTranslator {
 		wp_send_json_error( $this->convert( $object ) );
 	}
 
-	public function convert( $object ) {
+//	public function convert( $object ) {
+//
+//		$objToSend = null;
+//
+//		if ( $object instanceof \Maven\Core\DomainObject ) {
+//
+//			return $object->toArray();
+//			
+//		} else if ( is_array( $object ) ) {
+//
+//			foreach ( $object as $domainObj ) {
+//
+//				if ( $domainObj instanceof \Maven\Core\DomainObject ) {
+//					$objToSend[] = $domainObj->toArray();
+//				} 
+//					
+//			}
+//		}
+//
+//		return $objToSend ? $objToSend : $object;
+//	}
+//	
+	
+	private function toArrayMagic( $obj ){
+		
+		$return = array();
 
-		$objToSend = null;
+		$reflect = new \ReflectionClass( $obj );
+		$props = $reflect->getProperties( \ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED );
 
-		if ( $object instanceof \Maven\Core\DomainObject ) {
+		foreach ( $props as $prop ) {
 
-			return $object->toArray();
-		} else if ( is_array( $object ) ) {
+			$methodNameGet = "get" . $prop->getName();
 
-			foreach ( $object as $domainObj ) {
+			//This is for boolean properties
+			$methodNameIs = "is" . $prop->getName();
 
-				if ( $domainObj instanceof \Maven\Core\DomainObject ) {
-					$objToSend[] = $domainObj->toArray();
+			//Check if it is public, we won't add private/protected properties
+			if ( is_callable( array( $obj, $methodNameGet ) ) ) {
+
+				$value = $obj->{$methodNameGet}();
+
+				if ( is_object( $value ) ){
+					$return[ $prop->getName() ] = $this->toArrayMagic( $value );
 				}
+				elseif ( is_array( $value ) ) {
+					
+					$return[ $prop->getName() ] = array( );
+					foreach ( $value as $newValue ) {
+						
+						if ( is_object( $newValue ) ) {
+							
+							$return[ $prop->getName() ][ ] = $this->toArrayMagic( $newValue );
+							
+						} elseif ( is_array( $value ) ) {
+							
+							$return[ $prop->getName() ] = array( );
+							
+							foreach ( $value as $newValue ) {
+								
+								if ( is_object( $newValue ) ) {
+									
+									$return[ $prop->getName() ][ ] = $this->toArrayMagic( $newValue );
+									
+								} elseif ( is_array( $value ) ) {
+									
+									$return[ $prop->getName() ] = array( );
+									
+									foreach ( $value as $newValue ) {
+										
+										if ( is_object( $newValue ) ) {
+											
+											$return[ $prop->getName() ][ ] = $this->toArrayMagic( $newValue );
+										}
+										else
+											$return[ $prop->getName() ] = $value;
+									}
+								}
+								else
+									$return[ $prop->getName() ] = $value;
+							}
+						}
+						else
+							$return[ $prop->getName() ] = $value;
+					}
+				}
+				else
+					$return[ $prop->getName() ] = $value;
+			}
+			else if ( is_callable( array( $obj, $methodNameIs ) ) ) {
+				//Cast the value to boolean
+				$return[ $prop->getName() ] = ( bool ) $obj->{$methodNameIs}();
 			}
 		}
+		
+		//Not sure why it doesn't read the id property, so that's way we are adding it manually.
+		if ( is_callable( array( $obj, 'getId' )  ) )
+			$return[ 'id' ] = $obj->getId();
 
-		return $objToSend ? $objToSend : $object;
+		return $return;
+		
+	}
+	public function convert( $object ) {
+		
+		if ( !is_object( $object ) ) {
+			return $object;
+		}
+
+		$return = $this->toArrayMagic( $object );
+		
+		return $return;
 	}
 
 }

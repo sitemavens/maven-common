@@ -14,5 +14,5 @@ class Actions {
 	const UpdateCheckout = 'UpdateCheckout';
 	const SaveProfile = 'SaveProfile';
 	const GetCartInfo = 'GetCartInfo';
-
+	const RemoveItem = 'removeItem';
 }
