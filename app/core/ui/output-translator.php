@@ -126,11 +126,21 @@ class OutputTranslator {
 	}
 	public function convert( $object ) {
 		
-		if ( !is_object( $object ) ) {
+		if ( !is_object( $object ) && !is_array($object)) {
 			return $object;
 		}
-
-		$return = $this->toArrayMagic( $object );
+ 
+		$return = array();
+		if ( is_array( $object )){
+			foreach( $object as $item){
+				$return[] = $this->toArrayMagic( $item );
+			}
+		}
+		else 
+		{
+			$return = $this->toArrayMagic( $object );
+		}
+		
 		
 		return $return;
 	}

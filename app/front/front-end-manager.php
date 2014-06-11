@@ -41,13 +41,6 @@ class FrontEndManager {
 			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
 		);
 		
-		$routes[ '/maven/v1/cart/remove-item' ] = array(
-			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::DELETABLE | \WP_JSON_Server::ACCEPT_JSON)
-		);
-		
-		$routes[ '/maven/v1/cart/apply-promotion' ] = array(
-			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
-		);
 		
 		
 //		$routes[ '/maven/cart/do-action' ] = array(
@@ -142,6 +135,9 @@ class FrontEndManager {
 		$simulatedRequest[self::MavenTransactionKey] = $data['transaction'];
 		$simulatedRequest['mvn']['thing'] = $data['thing'];
 		$simulatedRequest['mvn']['step'] = $data['step'];
+		$simulatedRequest['mvn']['billingContact'] = isset($data['bilingContact'])?$data['bilingContact']:array();
+		$simulatedRequest['mvn']['shippingContact'] = isset($data['shippingContact'])?$data['shippingContact']:array();
+		$simulatedRequest['mvn']['contact'] = isset($data['contact'])?$data['contact']:array();
 		//$simulatedRequest['_wp_json_nonce'] = $data['step'];
 		
 		\Maven\Core\Request::simulate($simulatedRequest);
@@ -164,7 +160,7 @@ class FrontEndManager {
 
 		// Do we need to add some kind of validation?
 		$data = $request->getProperty( 'mvn' );
-
+die(print_r($data['billingContact']));
 		$step = self::setCurrentStep( $data );
 
 		//Lets fire the action
