@@ -64,7 +64,7 @@ class VariationGroupMapper extends \Maven\Core\Db\WordpressMapper {
 	/**
 	 * Return an VariationGroup object
 	 * @param int $id
-	 * @return \Maven\Core\Domain\VariationGroup
+	 * @return \Maven\Core\Domain\VariationGroup[]
 	 */
 	public function getVariationGroups( $thingId ) {
 
@@ -164,12 +164,60 @@ class VariationGroupMapper extends \Maven\Core\Db\WordpressMapper {
 		if ( ! $thingId ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Thing ID: is required' );
 		}
-		
+
 		if ( ! $pluginKey ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Plugin Key: is required' );
 		}
-		
+
 		$query = $this->prepare( "DELETE FROM {$this->tableName} where thing_id=%d AND plugin_key=%s", $thingId, $pluginKey );
+
+		return $this->executeQuery( $query );
+	}
+
+	public function deleteByGroupKey( $thingId, $groupKey, $pluginKey ) {
+		if ( ! $thingId ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'Thing ID: is required' );
+		}
+
+		if ( ! $groupKey ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'Group Key: is required' );
+		}
+
+		if ( ! $pluginKey ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'Plugin Key: is required' );
+		}
+
+		$query = $this->prepare( "DELETE FROM {$this->tableName} where thing_id=%d AND group_key=%s AND plugin_key=%s", $thingId, $groupKey, $pluginKey );
+
+		return $this->executeQuery( $query );
+	}
+
+	/**
+	 * Delete variation goups "NOT" in the group keys array
+	 * 
+	 * @param int $thingId
+	 * @param string $pluginKey
+	 * @param array $groupKeys
+	 * @return int
+	 */
+	public function deleteMissingGroupKeys( $thingId, $pluginKey, $groupKeys = array() ) {
+
+		if ( ! $thingId ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'Thing ID: is required' );
+		}
+
+		if ( ! $pluginKey ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'Plugin Key: is required' );
+		}
+
+		$escapedKeys = array();
+		foreach ( $groupKeys as $key ) {
+			$escapedKeys[] = $this->prepare( '%s', $key );
+		}
+
+		$items = implode( ',', $escapedKeys );
+
+		$query = $this->prepare( "DELETE FROM {$this->tableName} where thing_id=%d AND group_key NOT IN ({$items}) AND plugin_key=%s", $thingId, $pluginKey );
 
 		return $this->executeQuery( $query );
 	}
