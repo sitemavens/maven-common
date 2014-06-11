@@ -684,7 +684,7 @@ class Cart {
 
 			$this->result = Message\MessageManager::createErrorMessage( 'Promotion already added' );
 
-			return false;
+			return $this->result;
 		}
 
 		$promotionApi = new \Maven\Core\PromotionsApi( );
@@ -697,14 +697,14 @@ class Cart {
 
 			$this->update();
 
-			return true;
+			return Message\MessageManager::createSuccessfulMessage( 'Promotion added' );
 		} else {
-			$this->result = Message\MessageManager::createErrorMessage( 'Promotion already added' );
+			$this->result = Message\MessageManager::createErrorMessage( 'Invalid promotion' );
 		}
 
 		$this->result = $result;
 
-		return false;
+		return $this->result;
 	}
 
 	private function loadUserInformation( Domain\User $user ) {

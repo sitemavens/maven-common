@@ -37,13 +37,18 @@ class FrontEndManager {
 	
 	public function registerRouters( $routes ){
 		
-		$routes[ '/maven/cart/do-action' ] = array(
+		$routes[ '/maven/v1/cart/do-action' ] = array(
 			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
 		);
 		
-		$routes[ '/maven/cart/remove-item' ] = array(
+		$routes[ '/maven/v1/cart/remove-item' ] = array(
 			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::DELETABLE | \WP_JSON_Server::ACCEPT_JSON)
 		);
+		
+		$routes[ '/maven/v1/cart/apply-promotion' ] = array(
+			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
+		);
+		
 		
 //		$routes[ '/maven/cart/do-action' ] = array(
 //			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
@@ -182,7 +187,7 @@ class FrontEndManager {
 			if ( $result->isSuccessful() ) {
 				$result = array( 'successful' => true, 'error' => false, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
 			} else {
-				$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent(), 'order' => $cart->getOrder() );
+				$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
 			}
 
 			die(json_encode( $result ) );

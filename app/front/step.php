@@ -157,13 +157,13 @@ class Step {
 
 		$data = wp_parse_args( $data, $defaults );
 
-		if ( ! $data [ Consts::Id ] ) {
-			throw new \Maven\Exceptions\RequiredException( "Thing id is required" );
-		}
-
-		if ( !$data [ Consts::PluginKey ] ) {
-			throw new \Maven\Exceptions\RequiredException( "Plugin Key id is required" );
-		}
+//		if ( ! $data [ Consts::Id ] ) {
+//			throw new \Maven\Exceptions\RequiredException( "Thing id is required" );
+//		}
+//
+//		if ( !$data [ Consts::PluginKey ] ) {
+//			throw new \Maven\Exceptions\RequiredException( "Plugin Key id is required" );
+//		}
 
 		$thing = new \Maven\Front\Thing( $data [ Consts::PluginKey ] );
 		$thing->setId( $data[ Consts::Id ] );
