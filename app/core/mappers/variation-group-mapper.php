@@ -210,6 +210,11 @@ class VariationGroupMapper extends \Maven\Core\Db\WordpressMapper {
 			throw new \Maven\Exceptions\MissingParameterException( 'Plugin Key: is required' );
 		}
 
+		if ( empty( $groupKeys ) ) {
+			//Use  empty string id to delete everithing
+			$groupKeys[] = "";
+		}
+		
 		$escapedKeys = array();
 		foreach ( $groupKeys as $key ) {
 			$escapedKeys[] = $this->prepare( '%s', $key );
