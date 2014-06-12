@@ -187,6 +187,5 @@ class VariationManager {
 	public function delete( $variationId ) {
 		return $this->mapper->delete( $variationId );
 	}
-
 }
 

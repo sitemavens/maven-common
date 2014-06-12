@@ -131,4 +131,43 @@ class VariationOptionMapper extends \Maven\Core\Db\WordpressMapper {
 		return parent::delete( $id );
 	}
 
+	/**
+	 * Delete options "NOT" in the options Id array
+	 * 
+	 * @param int $thingId
+	 * @param string $pluginKey
+	 * @param array $variationsId
+	 * @param array $variationsId
+	 * @return int
+	 */
+	public function deleteMissingOptions( $thingId, $pluginKey, $variationsId = array(), $optionsId = array() ) {
+
+		if ( ! $thingId ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'Thing ID: is required' );
+		}
+
+		if ( ! $pluginKey ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'Plugin Key: is required' );
+		}
+
+		$escVar = array();
+		foreach ( $variationsId as $key ) {
+			$escVar[] = $this->prepare( '%d', $key );
+		}
+
+		$variations = implode( ',', $escVar );
+
+		$escOpt = array();
+		foreach ( $optionsId as $key ) {
+			$escOpt[] = $this->prepare( '%d', $key );
+		}
+
+		$options = implode( ',', $escOpt );
+
+		//TODO: Prepare query to delete the correct rows
+		$query = $this->prepare( "DELETE FROM {$this->tableName} where variation_id NOT IN({$variations}) AND id NOT IN ({$options}) AND plugin_key=%s", $thingId, $pluginKey );
+
+		return false; //$this->executeQuery( $query );
+	}
+
 }

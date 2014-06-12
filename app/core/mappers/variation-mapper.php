@@ -203,4 +203,39 @@ class VariationMapper extends \Maven\Core\Db\WordpressMapper {
 		return parent::delete( $id );
 	}
 
+	/**
+	 * Delete variations "NOT" in the group keys array
+	 * 
+	 * @param int $thingId
+	 * @param string $pluginKey
+	 * @param array $variationsId
+	 * @return int
+	 */
+	public function deleteMissingVariations( $thingId, $pluginKey, $variationsId = array() ) {
+
+		if ( ! $thingId ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'Thing ID: is required' );
+		}
+
+		if ( ! $pluginKey ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'Plugin Key: is required' );
+		}
+
+		if ( empty( $variationsId ) ) {
+			//Use -1 id to delete everithing
+			$variationsId[] = -1;
+		}
+
+		$escapedKeys = array();
+		foreach ( $variationsId as $key ) {
+			$escapedKeys[] = $this->prepare( '%d', $key );
+		}
+
+		$items = implode( ',', $escapedKeys );
+
+		$query = $this->prepare( "DELETE FROM {$this->tableName} where thing_id=%d AND id NOT IN ({$items}) AND plugin_key=%s", $thingId, $pluginKey );
+
+		return $this->executeQuery( $query );
+	}
+
 }
