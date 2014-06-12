@@ -1,7 +1,6 @@
 <!-- build:js scripts/main.min.js -->
 
 <!-- bower:js -->
-<script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/json3/lib/json3.min.js"></script>
@@ -15,20 +14,19 @@
 <script src="bower_components/angular-i18n/angular-locale_en-us.js"></script>
 <!-- endbower -->
 
-<script src="scripts/app.js"></script>
+<script src="scripts/admin/app.js"></script>
 
-<script src="scripts/services/forms.js"></script>
-<script src="scripts/services/general.js"></script>
-
-<script src="scripts/controllers/date-selector.js"></script>
-<script src="scripts/controllers/form-selector.js"></script>
-<script src="scripts/controllers/main-nav.js"></script>
-<script src="scripts/controllers/main.js"></script>
-<script src="scripts/controllers/settings.js"></script>
-
-<script src="scripts/directives/dynamic-name.js"></script>
-<script src="scripts/directives/focus.js"></script>
-<script src="scripts/directives/loading.js"></script>
+<script src="scripts/admin/services/admin-services.js"></script>
+<script src="scripts/admin/directives/loading.js"></script>
+<script src="scripts/admin/controllers/orders/orders-edit.js"></script>
+<script src="scripts/admin/controllers/orders/orders.js"></script>
+<script src="scripts/admin/controllers/promotions/promotions-edit.js"></script>
+<script src="scripts/admin/controllers/promotions/promotions.js"></script>
+<script src="scripts/admin/controllers/taxes/taxes-edit.js"></script>
+<script src="scripts/admin/controllers/taxes/taxes.js"></script>
+<script src="scripts/admin/controllers/dashboard.js"></script>
+<script src="scripts/admin/controllers/main-nav.js"></script>
+<script src="scripts/admin/controllers/settings.js"></script>
 
 <!-- endbuild -->
 
