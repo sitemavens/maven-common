@@ -181,7 +181,10 @@ class Step {
 			$variation->setPrice( $value[ Consts::Price ] );
 			$variation->setName( $value[ Consts::Name ] );
 			$variation->setOptionId( $value[ Consts::OptionId ] );
-
+			
+			if ( ! $variation->getId() ){
+				$variation->setId( $value[ Consts::Id ] );
+			}
 			$thing->addVariation( $variation );
 			
 			

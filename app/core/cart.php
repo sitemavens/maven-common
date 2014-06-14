@@ -262,6 +262,7 @@ class Cart {
 	/**
 	 * Remove item from an order. $item can be the OrderItem or an Item Identifier
 	 * @param string | \Maven\Core\Domain\OrderItem $item
+	 * @return \Maven\Core\Message\Message message
 	 */
 	public function removeItem( $item ) {
 
@@ -271,18 +272,21 @@ class Cart {
 			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/removeItem: Identifier: ' . $item );
 		}
 
-		$item = is_object( $item ) ? $item : $this->order->getItem( $item );
+		$item = is_object( $item ) ? $item : $this->getOrder()->getItem( $item );
 
 		$orderApi = new OrdersApi( );
 
+//		die(print_r($this->getOrder()->getItems(),true));
 		//TODO: Check if the item exists, we have to remove it and add the new one.
-		if ( $this->order->itemExists( $item->getIdentifier() ) ) {
+		if ( $this->getOrder()->itemExists( $item->getIdentifier() ) ) {
 			$orderApi->removeItem( $this->order, $item );
+			
+			$this->update();
+			
+			return Message\MessageManager::createRegularMessage( 'Item removed sucessfully', $this->order );
 		}
-
-		$this->update();
 		
-		return Message\MessageManager::createRegularMessage( 'Item removed sucessfully', $this->order );
+		return Message\MessageManager::createRegularMessage( 'Item not found', $this->order );
 	}
 
 	/**
