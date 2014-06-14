@@ -24,13 +24,14 @@ class Cart {
 	}
 
 	public function registerRestApi () {
+		
 		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $this, 'registerRouters' ) );
 	}
 
 	public function registerRouters ( $routes ) {
 
-		$routes[ '/maven/v2/cart/items/remove/(?P<identifier>\d+)' ] = array(
-			array( array( $this, 'removeItem' ), \WP_JSON_Server::DELETABLE )
+		$routes[ '/maven/v2/cart/items/remove/(?P<identifier>.+)' ] = array(
+			array( array( $this, 'removeItem' ), \WP_JSON_Server::ALLMETHODS )
 		);
 
 //		$routes[ '/maven/taxes' ] = array(
@@ -55,6 +56,7 @@ class Cart {
 	}
 
 	private function isValid () {
+		
 		if ( !$this->getCurrentCart()->hasOrder() ) {
 			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'There is no order' ) );
 		}

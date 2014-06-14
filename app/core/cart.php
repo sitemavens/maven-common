@@ -858,7 +858,7 @@ class Cart {
 
 	public function hasOrder() {
 
-		return $this->order ? true : false;
+		return $this->getOrder() ? true : false;
 	}
 
 }
