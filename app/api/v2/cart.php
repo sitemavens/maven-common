@@ -12,27 +12,36 @@ if ( !defined( 'ABSPATH' ) )
  * @author mustela
  */
 class Cart {
-	
+
 	private static $instance;
-	
-	public static function current(){
-		if ( ! self::$instance ) {
+
+	public static function current () {
+		if ( !self::$instance ) {
 			self::$instance = new self();
 		}
-		
+
 		return self::$instance;
 	}
 
 	public function registerRestApi () {
-		
+
 		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $this, 'registerRouters' ) );
 	}
 
 	public function registerRouters ( $routes ) {
 
-		$routes[ '/maven/v2/cart/items/remove/(?P<identifier>.+)' ] = array(
-			array( array( $this, 'removeItem' ), \WP_JSON_Server::ALLMETHODS )
+		$routes[ '/maven/v2/cart/item' ] = array(
+			array( array( $this, 'addItem' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
+		
+		$routes[ '/maven/v2/cart/item/(?P<identifier>.+)' ] = array(
+			array( array( $this, 'removeItem' ), \WP_JSON_Server::DELETABLE )
+//			array( array( $this, 'get_post' ),    WP_JSON_Server::READABLE ),
+//				array( array( $this, 'edit_post' ),   WP_JSON_Server::EDITABLE | WP_JSON_Server::ACCEPT_JSON ),
+//				array( array( $this, 'delete_post' ), WP_JSON_Server::DELETABLE ),
+		);
+
+		
 
 //		$routes[ '/maven/taxes' ] = array(
 //			array( array( $this, 'getTaxes' ), \WP_JSON_Server::READABLE ),
@@ -55,8 +64,35 @@ class Cart {
 		$this->sendResponse( $this->getCurrentCart()->removeItem( $identifier ) );
 	}
 
-	private function isValid () {
+	public function addItem ( $data ) {
+
+		$defaultItem = array(
+			'id' => '',
+			'pluginKey' => '',
+			'name' => '',
+			'quantity' => 0,
+			'price' => 0
+		);
+
+		$item = wp_parse_args( $data, $defaultItem );
+
+		if ( ! $item['pluginKey'] ){
+			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage('Plugin Key is required') );
+		}
 		
+		$orderItem = new \Maven\Core\Domain\OrderItem();
+		$orderItem->setName( $item['name'] );
+		$orderItem->setPluginKey( $item['pluginKey'] );
+		$orderItem->setThingId( $item['id'] );
+		$orderItem->setPrice( $item['price'] );
+		$orderItem->setQuantity( $item['quantity']);
+
+		
+		$this->sendResponse( $this->getCurrentCart()->addToCart( $orderItem ) );
+	}
+
+	private function isValid () {
+
 		if ( !$this->getCurrentCart()->hasOrder() ) {
 			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'There is no order' ) );
 		}

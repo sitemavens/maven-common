@@ -180,7 +180,7 @@ class Order extends \Maven\Core\DomainObject {
 
 		//TODO: Check if the item exists, we have to remove it and add the new one.
 		if ( $this->itemExists( $item->getIdentifier() ) ) {
-			$this->removeItem( $this->order, $item );
+			$this->removeItem( $item->getIdentifier() );
 		}
 
 		if ( $item->getQuantity() && $item->getQuantity() <= 0 ) {
@@ -224,14 +224,14 @@ class Order extends \Maven\Core\DomainObject {
 
 	/**
 	 * Remove item from order
-	 * @param int $id
+	 * @param int $identifier
 	 * @return boolean
 	 */
-	public function removeItem( $id ) {
+	public function removeItem( $identifier ) {
 
-		if ( $this->itemExists( $id ) ) {
+		if ( $this->itemExists( $identifier ) ) {
 
-			unset( $this->items[ $id ] );
+			unset( $this->items[ $identifier ] );
 
 			$this->recalculateSubtotal();
 			
