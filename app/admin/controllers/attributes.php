@@ -12,125 +12,71 @@ class Attributes extends \Maven\Admin\Controllers\MavenAdminController {
 		parent::__construct();
 	}
 
-	public function admin_init () {
-		
-	}
+    public function registerRoutes ( $routes ) {
 
-	public function showForm () {
+        $routes[ '/maven/attributes' ] = array(
+            array( array( $this, 'getAttributes' ), \WP_JSON_Server::READABLE ),
+            array( array( $this, 'newAttribute' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+        );
+        $routes[ '/maven/attributes/(?P<id>\d+)' ] = array(
+            array( array( $this, 'getAttribute' ), \WP_JSON_Server::READABLE ),
+            array( array( $this, 'editAttribute' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+            array( array( $this, 'deleteAttribute' ), \WP_JSON_Server::DELETABLE ),
+        );
 
+        return $routes;
+    }
 
-		$this->getOutput()->setTitle( $this->__( "Attributes" ) );
+    public function getAttributes () {
+        $manager = new \Maven\Core\AttributeManager();
+        $filter = new \Maven\Core\Domain\AttributeFilter();
+        $attrs = $manager->getAll($filter);
+        
+        $this->getOutput()->sendApiResponse( $attrs );
+    }
 
-		$this->getOutput()->loadAdminView( "attributes" );
-	}
+    public function newAttribute ( $data ) {
+        $manager = new \Maven\Core\AttributeManager();
 
-	public function cancel () {
-		
-	}
+        $attrs = new \Maven\Core\Domain\Attribute();
 
-	public function save () {
-		
-	}
+        $attrs->load( $data );
+        
+        $attrs = $manager->addAttribute( $attrs );
 
-	public function showList () {
-		
-	}
+        $this->getOutput()->sendApiResponse( $attrs );
+    }
 
-	public function attributeEntryPoint () {
-		try {
-			$event = $this->getRequest()->getProperty( 'event' );
+    public function getAttribute ( $id ) {
+        $manager = new \Maven\Core\AttributeManager();
+        $attrs = $manager->get( $id );
 
-			$manager = new \Maven\Core\AttributeManager();
+        $this->getOutput()->sendApiResponse( $attrs );
+    }
 
-			switch ( $event ) {
-				case 'create':
-					$data = $this->getRequest()->getProperty( 'data' );
+    public function editAttribute ( $id, $data ) {
 
-					$attribute = new \Maven\Core\Domain\Attribute();
+        $manager = new \Maven\Core\AttributeManager();
 
-					$attribute->load( $data );
+        $attrs = new \Maven\Core\Domain\Attribute();
 
-					$manager->addAttribute( $attribute );
+        $attrs->load( $data );
 
-					$this->getOutput()->sendData( $attribute->toArray() );
+        $attrs = $manager->addAttribute( $attrs );
 
-					break;
+        $this->getOutput()->sendApiResponse( $attrs );
+    }
 
-				case 'read':
+    public function deleteAttribute ( $id ) {
+        $manager = new \Maven\Core\AttributeManager();
 
-					$modelId = $this->getRequest()->getProperty( 'id' );
+        $manager->delete( $id );
 
-					if ( $modelId ) {
-						try {
-							$attribute = $manager->get( $modelId );
-							$this->getOutput()->sendData( $attribute->toArray() );
-						} catch ( \Maven\Exceptions\MavenException $ex ) {
-							$this->getOutput()->sendError( $ex->getMessage() );
-						}
-					} else {
-						$data = $this->getRequest()->getProperty( 'data' );
+        $this->getOutput()->sendApiResponse( new \stdClass() );
+    }
 
-						$filter = new \Maven\Core\Domain\AttributeFilter();
-
-						if ( key_exists( 'name', $data ) && $data[ 'name' ] )
-							$filter->setName( $data[ 'name' ] );
-						
-						$top = $this->getRequest()->getProperty( 'top' );
-						$skip = $this->getRequest()->getProperty( 'skip' );
-
-						$page = $data[ 'page' ] - 1; //We use 0-based pages
-						$perPage = $data[ 'per_page' ];
-						$sortBy = '';
-						
-						if ( $data && key_exists( 'sort_by', $data ) )
-							$sortBy = \Maven\Core\Utils::unCamelize( $data[ 'sort_by' ], '_' );
-
-						$order = '';
-						if ( $data && key_exists( 'order', $data ) )
-							$order = $data[ 'order' ];
-						//var_dump($data);
-						$intances = $manager->getAll( $filter, $sortBy, $order, ($page * $perPage ), $perPage );
-						$count = $manager->getCount( $filter );
-
-						$response = array();
-						foreach ( $intances as $row ) {
-							$response[] = $row->toArray();
-						}
-
-						$out[] = array( 'total_entries' => intval( $count ) );
-						$out[] = $response;
-
-						$this->getOutput()->sendData( $out );
-					}
-					break;
-
-				case 'update':
-
-					
-					$data = $this->getRequest()->getProperty( 'data' );
-
-					$attribute = new \Maven\Core\Domain\Attribute();
-					$attribute->load($data);
-					
-					$attribute = $manager->addAttribute( $attribute );
-
-					$this->getOutput()->sendData( $attribute->toArray() );
-
-					break;
-
-				case 'delete':
-					$modelId = $this->getRequest()->getProperty( 'id' );
-
-					$manager->delete( $modelId );
-
-					//Empty response
-					$this->getOutput()->sendData( 'deleted' );
-
-					break;
-			}
-		} catch ( Exception $ex ) {
-			$this->getOutput()->sendError( $ex->getMessage() );
-		}
-	}
+    public function getView ( $view ) {
+        return $view;
+    }
 
 }

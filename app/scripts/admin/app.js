@@ -63,6 +63,18 @@ angular
 						templateUrl: Maven.adminViewsUrl + 'taxes/taxes-edit.php',
 						controller: 'TaxesEditCtrl'
 					})
+					.when('/attributes', {
+						templateUrl: Maven.adminViewsUrl + 'attributes/attributes.php',
+						controller: 'AttrCtrl'
+					})
+					.when('/attributes/new', {
+						templateUrl: Maven.adminViewsUrl + 'attributes/attributes-edit.php',
+						controller: 'AttrEditCtrl'
+					})
+					.when('/attributes/edit/:id', {
+						templateUrl: Maven.adminViewsUrl + 'attributes/attributes-edit.php',
+						controller: 'AttrEditCtrl'
+					})
 					.when('/settings', {
 						templateUrl: Maven.viewHandlerUrl + 'maven/settings/',
 						controller: 'SettingsCtrl'

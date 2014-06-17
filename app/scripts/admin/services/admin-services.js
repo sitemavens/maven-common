@@ -46,6 +46,10 @@ admin.factory('Rol', ['$resource', function($resource) {
 		return $resource('/wp-json/maven/roles/:id', {id: '@id'});
 	}]);
 
+admin.factory('mvnAttribute', ['$resource', function($resource) {
+		return $resource('/wp-json/maven/attributes/:id', {id: '@id'});
+	}]);
+
 admin.factory('Promotion', ['$resource', function($resource) {
 		return $resource('/wp-json/maven/promotions/:id', {id: '@id'},
 		{export: {method: 'GET', params: {export: true}, isArray: false}});
