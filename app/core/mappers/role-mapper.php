@@ -3,171 +3,185 @@
 namespace Maven\Core\Mappers;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
-	exit;
+if ( !defined( 'ABSPATH' ) )
+    exit;
 
 class RoleMapper extends \Maven\Core\Db\Mapper {
 
-	private $systemRoles = array(
-	    'administrator' => 'Administrator',
-	    'author' => 'Author',
-	    'contributor' => 'Contributor',
-	    'editor' => 'Editor',
-	    'subscriber' => 'Subscriber',
-	);
+    private $systemRoles = array(
+        'administrator' => 'Administrator',
+        'author' => 'Author',
+        'contributor' => 'Contributor',
+        'editor' => 'Editor',
+        'subscriber' => 'Subscriber',
+    );
 
-	public function __construct() {
+    public function __construct () {
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
-	public function getRoles() {
-
-
-		global $wp_roles;
-
-		$wpRoles = $wp_roles->roles;
-		$roles = array();
-
-		foreach ( $wpRoles as $key => $roleData ) {
-
-			$mvnRole = new \Maven\Core\Domain\Role();
-
-			$mvnRole->setId( $key );
-			$mvnRole->setName( $roleData[ 'name' ] );
-			$mvnRole->setCapabilities( $roleData[ 'capabilities' ] );
-
-			if ( isset( $this->systemRoles[ $key ] ) )
-				$mvnRole->setSystemRole( true );
-
-			$roles[] = $mvnRole;
-		}
+    public function getRoles () {
 
 
-		return $roles;
-	}
+        global $wp_roles;
 
-	public function getRolesWithoutCapabilities() {
-		global $wp_roles;
+        $wpRoles = $wp_roles->roles;
+        $roles = array();
 
-		$wpRoles = $wp_roles->roles;
-		$roles = array();
+        foreach ( $wpRoles as $key => $roleData ) {
 
-		foreach ( $wpRoles as $key => $roleData ) {
+            $mvnRole = new \Maven\Core\Domain\Role();
 
-			$mvnRole = new \Maven\Core\Domain\Role();
+            $mvnRole->setId( $key );
+            $mvnRole->setName( $roleData[ 'name' ] );
+            $mvnRole->setCapabilities( $roleData[ 'capabilities' ] );
 
-			$mvnRole->setId( $key );
-			$mvnRole->setName( $roleData[ 'name' ] );
-			//$mvnRole->setCapabilities( $roleData[ 'capabilities' ] );
+            if ( isset( $this->systemRoles[ $key ] ) )
+                $mvnRole->setSystemRole( true );
 
-			if ( isset( $this->systemRoles[ $key ] ) )
-				$mvnRole->setSystemRole( true );
-
-			$roles[] = $mvnRole;
-		}
+            $roles[] = $mvnRole;
+        }
 
 
-		return $roles;
-	}
+        return $roles;
+    }
 
-	public function updateRole( \Maven\Core\Domain\Role $role ) {
+    public function getRolesWithoutCapabilities () {
+        global $wp_roles;
 
-		if ( $role->getId() ) {
-			$wpRole = get_role( $role->getId() );
+        $wpRoles = $wp_roles->roles;
+        $roles = array();
 
-			if ( ! $wpRole )
-				throw new \Maven\Exceptions\NotFoundException( "Role missing: {$roleId}" );
+        foreach ( $wpRoles as $key => $roleData ) {
 
-			$wpRole->name = $role->getName();
+            $mvnRole = new \Maven\Core\Domain\Role();
 
-			// We have to find a way to update the role names
-		}
-		else {
-			add_role( $role->getSanitizedName(), $role->getName(), $role->getCapabilities() );
-			$role->setId( $role->getSanitizedName() );
-		}
+            $mvnRole->setId( $key );
 
-		return $role;
-	}
+            $mvnRole->setName( $roleData[ 'name' ] );
+            //$mvnRole->setCapabilities( $roleData[ 'capabilities' ] );
 
-	public function get( $roleId ) {
+            if ( isset( $this->systemRoles[ $key ] ) )
+                $mvnRole->setSystemRole( true );
 
-		global $wp_roles;
-
-		$mvnRole = new \Maven\Core\Domain\Role();
-
-		$wpRole = get_role( $roleId );
-
-		if ( ! $wpRole )
-			throw new \Maven\Exceptions\NotFoundException( "Role missing: {$roleId}" );
-
-		$mvnRole = new \Maven\Core\Domain\Role();
-
-		$mvnRole->setId( $wpRole->name );
-		$mvnRole->setName( $wp_roles->role_names[ $roleId ] );
-		$mvnRole->setCapabilities( $wpRole->capabilities );
-		if ( isset( $this->systemRoles[ $wpRole->name ] ) )
-			$mvnRole->setSystemRole( true );
-		//$mvnRole->setSystemRole( in_array( $wpRole->name, $this->systemRoles ) );
-
-		return $mvnRole;
-	}
-
-	/**
-	 * 
-	 * @param int $userId
-	 * @return \Maven\Core\Domain\Role[]
-	 */
-	public function getUserRoles( $userId ) {
-		$user = new \WP_User( $userId );
-
-		$roles = array();
-		foreach ( $user->roles as $role ) {
-			$userRole = $this->get( $role );
-			//rempove capabilities
-			$userRole->setCapabilities( null );
-			$roles[] = $userRole;
-		}
-
-		return $roles;
-	}
-
-	/**
-	 * 
-	 * @param \Maven\Core\Domain\Profile $profile
-	 * @return \Maven\Core\Domain\Profile
-	 */
-	public function saveUserRoles( \Maven\Core\Domain\Profile $profile ) {
-		if ( ! $profile->getUserId() )
-			return $profile;
-
-		$user = new \WP_User( $profile->getUserId() );
-
-		//first remove non existant roles
-		foreach ( $user->roles as $role ) {
-			//search the role in the user role array
-			$found = array_filter( $profile->getRoles(), function($item) use ($role) {
-
-				if ( $item->getId() == $role ) {
-					return true;
-				}
-
-				return false;
-			} );
-			if ( ! $found ) {
-				//The role is not in the array, remove from user
-				$user->remove_role( $role );
-			}
-		}
+            $roles[] = $mvnRole;
+        }
 
 
-		//then add new roles
-		foreach ( $profile->getRoles() as $role ) {
-			$user->add_role( $role->getId() );
-		}
+        return $roles;
+    }
 
-		return $profile;
-	}
+    public function updateRole ( \Maven\Core\Domain\Role $role ) {
+
+        if ( $role->getId() ) {
+            $wpRole = get_role( $role->getId() );
+
+            if ( !$wpRole )
+                throw new \Maven\Exceptions\NotFoundException( "Role missing: {$roleId}" );
+
+            $wpRole->name = $role->getName();
+
+            // We have to find a way to update the role names
+        }
+        else {
+            add_role( $role->getSanitizedName(), $role->getName(), $role->getCapabilities() );
+            $role->setId( $role->getSanitizedName() );
+        }
+
+        return $role;
+    }
+
+    public function get ( $roleId ) {
+
+        global $wp_roles;
+
+        $mvnRole = new \Maven\Core\Domain\Role();
+
+        $wpRole = get_role( $roleId );
+
+        if ( !$wpRole )
+            throw new \Maven\Exceptions\NotFoundException( "Role missing: {$roleId}" );
+
+        $mvnRole = new \Maven\Core\Domain\Role();
+
+        $mvnRole->setId( $wpRole->name );
+        $mvnRole->setName( $wp_roles->role_names[ $roleId ] );
+        $mvnRole->setCapabilities( $wpRole->capabilities );
+        if ( isset( $this->systemRoles[ $wpRole->name ] ) )
+            $mvnRole->setSystemRole( true );
+        //$mvnRole->setSystemRole( in_array( $wpRole->name, $this->systemRoles ) );
+
+        return $mvnRole;
+    }
+
+    /**
+     * 
+     * @param int $userId
+     * @return \Maven\Core\Domain\Role[]
+     */
+    public function getUserRoles ( $userId ) {
+        $user = new \WP_User( $userId );
+
+        $roles = array();
+        foreach ( $user->roles as $role ) {
+            $userRole = $this->get( $role );
+            //rempove capabilities
+            $userRole->setCapabilities( null );
+            $roles[] = $userRole;
+        }
+
+        return $roles;
+    }
+
+    /**
+     * 
+     * @param \Maven\Core\Domain\Profile $profile
+     * @return \Maven\Core\Domain\Profile
+     */
+    public function saveUserRoles ( \Maven\Core\Domain\Profile $profile ) {
+        if ( !$profile->getUserId() )
+            return $profile;
+
+        $user = new \WP_User( $profile->getUserId() );
+
+        //first remove non existant roles
+        foreach ( $user->roles as $role ) {
+            //search the role in the user role array
+            $found = array_filter( $profile->getRoles(), function($item) use ($role) {
+
+                if ( $item->getId() == $role ) {
+                    return true;
+                }
+
+                return false;
+            } );
+            if ( !$found ) {
+                //The role is not in the array, remove from user
+                $user->remove_role( $role );
+            }
+        }
+
+
+        //then add new roles
+        foreach ( $profile->getRoles() as $role ) {
+            $user->add_role( $role->getId() );
+        }
+
+        return $profile;
+    }
+
+    public function delete ( $rolId ) {
+        $wpRole = get_role( $roleId );
+
+        if ( isset( $this->systemRoles[ $wpRole->name ] ) )
+            return "Can't delete a system role.";
+        
+        if(remove_role($wpRole))
+            return 'Role removed.';
+        else
+            return "Role couldn't be removed.";
+        
+    }
 
 }

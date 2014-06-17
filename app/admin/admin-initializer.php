@@ -16,6 +16,7 @@ class AdminInitializer {
 		$registry = \Maven\Settings\MavenRegistry::instance();
 		$this->classes['settings'] = new Controllers\Settings();
 		$this->classes['taxes'] = new Controllers\Taxes();
+        $this->classes['roles'] = new Controllers\Roles();
 		$this->classes['orders'] = new Controllers\Orders();
 		$this->classes['promotions'] = new Controllers\Promotions();
 		
@@ -43,7 +44,9 @@ class AdminInitializer {
 			wp_enqueue_script( 'admin/controllers/promotions/promotions.js', $registry->getScriptsUrl() . "admin/controllers/promotions/promotions.js", 'mavenApp', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/controllers/promotions/promotions-edit.js', $registry->getScriptsUrl() . "admin/controllers/promotions/promotions-edit.js", 'mavenApp', $registry->getPluginVersion() );
 
-			
+			wp_enqueue_script( 'admin/controllers/orders/roles.js', $registry->getScriptsUrl() . "admin/controllers/roles/roles.js", 'mavenApp', $registry->getPluginVersion() );
+            wp_enqueue_script( 'admin/controllers/roles/roles-edit.js', $registry->getScriptsUrl() . "admin/controllers/roles/roles-edit.js", 'mavenApp', $registry->getPluginVersion() );
+            
 			wp_enqueue_script( 'admin/controllers/orders/orders.js', $registry->getScriptsUrl() . "admin/controllers/orders/orders.js", 'mavenApp', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/controllers/orders/orders-edit.js', $registry->getScriptsUrl() . "admin/controllers/orders/orders-edit.js", 'mavenApp', $registry->getPluginVersion() );
 		}

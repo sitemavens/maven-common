@@ -3,7 +3,6 @@ angular.module('mavenApp')
 	.controller('OrdersCtrl',
 		['$scope', '$location', 'Order', 'OrderFilter',
 			function($scope, $location, Order, OrderFilter) {
-
 				$scope.orders = Order.query(OrderFilter);
 
 
