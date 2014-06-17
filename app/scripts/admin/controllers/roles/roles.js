@@ -8,17 +8,18 @@ angular.module('mavenApp')
 
 				$scope.newRol = function() {
 					$location.path('roles/new');
-				}
+				};
 
 				$scope.editRol = function(id) {
 					$location.path('roles/edit/' + id);
-				}
+				};
 
-				$scope.deleteRol = function(idx) {
-					var rol = $scope.roles[idx];
-					rol.$delete().then(
-						function() {
-							$scope.roles.splice(idx, 1);
+				$scope.deleteRol = function(role) {
+					console.log(role);
+					role.$delete().then(
+						function( data ) {
+							console.log(data);
+							//$scope.roles.splice(idx, 1);
 						});
-				}
+				};
 			}]);
