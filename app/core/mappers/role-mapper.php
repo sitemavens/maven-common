@@ -172,15 +172,14 @@ class RoleMapper extends \Maven\Core\Db\Mapper {
     }
 
     public function delete ( $rolId ) {
-        $wpRole = get_role( $roleId );
-
+        $wpRole = get_role( $rolId );
         if ( isset( $this->systemRoles[ $wpRole->name ] ) )
-            return "Can't delete a system role.";
+            die();;
         
-        if(remove_role($wpRole))
-            return 'Role removed.';
+        if(remove_role($wpRole->name))
+            return;
         else
-            return "Role couldn't be removed.";
+            die();
         
     }
 

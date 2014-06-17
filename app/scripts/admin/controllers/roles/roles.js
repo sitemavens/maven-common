@@ -14,12 +14,11 @@ angular.module('mavenApp')
 					$location.path('roles/edit/' + id);
 				};
 
-				$scope.deleteRol = function(role) {
-					console.log(role);
+				$scope.deleteRol = function(idx) {
+					var role = $scope.roles[idx];
 					role.$delete().then(
 						function( data ) {
-							console.log(data);
-							//$scope.roles.splice(idx, 1);
+							$scope.roles.splice(idx, 1);
 						});
 				};
 			}]);
