@@ -75,6 +75,10 @@ class RoleMapper extends \Maven\Core\Db\Mapper {
     public function updateRole ( \Maven\Core\Domain\Role $role ) {
 
         if ( $role->getId() ) {
+            global $wp_roles;
+            $val = get_option( 'wp_user_roles' );
+            $val[ $role->getId() ][ 'name' ] = $role->getName();
+            update_option( 'wp_user_roles', $val );
             $wpRole = get_role( $role->getId() );
 
             if ( !$wpRole )
@@ -175,12 +179,11 @@ class RoleMapper extends \Maven\Core\Db\Mapper {
         $wpRole = get_role( $rolId );
         if ( isset( $this->systemRoles[ $wpRole->name ] ) )
             die();;
-        
-        if(remove_role($wpRole->name))
+
+        if ( remove_role( $wpRole->name ) )
             return;
         else
             die();
-        
     }
 
 }
