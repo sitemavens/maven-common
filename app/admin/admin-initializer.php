@@ -18,6 +18,7 @@ class AdminInitializer {
 		$this->classes['taxes'] = new Controllers\Taxes();
 		$this->classes['orders'] = new Controllers\Orders();
 		$this->classes['promotions'] = new Controllers\Promotions();
+		$this->classes['https'] = new Controllers\Https();
 		
 		foreach($this->classes as $class ){
 			\Maven\Core\HookManager::instance()->addFilter( "maven/views/get/{$registry->getPluginKey()}", array( $class, 'getView' ) );
@@ -46,6 +47,8 @@ class AdminInitializer {
 			
 			wp_enqueue_script( 'admin/controllers/orders/orders.js', $registry->getScriptsUrl() . "admin/controllers/orders/orders.js", 'mavenApp', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/controllers/orders/orders-edit.js', $registry->getScriptsUrl() . "admin/controllers/orders/orders-edit.js", 'mavenApp', $registry->getPluginVersion() );
+			
+			wp_enqueue_script( 'admin/controllers/https/https.js', $registry->getScriptsUrl() . "admin/controllers/https/https.js", 'mavenApp', $registry->getPluginVersion() );
 		}
 	}
 

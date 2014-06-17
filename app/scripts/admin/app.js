@@ -26,7 +26,7 @@ angular
 					order: ['OrderLoader', function(OrderLoader) {
 							return OrderLoader();
 						}]
-				},
+				}
 			})
 			.when('/promotions', {
 				templateUrl: Maven.adminViewsUrl + 'promotions/promotions.php',
@@ -43,6 +43,10 @@ angular
 			.when('/taxes', {
 				templateUrl: Maven.adminViewsUrl + 'taxes/taxes.php',
 				controller: 'TaxesCtrl'
+			})
+			.when('/https', {
+				templateUrl: Maven.adminViewsUrl + 'https/https.php',
+				controller: 'HttpsCtrl'
 			})
 			.when('/taxes/new', {
 				templateUrl: Maven.adminViewsUrl + 'taxes/taxes-edit.php',

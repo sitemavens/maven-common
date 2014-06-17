@@ -74,6 +74,18 @@ admin.factory('OrderLoader', ['Order', '$route', '$q',
 		};
 	}]);
 /* End Order Services */
+admin.factory('Https', ['$http', function($http) {
+
+		return {
+			getPages: function() {
+				return $http.get('/wp-json/maven/https/');
+			},
+			save: function(pages) {
+				return $http.post('/wp-json/maven/https/', pages);
+			}
+		};
+	}
+	]);
 
 admin.factory('Setting', ['$resource', function($resource) {
 		return $resource('/wp-json/maven/settings/:id', {id: '@id'}, {
