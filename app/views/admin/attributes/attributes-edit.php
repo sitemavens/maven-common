@@ -9,13 +9,13 @@
     	<div class="form-group">
 		<label for="name" class="col-sm-2 control-label">Default Price</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" id="name" ng-model="attr.dprice" placeholder="">
+			<input type="text" class="form-control" id="name" ng-model="attr.defaultAmount" placeholder="">
 		</div>
 	</div>
     	<div class="form-group">
 		<label for="name" class="col-sm-2 control-label">Default Wholesale Price</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" id="name" ng-model="attr.dwprice" placeholder="">
+			<input type="text" class="form-control" id="name" ng-model="attr.defaultWholesaleAmount" placeholder="">
 		</div>
 	</div>
     	<div class="form-group">

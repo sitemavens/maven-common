@@ -41,7 +41,6 @@ class Attributes extends \Maven\Admin\Controllers\MavenAdminController {
         $attrs = new \Maven\Core\Domain\Attribute();
 
         $attrs->load( $data );
-        
         $attrs = $manager->addAttribute( $attrs );
 
         $this->getOutput()->sendApiResponse( $attrs );

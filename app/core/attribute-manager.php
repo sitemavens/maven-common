@@ -52,7 +52,7 @@ class AttributeManager {
 	 * @return type
 	 */
 	public function delete( $attributeId ) {
-		return $this->mapper->delete( $variationId );
+		return $this->mapper->delete( $attributeId );
 	}
 
 }
