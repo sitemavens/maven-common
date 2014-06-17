@@ -9,7 +9,6 @@
     <tbody>
         <tr ng-repeat="rol in roles">
             <td>
-                <span ng-bind="$index">{{rol.id}}</span>
                 <button class="btn btn-primary btn-xs" ng-click="editRol(rol.id)">Edit</button>
                 <button class="btn btn-info btn-xs" ng-click="deleteRol($index)">Delete</button>	
             </td>
