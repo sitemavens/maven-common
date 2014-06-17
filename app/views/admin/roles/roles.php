@@ -1,5 +1,4 @@
 <h1>Roles <button class="btn btn-default" ng-click="newRol()">New</button></h1>
-{{roles}}
 <table class="table table-striped">
     <thead>
         <tr>
