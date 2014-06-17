@@ -20,6 +20,7 @@ class AdminInitializer {
 		$this->classes['orders'] = new Controllers\Orders();
 		$this->classes['promotions'] = new Controllers\Promotions();
         $this->classes['attributes'] = new Controllers\Attributes();
+		$this->classes['https'] = new Controllers\Https();
 		
 		foreach($this->classes as $class ){
 			\Maven\Core\HookManager::instance()->addFilter( "maven/views/get/{$registry->getPluginKey()}", array( $class, 'getView' ) );
@@ -45,6 +46,7 @@ class AdminInitializer {
 			wp_enqueue_script( 'admin/controllers/promotions/promotions.js', $registry->getScriptsUrl() . "admin/controllers/promotions/promotions.js", 'mavenApp', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/controllers/promotions/promotions-edit.js', $registry->getScriptsUrl() . "admin/controllers/promotions/promotions-edit.js", 'mavenApp', $registry->getPluginVersion() );
 
+
 			wp_enqueue_script( 'admin/controllers/roles/roles.js', $registry->getScriptsUrl() . "admin/controllers/roles/roles.js", 'mavenApp', $registry->getPluginVersion() );
             wp_enqueue_script( 'admin/controllers/roles/roles-edit.js', $registry->getScriptsUrl() . "admin/controllers/roles/roles-edit.js", 'mavenApp', $registry->getPluginVersion() );
             
@@ -53,6 +55,8 @@ class AdminInitializer {
             
 			wp_enqueue_script( 'admin/controllers/orders/orders.js', $registry->getScriptsUrl() . "admin/controllers/orders/orders.js", 'mavenApp', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/controllers/orders/orders-edit.js', $registry->getScriptsUrl() . "admin/controllers/orders/orders-edit.js", 'mavenApp', $registry->getPluginVersion() );
+			
+			wp_enqueue_script( 'admin/controllers/https/https.js', $registry->getScriptsUrl() . "admin/controllers/https/https.js", 'mavenApp', $registry->getPluginVersion() );
 		}
 	}
 

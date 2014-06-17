@@ -11,73 +11,55 @@ class Https extends MavenAdminController {
 
 		parent::__construct();
 	}
+	
+	public function registerRoutes( $routes ) {
 
-	function save() {
-		
+		$routes[ '/maven/https' ] = array(
+		    array( array( $this, 'getHttpPages' ), \WP_JSON_Server::READABLE ),
+		    array( array( $this, 'saveHttps' ), \WP_JSON_Server::CREATABLE|\WP_JSON_Server::ACCEPT_JSON ),
+		);
+
+		return $routes;
 	}
-
-	public function cancel() {
-		
-	}
-
-	public function showForm() {
-
-		$httpsPages = $this->getRegistry()->getHttpsPages();
-		if ( ! $httpsPages )
+	
+	public function getHttpPages() {
+		$registry = \Maven\Settings\MavenRegistry::instance();
+		$httpsPages = $registry->getHttpsPages();
+		if ( !$httpsPages ){
 			$httpsPages = array();
+		}
 
 		$wp_pages = \get_pages();
-		$pages = array();
+		$entities = array();
 		foreach ( $wp_pages as $page ) {
-			$pages[] = array(
+			$entities[] = array(
 			    'id' => $page->ID,
 			    'title' => $page->post_title,
 			    'url' => \get_permalink($page->ID),
-			    'name' => $page->post_name
+			    'name' => $page->post_name,
+				'https' => in_array( $page->ID, $httpsPages )
 			);
 		}
 
-		$model = array( 'pages' => implode( ',', $httpsPages ) );
-
-		$this->addJSONData( 'httpPages', $model );
-		$this->addJSONData( 'pages', $pages );
-
-
-		$this->getOutput()->setTitle( "HTTPS Settings" );
-
-		$this->getOutput()->loadAdminView( "https" );
-	}
-
-	public function showList() {
+		
+		$this->getOutput()->sendApiResponse( $entities );
 		
 	}
 
-	public function entryPoint() {
-
-		$event = $this->getRequest()->getProperty( "event" );
-		$data = $this->getRequest()->getProperty( "data" );
-
-		switch ( $event ) {
-
-			case "update":
-
-				$this->updateOption( $data );
-				break;
+	function saveHttps( $data ) {
+		$httpPagesChecked = array();
+		foreach ( $data as $page ) {
+			if( isset($page['https']) && $page['https'] ){
+				$httpPagesChecked[] = $page['id'];
+			}
 		}
-	}
-
-	public function updateOption( $optionToUpdate ) {
-
 		// Get all the settings 
 		$options = $this->getRegistry()->getOptions();
 
-		//var_dump( explode( ',', $optionToUpdate[ 'pages' ] ) );
-
-		$options[ 'httpsPages' ]->setValue( explode( ',', $optionToUpdate[ 'pages' ] ) );
+		$options[ 'httpsPages' ]->setValue( $httpPagesChecked );
 
 		$this->getRegistry()->saveOptions( $options );
 
 		$this->getOutput()->sendData( "Settings udpated" );
 	}
-
 }

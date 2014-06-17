@@ -170,8 +170,8 @@ if ( is_admin() ) {
 	$promotions = $componentManager->createComponent( 'Promotions', 'Maven\\Admin\\Controllers\\Promotions' );
 
 	$taxes = $componentManager->createComponent( 'Taxes', 'Maven\\Admin\\Controllers\\Taxes' );
-    
     $attributes = $componentManager->createComponent( 'Attributes', 'Maven\\Admin\\Controllers\\Attributes' );
+	$https = $componentManager->createComponent( 'Https', 'Maven\\Admin\\Controllers\\Https' );
 
 	$menuManager = $director->getMenuManager( $registry );
 
@@ -181,6 +181,7 @@ if ( is_admin() ) {
 	$menuManager->registerMenu( $promotions );
 	$menuManager->registerMenu( $taxes );
     $menuManager->registerMenu( $attributes );
+	$menuManager->registerMenu( $https );
 } else {
 
 	// TODO: We need to improve it

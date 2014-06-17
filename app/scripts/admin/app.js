@@ -37,7 +37,11 @@ angular
 							order: ['OrderLoader', function(OrderLoader) {
 									return OrderLoader();
 								}]
-						},
+						}
+					})
+					.when('/https', {
+						templateUrl: Maven.adminViewsUrl + 'https/https.php',
+						controller: 'HttpsCtrl'
 					})
 					.when('/promotions', {
 						templateUrl: Maven.adminViewsUrl + 'promotions/promotions.php',
