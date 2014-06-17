@@ -3,102 +3,81 @@
 namespace Maven\Admin\Controllers;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) ) exit;
-
+if ( !defined( 'ABSPATH' ) )
+    exit;
 
 class Roles extends MavenAdminController {
 
-	public function __construct() {
+    public function __construct () {
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
-	function save() {
-		
-	}
+    public function registerRoutes ( $routes ) {
 
-	public function cancel() {
-		
-	}
+        $routes[ '/maven/roles' ] = array(
+            array( array( $this, 'getRoles' ), \WP_JSON_Server::READABLE ),
+            array( array( $this, 'newRol' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+        );
+        $routes[ '/maven/roles/(?P<id>\D+)' ] = array(
+            array( array( $this, 'getRol' ), \WP_JSON_Server::READABLE ),
+            array( array( $this, 'editRol' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+            array( array( $this, 'deleteRol' ), \WP_JSON_Server::DELETABLE ),
+        );
 
-	public function showForm() {
-		
-		$roleManager = new \Maven\Security\RoleManager();
-		$roles = $roleManager->getRoles();
-		
-		$this->addJSONData( 'roles', $roles );
-		
-		$this->getOutput()->setTitle( "Roles" );
+        return $routes;
+    }
 
-		$this->getOutput()->loadAdminView( "roles" );
-		
-	}
+    public function getRoles () {
+        $manager = new \Maven\Security\RoleManager();
 
-	public function showList() {
-		
-	}
-	
-	
-	public function entryPoint() {
-		
-		$event = $this->getRequest()->getProperty( "event" );
-		
-		try {
-			$event = $this->getRequest()->getProperty( 'event' );
+        $roles = $manager->getRoles();
 
-			$manager = new \Maven\Security\RoleManager();
+        $this->getOutput()->sendApiResponse( $roles );
+    }
 
-			switch ( $event ) {
-				case 'create':
-				case 'update':
-					$data = $this->getRequest()->getProperty( 'data' );
-					
-					$role = new \Maven\Core\Domain\Role();
-					$role->load($data);
-					
-					$role = $manager->updateRole( $role );
+    public function newRol ( $data ) {
+        $manager = new \Maven\Security\RoleManager();
 
-					$this->getOutput()->sendData( $role->toArray() );
+        $role = new \Maven\Core\Domain\Role();
 
+        $role->load( $data );
+        
+        $role = $manager->updateRole( $role );
 
-					break;
+        $this->getOutput()->sendApiResponse( $role );
+    }
 
-				case 'read':
+    public function getRol ( $id ) {
+        $manager = new \Maven\Security\RoleManager();
+        $role = $manager->get( $id );
 
-					$modelId = $this->getRequest()->getProperty( 'id' );
+        $this->getOutput()->sendApiResponse( $role );
+    }
 
-					if ( $modelId ) {
-						try {
-							$role = $manager->get($modelId);
-							$this->getOutput()->sendData( $role->toArray() );
-						} catch ( \Maven\Exceptions\MavenException $ex ) {
-							$this->getOutput()->sendError( $ex->getMessage() );
-						}
-					} 
-					break;
+    public function editRol ( $id, $data ) {
 
+        $manager = new \Maven\Security\RoleManager();
 
-				case 'delete':
-					$modelId = $this->getRequest()->getProperty( 'id' );
+        $role = new \Maven\Core\Domain\Role();
 
-					$manager->delete( $modelId );
+        $role->load( $data );
 
-					//Empty response
-					$this->getOutput()->sendData( 'deleted' );
+        $role = $manager->updateRole( $role );
 
-					break;
-			}
-		} catch ( Exception $ex ) {
-			$this->getOutput()->sendError( $ex->getMessage() );
-		}
-	}
-	
-	
+        $this->getOutput()->sendApiResponse( $role );
+    }
 
-	
+    public function deleteRol ( $id ) {
+        $manager = new \Maven\Security\RoleManager();
+
+        $manager->delete( $id );
+
+        $this->getOutput()->sendApiResponse( new \stdClass() );
+    }
+
+    public function getView ( $view ) {
+        return $view;
+    }
 
 }
-
-
-
-			

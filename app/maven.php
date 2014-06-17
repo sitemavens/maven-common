@@ -164,6 +164,8 @@ if ( is_admin() ) {
 	$settings = $componentManager->createComponent( 'Settings', 'Maven\\Admin\\Controllers\\Settings' );
 
 	$orders = $componentManager->createComponent( 'Orders', 'Maven\\Admin\\Controllers\\Orders' );
+    
+    $roles = $componentManager->createComponent( 'Roles', 'Maven\\Admin\\Controllers\\Roles' );
 
 	$promotions = $componentManager->createComponent( 'Promotions', 'Maven\\Admin\\Controllers\\Promotions' );
 
@@ -174,6 +176,7 @@ if ( is_admin() ) {
 	$menuManager = $director->getMenuManager( $registry );
 
 	$menuManager->registerMenu( $settings, "Maven", $registry->getAssetsUrl() . "images/icon.png" );
+    $menuManager->registerMenu( $roles );
 	$menuManager->registerMenu( $orders );
 	$menuManager->registerMenu( $promotions );
 	$menuManager->registerMenu( $taxes );
