@@ -88,8 +88,14 @@ admin.factory('Https', ['$http', function($http) {
 			getPages: function() {
 				return $http.get('/wp-json/maven/https/');
 			},
-			save: function(pages) {
-				return $http.post('/wp-json/maven/https/', pages);
+			save: function(pages, callback) {
+				$http.post('/wp-json/maven/https/', pages)
+														.success(function(data) {
+															return callback(data);
+														})
+														.error(function(data) {
+															return callback(data, error);
+														});
 			}
 		};
 	}
