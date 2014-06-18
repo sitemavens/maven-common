@@ -92,7 +92,7 @@ angular
 						controller: 'AttrEditCtrl'
 					})
 					.when('/settings', {
-						templateUrl: Maven.viewHandlerUrl + 'maven/settings/',
+						templateUrl: Maven.viewHandlerUrl + 'maven/settings',
 						controller: 'SettingsCtrl'
 					})
 					.otherwise({

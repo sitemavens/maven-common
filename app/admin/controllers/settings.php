@@ -6,7 +6,7 @@ namespace Maven\Admin\Controllers;
 if ( ! defined( 'ABSPATH' ) )
 	exit;
 
-class Settings extends MavenAdminController {
+class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iView {
 
 	public function __construct() {
 		parent::__construct();

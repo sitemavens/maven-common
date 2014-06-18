@@ -3,32 +3,35 @@
 namespace Maven\Admin;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class AdminInitializer {
 
-	private $classes= array();
-	public function __construct() {
+	private $classes = array();
+
+	public function __construct () {
 
 		\Maven\Core\HookManager::instance()->addAction( 'admin_enqueue_scripts', array( $this, 'registerScripts' ), 10, 1 );
-		
+
 		$registry = \Maven\Settings\MavenRegistry::instance();
-		$this->classes['settings'] = new Controllers\Settings();
-		$this->classes['taxes'] = new Controllers\Taxes();
-        $this->classes['roles'] = new Controllers\Roles();
-        $this->classes['profiles'] = new Controllers\Profiles();
-		$this->classes['orders'] = new Controllers\Orders();
-		$this->classes['promotions'] = new Controllers\Promotions();
-        $this->classes['attributes'] = new Controllers\Attributes();
-		$this->classes['https'] = new Controllers\Https();
-		
-		foreach($this->classes as $class ){
-			\Maven\Core\HookManager::instance()->addFilter( "maven/views/get/{$registry->getPluginKey()}", array( $class, 'getView' ) );
+		$this->classes[ 'settings' ] = new Controllers\Settings();
+		$this->classes[ 'taxes' ] = new Controllers\Taxes();
+		$this->classes[ 'roles' ] = new Controllers\Roles();
+		$this->classes[ 'profiles' ] = new Controllers\Profiles();
+		$this->classes[ 'orders' ] = new Controllers\Orders();
+		$this->classes[ 'promotions' ] = new Controllers\Promotions();
+		$this->classes[ 'attributes' ] = new Controllers\Attributes();
+		$this->classes[ 'https' ] = new Controllers\Https();
+
+		foreach ( $this->classes as $class ) {
+			if ( $class instanceof \Maven\Core\Interfaces\iView ) {
+				\Maven\Core\HookManager::instance()->addFilter( "maven/views/get/{$registry->getPluginKey()}", array( $class, 'getView' ) );
+			}
 		}
 	}
 
-	public function registerScripts( $hook ) {
+	public function registerScripts ( $hook ) {
 
 		$registry = \Maven\Settings\MavenRegistry::instance();
 
@@ -49,28 +52,27 @@ class AdminInitializer {
 
 
 			wp_enqueue_script( 'admin/controllers/roles/roles.js', $registry->getScriptsUrl() . "admin/controllers/roles/roles.js", 'mavenApp', $registry->getPluginVersion() );
-            wp_enqueue_script( 'admin/controllers/roles/roles-edit.js', $registry->getScriptsUrl() . "admin/controllers/roles/roles-edit.js", 'mavenApp', $registry->getPluginVersion() );
-            
-            wp_enqueue_script( 'admin/controllers/attributes/attributes.js', $registry->getScriptsUrl() . "admin/controllers/attributes/attributes.js", 'mavenApp', $registry->getPluginVersion() );
-            wp_enqueue_script( 'admin/controllers/attributes/attributes-edit.js', $registry->getScriptsUrl() . "admin/controllers/attributes/attributes-edit.js", 'mavenApp', $registry->getPluginVersion() );
-            
-            wp_enqueue_script( 'admin/controllers/profiles/profiles.js', $registry->getScriptsUrl() . "admin/controllers/profiles/profiles.js", 'mavenApp', $registry->getPluginVersion() );
+			wp_enqueue_script( 'admin/controllers/roles/roles-edit.js', $registry->getScriptsUrl() . "admin/controllers/roles/roles-edit.js", 'mavenApp', $registry->getPluginVersion() );
+
+			wp_enqueue_script( 'admin/controllers/attributes/attributes.js', $registry->getScriptsUrl() . "admin/controllers/attributes/attributes.js", 'mavenApp', $registry->getPluginVersion() );
+			wp_enqueue_script( 'admin/controllers/attributes/attributes-edit.js', $registry->getScriptsUrl() . "admin/controllers/attributes/attributes-edit.js", 'mavenApp', $registry->getPluginVersion() );
+
+			wp_enqueue_script( 'admin/controllers/profiles/profiles.js', $registry->getScriptsUrl() . "admin/controllers/profiles/profiles.js", 'mavenApp', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/controllers/profiles/profiles-edit.js', $registry->getScriptsUrl() . "admin/controllers/profiles/profiles-edit.js", 'mavenApp', $registry->getPluginVersion() );
-            
+
 			wp_enqueue_script( 'admin/controllers/orders/orders.js', $registry->getScriptsUrl() . "admin/controllers/orders/orders.js", 'mavenApp', $registry->getPluginVersion() );
 			wp_enqueue_script( 'admin/controllers/orders/orders-edit.js', $registry->getScriptsUrl() . "admin/controllers/orders/orders-edit.js", 'mavenApp', $registry->getPluginVersion() );
-			
+
 			wp_enqueue_script( 'admin/controllers/https/https.js', $registry->getScriptsUrl() . "admin/controllers/https/https.js", 'mavenApp', $registry->getPluginVersion() );
 		}
 	}
 
-	public function registerRouters() {
+	public function registerRouters () {
 
 
-		foreach($this->classes as $class ){
+		foreach ( $this->classes as $class ) {
 			\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $class, 'registerRoutes' ) );
 		}
-		
 	}
 
 }

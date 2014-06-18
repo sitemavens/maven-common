@@ -6,7 +6,7 @@ namespace Maven\Admin\Controllers;
 if ( ! defined( 'ABSPATH' ) )
 	exit;
 
-class Promotions extends \Maven\Admin\Controllers\MavenAdminController {
+class Promotions extends \Maven\Admin\Controllers\MavenAdminController implements \Maven\Core\Interfaces\iView {
 
 	public function __construct() {
 		parent::__construct();
@@ -36,7 +36,6 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController {
 				$this->addJSONData( "cachedSections", $sections );
 				$this->addJSONData( "cachedTypes", $types );
 				return $this->getOutput()->getAdminView( "promotions/{$view}" );
-				break;
 		}
 
 		return $view;
