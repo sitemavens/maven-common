@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 abstract class Gateway {
 
 	private $fields = array( );
-	private $options = array( );
+	protected $options = array( );
 	private $liveUrl = "";
 	private $testUrl = "";
 	private $parameterPrefix = "";
@@ -21,7 +21,7 @@ abstract class Gateway {
 	private $rawResponse = false;
 	private $pluginId = false;
 	private $itemDelimiter;
-	private $name;
+	protected $name;
 	private $testMode = true;
 	private $firstName;
 	private $lastName;

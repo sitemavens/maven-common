@@ -27,7 +27,7 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 		return $routes;
 	}
 
-	public function edit( $id, $data ) {
+	public function edit( $data ) {
 
 		
 		$settings = \Maven\Settings\MavenRegistry::instance()->getOptions();
