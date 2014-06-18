@@ -123,13 +123,13 @@
 						<div class="form-group">
 							<label for="addressAddressEdit" class="col-sm-2 control-label">Address</label>
 							<div class="col-sm-10">
-								<input type="email" class="form-control" id="addressAddressEdit" ng-model="address.firstLine" placeholder="">
+								<input type="text" class="form-control" id="addressAddressEdit" ng-model="address.firstLine" placeholder="">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="addressAddressSecondaryEdit" class="col-sm-2 control-label">Address 2</label>
 							<div class="col-sm-10">
-								<input type="email" class="form-control" id="addressAddressSecondaryEdit" ng-model="address.secondLine" placeholder="">
+								<input type="text" class="form-control" id="addressAddressSecondaryEdit" ng-model="address.secondLine" placeholder="">
 							</div>
 						</div>
 						<div class="form-group">
