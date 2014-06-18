@@ -15,13 +15,12 @@ class OfflineGateway extends \Maven\Gateways\Gateway{
 	
 	public function __construct() {
 		
-		parent::__construct();
+		parent::__construct("Offline");
 		
 		$this->setLiveUrl( "" );
 		$this->setTestUrl( "" );
 		$this->setParameterPrefix( "" );
 		$this->setItemDelimiter( "" );
-		$this->setName( "Offline" );
 		 
 	}
 

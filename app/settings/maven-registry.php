@@ -77,6 +77,8 @@ class MavenRegistry extends WordpressRegistry {
 				    "gridRows", "Rows to show on Grid", '10', '', OptionType::Input
 			    ), new Option(
 				    "cartUrl", "Cart Url", 'cart/', '', OptionType::Input
+			    ),new Option(
+				    "gatewayTestingMode", "Gateway Testing Mode", true, true, OptionType::CheckBox
 			    )
 			);
 
@@ -155,6 +157,10 @@ class MavenRegistry extends WordpressRegistry {
 		return $this->getValue( 'recurringEnabled' );
 	}
 
+	public function isGatewayTestingMode(){
+		return $this->getValue( 'gatewayTestingMode' );
+	}
+	
 	public function getEnabledTrackers() {
 		$trackers = $this->getValue( 'enabledTrackers' );
 

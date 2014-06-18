@@ -6,7 +6,8 @@ angular
 			'ngSanitize',
 			'ngRoute',
 			'ui.bootstrap',
-			'mavenApp.services'
+			'mavenApp.services',
+			'mavenApp.controllers'
 		])
 		.config(function($routeProvider) {
 			$routeProvider
@@ -93,9 +94,11 @@ angular
 					})
 					.when('/settings', {
 						templateUrl: Maven.viewHandlerUrl + 'maven/settings',
-						controller: 'SettingsCtrl'
+						controller: 'SettingsController'
 					})
 					.otherwise({
 						redirectTo: '/'
 					});
 		});
+
+angular.module('mavenApp.controllers',[]);

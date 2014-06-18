@@ -15,19 +15,19 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 	public function registerRoutes( $routes ) {
 
 		$routes[ '/maven/settings' ] = array(
-		    array( array( $this, 'getSettings' ), \WP_JSON_Server::READABLE )
-		);
-
-		$routes[ '/maven/settings/(?P<id>\d+)' ] = array(
 		    array( array( $this, 'getSettings' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'edit' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			array( array( $this, 'edit' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			
 		);
-
+		
+		$routes[ '/maven/gateways' ] = array(
+		    array( array( $this, 'getGateways' ), \WP_JSON_Server::READABLE )
+		);
 
 		return $routes;
 	}
 
-	public function edit( $id, $data ) {
+	public function edit( $data ) {
 
 		
 		$settings = \Maven\Settings\MavenRegistry::instance()->getOptions();
@@ -67,6 +67,27 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 
 		$this->getOutput()->sendApiResponse( $entity );
 		
+	}
+	
+	
+	public function getGateways(){
+		
+		$gateways = \Maven\Gateways\GatewayFactory::getAll();
+		
+		$gatewaysData = array();
+		foreach ($gateways as $gateway){
+			
+			$settings = $gateway->getSettings();
+			$data = array(
+				'name'=> $gateway->getName(),
+				'key' => $gateway->getKey(),
+				'settings' => $settings,
+				'hasSettings' => \Maven\Core\Utils::isEmpty( $settings )?false:true
+			);
+			
+			$gatewaysData[] = $data;
+		}
+		$this->getOutput()->sendApiResponse( $gatewaysData );
 	}
 
 }

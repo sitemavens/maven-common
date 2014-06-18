@@ -18,22 +18,43 @@ class DummyGateway extends Gateway {
 
 	public function __construct() {
 
-		parent::__construct();
+		parent::__construct("Dummy");
 
 		$this->setLiveUrl( "" );
 		$this->setTestUrl( "" );
 		$this->setParameterPrefix( "" );
 		$this->setItemDelimiter( "" );
-		$this->setName( "Dummy" );
 		$this->setManageProfile( true );
 
+		$responseType = new Option("responseType", "Response Type", true, '', OptionType::DropDown);
+		$responseType->setOptions( array(
+			array('id'=>'random' , 'name'=> 'Random'),
+			array('id'=>'approved' , 'name'=> 'Approved',
+			array('id'=>'error' , 'name'=> 'Error')
+		)));
+		
 		$defaultOptions = array(
-		    new Option(
-			    "recurringEnabled", "Recurring Enabled", true, '', OptionType::CheckBox
-		    )
+//		    new Option(
+//			    "recurringEnabled", "Recurring Enabled", true, '', OptionType::CheckBox
+//		    ),
+			$responseType
 		);
 
 		$this->addSettings( $defaultOptions );
+	}
+	
+	private function getResponseType(){
+		
+		$responseType =  $this->getSetting('responseType')?$this->getSetting('responseType'):'random';
+		
+		switch( $responseType ){
+			case 'random':
+				return rand( 1, 4 );
+			case 'approved':
+				return 1;
+			case 'error':
+				return 4;
+		}
 	}
 
 	/**
@@ -43,15 +64,13 @@ class DummyGateway extends Gateway {
 	 */
 	public function execute() {
 
-		$option = 1; //rand( 1, 4 );
+		$option = $this->getResponseType(); 
 
 		switch ( $option ) {
 			case 1:
 				$this->setApproved( true );
 
-				//$this->setTransactionId( rand( 9999, 99999 ) );
 				$this->setTransactionId( sprintf( "%10d", rand( 0, 9999999999 ) ) );
-				//$this->setTransactionId( rtrim( base64_encode( md5( microtime() ) ), "=" ) );
 				break;
 			case 2:
 				$this->setHeldForReview( true );

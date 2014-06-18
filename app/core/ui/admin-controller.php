@@ -105,9 +105,10 @@ abstract class AdminController {
 
 	/**
 	 * Get output object
-	 * @return \Maven\Core\UI\Ouput 
+	 * @return \Maven\Core\UI\Output
 	 */
 	protected function getOutput() {
+		
 		return $this->output;
 	}
 
