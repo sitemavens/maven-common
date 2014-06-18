@@ -14,6 +14,7 @@ class Option extends \Maven\Core\DomainObject{
 	private $value;
 	private $defaultValue;
 	private $group;
+	private $options = array();
 
 	/**
 	 *
@@ -41,8 +42,9 @@ class Option extends \Maven\Core\DomainObject{
 
 		//TODO: The output generator shoudn't be in the constructor.
 		//Check if there is a custom render, or we need to use the default
-		if ( ! $outputGenerator )
+		if ( !$outputGenerator ) {
 			$this->outputGenerator = new \Maven\Core\UI\DefaultOptionOutputGenerator( $this );
+		}
 	}
 
 	public function getOutputGenerator() {
@@ -108,6 +110,16 @@ class Option extends \Maven\Core\DomainObject{
 	public function getRenderedCode() {
 		return $this->outputGenerator->getRenderedCode();
 	}
+	
+	public function getOptions () {
+		return $this->options;
+	}
+
+	public function setOptions ( $options ) {
+		$this->options = $options;
+	}
+
+
 
 }
 

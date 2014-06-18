@@ -2,13 +2,17 @@
 
 var app = angular.module('mavenApp.controllers');
 
-app.controller('SettingsController', ['$scope', 'Setting','Gateway', function($scope, Setting,Gateway) {
+app.controller('SettingsController', ['$scope', 'Setting', 'Gateway', function($scope, Setting, Gateway) {
 
-		Setting.get().then(function(result){
+		$scope.gatewaySettings = {
+			active: 'dummy'
+		};
+
+		Setting.get().then(function(result) {
 			$scope.setting = result.data;
 		});
-		
-		Gateway.get().then(function(result){
+
+		Gateway.get().then(function(result) {
 			$scope.gateways = result.data;
 			console.log(result.data);
 		});
@@ -17,4 +21,4 @@ app.controller('SettingsController', ['$scope', 'Setting','Gateway', function($s
 			Setting.save($scope.setting);
 		};
 	}]
-);
+		);

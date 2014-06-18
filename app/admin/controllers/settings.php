@@ -74,7 +74,20 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 		
 		$gateways = \Maven\Gateways\GatewayFactory::getAll();
 		
-		$this->getOutput()->sendApiResponse( $gateways );
+		$gatewaysData = array();
+		foreach ($gateways as $gateway){
+			
+			$settings = $gateway->getSettings();
+			$data = array(
+				'name'=> $gateway->getName(),
+				'key' => $gateway->getKey(),
+				'settings' => $settings,
+				'hasSettings' => \Maven\Core\Utils::isEmpty( $settings )?false:true
+			);
+			
+			$gatewaysData[] = $data;
+		}
+		$this->getOutput()->sendApiResponse( $gatewaysData );
 	}
 
 }

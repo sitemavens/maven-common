@@ -22,6 +22,7 @@ abstract class Gateway {
 	private $pluginId = false;
 	private $itemDelimiter;
 	protected $name;
+	protected $key;
 	private $testMode = true;
 	private $firstName;
 	private $lastName;
@@ -79,8 +80,11 @@ abstract class Gateway {
 	
 	private $discountAmount=0;
 	
-	public function __construct() {
-		;
+	public function __construct( $name ) {
+		
+		$this->name = $name;
+		$this->key = sanitize_key( $name );
+		
 	}
 
 	/*	 * **   These properties are for CIM methods *** */
@@ -645,7 +649,8 @@ abstract class Gateway {
 	}
 	
 	public function getKey(){
-		return sanitize_key( $this->getName() );
+		return $this->key;
+		
 	}
 
 	private function syncronize() {

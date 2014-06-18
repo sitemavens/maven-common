@@ -82,8 +82,28 @@
 	<tab heading="Gateways">
 		<div class="col-md-4">
 			<div class="panel panel-default">
-				<div class="panel-heading">Gateways</div>
+				<div class="panel-heading">General</div>
 				<div class="panel-body">
+					<div class="form-group"  >
+						<label for="">Active Gateway</label>
+						<select ng-model="gatewaySettings.active"  ng-options="gate.key as gate.name for gate in gateways"></select>
+					</div>
+					<div class="form-group"  >
+						<label for="">Mode</label>
+						<select ng-model="gatewaySettings.mode" >
+							<option value="test" >Test</option>
+							<option value="live">Live</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			
+			<div class="panel panel-default" ng-repeat="gate in gateways | filter:{hasSettings:true}">
+				<div class="panel-heading" ng-bind="gate.name"></div>
+				<div class="panel-body">
+					<div class="form-group"  >
+						Testing!
+					</div>
 				</div>
 			</div>
 		</div>
