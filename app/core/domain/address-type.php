@@ -28,4 +28,38 @@ class AddressType{
 						self::Other		=> 'Other',
 				);
 	}
+	
+	public static function getAddressesTypesCollection(){
+		$addresses = array(
+				    array(
+					'id' => self::Billing,
+					'name' => 'Billing'
+				    ),
+				    array(
+					'id' => self::Shipping,
+					'name' => 'Shipping'
+				    ),
+				    array(
+					'id' => self::Work,
+					'name' => 'Work'
+				    ),
+				    array(
+					'id' => self::Home,
+					'name' => 'Home'
+				    ),
+				    array(
+					'id' => self::Friend,
+					'name' => 'Friend'
+				    ),
+				    array(
+					'id' => self::Family,
+					'name' => 'Family'
+				    ),
+				    array(
+					'id' => self::Other,
+					'name' => 'Other'
+				    )
+		);
+		return $addresses;
+	}
 }

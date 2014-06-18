@@ -31,11 +31,11 @@ angular
 						controller: 'ProfileCtrl'
 					})
 					.when('/profiles/new', {
-						templateUrl: Maven.adminViewsUrl + 'profiles/profiles-edit.php',
+						templateUrl: Maven.viewHandlerUrl  + 'maven/profiles-edit',
 						controller: 'ProfileEditCtrl'
 					})
 					.when('/profiles/edit/:id', {
-						templateUrl: Maven.adminViewsUrl + 'profiles/profiles-edit.php',
+						templateUrl: Maven.viewHandlerUrl  + 'maven/profiles-edit',
 						controller: 'ProfileEditCtrl'
 					})
 					.when('/orders', {

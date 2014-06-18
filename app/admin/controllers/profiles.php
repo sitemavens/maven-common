@@ -6,75 +6,81 @@ namespace Maven\Admin\Controllers;
 if ( ! defined( 'ABSPATH' ) )
 	exit;
 
-class Profiles extends \Maven\Admin\Controllers\MavenAdminController {
+class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements \Maven\Core\Interfaces\iView{
 
 	public function __construct() {
 		parent::__construct();
 	}
 
-    public function registerRoutes ( $routes ) {
+	public function registerRoutes( $routes ) {
 
-        $routes[ '/maven/profiles' ] = array(
-            array( array( $this, 'getProfiles' ), \WP_JSON_Server::READABLE ),
-            array( array( $this, 'newProfile' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
-        );
-        $routes[ '/maven/profiles/(?P<id>\d+)' ] = array(
-            array( array( $this, 'getProfile' ), \WP_JSON_Server::READABLE ),
-            array( array( $this, 'editProfile' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
-            array( array( $this, 'deleteProfile' ), \WP_JSON_Server::DELETABLE ),
-        );
+		$routes[ '/maven/profiles' ] = array(
+		    array( array( $this, 'getProfiles' ), \WP_JSON_Server::READABLE ),
+		    array( array( $this, 'newProfile' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		);
+		$routes[ '/maven/profiles/(?P<id>\d+)' ] = array(
+		    array( array( $this, 'getProfile' ), \WP_JSON_Server::READABLE ),
+		    array( array( $this, 'editProfile' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		    array( array( $this, 'deleteProfile' ), \WP_JSON_Server::DELETABLE ),
+		);
 
-        return $routes;
-    }
+		return $routes;
+	}
 
-    public function getProfiles () {
-        $manager = new \Maven\Core\ProfileManager();
-        $profile = $manager->getAll();
-        
-        $this->getOutput()->sendApiResponse( $profile );
-    }
+	public function getProfiles() {
+		$manager = new \Maven\Core\ProfileManager();
+		$profile = $manager->getAll();
 
-    public function newProfile ( $data ) {
-        $manager = new \Maven\Core\ProfileManager();
+		$this->getOutput()->sendApiResponse( $profile );
+	}
 
-        $profile = new \Maven\Core\Domain\Profile();
-        
-        $profile->load( $data );
-        $profile = $manager->updateProfile( $profile );
+	public function newProfile( $data ) {
+		$manager = new \Maven\Core\ProfileManager();
 
-        $this->getOutput()->sendApiResponse( $profile );
-    }
+		$profile = new \Maven\Core\Domain\Profile();
 
-    public function getProfile ( $id ) {
-        $manager = new \Maven\Core\ProfileManager();
-        $profile = $manager->get( $id );
+		$profile->load( $data );
+		$profile = $manager->updateProfile( $profile );
 
-        $this->getOutput()->sendApiResponse( $profile );
-    }
+		$this->getOutput()->sendApiResponse( $profile );
+	}
 
-    public function editProfile ( $id, $data ) {
+	public function getProfile( $id ) {
+		$manager = new \Maven\Core\ProfileManager();
+		$profile = $manager->get( $id );
 
-        $manager = new \Maven\Core\ProfileManager();
+		$this->getOutput()->sendApiResponse( $profile );
+	}
 
-        $profile = new \Maven\Core\Domain\Profile();
+	public function editProfile( $id, $data ) {
 
-        $profile->load( $data );
+		$manager = new \Maven\Core\ProfileManager();
 
-        $profile = $manager->addAttribute( $profile );
+		$profile = new \Maven\Core\Domain\Profile();
 
-        $this->getOutput()->sendApiResponse( $profile );
-    }
+		$profile->load( $data );
 
-    public function deleteProfile ( $id ) {
-        $manager = new \Maven\Core\ProfileManager();
+		$profile = $manager->addAttribute( $profile );
 
-        $manager->delete( $id );
+		$this->getOutput()->sendApiResponse( $profile );
+	}
 
-        $this->getOutput()->sendApiResponse( new \stdClass() );
-    }
+	public function deleteProfile( $id ) {
+		$manager = new \Maven\Core\ProfileManager();
 
-    public function getView ( $view ) {
-        return $view;
-    }
+		$manager->delete( $id );
+
+		$this->getOutput()->sendApiResponse( new \stdClass() );
+	}
+
+	public function getView( $view ) {
+		switch ( $view ) {
+			case "profiles-edit":
+				$addresses = \Maven\Core\Domain\AddressType::getAddressesTypesCollection();
+				$this->addJSONData( "cachedAddresses", $addresses );
+				return $this->getOutput()->getAdminView( "profiles/{$view}" );
+		}
+		return $view;
+	}
 
 }
