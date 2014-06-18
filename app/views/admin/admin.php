@@ -4,6 +4,7 @@
 		<ul class="nav nav-pills pull-right" >
 			<li class="" ng-class="{active:isActive('/')}"><a ng-href="#/"><i class="glyphicon glyphicon-dashboard"></i>&nbsp;Dashboard</a></li>
             <li class="" ng-class="{active:isActive('/roles')}"><a ng-href="#/roles"><i class="glyphicon glyphicon-user"></i>&nbsp; Roles</a></li>
+            <li class="" ng-class="{active:isActive('/profiles')}"><a ng-href="#/profiles"><i class="glyphicon glyphicon-eye-open"></i>&nbsp; Profiles</a></li>
 			<li class="" ng-class="{active:isActive('/orders')}"><a ng-href="#/orders"><i class="glyphicon glyphicon-shopping-cart"></i>&nbsp; Orders</a></li>
 			<li class="" ng-class="{active:isActive('/promotions')}"><a ng-href="#/promotions"><i class="glyphicon glyphicon-tags"></i>&nbsp;Promotions</a></li>
 			<li class="" ng-class="{active:isActive('/taxes')}"><a ng-href="#/taxes"><i class="glyphicon glyphicon-flag"></i>&nbsp;Taxes</a></li>

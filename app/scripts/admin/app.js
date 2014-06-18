@@ -26,6 +26,18 @@ angular
 						templateUrl: Maven.adminViewsUrl + 'roles/roles-edit.php',
 						controller: 'RolesEditCtrl'
 					})
+					.when('/profiles', {
+						templateUrl: Maven.adminViewsUrl + 'profiles/profiles.php',
+						controller: 'ProfileCtrl'
+					})
+					.when('/profiles/new', {
+						templateUrl: Maven.adminViewsUrl + 'profiles/profiles-edit.php',
+						controller: 'ProfileEditCtrl'
+					})
+					.when('/profiles/edit/:id', {
+						templateUrl: Maven.adminViewsUrl + 'profiles/profiles-edit.php',
+						controller: 'ProfileEditCtrl'
+					})
 					.when('/orders', {
 						templateUrl: Maven.adminViewsUrl + 'orders/orders.php',
 						controller: 'OrdersCtrl'
