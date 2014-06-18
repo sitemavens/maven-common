@@ -33,7 +33,7 @@ class GatewayFactory {
 		}
 
 		//Get the testing mode for the plugin 
-		$testingMode = $mavenRegistry->isPluginTestingGatewayMode( $registry );
+		$testingMode = $mavenRegistry->isGatewayTestingMode();
 		$testingMode = \Maven\Core\HookManager::instance()->applyFilters( 'maven/gateway/testingMode', $testingMode );
 
 		$gateways = self::getAll();
