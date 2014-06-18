@@ -45,7 +45,7 @@ class GatewayFactory {
 		if ( isset( $gateways[ $key ] ) ) {
 			$gateway = $gateways[ $key ];
 		} else {
-			$gateway = new DefaultGateway();
+			$gateway = new DummyGateway();
 		}
 
 		$gateway->setTestMode( $testingMode );
@@ -60,11 +60,8 @@ class GatewayFactory {
 	public static function getAll () {
 
 		$gateways = array();
-		$gateways[ 'authorize.net' ] = new AuthorizeNetGateway();
 		$gateways[ 'offline' ] = new OfflineGateway();
 		$gateways[ 'dummy' ] = new DummyGateway();
-		$gateways[ 'default' ] = new DefaultGateway();
-		$gateways[ 'navigate' ] = new NavigateGateway();
 
 		$gateways = \Maven\Core\HookManager::instance()->applyFilters( 'maven/gateways/register', $gateways );
 

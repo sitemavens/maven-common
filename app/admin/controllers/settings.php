@@ -15,14 +15,14 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 	public function registerRoutes( $routes ) {
 
 		$routes[ '/maven/settings' ] = array(
-		    array( array( $this, 'getSettings' ), \WP_JSON_Server::READABLE )
-		);
-
-		$routes[ '/maven/settings/(?P<id>\d+)' ] = array(
 		    array( array( $this, 'getSettings' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'edit' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			array( array( $this, 'edit' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			
 		);
-
+		
+		$routes[ '/maven/gateways' ] = array(
+		    array( array( $this, 'getGateways' ), \WP_JSON_Server::READABLE )
+		);
 
 		return $routes;
 	}
@@ -67,6 +67,14 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 
 		$this->getOutput()->sendApiResponse( $entity );
 		
+	}
+	
+	
+	public function getGateways(){
+		
+		$gateways = \Maven\Gateways\GatewayFactory::getAll();
+		
+		$this->getOutput()->sendApiResponse( $gateways );
 	}
 
 }
