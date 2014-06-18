@@ -7,6 +7,8 @@ angular.module('mavenApp')
 				$scope.oneAtATime = true;
 				$scope.profile = {};
 				$scope.addresses = CachedAddresses;
+				$scope.countries = CachedCountries;
+				console.log($scope.countries);
 				if ($routeParams.id) {
 					$scope.profile = Profile.get({id: $routeParams.id});
 				} else {

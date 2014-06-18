@@ -76,8 +76,10 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	public function getView( $view ) {
 		switch ( $view ) {
 			case "profiles-edit":
+				$countries = \Maven\Core\CountriesApi::getAllCountries();
 				$addresses = \Maven\Core\Domain\AddressType::getAddressesTypesCollection();
 				$this->addJSONData( "cachedAddresses", $addresses );
+				$this->addJSONData( "cachedCountries", $countries );
 				return $this->getOutput()->getAdminView( "profiles/{$view}" );
 		}
 		return $view;

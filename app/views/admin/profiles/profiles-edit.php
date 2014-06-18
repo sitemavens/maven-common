@@ -1,4 +1,5 @@
 <?php \Maven\Core\UI\HtmlComponent::jSonComponent( "CachedAddresses", $cachedAddresses ); ?>
+<?php \Maven\Core\UI\HtmlComponent::jSonComponent( "CachedCountries", $cachedCountries ); ?>
 <h1>Profiles </h1>
 <div class="form-group">
 	<tabset>
@@ -91,6 +92,7 @@
 							ng-options="Address.name for Address in addresses" id="addressSelect" />
 					</div>
 				</div>
+
 			</div>
 			<div class="form-group">
 				<accordion close-others="oneAtATime">
@@ -102,7 +104,8 @@
 						<div class="form-group">
 							<label for="addressTypeEdit" class="col-sm-2 control-label">Type</label>
 							<div class="col-sm-10">
-								<input type="date" class="form-control" id="addressTypeEdit" ng-model="address.type" placeholder="">
+								<select class="form-control" ng-model="address.type2" ng-change="changeAddresstype($index)"
+									ng-options="Address.id as Address.name for Address in addresses" id="addressTypeEdit" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -150,7 +153,8 @@
 						<div class="form-group">
 							<label for="addressCountryEdit" class="col-sm-2 control-label">Country</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="addressCountryEdit" ng-model="address.country" placeholder="">
+								<select class="form-control" ng-model="address.country"
+									ng-options="countryI as country.name for (countryI, country) in countries" id="addressSelect" />
 							</div>
 						</div>	
 						<div class="form-group">
