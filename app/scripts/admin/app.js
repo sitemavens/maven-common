@@ -100,3 +100,5 @@ angular
 						redirectTo: '/'
 					});
 		});
+
+angular.module('mavenApp.controllers',[]);
