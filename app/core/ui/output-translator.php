@@ -4,20 +4,20 @@ namespace Maven\Core\UI;
 
 class OutputTranslator {
 
-	public function __construct () {
+	public function __construct() {
 		;
 	}
 
-	public function sendApiResponse ( $object ) {
+	public function sendApiResponse( $object ) {
 		wp_send_json( $this->convert( $object ) );
 	}
 
-	public function sendData ( $object ) {
+	public function sendData( $object ) {
 
 		wp_send_json_success( $this->convert( $object ) );
 	}
 
-	public function sendError ( $object ) {
+	public function sendError( $object ) {
 
 		wp_send_json_error( $this->convert( $object ) );
 	}
@@ -45,24 +45,24 @@ class OutputTranslator {
 //	}
 //	
 
-	private function toArrayMagic ( $obj ) {
+	private function toArrayMagic( $obj ) {
 
 		$return = array();
-		
+
 		if ( is_array( $obj ) ) {
 			foreach ( $obj as $key => $value ) {
-				if ( !is_object( $value ) && !is_array( $value ) ) {
-					$return[$key] = $value;
+				if ( ! is_object( $value ) && ! is_array( $value ) ) {
+					$return[ $key ] = $value;
 				} else {
-					$return[$key] = $this->toArrayMagic( $value );
+					$return[ $key ] = $this->toArrayMagic( $value );
 				}
 			}
-			
+
 			return $return;
 		}
-		
-		
-		
+
+
+
 		$reflect = new \ReflectionClass( $obj );
 		$props = $reflect->getProperties( \ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED );
 
@@ -128,12 +128,17 @@ class OutputTranslator {
 		if ( is_callable( array( $obj, 'getId' ) ) )
 			$return[ 'id' ] = $obj->getId();
 
+		if ( empty( $return ) ) {
+			//the array is empty, convert to empty object
+			$return = new \stdClass();
+		}
+
 		return $return;
 	}
 
-	public function convert ( $object ) {
-		
-		if ( !is_object( $object ) && !is_array( $object ) ) {
+	public function convert( $object ) {
+
+		if ( ! is_object( $object ) && ! is_array( $object ) ) {
 			return $object;
 		}
 
