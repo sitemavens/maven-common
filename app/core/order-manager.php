@@ -38,6 +38,10 @@ class OrderManager {
 
 		$order->getShippingContact()->getShippingAddress()->setCountry( $defaultShippingCountry );
 
+		$handlingFee = \Maven\Settings\MavenRegistry::instance()->getOrderHandlingFee();
+		
+		$order->setHandlingFee( $handlingFee );
+		
 		return $this->addOrder( $order );
 	}
 

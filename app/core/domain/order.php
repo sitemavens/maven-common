@@ -20,6 +20,8 @@ class Order extends \Maven\Core\DomainObject {
 	private $taxAmount = 0;
 	private $pluginId;
 	private $statusId;
+	
+	private $handlingFee = 0;
 
 	/**
 	 * Save who was adding the order
@@ -303,6 +305,14 @@ class Order extends \Maven\Core\DomainObject {
 
 	public function setTotal( $total ) {
 		$this->total = $total;
+	}
+	
+	public function getHandlingFee () {
+		return $this->handlingFee;
+	}
+
+	public function setHandlingFee ( $handlingFee ) {
+		$this->handlingFee = $handlingFee;
 	}
 
 	/**
@@ -668,7 +678,9 @@ class Order extends \Maven\Core\DomainObject {
 		}
 		\Maven\Loggers\Logger::log()->message( 'Order/calculateTotal: Cart Discount: ' . $cartDiscount );
 
-		$total = ($subtotal + $taxAmount - $itemDiscount) + ($shippingAmount - $shippingDiscount);
+		$handlingFee = $this->getHandlingFee();
+		
+		$total = ($subtotal + $taxAmount - $itemDiscount + $handlingFee) + ($shippingAmount - $shippingDiscount);
 
 		if ( $cartDiscount > $total ) {
 			$cartDiscount = $total;
