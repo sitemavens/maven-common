@@ -1,9 +1,7 @@
 <form role="form"  name="formSettings" ng-submit="saveSettings(settings)">
-	<tabSet>
+	<tabSet ng-show="setting">
 		<tab heading="General">
-
-
-
+ 
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-4">

@@ -10,6 +10,9 @@ angular.module('mavenApp')
 				$scope.countries = CachedCountries;
 				$scope.radioModel = 'false';
 				$scope.newAddress = {};
+				
+				
+				
 				if ($routeParams.id) {
 					$scope.profile = Profile.get({id: $routeParams.id});
 				} else {
@@ -28,5 +31,18 @@ angular.module('mavenApp')
 					$scope.profile.addresses.push(address);
 					$scope.newAddress = {};
 
+				};
+				
+				$scope.getAddressTypeName = function(id){
+					var name="";
+					angular.forEach($scope.addresses, function (address){
+						console.log(address.id);
+						if ( address.id === id){
+							name = address.name;
+							return;
+						}
+					});
+					
+					return name;
 				};
 			}]);

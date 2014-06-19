@@ -1,6 +1,6 @@
-<div ng-app="mavenApp" class="wrap">
+<div ng-app="mavenApp" class="wrap" >
 
-	<div class="header" ng-controller='MainNavCtrl'>
+	<div class="header " ng-controller='MainNavCtrl'>
 		<ul class="nav nav-pills pull-right" >
 			<li class="" ng-class="{active:isActive('/')}"><a ng-href="#/"><i class="glyphicon glyphicon-dashboard"></i>&nbsp;Dashboard</a></li>
             <li class="" ng-class="{active:isActive('/roles')}"><a ng-href="#/roles"><i class="glyphicon glyphicon-user"></i>&nbsp; Roles</a></li>
@@ -16,5 +16,5 @@
 	<br/>
 	<!-- Add your site or application content here -->
 	<div data-loading >Loading...</div>
-	<div ng-view></div>
+	<div ng-view ng-cloak class="ng-cloak" ></div>
 </div>

@@ -99,8 +99,8 @@
 					<accordion-group is-open="status.isFirstOpen" 
 							 is-disabled="status.isFirstDisabled" ng-repeat="address in profile.addresses track by address.type"> 
 						<accordion-heading>
-							<span class="glyphicon glyphicon-home">{{address.type}}</span>
-							<span ng-show="address.firstLine"> - {{address.firstLine}} </span> 
+							<span class="glyphicon glyphicon-home" >{{getAddressTypeName(address.type)}}</span>
+							<span ng-show="address.firstLine"> - {{address.firstLine}} </span>
 							<span ng-show="address.city">- {{address.city}}</span>
 							<span ng-show="address.state"> - {{address.state}}</span>
 							<span ng-show="address.country"> - {{address.country}}</span>
@@ -109,7 +109,7 @@
 							<label for="addressTypeEdit" class="col-sm-2 control-label">Type</label>
 							<div class="col-sm-10">
 								<select class="form-control" ng-model="address.type"
-									ng-options="Address.id as Address.name for Address in addresses" id="addressTypeEdit" />
+									ng-options="addressType.id as addressType.name for addressType in addresses" id="addressTypeEdit" />
 							</div>
 						</div>
 						<div class="form-group">

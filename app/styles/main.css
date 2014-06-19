@@ -18,3 +18,5 @@ body {
 		width: 970px;
 	}
 }
+
+.ng-cloak { display:none; }
