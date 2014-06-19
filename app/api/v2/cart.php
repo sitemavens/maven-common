@@ -33,15 +33,12 @@ class Cart {
 		$routes[ '/maven/v2/cart/item' ] = array(
 			array( array( $this, 'addItem' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
-		
+
 		$routes[ '/maven/v2/cart/item/(?P<identifier>.+)' ] = array(
-			array( array( $this, 'removeItem' ), \WP_JSON_Server::DELETABLE )
-//			array( array( $this, 'get_post' ),    WP_JSON_Server::READABLE ),
-//				array( array( $this, 'edit_post' ),   WP_JSON_Server::EDITABLE | WP_JSON_Server::ACCEPT_JSON ),
-//				array( array( $this, 'delete_post' ), WP_JSON_Server::DELETABLE ),
+			array( array( $this, 'removeItem' ), \WP_JSON_Server::DELETABLE ),
+			array( array( $this, 'updateItem' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
 
-		
 
 //		$routes[ '/maven/taxes' ] = array(
 //			array( array( $this, 'getTaxes' ), \WP_JSON_Server::READABLE ),
@@ -64,6 +61,15 @@ class Cart {
 		$this->sendResponse( $this->getCurrentCart()->removeItem( $identifier ) );
 	}
 
+	public function updateItem ( $identifier, $data ) {
+
+		$this->isValid();
+
+		$quantity = ( int ) $data[ 'quantity' ];
+
+		$this->sendResponse( $this->getCurrentCart()->updateItemQuantity( $identifier, $quantity ) );
+	}
+
 	public function addItem ( $data ) {
 
 		$defaultItem = array(
@@ -76,18 +82,18 @@ class Cart {
 
 		$item = wp_parse_args( $data, $defaultItem );
 
-		if ( ! $item['pluginKey'] ){
-			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage('Plugin Key is required') );
+		if ( !$item[ 'pluginKey' ] ) {
+			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'Plugin Key is required' ) );
 		}
-		
-		$orderItem = new \Maven\Core\Domain\OrderItem();
-		$orderItem->setName( $item['name'] );
-		$orderItem->setPluginKey( $item['pluginKey'] );
-		$orderItem->setThingId( $item['id'] );
-		$orderItem->setPrice( $item['price'] );
-		$orderItem->setQuantity( $item['quantity']);
 
-		
+		$orderItem = new \Maven\Core\Domain\OrderItem();
+		$orderItem->setName( $item[ 'name' ] );
+		$orderItem->setPluginKey( $item[ 'pluginKey' ] );
+		$orderItem->setThingId( $item[ 'id' ] );
+		$orderItem->setPrice( $item[ 'price' ] );
+		$orderItem->setQuantity( $item[ 'quantity' ] );
+
+
 		$this->sendResponse( $this->getCurrentCart()->addToCart( $orderItem ) );
 	}
 

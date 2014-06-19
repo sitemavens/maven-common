@@ -88,14 +88,14 @@ class Cart {
 		return $this->order;
 	}
 	
-	public function updateItemQuantity( Domain\OrderItem $item){
+	public function updateItemQuantity( $identifier, $newQuantity){
 		
 		$order = $this->getOrder();
 		
-		if ( $order->itemExists( $item->getIdentifier() ) ) {
-			$orderItem = &$order->getItem( $item->getIdentifier() );
+		if ( $order->itemExists( $identifier ) ) {
+			$orderItem = &$order->getItem( $identifier );
 			
-			$orderItem->setQuantity( $item->getQuantity() );
+			$orderItem->setQuantity( $newQuantity );
 			
 			$this->update();
 			

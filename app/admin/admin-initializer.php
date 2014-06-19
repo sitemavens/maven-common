@@ -36,52 +36,58 @@ class AdminInitializer {
 		$registry = \Maven\Settings\MavenRegistry::instance();
 
 		if ( $hook == 'toplevel_page_maven' ) {
-			wp_enqueue_style( 'main.css', $registry->getStylesUrl() . "main.css", array(), $registry->getPluginVersion() );
 
-			wp_enqueue_script( 'mavenApp', $registry->getScriptsUrl() . "admin/app.js", 'angular', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/global/directives/loading.js', $registry->getScriptsUrl() . "admin/global/directives/loading.js", 'mavenApp', $registry->getPluginVersion() );
+			if ( $registry->isDevEnv() ) {
+				wp_enqueue_style( 'main.css', $registry->getStylesUrl() . "main.css", array(), $registry->getPluginVersion() );
+
+				wp_enqueue_script( 'mavenApp', $registry->getScriptsUrl() . "admin/app.js", 'angular', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/global/directives/loading.js', $registry->getScriptsUrl() . "admin/global/directives/loading.js", 'mavenApp', $registry->getPluginVersion() );
 //			wp_enqueue_script( 'admin/services/admin-services.js', $registry->getScriptsUrl() . "admin/services/admin-services.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/global/controllers/main-nav.js', $registry->getScriptsUrl() . "admin/global/controllers/main-nav.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/dashboard/controllers/main.js', $registry->getScriptsUrl() . "admin/dashboard/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
-			
-			wp_enqueue_script( 'admin/settings/controllers/main.js', $registry->getScriptsUrl() . "admin/settings/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/settings/services/gateway.js', $registry->getScriptsUrl() . "admin/settings/services/gateway.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/settings/services/setting.js', $registry->getScriptsUrl() . "admin/settings/services/setting.js", 'mavenApp', $registry->getPluginVersion() );
-			
-			wp_enqueue_script( 'admin/taxes/controllers/list.js', $registry->getScriptsUrl() . "admin/taxes/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/taxes/controllers/edit.js', $registry->getScriptsUrl() . "admin/taxes/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/taxes/services/tax.js', $registry->getScriptsUrl() . "admin/taxes/services/tax.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/taxes/services/taxes-filter.js', $registry->getScriptsUrl() . "admin/taxes/services/taxes-filter.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/taxes/services/taxes.js', $registry->getScriptsUrl() . "admin/taxes/services/taxes.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/global/controllers/main-nav.js', $registry->getScriptsUrl() . "admin/global/controllers/main-nav.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/dashboard/controllers/main.js', $registry->getScriptsUrl() . "admin/dashboard/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
 
-			wp_enqueue_script( 'admin/promotions/controllers/list.js', $registry->getScriptsUrl() . "admin/promotions/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/promotions/controllers/edit.js', $registry->getScriptsUrl() . "admin/promotions/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/promotions/services/promotion.js', $registry->getScriptsUrl() . "admin/promotions/services/promotion.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/settings/controllers/main.js', $registry->getScriptsUrl() . "admin/settings/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/settings/services/gateway.js', $registry->getScriptsUrl() . "admin/settings/services/gateway.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/settings/services/setting.js', $registry->getScriptsUrl() . "admin/settings/services/setting.js", 'mavenApp', $registry->getPluginVersion() );
+
+				wp_enqueue_script( 'admin/taxes/controllers/list.js', $registry->getScriptsUrl() . "admin/taxes/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/taxes/controllers/edit.js', $registry->getScriptsUrl() . "admin/taxes/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/taxes/services/tax.js', $registry->getScriptsUrl() . "admin/taxes/services/tax.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/taxes/services/taxes-filter.js', $registry->getScriptsUrl() . "admin/taxes/services/taxes-filter.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/taxes/services/taxes.js', $registry->getScriptsUrl() . "admin/taxes/services/taxes.js", 'mavenApp', $registry->getPluginVersion() );
+
+				wp_enqueue_script( 'admin/promotions/controllers/list.js', $registry->getScriptsUrl() . "admin/promotions/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/promotions/controllers/edit.js', $registry->getScriptsUrl() . "admin/promotions/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/promotions/services/promotion.js', $registry->getScriptsUrl() . "admin/promotions/services/promotion.js", 'mavenApp', $registry->getPluginVersion() );
 
 
-			wp_enqueue_script( 'admin/roles/controllers/list.js', $registry->getScriptsUrl() . "admin/roles/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/roles/controllers/edit.js', $registry->getScriptsUrl() . "admin/roles/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/roles/services/rol.js', $registry->getScriptsUrl() . "admin/roles/services/rol.js", 'mavenApp', $registry->getPluginVersion() );
-				
-			wp_enqueue_script( 'admin/attributes/controllers/list.js', $registry->getScriptsUrl() . "admin/attributes/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/attributes/controllers/edit.js', $registry->getScriptsUrl() . "admin/attributes/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/attributes/services/attribute.js', $registry->getScriptsUrl() . "admin/attributes/services/attribute.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/roles/controllers/list.js', $registry->getScriptsUrl() . "admin/roles/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/roles/controllers/edit.js', $registry->getScriptsUrl() . "admin/roles/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/roles/services/rol.js', $registry->getScriptsUrl() . "admin/roles/services/rol.js", 'mavenApp', $registry->getPluginVersion() );
 
-			
-			wp_enqueue_script( 'admin/profiles/controllers/list.js', $registry->getScriptsUrl() . "admin/profiles/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/profiles/controllers/edit.js', $registry->getScriptsUrl() . "admin/profiles/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/profiles/services/profile.js', $registry->getScriptsUrl() . "admin/profiles/services/profile.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/attributes/controllers/list.js', $registry->getScriptsUrl() . "admin/attributes/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/attributes/controllers/edit.js', $registry->getScriptsUrl() . "admin/attributes/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/attributes/services/attribute.js', $registry->getScriptsUrl() . "admin/attributes/services/attribute.js", 'mavenApp', $registry->getPluginVersion() );
 
-			
-			wp_enqueue_script( 'admin/orders/controllers/list.js', $registry->getScriptsUrl() . "admin/orders/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/orders/controllers/edit.js', $registry->getScriptsUrl() . "admin/orders/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/orders/services/order-filter.js', $registry->getScriptsUrl() . "admin/orders/services/order-filter.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/orders/services/order-loader.js', $registry->getScriptsUrl() . "admin/orders/services/order-loader.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/orders/services/order.js', $registry->getScriptsUrl() . "admin/orders/services/order.js", 'mavenApp', $registry->getPluginVersion() );
 
-			
-			wp_enqueue_script( 'admin/https/controllers/main.js', $registry->getScriptsUrl() . "admin/https/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
-			wp_enqueue_script( 'admin/https/services/https.js', $registry->getScriptsUrl() . "admin/https/services/https.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/profiles/controllers/list.js', $registry->getScriptsUrl() . "admin/profiles/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/profiles/controllers/edit.js', $registry->getScriptsUrl() . "admin/profiles/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/profiles/services/profile.js', $registry->getScriptsUrl() . "admin/profiles/services/profile.js", 'mavenApp', $registry->getPluginVersion() );
+
+
+				wp_enqueue_script( 'admin/orders/controllers/list.js', $registry->getScriptsUrl() . "admin/orders/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/orders/controllers/edit.js', $registry->getScriptsUrl() . "admin/orders/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/orders/services/order-filter.js', $registry->getScriptsUrl() . "admin/orders/services/order-filter.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/orders/services/order-loader.js', $registry->getScriptsUrl() . "admin/orders/services/order-loader.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/orders/services/order.js', $registry->getScriptsUrl() . "admin/orders/services/order.js", 'mavenApp', $registry->getPluginVersion() );
+
+
+				wp_enqueue_script( 'admin/https/controllers/main.js', $registry->getScriptsUrl() . "admin/https/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/https/services/https.js', $registry->getScriptsUrl() . "admin/https/services/https.js", 'mavenApp', $registry->getPluginVersion() );
+			}else{
+				wp_enqueue_style( 'mainCss', $registry->getStylesUrl() . "main.min.css", array(), $registry->getPluginVersion() );
+				wp_enqueue_script( 'mainApp', $registry->getScriptsUrl() . "main.min.js", 'angular', $registry->getPluginVersion() );
+			}
 		}
 	}
 
