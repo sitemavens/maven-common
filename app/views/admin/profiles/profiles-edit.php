@@ -50,7 +50,10 @@
 				<div class="form-group">
 					<label for="wholesale" class="col-sm-2 control-label">Wholesale</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="wholesale" ng-model="profile.wholesale" placeholder="">
+						<div class="col-sm-10">
+								<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="true" uncheckable>Yes</label>
+								<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="false" uncheckable>No</label>
+							</div>
 					</div>
 				</div>
 				<div class="form-group">
@@ -62,13 +65,13 @@
 				<div class="form-group">
 					<label for="creationOn" class="col-sm-2 control-label">Creation Date</label>
 					<div class="col-sm-10">
-						<input type="date" class="form-control" id="creationOn" ng-model="profile.createdOn" placeholder="">
+						<input type="date" class="form-control" id="creationOn" ng-model="profile.createdOn" placeholder="" ng-disabled="true">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="lastUpdate" class="col-sm-2 control-label">Last Update</label>
 					<div class="col-sm-10">
-						<input type="date" class="form-control" id="lastUpdate" ng-model="profile.lastUpdate" placeholder="">
+						<input type="date" class="form-control" id="lastUpdate" ng-model="profile.lastUpdate" placeholder="" ng-disabled="true">
 					</div>
 				</div>
 				<div class="form-group">
@@ -91,8 +94,10 @@
 						<select class="form-control" ng-model="newAddress.type" ng-change="addAddress(newAddress)"
 							ng-options="Address.id as Address.name for Address in addresses" id="addressSelect" />
 					</div>
+					<div class="col-sm-4" ng-show="addressExists.status">
+						<alert type="danger">You already have a {{addressExists.name}} address</alert>	
+					</div>
 				</div>
-
 			</div>
 			<div class="form-group">
 				<accordion close-others="oneAtATime">
@@ -104,6 +109,7 @@
 							<span ng-show="address.city">- {{address.city}}</span>
 							<span ng-show="address.state"> - {{address.state}}</span>
 							<span ng-show="address.country"> - {{address.country}}</span>
+							<button class="btn btn-info btn-xs" ng-click="deleteProfile($index)">Delete</button>	
 						</accordion-heading>
 						<div class="form-group">
 							<label for="addressTypeEdit" class="col-sm-2 control-label">Type</label>

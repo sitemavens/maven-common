@@ -10,8 +10,8 @@ angular.module('mavenApp')
 				$scope.countries = CachedCountries;
 				$scope.radioModel = 'false';
 				$scope.newAddress = {};
-				
-				
+
+
 				
 				if ($routeParams.id) {
 					$scope.profile = Profile.get({id: $routeParams.id});
@@ -19,7 +19,6 @@ angular.module('mavenApp')
 					$scope.profile = new Profile({enabled: true});
 					$scope.profile.addresses = [];
 				}
-				console.log($scope.profile);
 				$scope.saveProfile = function() {
 					console.log('saving?');
 					$scope.profile.$save();
@@ -27,22 +26,37 @@ angular.module('mavenApp')
 				$scope.cancelEdit = function() {
 					$location.path('/profiles/');
 				};
-				$scope.addAddress = function(address) {
-					$scope.profile.addresses.push(address);
-					$scope.newAddress = {};
-
+				$scope.deleteAddress = function(idx) {
+					$scope.profile.addresses.splice(idx, 1);
+						
 				};
-				
-				$scope.getAddressTypeName = function(id){
-					var name="";
-					angular.forEach($scope.addresses, function (address){
-						console.log(address.id);
-						if ( address.id === id){
+				console.log($scope.profile);
+				$scope.addAddress = function(address) {
+					$scope.addressExists = {};
+					$scope.addressExists.name = '';
+					$scope.addressExists.status = false;
+					angular.forEach($scope.profile.addresses, function(profileAddress) {
+						if (profileAddress.type == address.type) {
+							$scope.addressExists.status = true;
+							return false;
+						}});
+					if (!$scope.addressExists.status){
+						$scope.profile.addresses.push(address);
+					}
+					$scope.addressExists.name = $scope.getAddressTypeName(address.type);
+					console.log($scope.addressExists);
+					$scope.newAddress = {};
+				};
+
+				$scope.getAddressTypeName = function(id) {
+					var name = "";
+					angular.forEach($scope.addresses, function(address) {
+						if (address.id === id) {
 							name = address.name;
 							return;
 						}
 					});
-					
+
 					return name;
 				};
 			}]);
