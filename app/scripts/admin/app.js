@@ -101,4 +101,5 @@ angular
 					});
 		});
 
-angular.module('mavenApp.controllers',[]);
+angular.module('mavenApp.controllers',['ngResource']);
+angular.module('mavenApp.services', ['ngResource']);
