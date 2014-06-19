@@ -99,7 +99,7 @@
 					<accordion-group is-open="status.isFirstOpen" 
 							 is-disabled="status.isFirstDisabled" ng-repeat="address in profile.addresses track by address.type['id']"> 
 						<accordion-heading>
-							<span>{{address.type['name']}}</span>
+							<span class="glyphicon glyphicon-home">{{address.type['name']}}</span>
 							<span ng-show="address.firstLine"> - {{address.firstLine}} </span> 
 							<span ng-show="address.city">- {{address.city}}</span>
 							<span ng-show="address.state"> - {{address.state}}</span>
@@ -115,7 +115,8 @@
 						<div class="form-group">
 							<label for="addressIsPrimary" class="col-sm-2 control-label">Primary Address</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="addressIsPrimary" ng-model="address.isPrimary" placeholder="">
+								<label class="btn btn-success" ng-model="address.primary" btn-radio="'true'" uncheckable>Yes</label>
+								<label class="btn btn-success" ng-model="address.primary" btn-radio="'false'" uncheckable>No</label>
 							</div>
 						</div>
 						<div class="form-group">

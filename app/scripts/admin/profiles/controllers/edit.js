@@ -8,6 +8,7 @@ angular.module('mavenApp')
 				$scope.profile = {};
 				$scope.addresses = CachedAddresses;
 				$scope.countries = CachedCountries;
+				$scope.radioModel = 'false';
 				$scope.newAddress = {};
 				if ($routeParams.id) {
 					$scope.profile = Profile.get({id: $routeParams.id});
