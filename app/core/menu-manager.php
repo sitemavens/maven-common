@@ -116,6 +116,7 @@ class MenuManager {
 				wp_enqueue_script( 'angular-sanitize', $registry->getBowerComponentUrl() . "angular-sanitize/angular-sanitize.js", 'angular', $registry->getPluginVersion() );
 				wp_enqueue_script( 'angular-route', $registry->getBowerComponentUrl() . "angular-route/angular-route.js", 'angular', $registry->getPluginVersion() );
 				wp_enqueue_script( 'angular-bootstrap', $registry->getBowerComponentUrl() . "angular-bootstrap/ui-bootstrap-tpls.js", 'angular', $registry->getPluginVersion() );
+				wp_enqueue_script( 'angular-ui-utils', $registry->getBowerComponentUrl() . "angular-ui-utils/ui-utils.js", 'angular', $registry->getPluginVersion() );
 			}
 		}
 	}

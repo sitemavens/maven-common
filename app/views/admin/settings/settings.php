@@ -82,7 +82,7 @@
 					<div class="panel-body">
 						<div class="form-group"  >
 							<label for="">Active Gateway</label>
-							<select ng-model="gatewaySettings.active"  ng-options="gate.key as gate.name for gate in gateways"></select>
+							<select ng-model="setting.activeGateway"  ng-options="gate.key as gate.name for gate in gateways"></select>
 						</div>
 						<div class="form-group"  >
 							<label for="">Is testing mode</label>
@@ -91,13 +91,16 @@
 					</div>
 				</div>
 
+				
+			</div>
+			<div class="col-md-4">
 				<div class="panel panel-default" ng-repeat="gate in gateways| filter:{hasSettings:true}">
 					<div class="panel-heading" ng-bind="gate.name"></div>
 					<div class="panel-body">
 						<div class="form-group" ng-repeat="gSetting in gate.settings" ng-class="{'has-error':innerForm.theInput.$error.required}">
 							<ng-form name="innerForm" >
 
-								<label for="{{gSetting.name}}">{{gSetting.label}}</label>			
+								<label for="{{gSetting.name}}" ng-bind="gSetting.label"></label>			
 								<div ng-switch on="gSetting.type">
 									<input ng-switch-when="input" ng-required="{{gSetting.required}}" type="{{gSetting.type}}" class="form-control" ng-model="gSetting.value" name="theInput" />
 									<select ng-switch-when="dropdown" ng-required="{{gSetting.required}}"  class="form-control" ng-model="gSetting.value" name="theInput" ng-options="gOption.id as gOption.name for gOption in gSetting.options" />

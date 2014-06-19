@@ -35,7 +35,7 @@ class MavenRegistry extends WordpressRegistry {
 			    ), new Option(
 				    "registeredPluginsLicensing", "Registered plugins for licensing", '', '', OptionType::Input
 			    ), new Option(
-				    "activeGateway", "Active Gateway", 'default', '', OptionType::Input
+				    "activeGateway", "Active Gateway", 'dummy', '', OptionType::Input
 			    ), new Option(
 				    "recurringEnabled", "Recurring Enabled", false, '', OptionType::Input
 			    ), new Option(
