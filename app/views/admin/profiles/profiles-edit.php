@@ -88,7 +88,7 @@
 				<div class="form-group">
 					<label for="addressSelect" class="col-sm-2 control-label">Address</label>
 					<div class="col-sm-6">
-						<select class="form-control" ng-model="newAddress" ng-change="addAddress(newAddress)"
+						<select class="form-control" ng-model="newAddress.type" ng-change="addAddress(newAddress)"
 							ng-options="Address.name for Address in addresses" id="addressSelect" />
 					</div>
 				</div>
@@ -97,15 +97,19 @@
 			<div class="form-group">
 				<accordion close-others="oneAtATime">
 					<accordion-group is-open="status.isFirstOpen" 
-							 is-disabled="status.isFirstDisabled" ng-repeat="address in profile.addresses"> 
+							 is-disabled="status.isFirstDisabled" ng-repeat="address in profile.addresses track by address.type['id']"> 
 						<accordion-heading>
-							{{address.name}} - {{address.firstLine}} - {{address.city}} - {{address.state}} - {{address.country}} - {{address.id}}
+							<span>{{address.type['name']}}</span>
+							<span ng-show="address.firstLine"> - {{address.firstLine}} </span> 
+							<span ng-show="address.city">- {{address.city}}</span>
+							<span ng-show="address.state"> - {{address.state}}</span>
+							<span ng-show="address.country"> - {{address.country}}</span>
 						</accordion-heading>
 						<div class="form-group">
 							<label for="addressTypeEdit" class="col-sm-2 control-label">Type</label>
 							<div class="col-sm-10">
-								<select class="form-control" ng-model="address.type2" ng-change="changeAddresstype($index)"
-									ng-options="Address.id as Address.name for Address in addresses" id="addressTypeEdit" />
+								<select class="form-control" ng-model="address.type"
+									ng-options="Address.name for Address in addresses" id="addressTypeEdit" />
 							</div>
 						</div>
 						<div class="form-group">

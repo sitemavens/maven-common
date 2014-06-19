@@ -8,14 +8,13 @@ angular.module('mavenApp')
 				$scope.profile = {};
 				$scope.addresses = CachedAddresses;
 				$scope.countries = CachedCountries;
-				console.log($scope.countries);
+				$scope.newAddress = {};
 				if ($routeParams.id) {
 					$scope.profile = Profile.get({id: $routeParams.id});
 				} else {
 					$scope.profile = new Profile({enabled: true});
 					$scope.profile.addresses = [];
 				}
-				console.log($scope.profile);
 				$scope.saveProfile = function() {
 					console.log('saving?');
 					$scope.profile.$save();
@@ -25,6 +24,7 @@ angular.module('mavenApp')
 				};
 				$scope.addAddress = function(address) {
 					$scope.profile.addresses.push(address);
-					console.log($scope.profile.addresses);
+					$scope.newAddress = {};
+
 				};
 			}]);
