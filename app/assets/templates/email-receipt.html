@@ -64,6 +64,9 @@
 														<?php endif; ?>
 														<?php endforeach; ?>					
 														<?php endif; ?>	
+														<?php if($order->getHandlingFee()>0):?>
+														<p style="margin-top:0;margin-bottom:5px;"><strong>Handling Fee:</strong></p>
+														<?php endif; ?>
 														<p style="margin-top:0;margin-bottom:5px;"><strong>Total:</strong></p>
 													</td>
 													<td align="right" width="70" height="100" style="color:#000000;font-size:13px;">
@@ -90,6 +93,9 @@
 														<?php endif; ?>
 														<?php endforeach; ?>					
 														<?php endif; ?>	
+														<?php if($order->getHandlingFee()>0):?>
+														<p style="margin-top:0;margin-bottom:5px;"><strong>$<?php echo number_format($order->getHandlingFee(),2); ?></strong></p>
+														<?php endif; ?>
 														<p style="margin-top:0;margin-bottom:5px;"><strong>$<?php echo number_format($order->getTotal(),2); ?></strong></p>
 													</td>
 												</tr>
