@@ -89,7 +89,7 @@
 					<label for="addressSelect" class="col-sm-2 control-label">Address</label>
 					<div class="col-sm-6">
 						<select class="form-control" ng-model="newAddress.type" ng-change="addAddress(newAddress)"
-							ng-options="Address.name for Address in addresses" id="addressSelect" />
+							ng-options="Address.id as Address.name for Address in addresses" id="addressSelect" />
 					</div>
 				</div>
 
@@ -97,9 +97,9 @@
 			<div class="form-group">
 				<accordion close-others="oneAtATime">
 					<accordion-group is-open="status.isFirstOpen" 
-							 is-disabled="status.isFirstDisabled" ng-repeat="address in profile.addresses track by address.type['id']"> 
+							 is-disabled="status.isFirstDisabled" ng-repeat="address in profile.addresses track by address.type"> 
 						<accordion-heading>
-							<span class="glyphicon glyphicon-home">{{address.type['name']}}</span>
+							<span class="glyphicon glyphicon-home">{{address.type}}</span>
 							<span ng-show="address.firstLine"> - {{address.firstLine}} </span> 
 							<span ng-show="address.city">- {{address.city}}</span>
 							<span ng-show="address.state"> - {{address.state}}</span>
@@ -109,7 +109,7 @@
 							<label for="addressTypeEdit" class="col-sm-2 control-label">Type</label>
 							<div class="col-sm-10">
 								<select class="form-control" ng-model="address.type"
-									ng-options="Address.name for Address in addresses" id="addressTypeEdit" />
+									ng-options="Address.id as Address.name for Address in addresses" id="addressTypeEdit" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -165,7 +165,7 @@
 						<div class="form-group">
 							<label for="addressZIPEdit" class="col-sm-2 control-label">ZIP</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="addressZIPEdit" ng-model="address.zip" placeholder="">
+								<input type="text" class="form-control" id="addressZIPEdit" ng-model="address.zipcode" placeholder="">
 							</div>
 						</div>	
 						<div class="form-group">
@@ -183,7 +183,7 @@
 						<div class="form-group">
 							<label for="addressalternativePhoneEdit" class="col-sm-2 control-label">Alternative Phone</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="addressalternativePhoneEdit" ng-model="address.alternativePhone" placeholder="">
+								<input type="text" class="form-control" id="addressalternativePhoneEdit" ng-model="address.phoneAlternative" placeholder="">
 							</div>
 						</div>
 					</accordion-group>

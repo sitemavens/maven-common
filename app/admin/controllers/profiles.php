@@ -48,7 +48,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	public function getProfile( $id ) {
 		$manager = new \Maven\Core\ProfileManager();
 		$profile = $manager->get( $id );
-
+		$profile->setId($profile->getProfileId());
 		$this->getOutput()->sendApiResponse( $profile );
 	}
 
@@ -59,8 +59,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$profile = new \Maven\Core\Domain\Profile();
 
 		$profile->load( $data );
-
-		$profile = $manager->addAttribute( $profile );
+		$profile = $manager->updateProfile( $profile );
 
 		$this->getOutput()->sendApiResponse( $profile );
 	}

@@ -16,6 +16,7 @@ angular.module('mavenApp')
 					$scope.profile = new Profile({enabled: true});
 					$scope.profile.addresses = [];
 				}
+				console.log($scope.profile);
 				$scope.saveProfile = function() {
 					console.log('saving?');
 					$scope.profile.$save();
