@@ -14,11 +14,13 @@ app.controller('SettingsController', ['$scope', 'Setting', 'Gateway', function($
 
 		Gateway.get().then(function(result) {
 			$scope.gateways = result.data;
-			console.log(result.data);
+			
 		});
 
 		$scope.saveSettings = function() {
-			Setting.save($scope.setting);
+			Setting.save($scope.setting).then(function(result){
+				Gateway.save($scope.gateways);
+			});
 		};
 	}]
 		);

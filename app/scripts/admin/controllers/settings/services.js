@@ -17,8 +17,8 @@ app.factory('Gateway', ['$http', function($http) {
 			get:function(){
 				return $http.get('/wp-json/maven/gateways');
 			},
-			save:function(){
-				
+			save:function( gateways ){
+				return $http.post('/wp-json/maven/gateways',gateways);
 			}
 		};
 		

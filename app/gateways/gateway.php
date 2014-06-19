@@ -13,6 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 abstract class Gateway {
 
 	private $fields = array( );
+	
+	/**
+	 *
+	 * @var \Maven\Settings\Option 
+	 */
 	protected $options = array( );
 	private $liveUrl = "";
 	private $testUrl = "";
@@ -418,6 +423,10 @@ abstract class Gateway {
 		return isset( $this->options[ $key ] ) ? $this->options[ $key ]->getValue() : '';
 	}
 
+	/**
+	 * Get Settings
+	 * @return Maven\Settings\Option[]
+	 */
 	public function getSettings() {
 		return $this->options;
 	}

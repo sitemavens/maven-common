@@ -29,9 +29,9 @@ class DummyGateway extends Gateway {
 		$responseType = new Option("responseType", "Response Type", true, '', OptionType::DropDown);
 		$responseType->setOptions( array(
 			array('id'=>'random' , 'name'=> 'Random'),
-			array('id'=>'approved' , 'name'=> 'Approved',
+			array('id'=>'approved' , 'name'=> 'Approved'),
 			array('id'=>'error' , 'name'=> 'Error')
-		)));
+		));
 		
 		$defaultOptions = array(
 //		    new Option(
