@@ -109,7 +109,7 @@
 							<span ng-show="address.city">- {{address.city}}</span>
 							<span ng-show="address.state"> - {{address.state}}</span>
 							<span ng-show="address.country"> - {{address.country}}</span>
-							<button class="btn btn-info btn-xs" ng-click="deleteProfile($index)">Delete</button>	
+							<button class="btn btn-info btn-xs" ng-click="deleteAddress($index)">Delete</button>	
 						</accordion-heading>
 						<div class="form-group">
 							<label for="addressTypeEdit" class="col-sm-2 control-label">Type</label>

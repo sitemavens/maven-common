@@ -6,7 +6,7 @@ namespace Maven\Admin\Controllers;
 if ( ! defined( 'ABSPATH' ) )
 	exit;
 
-class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements \Maven\Core\Interfaces\iView{
+class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements \Maven\Core\Interfaces\iView {
 
 	public function __construct() {
 		parent::__construct();
@@ -22,6 +22,10 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		    array( array( $this, 'getProfile' ), \WP_JSON_Server::READABLE ),
 		    array( array( $this, 'editProfile' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		    array( array( $this, 'deleteProfile' ), \WP_JSON_Server::DELETABLE ),
+		);
+		$routes[ '/maven/profileaddress/(?P<id>\d+)' ] = array(
+		    array( array( $this, 'getProfileAddress' ), \WP_JSON_Server::READABLE ),
+		    array( array( $this, 'deleteProfileAddress' ), \WP_JSON_Server::DELETABLE ),
 		);
 
 		return $routes;
@@ -48,7 +52,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	public function getProfile( $id ) {
 		$manager = new \Maven\Core\ProfileManager();
 		$profile = $manager->get( $id );
-		$profile->setId($profile->getProfileId());
+		$profile->setId( $profile->getProfileId() );
 		$this->getOutput()->sendApiResponse( $profile );
 	}
 
@@ -66,6 +70,20 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 	public function deleteProfile( $id ) {
 		$manager = new \Maven\Core\ProfileManager();
+
+		$manager->delete( $id );
+
+		$this->getOutput()->sendApiResponse( new \stdClass() );
+	}
+
+	public function getProfileAddress( $id ) {
+		$manager = new \Maven\Core\AddressManager();
+		$address = $manager->get( $id );
+		$this->getOutput()->sendApiResponse( $address );
+	}
+
+	public function deleteProfileAddress( $id ) {
+		$manager = new \Maven\Core\AddressManager();
 
 		$manager->delete( $id );
 

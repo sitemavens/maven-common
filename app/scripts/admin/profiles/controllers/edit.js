@@ -2,23 +2,22 @@
 
 angular.module('mavenApp')
 	.controller('ProfileEditCtrl',
-		['$scope', '$routeParams', '$location', 'Profile',
-			function($scope, $routeParams, $location, Profile) {
+		['$scope', '$routeParams', '$location', 'Profile', 'ProfileAddress',
+			function($scope, $routeParams, $location, Profile, ProfileAddress) {
 				$scope.oneAtATime = true;
 				$scope.profile = {};
 				$scope.addresses = CachedAddresses;
 				$scope.countries = CachedCountries;
 				$scope.radioModel = 'false';
 				$scope.newAddress = {};
-
-
-				
+				console.log($routeParams);
 				if ($routeParams.id) {
 					$scope.profile = Profile.get({id: $routeParams.id});
 				} else {
 					$scope.profile = new Profile({enabled: true});
 					$scope.profile.addresses = [];
 				}
+
 				$scope.saveProfile = function() {
 					console.log('saving?');
 					$scope.profile.$save();
@@ -27,8 +26,16 @@ angular.module('mavenApp')
 					$location.path('/profiles/');
 				};
 				$scope.deleteAddress = function(idx) {
+					var addressId = $scope.profile.addresses[idx].id;
+					if (addressId !== undefined) {
+						var addressToDelete = {};
+						addressToDelete = ProfileAddress.get({id: addressId});
+						console.log(addressToDelete);
+						addressToDelete.$delete({id: addressId}).then
+					}
 					$scope.profile.addresses.splice(idx, 1);
-						
+//					$scope.profile.addresses.splice(idx, 1);
+
 				};
 				console.log($scope.profile);
 				$scope.addAddress = function(address) {
@@ -39,8 +46,9 @@ angular.module('mavenApp')
 						if (profileAddress.type == address.type) {
 							$scope.addressExists.status = true;
 							return false;
-						}});
-					if (!$scope.addressExists.status){
+						}
+					});
+					if (!$scope.addressExists.status) {
 						$scope.profile.addresses.push(address);
 					}
 					$scope.addressExists.name = $scope.getAddressTypeName(address.type);
