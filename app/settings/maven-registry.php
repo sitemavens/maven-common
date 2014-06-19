@@ -79,6 +79,8 @@ class MavenRegistry extends WordpressRegistry {
 				    "cartUrl", "Cart Url", 'cart/', '', OptionType::Input
 			    ),new Option(
 				    "gatewayTestingMode", "Gateway Testing Mode", true, true, OptionType::CheckBox
+			    ),new Option(
+				    "orderHandlingFee", "Order Handling Fee", 0, 0, OptionType::Input
 			    )
 			);
 
@@ -159,6 +161,10 @@ class MavenRegistry extends WordpressRegistry {
 
 	public function isGatewayTestingMode(){
 		return $this->getValue( 'gatewayTestingMode' );
+	}
+	
+	public function getOrderHandlingFee(){
+		return $this->getValue('orderHandlingFee');
 	}
 	
 	public function getEnabledTrackers() {

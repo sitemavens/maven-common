@@ -63,17 +63,24 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
-
-
 				</div>
-
-
 			</div>
 
-
-
+		</tab>
+		<tab heading="Shipping">
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">Order</div>
+					<div class="panel-body">
+						<div class="form-group"  >
+							<label for="">Order Handling Fee: $</label>
+							<input type="text" ng-model="setting.orderHandlingFee" /> 
+						</div>
+						 
+					</div>
+				</div>
+			</div>
 		</tab>
 		<tab heading="Gateways">
 			<div class="col-md-4">
