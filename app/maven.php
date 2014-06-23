@@ -4,9 +4,9 @@
   Plugin Name: Maven
   Plugin URI:
   Description:
-  Author: Site Mavens
+  Author: SiteMavens.com
   Version: 0.4.2.1
-  Author URI:
+  Author URI: http://www.sitemavens.com/
  */
 
 namespace Maven;
