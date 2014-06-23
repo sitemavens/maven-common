@@ -84,7 +84,7 @@
 			</div>
 		</tab>
 
-		<tab heading="Photo">Static content</tab>
+		<tab heading="Photo"></tab>
 
 		<tab heading="Address">
 			<div class="form-horizontal profile">
@@ -199,9 +199,9 @@
 			</div>
 		</tab>
 
-		<tab heading="WP User">Static content</tab>  
+		<tab heading="WP User"></tab>  
 
-		<tab heading="Roles">Static content</tab>
+		<tab heading="Roles"></tab>
 
 	</tabset>
 </div>
