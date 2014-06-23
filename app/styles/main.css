@@ -1,6 +1,14 @@
 body {
 	background-color: transparent;
 }
+
+#delete-address.profile-edit-address {
+    float: right;
+}
+a.accordion-toggle{
+	text-decoration: none;
+	
+}
 @media (min-width: 768px) {
 	.container {
 		width: 570px;

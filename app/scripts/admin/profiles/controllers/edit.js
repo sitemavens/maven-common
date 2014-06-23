@@ -10,6 +10,11 @@ angular.module('mavenApp')
 				$scope.countries = CachedCountries;
 				$scope.radioModel = 'false';
 				$scope.newAddress = {};
+				$scope.salutations = [{id: 'dr', value: 'Dr.'},
+					{id: 'mr', value: 'Mr.'},
+					{id: 'ms', value: 'Ms.'},
+					{id: 'mrs', value: 'Mrs.'}
+				];
 				console.log($routeParams);
 				if ($routeParams.id) {
 					$scope.profile = Profile.get({id: $routeParams.id});
@@ -25,7 +30,11 @@ angular.module('mavenApp')
 				$scope.cancelEdit = function() {
 					$location.path('/profiles/');
 				};
-				$scope.deleteAddress = function(idx) {
+				$scope.deleteAddress = function(idx, e) {
+					if (e) {
+						e.preventDefault();
+						e.stopPropagation();
+					}
 					var addressId = $scope.profile.addresses[idx].id;
 					if (addressId !== undefined) {
 						var addressToDelete = {};

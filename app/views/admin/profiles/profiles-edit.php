@@ -8,7 +8,8 @@
 				<div class="form-group">
 					<label for="salutation" class="col-sm-2 control-label">Salutation</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="salutation" ng-model="profile.salutation" placeholder="">
+						<select class="form-control" ng-model="profile.salutation"
+							ng-options="salutation.id as salutation.value for salutation in salutations" id="addressSelect" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -104,12 +105,12 @@
 					<accordion-group is-open="status.isFirstOpen" 
 							 is-disabled="status.isFirstDisabled" ng-repeat="address in profile.addresses track by address.type"> 
 						<accordion-heading>
-							<span class="glyphicon glyphicon-home" >{{getAddressTypeName(address.type)}}</span>
+							<span class="glyphicon glyphicon-home" > {{getAddressTypeName(address.type)}}</span>
 							<span ng-show="address.firstLine"> - {{address.firstLine}} </span>
 							<span ng-show="address.city">- {{address.city}}</span>
 							<span ng-show="address.state"> - {{address.state}}</span>
 							<span ng-show="address.country"> - {{address.country}}</span>
-							<button class="btn btn-info btn-xs" ng-click="deleteAddress($index)">Delete</button>	
+							<button id="delete-address" class="btn btn-info btn-xs profile-edit-address" ng-click="deleteAddress($index, $event)">Delete</button>	
 						</accordion-heading>
 						<div class="form-group">
 							<label for="addressTypeEdit" class="col-sm-2 control-label">Type</label>
