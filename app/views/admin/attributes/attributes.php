@@ -9,7 +9,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="attr in mvnAttributes">
+        <tr ng-repeat="attr in Attributes">
             <td>
                 <button class="btn btn-primary btn-xs" ng-click="editAttr(attr.id)">Edit</button>
                 <button class="btn btn-info btn-xs" ng-click="deleteAttr($index)">Delete</button>	
@@ -25,5 +25,6 @@
             </td>
         </tr>
     </tbody>
-
 </table>
+<pagination total-items="totalItems" ng-model="AttributeFilter.page" max-size="5" class="" boundary-links="true" class="pagination-sm"
+            ng-change="selectPage(AttributeFilter.page)"></pagination>

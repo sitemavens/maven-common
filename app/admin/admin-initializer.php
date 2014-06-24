@@ -68,6 +68,7 @@ class AdminInitializer {
 				wp_enqueue_script( 'admin/attributes/controllers/list.js', $registry->getScriptsUrl() . "admin/attributes/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/attributes/controllers/edit.js', $registry->getScriptsUrl() . "admin/attributes/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/attributes/services/attribute.js', $registry->getScriptsUrl() . "admin/attributes/services/attribute.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/attributes/services/attribute-filter.js', $registry->getScriptsUrl() . "admin/attributes/services/attribute-filter.js", 'mavenApp', $registry->getPluginVersion() );
 
 
 				wp_enqueue_script( 'admin/profiles/controllers/list.js', $registry->getScriptsUrl() . "admin/profiles/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );

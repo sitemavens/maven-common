@@ -16,7 +16,6 @@ class FillerHelper {
 	}
 
 	private static function fill( $object, $row ) {
-
 		if ( ! $row )
 			return;
 

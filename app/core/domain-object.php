@@ -242,7 +242,6 @@ abstract class DomainObject {
 			
 
 	public function load( $data ) {
-
 		if ( ! is_array( $data ) )
 			return false;
 
