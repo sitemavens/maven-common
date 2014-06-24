@@ -73,8 +73,11 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		  $out[] = array( 'total_entries' => intval( $count ) );
 		  $out[] = $response; */
 
-		header( "X-TotalItems:{$count}" );
-		$this->getOutput()->sendApiResponse( $orders );
+		$response = array(
+		    "items" => $orders,
+		    "totalItems" => $count
+		);
+		$this->getOutput()->sendApiResponse( $response );
 	}
 
 	public function newOrder( $data ) {
