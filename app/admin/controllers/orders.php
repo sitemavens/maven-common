@@ -27,7 +27,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		return $routes;
 	}
 
-	public function getOrders( $filter = array(), $page = 0 ) {
+	public function getOrders( $filter = array(), $page = 1 ) {
 		$manager = new \Maven\Core\OrderManager();
 
 		$orderFilter = new \Maven\Core\Domain\OrderFilter();
@@ -59,9 +59,8 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		  $order = $data[ 'order' ];
 		  } */
 
-		$orders = $manager->getOrders( $orderFilter, $sortBy, $order, ($page * $perPage ), $perPage );
-		//$count = $manager->getOrdersCount( $orderFilter );
-
+		$orders = $manager->getOrders( $orderFilter, $sortBy, $order, (($page - 1) * $perPage ), $perPage );
+		$count = $manager->getOrdersCount( $orderFilter );
 		/* foreach ( $orders as $row ) {
 		  $temp = $row->toArray();
 
@@ -74,6 +73,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		  $out[] = array( 'total_entries' => intval( $count ) );
 		  $out[] = $response; */
 
+		header( "X-TotalItems:{$count}" );
 		$this->getOutput()->sendApiResponse( $orders );
 	}
 
@@ -97,7 +97,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 
 		$order->load( $data );
 		$addStatus = false;
-		if ( key_exists( 'sendNotice', $data ) && $data[ 'sendNotice' ]) {
+		if ( key_exists( 'sendNotice', $data ) && $data[ 'sendNotice' ] ) {
 
 			$status = $manager->sendShipmentNotice( $order );
 
@@ -112,9 +112,9 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		$order = $manager->addOrder( $order, $addStatus );
 
 		//get the order again, to catch all update 
- 		//(this is wrong, but status change are not being updated on the orders
- 		$order = $manager->get( $id );
- 
+		//(this is wrong, but status change are not being updated on the orders
+		$order = $manager->get( $id );
+
 		$this->getOutput()->sendApiResponse( $order );
 	}
 
@@ -319,8 +319,8 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 			$this->getOutput()->sendError( $ex->getMessage() );
 		}
 	}
-	
-	public function getView( $view){
+
+	public function getView( $view ) {
 		return $view;
 	}
 

@@ -37,14 +37,5 @@
 		</tr>
 	</tbody>
 </table>
-<div pagination></div>
-<div class="row">
-	<div class="col-md-offset-8 col-md-4">
-
-		<div class="btn-group">
-			<button type="button" ng-click="page(-1)" class="btn btn-default">Prev</button>
-			<button type="button" ng-click="page(1)" class="btn btn-default">Next</button>
-		</div>
-
-	</div>
-</div>
+<pagination total-items="totalItems" page="OrderFilter.page" max-size="5" class="" boundary-links="true" class="pagination-sm"
+            on-select-page="selectPage(page)"></pagination>

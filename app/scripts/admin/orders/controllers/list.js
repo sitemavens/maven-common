@@ -3,24 +3,24 @@ angular.module('mavenApp')
 	.controller('OrdersCtrl',
 		['$scope', '$location', 'Order', 'OrderFilter',
 			function($scope, $location, Order, OrderFilter) {
-				$scope.orders = Order.query(OrderFilter);
+				$scope.OrderFilter = OrderFilter;
+				Order.getPage(OrderFilter, function(result) {
+					$scope.orders = result.items;
+					$scope.totalItems = result.totalItems;
+					console.log(result);
+				});
 
 
 				$scope.editOrder = function(orderId) {
 					$location.path('orders/edit/' + orderId);
 				}
 
-				$scope.page = function(offset) {
-					var page = OrderFilter.page;
-
-					page += offset;
-					if (page < 0)
-						page = 0;
-
+				$scope.selectPage = function(page) {
 					OrderFilter.page = page;
-
-					Order.query(OrderFilter, function(orders) {
-						$scope.orders = orders;
+					Order.getPage(OrderFilter, function(result) {
+						$scope.orders = result.items;
+						$scope.totalItems = result.totalItems;
+						console.log(result);
 					});
 				}
 
