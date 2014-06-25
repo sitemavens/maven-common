@@ -38,3 +38,5 @@
         </tr>
     </tbody>
 </table>
+<pagination total-items="totalItems" ng-model="ProfileFilter.page" max-size="5" class="" boundary-links="true" class="pagination-sm"
+            ng-change="selectPage(ProfileFilter.page)"></pagination>

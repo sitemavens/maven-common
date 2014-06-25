@@ -74,6 +74,7 @@ class AdminInitializer {
 				wp_enqueue_script( 'admin/profiles/controllers/list.js', $registry->getScriptsUrl() . "admin/profiles/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/profiles/controllers/edit.js', $registry->getScriptsUrl() . "admin/profiles/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/profiles/services/profile.js', $registry->getScriptsUrl() . "admin/profiles/services/profile.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/profiles/services/profile-filter.js', $registry->getScriptsUrl() . "admin/profiles/services/profile-filter.js", 'mavenApp', $registry->getPluginVersion() );
 
 				wp_enqueue_script( 'admin/orders/controllers/list.js', $registry->getScriptsUrl() . "admin/orders/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/orders/controllers/edit.js', $registry->getScriptsUrl() . "admin/orders/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );

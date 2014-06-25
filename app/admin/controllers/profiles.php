@@ -31,11 +31,35 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		return $routes;
 	}
 
-	public function getProfiles() {
+	public function getProfiles( $filter = array(), $page = 1 ) {
 		$manager = new \Maven\Core\ProfileManager();
-		$profile = $manager->getAll();
+		$filter = new \Maven\Core\Domain\ProfileFilter();
 
-		$this->getOutput()->sendApiResponse( $profile );
+		if ( key_exists( 'email', $filter ) && $filter[ 'email' ] ) {
+			$filter->setEmail( $filter[ 'email' ] );
+		}
+
+		if ( key_exists( 'firstName', $filter ) && $filter[ 'firstName' ] ) {
+			$filter->setFirstName( $filter[ 'firstName' ] );
+		}
+
+		if ( key_exists( 'lastName', $filter ) && $filter[ 'lastName' ] ) {
+			$filter->setLastName( $filter[ 'lastName' ] );
+		}
+
+		$sortBy = 'email';
+		$order = 'desc';
+		$perPage = 10;
+
+		$profile = $manager->getPage( $filter, $sortBy, $order, (($page - 1) * $perPage ), $perPage );
+		$count = $manager->getCount( $filter );
+
+		$response = array(
+		    "items" => $profile,
+		    "totalItems" => $count
+		);
+
+		$this->getOutput()->sendApiResponse( $response );
 	}
 
 	public function newProfile( $data ) {
