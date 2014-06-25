@@ -37,5 +37,5 @@
 		</tr>
 	</tbody>
 </table>
-<pagination total-items="totalItems" page="OrderFilter.page" max-size="5" class="" boundary-links="true" class="pagination-sm"
-            on-select-page="selectPage(page)"></pagination>
+<pagination total-items="totalItems" ng-model="OrderFilter.page" max-size="5" class="" boundary-links="true" class="pagination-sm"
+            ng-change="selectPage(OrderFilter.page)"></pagination>
