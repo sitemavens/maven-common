@@ -41,7 +41,7 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 		return $view;
 	}
 
-	public function getPromotions() {
+	public function getPromotions( $filter = array(), $page = 1 ) {
 
 		$export = $this->getRequest()->getProperty( 'export' );
 
@@ -49,7 +49,29 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 
 		$filter = new \Maven\Core\Domain\PromotionFilter();
 
-		$promotions = $manager->getPromotions( $filter );
+		if ( key_exists( 'code', $filter ) && $filter[ 'code' ] ) {
+			$filter->setCode( $filter[ 'code' ] );
+		}
+
+		if ( key_exists( 'date', $filter ) && $filter[ 'date' ] ) {
+			$filter->setDate( $filter[ 'date' ] );
+		}
+
+		if ( key_exists( 'enabled', $filter ) && $filter[ 'enabled' ] ) {
+			$filter->setEnabled( $filter[ 'enabled' ] );
+		}
+
+		$sortBy = 'code';
+		$order = 'desc';
+		$perPage = 10;
+
+		$promotions = $manager->getPromotions( $filter, $sortBy, $order, (($page - 1) * $perPage ), $perPage );
+		$count = $manager->getPromotionsCount( $filter );
+
+		$response = array(
+		    "items" => $promotions,
+		    "totalItems" => $count
+		);
 
 		if ( $export ) {
 			// 'browser' tells the library to stream the data directly to the browser.
@@ -103,7 +125,7 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 			$exporter->finalize(); // writes the footer, flushes remaining data to browser.
 		} else {
 
-			$this->getOutput()->sendApiResponse( $promotions );
+			$this->getOutput()->sendApiResponse( $response );
 		}
 	}
 

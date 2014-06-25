@@ -1,10 +1,24 @@
 'use strict';
 angular.module('mavenApp')
 	.controller('PromotionsCtrl',
-		['$scope', '$location', 'Promotion',
-			function($scope, $location, Promotion) {
+		['$scope', '$location', 'PromotionPaginate', 'PromotionFilter',
+			function($scope, $location, PromotionPaginate, PromotionFilter) {
 
-				$scope.promotions = Promotion.query();
+				$scope.getPage = function() {
+					PromotionPaginate.getPage(PromotionFilter, function(result) {
+						$scope.promotions = result.items;
+						$scope.totalItems = result.totalItems;
+					});
+				};
+
+				$scope.PromotionFilter = PromotionFilter;
+				$scope.getPage();
+
+				$scope.selectPage = function(page) {
+					PromotionFilter.page = page;
+					console.log(page);
+					$scope.getPage();
+				};
 
 
 				$scope.newPromotion = function() {

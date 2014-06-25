@@ -42,5 +42,6 @@
 			</td>
 		</tr>
 	</tbody>
-
 </table>
+<pagination total-items="totalItems" ng-model="PromotionFilter.page" max-size="5" class="" boundary-links="true" class="pagination-sm"
+            ng-change="selectPage(PromotionFilter.page)"></pagination>

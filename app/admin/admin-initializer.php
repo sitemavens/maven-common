@@ -59,6 +59,7 @@ class AdminInitializer {
 				wp_enqueue_script( 'admin/promotions/controllers/list.js', $registry->getScriptsUrl() . "admin/promotions/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/promotions/controllers/edit.js', $registry->getScriptsUrl() . "admin/promotions/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/promotions/services/promotion.js', $registry->getScriptsUrl() . "admin/promotions/services/promotion.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/promotions/services/promotion-filter.js', $registry->getScriptsUrl() . "admin/promotions/services/promotion-filter.js", 'mavenApp', $registry->getPluginVersion() );
 
 
 				wp_enqueue_script( 'admin/roles/controllers/list.js', $registry->getScriptsUrl() . "admin/roles/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
