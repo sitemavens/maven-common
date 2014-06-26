@@ -6,6 +6,7 @@ angular.module('mavenApp')
 
 				$scope.getPage = function() {
 					PromotionPaginate.getPage(PromotionFilter, function(result) {
+						$scope.result = result;
 						$scope.promotions = result.items;
 						$scope.totalItems = result.totalItems;
 					});
@@ -16,7 +17,6 @@ angular.module('mavenApp')
 
 				$scope.selectPage = function(page) {
 					PromotionFilter.page = page;
-					console.log(page);
 					$scope.getPage();
 				};
 
@@ -31,7 +31,7 @@ angular.module('mavenApp')
 
 				$scope.deletePromotion = function(idx) {
 					var promotion = $scope.promotions[idx];
-					promotion.$delete().then(
+					$scope.result.$delete({id: promotion.id}).then(
 						function() {
 							$scope.promotions.splice(idx, 1);
 						});

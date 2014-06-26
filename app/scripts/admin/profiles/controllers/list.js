@@ -6,7 +6,7 @@ angular.module('mavenApp')
 				
 				$scope.getPage = function() {
 					Profile.getPage(ProfileFilter, function(result) {
-						console.log(result);
+						$scope.result = result;
 						$scope.Profiles = result.items;
 						$scope.totalItems = result.totalItems;
 					});
@@ -17,7 +17,6 @@ angular.module('mavenApp')
 
 				$scope.selectPage = function(page) {
 					ProfileFilter.page = page;
-					console.log(page);
 					$scope.getPage();
 				};
 
@@ -34,7 +33,7 @@ angular.module('mavenApp')
 
 				$scope.deleteProfile = function(idx) {
 					var profile = $scope.Profiles[idx];
-					profile.$delete().then(
+					$scope.result.$delete({id: profile.id}).then(
 						function(data) {
 							$scope.Profiles.splice(idx, 1);
 						});

@@ -13,7 +13,6 @@ angular.module('mavenApp')
 				}
 
 				$scope.saveTax = function() {
-					console.log('saving?');
 					$scope.tax.$save();
 					/*Tax.save({id: $scope.tax.id}, $scope.tax,
 					 function(tax) {

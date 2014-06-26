@@ -6,7 +6,7 @@ angular.module('mavenApp')
 				
 				$scope.getPage = function() {
 					Attribute.getPage(AttributeFilter, function(result) {
-						console.log(result);
+						$scope.result = result;
 						$scope.Attributes = result.items;
 						$scope.totalItems = result.totalItems;
 					});
@@ -17,7 +17,6 @@ angular.module('mavenApp')
 
 				$scope.selectPage = function(page) {
 					AttributeFilter.page = page;
-					console.log(page);
 					$scope.getPage();
 				};
 
@@ -31,7 +30,7 @@ angular.module('mavenApp')
 
 				$scope.deleteAttr = function(idx) {
 					var attr = $scope.Attributes[idx];
-					attr.$delete().then(
+					$scope.result.$delete({id: attr.id}).then(
 						function(data) {
 							$scope.Attributes.splice(idx, 1);
 						});

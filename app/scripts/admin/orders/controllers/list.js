@@ -8,7 +8,6 @@ angular.module('mavenApp')
 					Order.getPage(OrderFilter, function(result) {
 						$scope.orders = result.items;
 						$scope.totalItems = result.totalItems;
-						//console.log(result);
 					});
 				};
 

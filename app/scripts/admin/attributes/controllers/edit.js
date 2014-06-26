@@ -11,7 +11,6 @@ angular.module('mavenApp')
 					$scope.attr = new Attribute({enabled: true});
 				}
 				$scope.saveAttr = function() {
-					console.log('saving?');
 					$scope.attr.$save();
 				};
 				$scope.cancelEdit = function() {

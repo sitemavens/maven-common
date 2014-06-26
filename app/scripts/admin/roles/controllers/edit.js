@@ -11,7 +11,6 @@ angular.module('mavenApp')
 					$scope.rol = new Rol({enabled: true});
 				}
 				$scope.saveRol = function() {
-					console.log('saving?');
 					$scope.rol.$save();
 				};
 				$scope.cancelEdit = function() {
