@@ -1,13 +1,9 @@
 body {
 	background-color: transparent;
-}
-
-#delete-address.profile-edit-address {
-    float: right;
-}
-a.accordion-toggle{
-	text-decoration: none;
-	
+	color: #444;
+	font-family: "Open Sans",sans-serif;
+	font-size: 13px;
+	line-height: 1.4em;
 }
 @media (min-width: 768px) {
 	.container {
@@ -27,6 +23,46 @@ a.accordion-toggle{
 	}
 }
 
+ul.subsubsub a {
+	background-color: transparent !important;
+	color: #0074a2;
+	display: inline-block;
+	margin: 0 5px;
+	padding: 0;
+}
+ul.subsubsub li:first-child a { margin-left: 0; }
+ul.subsubsub li.active a {
+	color: #000;
+	font-weight: 600;
+}
+ul.subsubsub a:hover {
+	color: #2ea2cc !important;
+}
+.form-control {
+	padding: 6px 12px !important;
+	height: 34px !important;
+}
+.panel-default {
+	background-color: #fff;
+	border: 1px solid #e5e5e5;
+	border-radius: 0;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+.panel-default > .panel-heading {
+	background: #fff;
+	font-size: 14px;
+	font-weight: 600;
+}
+ 
+
+#delete-address.profile-edit-address {
+    float: right;
+}
+a.accordion-toggle{
+	text-decoration: none;
+	
+}
+ 
 .ng-cloak { display:none; }
 
 .form-group {

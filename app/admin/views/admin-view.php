@@ -1,7 +1,7 @@
 <div ng-app="mavenApp">
 
 	<div class="header" ng-controller='MainNavCtrl'>
-		<ul class="nav nav-pills pull-right" >
+		<ul class="nav nav-pills subsubsub" >
 			<li class="" ng-class="{active:isActive('/')}"><a ng-href="#/"><i class="glyphicon glyphicon-dashboard"></i>&nbsp;Dashboard</a></li>
             <li class="" ng-class="{active:isActive('/roles')}"><a ng-href="#/roles"><i class="glyphicon glyphicon-shopping-cart"></i>&nbsp; Roles</a></li>
 			<li class="" ng-class="{active:isActive('/orders')}"><a ng-href="#/orders"><i class="glyphicon glyphicon-shopping-cart"></i>&nbsp; Orders</a></li>
@@ -14,6 +14,6 @@
 	</div>
 
 	<!-- Add your site or application content here -->
-	<div data-loading >Loading...</div>
-	<div class="container" ng-view></div>
+	<div class="clear" data-loading >Loading...</div>
+	<div class="clear" ng-view></div>
 </div>
