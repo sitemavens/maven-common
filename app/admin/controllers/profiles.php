@@ -27,6 +27,10 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		    array( array( $this, 'getProfileAddress' ), \WP_JSON_Server::READABLE ),
 		    array( array( $this, 'deleteProfileAddress' ), \WP_JSON_Server::DELETABLE ),
 		);
+		$routes[ '/maven/profilewpuser/(?P<id>\D+)' ] = array(
+		    array( array( $this, 'isWpUser' ), \WP_JSON_Server::READABLE ),
+//		    array( array( $this, 'deleteProfileAddress' ), \WP_JSON_Server::DELETABLE ),
+		);
 
 		return $routes;
 	}
@@ -66,11 +70,17 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$manager = new \Maven\Core\ProfileManager();
 
 		$profile = new \Maven\Core\Domain\Profile();
-
 		$profile->load( $data );
 		$profile = $manager->updateProfile( $profile );
 
 		$this->getOutput()->sendApiResponse( $profile );
+	}
+
+	public function isWpUser( $id ) {
+		$manager = new \Maven\Core\ProfileManager();
+		$result = $manager->isWPUser( $id );
+		$data = array( 'result' => $result );
+		$this->getOutput()->sendApiResponse( $data );
 	}
 
 	public function getProfile( $id ) {
@@ -83,12 +93,21 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	public function editProfile( $id, $data ) {
 
 		$manager = new \Maven\Core\ProfileManager();
-
 		$profile = new \Maven\Core\Domain\Profile();
+		$profile->load( $data );	
+		$registerWp = FALSE;
+		if ( isset( $data[ 'register' ] ) && $data[ 'register' ] == 1 )
+			$registerWp = true;
 
-		$profile->load( $data );
-		$profile = $manager->updateProfile( $profile );
+		$username = FALSE;
+		if ( isset( $data[ 'userName' ] ) && $data[ 'userName' ] )
+			$username = $data[ 'userName' ];
 
+		$password = FALSE;
+		if ( isset( $data[ 'password' ] ) && $data[ 'password' ] )
+			$password = $data[ 'password' ];
+
+		$profile = $manager->addProfile( $profile, $registerWp, $username, $password);
 		$this->getOutput()->sendApiResponse( $profile );
 	}
 

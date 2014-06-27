@@ -3,7 +3,7 @@ angular.module('mavenApp')
 	.controller('ProfileCtrl',
 		['$scope', '$location', 'Profile', 'ProfileFilter',
 			function($scope, $location, Profile, ProfileFilter) {
-				
+
 				$scope.getPage = function() {
 					Profile.getPage(ProfileFilter, function(result) {
 						$scope.result = result;
@@ -11,7 +11,12 @@ angular.module('mavenApp')
 						$scope.totalItems = result.totalItems;
 					});
 				};
-
+				$scope.hasRoles = function(roles) {
+					if (roles.length > 0) {
+						return true;
+					}
+					return false;
+				};
 				$scope.ProfileFilter = ProfileFilter;
 				$scope.getPage();
 

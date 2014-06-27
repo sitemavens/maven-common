@@ -4,7 +4,7 @@
 <div class="form-group">
 	<tabset>
 		<tab heading="Personal Info">
-			<div class="form-horizontal profile">
+			<div class="form-horizontal profile profile-edition">
 				<div class="form-group">
 					<label for="salutation" class="col-sm-2 control-label">Salutation</label>
 					<div class="col-sm-10">
@@ -51,10 +51,8 @@
 				<div class="form-group">
 					<label for="wholesale" class="col-sm-2 control-label">Wholesale</label>
 					<div class="col-sm-10">
-						<div class="col-sm-10">
-								<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="true" uncheckable>Yes</label>
-								<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="false" uncheckable>No</label>
-							</div>
+							<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="true" uncheckable>Yes</label>
+							<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="false" uncheckable>No</label>
 					</div>
 				</div>
 				<div class="form-group">
@@ -87,7 +85,7 @@
 		<tab heading="Photo"></tab>
 
 		<tab heading="Address">
-			<div class="form-horizontal profile">
+			<div class="form-horizontal profile profile-edition">
 
 				<div class="form-group">
 					<label for="addressSelect" class="col-sm-2 control-label">Address</label>
@@ -199,9 +197,61 @@
 			</div>
 		</tab>
 
-		<tab heading="WP User"></tab>  
+		<tab heading="WP User">
+			<div class="form-horizontal profile profile-edition">
+				<div class="form-group">
+					<label for="" class="col-sm-2 control-label"> </label>
+					<div class="col-sm-4">
+						<alert type="info">
+							<p>
+								<span>A Wordpress user means that the user will be able to log in to your system</span></br>
+								<span>It will be associated with the <strong>"Suscriber"</strong> role.</span>
+							</p>
+						</alert>	
+					</div>
+				</div>
+				<div class="form-group" ng-hide="profile.isWpUser">
+					<label for="" class="col-sm-3 control-label">Register</label>
+					<div class="col-sm-4">
+						<label class="btn btn-success" ng-model="profile.register" btn-radio="true" uncheckable>Yes</label>
+						<label class="btn btn-success" ng-model="profile.register" btn-radio="false" uncheckable>No</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="" class="col-sm-2 control-label">WP Username: </label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="" ng-model="profile.userName" placeholder="">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="" class="col-sm-2 control-label">Password: </label>
+					<div class="col-sm-4">
+						<input type="password" class="form-control" id="" ng-model="profile.password" placeholder="">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="" class="col-sm-2 control-label">Confirm Password: </label>
+					<div class="col-sm-4">
+						<input type="password" class="form-control" id="" ng-model="profile.confirmPassword" placeholder="">
+					</div>
+				</div>
+			</div>
+		</tab>  
 
-		<tab heading="Roles"></tab>
+		<tab heading="Roles">
+			<div class="form-horizontal profile profile-edition">
+				<div class="form-group" ng-repeat="rol in listOfRoles">
+					<label for="" class="col-sm-2 control-label">{{rol.name}}: </label>
+					<div class="col-sm-4">
+						<button type="button" class="btn btn-default" ng-model="rol.status" ng-click="selectRol(rol.id, $index)" btn-radio="true">Yes</button>
+						<button type="button" class="btn btn-default" ng-model="rol.status" ng-click="selectRol(rol.id, $index)" btn-radio="false">No</button>
+						<label class="btn btn-success" ng-model="rol.status" ng-click="selectRol(rol.id, $index)" btn-radio="true" uncheckable>Yes</label>
+						<label class="btn btn-success" ng-model="rol.status" ng-click="selectRol(rol.id, $index)" btn-radio="false" uncheckable>No</label>
+						<input type="checkbox" class="form-control" id="" ng-model="rol.status" ng-click="selectRol(rol.id, $index)">
+					</div>
+				</div>
+			</div>
+		</tab>
 
 	</tabset>
 </div>

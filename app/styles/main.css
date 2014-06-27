@@ -28,3 +28,11 @@ a.accordion-toggle{
 }
 
 .ng-cloak { display:none; }
+
+.form-group {
+    clear: both;
+}
+
+.form-horizontal.profile.profile-edition.ng-scope {
+    margin-top: 20px;
+}

@@ -146,8 +146,8 @@ class ProfileManager {
 	 * @param \Maven\Core\Domain\Profile or array $profile $profile
 	 * @return \Maven\Core\Domain\Profile
 	 */
-	public function updateProfile( $profile ) {
-		return $this->addProfile( $profile );
+	public function updateProfile( $profile, $registerWp, $username, $password) {
+		return $this->addProfile( $profile, $registerWp, $username, $password );
 	}
 
 	/**
@@ -155,10 +155,8 @@ class ProfileManager {
 	 * @param \Maven\Core\Domain\Profile or array $profile
 	 * @return \Maven\Core\Domain\Profile
 	 */
-	public function addProfile( $profile, $registerWp = false, $username = false, $password = false ) {
-
+	public function addProfile( $profile, $registerWp = null, $username = null, $password = null ) {
 		$profileToUpdate = null;
-
 		if ( is_array( $profile ) ) {
 			$profileToUpdate = new Domain\Profile();
 			\Maven\Core\FillerHelper::fillObject( $profileToUpdate, $profile );
@@ -166,30 +164,28 @@ class ProfileManager {
 			$profileToUpdate = $profile;
 
 		$this->mapper = new Mappers\ProfileMapper( $this->profileTableName );
-
+		
 		if ( $registerWp ) {
-
 			$registrationManager = new RegistrationManager();
 			$roleManager = new \Maven\Security\RoleManager();
-
 			$wpUser = $registrationManager->getByEmail( $username );
+
 			if ( $wpUser === FALSE ) {
 				$userId = $registrationManager->addWordpressUser( $profileToUpdate, $username, $password );
 			} else {
 				$userId = $wpUser->ID;
 			}
-
 			if ( ! is_wp_error( $userId ) ) {
 				$profileToUpdate->setUserId( $userId );
 
 				//Get roles of the user
-				$existingRoles = $roleManager->getUserRoles( $profileToUpdate->getUserId() );
-
+//				$existingRoles = $roleManager->getUserRoles( $profileToUpdate->getUserId() );
+//				$allRoles = array_unique( array_merge( $existingRoles, $profileToUpdate->getRoles() ), SORT_REGULAR );
 				//combine user roles, with roles set on the profile
-				$allRoles = array_unique( array_merge( $existingRoles, $profileToUpdate->getRoles() ), SORT_REGULAR );
-
+				$allRoles = $profileToUpdate->getRoles();
 				//asign combined roles to the profile
 				$profileToUpdate->setRoles( $allRoles );
+				$profileToUpdate = $roleManager->saveUserRoles($profileToUpdate);
 			} else {
 				//TODO: show error message
 				throw new \Maven\Exceptions\MavenException( $userId->get_error_message() );
@@ -197,7 +193,7 @@ class ProfileManager {
 		}
 		//$forUpdate = ((int)$profile->getId()) > 0;
 		$profileToUpdate = $this->mapper->save( $profileToUpdate );
-		
+
 //		$addressManager = new AddressManager();
 //
 //		$addresses = $profileToUpdate->getAddresses();
@@ -317,24 +313,23 @@ class ProfileManager {
 
 		return $key;
 	}
-	
+
 	/**
 	 * Clean the autologin key
 	 * @param string $email
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function resetAutoLoginKey( $email ){
-		
+	public function resetAutoLoginKey( $email ) {
+
 		$profile = $this->getByEmail( $email );
 
 		if ( ! $profile ) {
 			throw new \Maven\Exceptions\NotFoundException( 'Profile not found: ' . $email );
 		}
-		
-		$this->mapper->resetAutoLoginKey($profile->getProfileId());
+
+		$this->mapper->resetAutoLoginKey( $profile->getProfileId() );
 	}
 
-	
 	public function validateAutoLoginKey( $email, $key ) {
 
 		$profile = $this->getByEmail( $email );
