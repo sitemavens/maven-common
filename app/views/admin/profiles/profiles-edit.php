@@ -51,8 +51,8 @@
 				<div class="form-group">
 					<label for="wholesale" class="col-sm-2 control-label">Wholesale</label>
 					<div class="col-sm-10">
-							<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="true" uncheckable>Yes</label>
-							<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="false" uncheckable>No</label>
+						<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="true" uncheckable>Yes</label>
+						<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="false" uncheckable>No</label>
 					</div>
 				</div>
 				<div class="form-group">
@@ -210,6 +210,12 @@
 						</alert>	
 					</div>
 				</div>
+				<div class="form-group" ng-show="profile.isWpUser">
+					<label for="" class="col-sm-2 control-label"></label>
+					<div class="col-sm-4">
+						<span>This Profile is already associated with a Wordpress User.</span>
+					</div>
+				</div>
 				<div class="form-group" ng-hide="profile.isWpUser">
 					<label for="" class="col-sm-3 control-label">Register</label>
 					<div class="col-sm-4">
@@ -220,7 +226,7 @@
 				<div class="form-group">
 					<label for="" class="col-sm-2 control-label">WP Username: </label>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" id="" ng-model="profile.userName" placeholder="">
+						<input type="text" class="form-control" id="" ng-model="profile.userName" placeholder="" ng-disabled="profile.isWpUser">
 					</div>
 				</div>
 				<div class="form-group">
@@ -243,10 +249,6 @@
 				<div class="form-group" ng-repeat="rol in listOfRoles">
 					<label for="" class="col-sm-2 control-label">{{rol.name}}: </label>
 					<div class="col-sm-4">
-						<button type="button" class="btn btn-default" ng-model="rol.status" ng-click="selectRol(rol.id, $index)" btn-radio="true">Yes</button>
-						<button type="button" class="btn btn-default" ng-model="rol.status" ng-click="selectRol(rol.id, $index)" btn-radio="false">No</button>
-						<label class="btn btn-success" ng-model="rol.status" ng-click="selectRol(rol.id, $index)" btn-radio="true" uncheckable>Yes</label>
-						<label class="btn btn-success" ng-model="rol.status" ng-click="selectRol(rol.id, $index)" btn-radio="false" uncheckable>No</label>
 						<input type="checkbox" class="form-control" id="" ng-model="rol.status" ng-click="selectRol(rol.id, $index)">
 					</div>
 				</div>

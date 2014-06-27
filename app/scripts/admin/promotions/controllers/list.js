@@ -3,7 +3,6 @@ angular.module('mavenApp')
 	.controller('PromotionsCtrl',
 		['$scope', '$location', 'PromotionPaginate', 'PromotionFilter',
 			function($scope, $location, PromotionPaginate, PromotionFilter) {
-
 				$scope.getPage = function() {
 					PromotionPaginate.getPage(PromotionFilter, function(result) {
 						$scope.result = result;

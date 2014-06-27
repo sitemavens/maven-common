@@ -18,8 +18,8 @@
                 <button class="btn btn-info btn-xs" ng-click="deleteProfile($index)">Delete</button>	
             </td>
             <td>
-		    <img ng-show="hasRoles(profile.roles)" src=""/>
-		    <img ng-hide="hasRoles(profile.roles)" src=""/>
+		    <img ng-src="{{imageUrl}}/profile-status/status-enabled.png" ng-show="hasRoles(profile.roles)" src=""/>
+		    <img ng-src="{{imageUrl}}/profile-status/status-disabled.png" ng-hide="hasRoles(profile.roles)" src=""/>
             </td>
             <td>
                 {{profile.email}}

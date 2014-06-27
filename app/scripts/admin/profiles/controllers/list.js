@@ -3,7 +3,7 @@ angular.module('mavenApp')
 	.controller('ProfileCtrl',
 		['$scope', '$location', 'Profile', 'ProfileFilter',
 			function($scope, $location, Profile, ProfileFilter) {
-
+				$scope.imageUrl = Maven.imagesUrl;
 				$scope.getPage = function() {
 					Profile.getPage(ProfileFilter, function(result) {
 						$scope.result = result;
