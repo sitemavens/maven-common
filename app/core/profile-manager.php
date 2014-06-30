@@ -146,8 +146,8 @@ class ProfileManager {
 	 * @param \Maven\Core\Domain\Profile or array $profile $profile
 	 * @return \Maven\Core\Domain\Profile
 	 */
-	public function updateProfile( $profile, $registerWp, $username, $password) {
-		return $this->addProfile( $profile, $registerWp, $username, $password );
+	public function updateProfile( $profile ) {
+		return $this->addProfile( $profile );
 	}
 
 	/**
@@ -164,7 +164,7 @@ class ProfileManager {
 			$profileToUpdate = $profile;
 
 		$this->mapper = new Mappers\ProfileMapper( $this->profileTableName );
-		
+
 		if ( $registerWp ) {
 			$registrationManager = new RegistrationManager();
 			$roleManager = new \Maven\Security\RoleManager();
@@ -185,7 +185,7 @@ class ProfileManager {
 				$allRoles = $profileToUpdate->getRoles();
 				//asign combined roles to the profile
 				$profileToUpdate->setRoles( $allRoles );
-				$profileToUpdate = $roleManager->saveUserRoles($profileToUpdate);
+				$profileToUpdate = $roleManager->saveUserRoles( $profileToUpdate );
 			} else {
 				//TODO: show error message
 				throw new \Maven\Exceptions\MavenException( $userId->get_error_message() );
