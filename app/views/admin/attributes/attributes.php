@@ -10,10 +10,15 @@
     </thead>
     <tbody>
         <tr ng-repeat="attr in Attributes">
-            <td>
-                <button class="btn btn-primary btn-xs" ng-click="editAttr(attr.id)">Edit</button>
-                <button class="btn btn-info btn-xs" ng-click="deleteAttr($index)">Delete</button>	
-            </td>
+            <td class="row-actions maven">
+				<span class="edit">
+				<a class="list-view" ng-click="editAttr(attr.id)">Edit</a>
+				|
+				</span>
+				<span class="trash">
+				<a class="list-view delete" ng-click="deleteAttr($index)">Delete</a>
+				</span>
+			</td>
             <td>
                 {{attr.name}}
             </td>

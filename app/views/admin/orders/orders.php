@@ -14,10 +14,19 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="order in orders">
-			<td>
-				<button class="btn btn-success btn-xs" ng-click="editOrder(order.id)">Edit</button>
-				<a class="btn btn-info btn-xs" target="_blank" ng-href="{{printUrl(order.id)}}">Print</a>
-				<button class="btn btn-primary btn-xs" ng-click="deleteOrder($index)">Delete</button>	
+			<td class="row-actions maven">
+				<span class="edit">
+					<a class="list-view" ng-click="editOrder(order.id)">Edit</a>
+					|
+				</span>
+				<span class="edit">
+					<a class="list-view" target="_blank" ng-href="{{printUrl(order.id)}}">Print</a>
+					|	
+				</span>
+				</span>
+				<span class="trash">
+					<a class="list-view delete" ng-click="deleteOrder($index)">Delete</a>
+				</span>
 			</td>
 			<td>
 				<img ng-src="{{order.status.imageUrl}}" />{{order.status.name}}

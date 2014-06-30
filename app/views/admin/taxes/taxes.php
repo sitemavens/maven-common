@@ -13,9 +13,14 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="tax in taxes">
-			<td>
-				<button class="btn btn-primary btn-xs" ng-click="editTax(tax.id)">Edit</button>
-				<button class="btn btn-info btn-xs" ng-click="deleteTax($index)">Delete</button>	
+			<td class="row-actions maven">
+				<span class="edit">
+				<a class="list-view" ng-click="editTax(tax.id)">Edit</a>
+				|
+				</span>
+				<span class="trash">
+				<a class="list-view delete" ng-click="deleteTax($index)">Delete</a>
+				</span>
 			</td>
 			<td>
 				<img ng-src="{{tax.statusImageUrl}}" />

@@ -76,3 +76,16 @@ a.accordion-toggle{
 .nopadding{
 	padding: 0 !important;
 }
+
+a.list-view{
+	font-size: 13px;
+	cursor: pointer;
+}
+
+a.list-view:hover{
+	text-decoration: none;
+}
+
+.row-actions.maven{
+	visibility: visible;
+}

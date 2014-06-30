@@ -6,7 +6,6 @@ angular.module('mavenApp')
 			function($scope, $routeParams, $location, Profile, ProfileAddress, ProfileWpUser, Rol) {
 				$scope.oneAtATime = true;
 				$scope.profile = {};
-				$scope.listOfRoles = Array();
 				$scope.addresses = CachedAddresses;
 				$scope.countries = CachedCountries;
 				$scope.radioModel = 'false';
@@ -18,8 +17,6 @@ angular.module('mavenApp')
 						{id: 'ms', value: 'Ms.'},
 						{id: 'mrs', value: 'Mrs.'}
 					];
-
-				//$scope.roles;
 				if ($routeParams.id) {
 					//$scope.profile;
 					Profile.get({id: $routeParams.id}, function(data) {
@@ -31,15 +28,9 @@ angular.module('mavenApp')
 						$scope.profile = data;
 						ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
 							$scope.profile.isWpUser = iswpuser.result;
-							$scope.profile.register = false;
+							$scope.setRegister($scope.profile.isWpUser);
 						});
-						Rol.query(function(data) {
-							$scope.roles = data;
-							angular.forEach($scope.roles, function(rol) {
-								var rolStatus = ({id: rol.id, status: $scope.checkRolIsEnabled(rol.id), name: rol.name});
-								$scope.listOfRoles.push(rolStatus);
-							});
-						});
+						$scope.rolQuery();
 					});
 				} else {
 					$scope.profile = new Profile({enabled: true});
@@ -49,10 +40,15 @@ angular.module('mavenApp')
 				}
 
 				$scope.saveProfile = function() {
-					$scope.profile.$save(function() {
+					$scope.profile.$save(function(data) {
+						$scope.profile = data;
+						console.log($scope.profile);
 						ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
 							$scope.profile.isWpUser = iswpuser.result;
+							$scope.setRegister($scope.profile.isWpUser);
 						});
+						$scope.rolQuery();
+
 					});
 				};
 
@@ -71,6 +67,14 @@ angular.module('mavenApp')
 						}
 					});
 					return isEnabled;
+				};
+
+				$scope.setRegister = function(data) {
+					if (data) {
+						$scope.profile.register = true;
+					} else {
+						$scope.profile.register = false;
+					}
 				};
 
 				$scope.deleteAddress = function(idx, e) {
@@ -151,6 +155,18 @@ angular.module('mavenApp')
 						return false;
 					}
 
+				};
+
+				$scope.rolQuery = function() {
+					$scope.listOfRoles = [];
+					Rol.query(function(data) {
+						$scope.roles = data;
+						angular.forEach($scope.roles, function(rol) {
+							var rolStatus = ({id: rol.id, status: $scope.checkRolIsEnabled(rol.id), name: rol.name});
+							$scope.listOfRoles.push(rolStatus);
+						});
+						return $scope.listOfRoles;
+					});
 				};
 
 				$scope.changeRol = function(id) {

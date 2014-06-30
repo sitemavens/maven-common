@@ -15,9 +15,14 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="promotion in promotions">
-			<td>
-				<button class="btn btn-primary btn-xs" ng-click="editPromotion(promotion.id)">Edit</button>
-				<button class="btn btn-info btn-xs" ng-click="deletePromotion($index)">Delete</button>	
+			<td class="row-actions maven">
+				<span class="edit">
+				<a class="list-view" ng-click="editPromotion(promotion.id)">Edit</a>
+				|
+				</span>
+				<span class="trash">
+				<a class="list-view delete" ng-click="deletePromotion($index)">Delete</a>
+				</span>
 			</td>
 			<td>
 				<img ng-src="{{promotion.statusImageUrl}}" />

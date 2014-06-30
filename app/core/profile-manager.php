@@ -177,14 +177,18 @@ class ProfileManager {
 			}
 			if ( ! is_wp_error( $userId ) ) {
 				$profileToUpdate->setUserId( $userId );
-
+				$defaultRole[] = $roleManager->get( (get_option( 'default_role' ) ) );
 				//Get roles of the user
 //				$existingRoles = $roleManager->getUserRoles( $profileToUpdate->getUserId() );
 //				$allRoles = array_unique( array_merge( $existingRoles, $profileToUpdate->getRoles() ), SORT_REGULAR );
 				//combine user roles, with roles set on the profile
 				$allRoles = $profileToUpdate->getRoles();
 				//asign combined roles to the profile
-				$profileToUpdate->setRoles( $allRoles );
+				if ( count( ( array ) $allRoles ) !== 0 ) {
+					$profileToUpdate->setRoles( $allRoles );
+				} else {
+					$profileToUpdate->setRoles( $defaultRole );
+				}
 				$profileToUpdate = $roleManager->saveUserRoles( $profileToUpdate );
 			} else {
 				//TODO: show error message

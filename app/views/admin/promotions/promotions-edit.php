@@ -66,7 +66,7 @@
 	</div>
 	<div class="form-group">
 		<label for="description" class="col-sm-2 control-label">Description</label>
-		<div class="col-sm-10">
+		<div class="col-sm-6">
 			<textarea class="form-control" id="description" ng-model="promotion.description" />
 		</div>
 	</div>
