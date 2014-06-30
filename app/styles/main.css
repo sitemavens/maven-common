@@ -72,3 +72,7 @@ a.accordion-toggle{
 .form-horizontal.profile.profile-edition.ng-scope {
     margin-top: 20px;
 }
+
+.nopadding{
+	padding: 0 !important;
+}

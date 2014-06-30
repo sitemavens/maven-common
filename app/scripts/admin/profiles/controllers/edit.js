@@ -29,12 +29,9 @@ angular.module('mavenApp')
 						}
 
 						$scope.profile = data;
-						//$scope.profile.isWpUser;
 						ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
-							//$scope.isWpUser = iswpuser;
-							$scope.profile.isWpUser = iswpuser.result;//$scope.isWpUser.result;
+							$scope.profile.isWpUser = iswpuser.result;
 							$scope.profile.register = false;
-							//console.log($scope.profile.register);
 						});
 						Rol.query(function(data) {
 							$scope.roles = data;
@@ -52,7 +49,11 @@ angular.module('mavenApp')
 				}
 
 				$scope.saveProfile = function() {
-					$scope.profile.$save();
+					$scope.profile.$save(function() {
+						ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
+							$scope.profile.isWpUser = iswpuser.result;
+						});
+					});
 				};
 
 				$scope.cancelEdit = function() {

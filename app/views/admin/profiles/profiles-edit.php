@@ -89,9 +89,12 @@
 
 				<div class="form-group">
 					<label for="addressSelect" class="col-sm-2 control-label">Address</label>
-					<div class="col-sm-6">
-						<select class="form-control" ng-model="newAddress.type" ng-change="addAddress(newAddress)"
+					<div class="col-sm-5 nopadding">
+						<select class="form-control" ng-model="newAddress.type"
 							ng-options="Address.id as Address.name for Address in addresses" id="addressSelect" />
+					</div>
+					<div class="col-sm-1">
+						<button ng-click="addAddress(newAddress)" class="btn btn-primary">Add Address</button>
 					</div>
 					<div class="col-sm-4" ng-show="addressExists.status">
 						<alert type="danger">You already have a {{addressExists.name}} address</alert>	
@@ -194,6 +197,12 @@
 					</accordion-group>
 
 				</accordion>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button ng-click="saveProfile()" class="btn btn-primary">Save</button>
+						<button ng-click="cancelEdit()" class="btn btn-default">Cancel</button>
+					</div>
+				</div>
 			</div>
 		</tab>
 
@@ -241,15 +250,34 @@
 						<input type="password" class="form-control" id="" ng-model="profile.confirmPassword" placeholder="">
 					</div>
 				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button ng-click="saveProfile()" class="btn btn-primary">Save</button>
+						<button ng-click="cancelEdit()" class="btn btn-default">Cancel</button>
+					</div>
+				</div>
 			</div>
 		</tab>  
 
 		<tab heading="Roles">
 			<div class="form-horizontal profile profile-edition">
-				<div class="form-group" ng-repeat="rol in listOfRoles">
+				<div class="col-sm-6" ng-hide="profile.register || profile.isWpUser">
+					<alert type="info">
+						<p>
+							<span>The profile need to be asociated with a Worpress User to asign roles.</span></br>
+						</p>
+					</alert>	
+				</div>
+				<div class="form-group" ng-show="profile.register || profile.isWpUser" ng-repeat="rol in listOfRoles">
 					<label for="" class="col-sm-2 control-label">{{rol.name}}: </label>
 					<div class="col-sm-4">
 						<input type="checkbox" class="form-control" id="" ng-model="rol.status" ng-click="selectRol(rol.id, $index)">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button ng-click="saveProfile()" class="btn btn-primary">Save</button>
+						<button ng-click="cancelEdit()" class="btn btn-default">Cancel</button>
 					</div>
 				</div>
 			</div>

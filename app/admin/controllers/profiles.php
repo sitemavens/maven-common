@@ -117,7 +117,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$password = FALSE;
 		if ( isset( $data[ 'password' ] ) && $data[ 'password' ] )
 			$password = $data[ 'password' ];
-
+		
 		$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
 		$this->getOutput()->sendApiResponse( $profile );
 	}
