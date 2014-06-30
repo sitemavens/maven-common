@@ -19,6 +19,9 @@ angular.module('mavenApp')
 					$scope.getPage();
 				};
 
+				$scope.newMultiplePromotion = function() {
+					$location.path('promotions/new-multiple');
+				}
 
 				$scope.newPromotion = function() {
 					$location.path('promotions/new');

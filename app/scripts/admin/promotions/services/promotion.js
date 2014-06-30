@@ -7,6 +7,7 @@ app.factory('Promotion', ['$resource', function($resource) {
 		);
 	}]);
 
+
 app.factory('PromotionPaginate', ['$resource', function($resource) {
 		return $resource('/wp-json/maven/promotions/:id', {id: '@id'},
 		{getPage: {method: 'GET', isArray: false}}

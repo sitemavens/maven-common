@@ -15,11 +15,11 @@
 		<tr ng-repeat="profile in Profiles">
 			<td class="row-actions maven">
 				<span class="edit">
-				<a class="list-view" ng-click="editProfile(profile.id)">Edit</a>
-				|
+					<a class="list-view" ng-click="editProfile(profile.id)">Edit</a>
+					|
 				</span>
 				<span class="trash">
-				<a class="list-view delete" ng-click="deleteProfile($index)">Delete</a>
+					<a class="list-view delete" ng-click="deleteProfile($index)">Delete</a>
 				</span>
 			</td>
 			<td>

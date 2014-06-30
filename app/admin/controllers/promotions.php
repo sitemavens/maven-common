@@ -15,13 +15,13 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 	public function registerRoutes( $routes ) {
 
 		$routes[ '/maven/promotions' ] = array(
-		    array( array( $this, 'getPromotions' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'newPromotion' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			array( array( $this, 'getPromotions' ), \WP_JSON_Server::READABLE ),
+			array( array( $this, 'newPromotion' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
 		$routes[ '/maven/promotions/(?P<id>\d+)' ] = array(
-		    array( array( $this, 'getPromotion' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'editPromotion' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
-		    array( array( $this, 'deletePromotion' ), \WP_JSON_Server::DELETABLE ),
+			array( array( $this, 'getPromotion' ), \WP_JSON_Server::READABLE ),
+			array( array( $this, 'editPromotion' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			array( array( $this, 'deletePromotion' ), \WP_JSON_Server::DELETABLE ),
 		);
 
 		return $routes;
@@ -30,6 +30,7 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 	public function getView( $view ) {
 		switch ( $view ) {
 			case "promotions-edit":
+			case "promotions-multiple-edit":
 				$manager = new \Maven\Core\PromotionManager();
 				$sections = $manager->getSections();
 				$types = $manager->getTypes();
@@ -69,8 +70,8 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 		$count = $manager->getPromotionsCount( $filter );
 
 		$response = array(
-		    "items" => $promotions,
-		    "totalItems" => $count
+			"items" => $promotions,
+			"totalItems" => $count
 		);
 
 		if ( $export ) {
@@ -85,15 +86,15 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 			// pass addRow() an array and it converts it to Excel XML format and sends 
 			// it to the browser
 			$exporter->addHeadingRow( array(
-			    "Status",
-			    "Name",
-			    "Code",
-			    "Section",
-			    "Amount",
-			    "From",
-			    "To",
-			    "Uses",
-			    "Limit of Use"
+				"Status",
+				"Name",
+				"Code",
+				"Section",
+				"Amount",
+				"From",
+				"To",
+				"Uses",
+				"Limit of Use"
 			) );
 
 			foreach ( $promotions as $promotion ) {
@@ -110,15 +111,15 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 				}
 
 				$exporter->addRow( array(
-				    $status,
-				    $promotion->getName(),
-				    $promotion->getCode(),
-				    $promotion->getSection(),
-				    $promotion->getValue() . $operand,
-				    $promotion->getFrom(),
-				    $promotion->getTo(),
-				    $promotion->getUses(),
-				    $promotion->getLimitOfUse()
+					$status,
+					$promotion->getName(),
+					$promotion->getCode(),
+					$promotion->getSection(),
+					$promotion->getValue() . $operand,
+					$promotion->getFrom(),
+					$promotion->getTo(),
+					$promotion->getUses(),
+					$promotion->getLimitOfUse()
 				) );
 			}
 
@@ -134,11 +135,38 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 
 		$promotion = new \Maven\Core\Domain\Promotion();
 
+		if ( is_array( $data ) && key_exists( 'quantity', $data ) && $data[ 'quantity' ] ) {
+
+			$quantity = $data[ 'quantity' ];
+
+			$promotion->load( $data );
+
+			$response = $manager->addMultiplePromotions( $promotion, $quantity );
+		} else {
+
+			$promotion->load( $data );
+
+			$response = $manager->addPromotion( $promotion );
+		}
+
+		$this->getOutput()->sendApiResponse( $response );
+	}
+
+	public function newMultiplePromotion( $data ) {
+		$manager = new \Maven\Core\PromotionManager();
+
+		if ( is_array( $data ) && key_exists( 'quantity', $data ) && $data[ 'quantity' ] ) {
+			
+		}
+
+		$promotion = new \Maven\Core\Domain\Promotion();
+
 		$promotion->load( $data );
 
-		$promotion = $manager->addPromotion( $promotion );
+		$response = $manager->addMultiplePromotions( $promotion, $quantity );
 
-		$this->getOutput()->sendApiResponse( $promotion );
+
+		$this->getOutput()->sendApiResponse( $response );
 	}
 
 	public function getPromotion( $id ) {
@@ -253,15 +281,15 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 					// pass addRow() an array and it converts it to Excel XML format and sends 
 					// it to the browser
 					$exporter->addHeadingRow( array(
-					    "Status",
-					    "Name",
-					    "Code",
-					    "Section",
-					    "Amount",
-					    "From",
-					    "To",
-					    "Uses",
-					    "Limit of Use"
+						"Status",
+						"Name",
+						"Code",
+						"Section",
+						"Amount",
+						"From",
+						"To",
+						"Uses",
+						"Limit of Use"
 					) );
 
 					foreach ( $promotions as $promotion ) {
@@ -278,15 +306,15 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 						}
 
 						$exporter->addRow( array(
-						    $status,
-						    $promotion->getName(),
-						    $promotion->getCode(),
-						    $promotion->getSection(),
-						    $promotion->getValue() . $operand,
-						    $promotion->getFrom(),
-						    $promotion->getTo(),
-						    $promotion->getUses(),
-						    $promotion->getLimitOfUse()
+							$status,
+							$promotion->getName(),
+							$promotion->getCode(),
+							$promotion->getSection(),
+							$promotion->getValue() . $operand,
+							$promotion->getFrom(),
+							$promotion->getTo(),
+							$promotion->getUses(),
+							$promotion->getLimitOfUse()
 						) );
 					}
 

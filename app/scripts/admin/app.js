@@ -32,11 +32,11 @@ angular
 						controller: 'ProfileCtrl'
 					})
 					.when('/profiles/new', {
-						templateUrl: Maven.viewHandlerUrl  + 'maven/profiles-edit',
+						templateUrl: Maven.viewHandlerUrl + 'maven/profiles-edit',
 						controller: 'ProfileEditCtrl'
 					})
 					.when('/profiles/edit/:id', {
-						templateUrl: Maven.viewHandlerUrl  + 'maven/profiles-edit',
+						templateUrl: Maven.viewHandlerUrl + 'maven/profiles-edit',
 						controller: 'ProfileEditCtrl'
 					})
 					.when('/orders', {
@@ -63,6 +63,10 @@ angular
 					.when('/promotions/new', {
 						templateUrl: Maven.viewHandlerUrl + 'maven/promotions-edit',
 						controller: 'PromotionsEditCtrl'
+					})
+					.when('/promotions/new-multiple', {
+						templateUrl: Maven.viewHandlerUrl + 'maven/promotions-multiple-edit',
+						controller: 'PromotionsEditMultipleCtrl'
 					})
 					.when('/promotions/edit/:id', {
 						templateUrl: Maven.viewHandlerUrl + 'maven/promotions-edit',
@@ -101,5 +105,5 @@ angular
 					});
 		});
 
-angular.module('mavenApp.controllers',['ngResource']);
+angular.module('mavenApp.controllers', ['ngResource']);
 angular.module('mavenApp.services', ['ngResource']);

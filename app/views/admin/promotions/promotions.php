@@ -1,4 +1,7 @@
-<h1>Promotions <button class="btn btn-default" ng-click="newPromotion()">New</button></h1>
+<h1>Promotions 
+	<button class="btn btn-default" ng-click="newPromotion()">New</button>
+	<button class="btn btn-default" ng-click="newMultiplePromotion()">New Multiple</button>
+</h1>
 
 <table class="table table-striped">
 	<thead>

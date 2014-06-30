@@ -22,16 +22,16 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="code" class="col-sm-2 control-label">Code</label>
+		<label for="code" class="col-sm-2 control-label">Quantity</label>
 		<div class="col-sm-6">
-			<input type="text" class="form-control" id="code" ng-model="promotion.code" />
+			<input type="text" class="form-control" id="code" ng-model="promotion.quantity" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="type" class="col-sm-2 control-label">Type</label>
 		<div class="col-sm-6">
 			<select class="form-control" ng-model="promotion.type" ng-change="selectedType(template)"
-					ng-options="typeIndex as type.name for (typeIndex,type) in types" id="type" />
+				ng-options="typeIndex as type.name for (typeIndex,type) in types" id="type" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -52,16 +52,6 @@
 			<input type="text" readonly class="form-control" id="uses" ng-model="promotion.uses" />
 		</div>
 	</div>
-	<div class="row">
-        <div class="col-md-6">
-            <p class="input-group">
-				
-				<span class="input-group-btn">
-
-				</span>
-            </p>
-        </div>
-    </div>
 	<div class="form-group">
 		<label for="from" class="col-sm-2 control-label">From</label>
 		<div class="col-sm-6">

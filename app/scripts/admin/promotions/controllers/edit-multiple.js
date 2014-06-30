@@ -1,20 +1,12 @@
 'use strict';
 
 angular.module('mavenApp')
-		.controller('PromotionsEditCtrl',
+		.controller('PromotionsEditMultipleCtrl',
 				['$scope', '$routeParams', '$location', 'Promotion',
 					function($scope, $routeParams, $location, Promotion) {
 						$scope.promotion = {};
 						$scope.sections = CachedSections;
 						$scope.types = CachedTypes;
-						$scope.format = 'dd-MMMM-yyyy';
-						$scope.open = function($event) {
-							$event.preventDefault();
-							$event.stopPropagation();
-
-							$scope.opened = true;
-						};
-
 
 						if ($routeParams.id) {
 							$scope.promotion = Promotion.get({id: $routeParams.id});
@@ -25,7 +17,7 @@ angular.module('mavenApp')
 						$scope.openDatePicker = function($event, input) {
 							$event.preventDefault();
 							$event.stopPropagation();
-							if (input == 'from') {
+							if (input === 'from') {
 								$scope.openTo = false;
 								$scope.openFrom = true;
 							} else {
@@ -35,7 +27,9 @@ angular.module('mavenApp')
 						};
 
 						$scope.savePromotion = function() {
-							$scope.promotion.$save();
+							$scope.promotion.$save().then(function(){
+								$location.path('/promotions');
+							});
 
 						};
 
