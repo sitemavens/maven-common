@@ -19,17 +19,22 @@ angular.module('mavenApp')
 						{id: 'mrs', value: 'Mrs.'}
 					];
 
-				$scope.roles;
+				//$scope.roles;
 				if ($routeParams.id) {
-					$scope.profile;
+					//$scope.profile;
 					Profile.get({id: $routeParams.id}, function(data) {
+						//if username is empty, default to email
+						if (data.userName === null) {
+							data.userName = data.email;
+						}
+
 						$scope.profile = data;
-						$scope.profile.isWpUser;
+						//$scope.profile.isWpUser;
 						ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
-							$scope.isWpUser = iswpuser;
-							$scope.profile.isWpUser = $scope.isWpUser.result;
-							$scope.profile.register = true;
-							console.log($scope.profile.register);
+							//$scope.isWpUser = iswpuser;
+							$scope.profile.isWpUser = iswpuser.result;//$scope.isWpUser.result;
+							$scope.profile.register = false;
+							//console.log($scope.profile.register);
 						});
 						Rol.query(function(data) {
 							$scope.roles = data;
@@ -43,6 +48,7 @@ angular.module('mavenApp')
 					$scope.profile = new Profile({enabled: true});
 					$scope.profile.addresses = [];
 					$scope.profile.roles = [];
+					$scope.profile.register = false;
 				}
 
 				$scope.saveProfile = function() {

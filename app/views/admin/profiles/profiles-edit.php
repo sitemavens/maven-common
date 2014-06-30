@@ -51,8 +51,8 @@
 				<div class="form-group">
 					<label for="wholesale" class="col-sm-2 control-label">Wholesale</label>
 					<div class="col-sm-10">
-						<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="true" uncheckable>Yes</label>
-						<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="false" uncheckable>No</label>
+						<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="true" >Yes</label>
+						<label class="btn btn-default" ng-model="profile.wholesale" btn-radio="false" >No</label>
 					</div>
 				</div>
 				<div class="form-group">
@@ -82,7 +82,7 @@
 			</div>
 		</tab>
 
-		<tab heading="Photo"></tab>
+		<!--<tab heading="Photo"></tab>-->
 
 		<tab heading="Address">
 			<div class="form-horizontal profile profile-edition">
@@ -200,8 +200,8 @@
 		<tab heading="WP User">
 			<div class="form-horizontal profile profile-edition">
 				<div class="form-group">
-					<label for="" class="col-sm-2 control-label"> </label>
-					<div class="col-sm-4">
+					<div class="col-sm-1"></div>
+					<div class="col-sm-6">
 						<alert type="info">
 							<p>
 								<span>A Wordpress user means that the user will be able to log in to your system</span></br>
@@ -217,10 +217,10 @@
 					</div>
 				</div>
 				<div class="form-group" ng-hide="profile.isWpUser">
-					<label for="" class="col-sm-3 control-label">Register</label>
+					<label for="" class="col-sm-2 control-label">Register</label>
 					<div class="col-sm-4">
-						<label class="btn btn-success" ng-model="profile.register" btn-radio="true" uncheckable>Yes</label>
-						<label class="btn btn-success" ng-model="profile.register" btn-radio="false" uncheckable>No</label>
+						<label class="btn btn-success" ng-model="profile.register" btn-radio="true">Yes</label>
+						<label class="btn btn-default" ng-model="profile.register" btn-radio="false">No</label>
 					</div>
 				</div>
 				<div class="form-group">

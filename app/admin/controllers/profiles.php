@@ -71,7 +71,18 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 		$profile = new \Maven\Core\Domain\Profile();
 		$profile->load( $data );
-		$profile = $manager->updateProfile( $profile );
+		$registerWp = FALSE;
+		if ( isset( $data[ 'register' ] ) && $data[ 'register' ] == 1 )
+			$registerWp = true;
+
+		$username = FALSE;
+		if ( isset( $data[ 'userName' ] ) && $data[ 'userName' ] )
+			$username = $data[ 'userName' ];
+
+		$password = FALSE;
+		if ( isset( $data[ 'password' ] ) && $data[ 'password' ] )
+			$password = $data[ 'password' ];
+		$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
 
 		$this->getOutput()->sendApiResponse( $profile );
 	}
@@ -94,7 +105,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 		$manager = new \Maven\Core\ProfileManager();
 		$profile = new \Maven\Core\Domain\Profile();
-		$profile->load( $data );	
+		$profile->load( $data );
 		$registerWp = FALSE;
 		if ( isset( $data[ 'register' ] ) && $data[ 'register' ] == 1 )
 			$registerWp = true;
@@ -107,7 +118,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		if ( isset( $data[ 'password' ] ) && $data[ 'password' ] )
 			$password = $data[ 'password' ];
 
-		$profile = $manager->addProfile( $profile, $registerWp, $username, $password);
+		$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
 		$this->getOutput()->sendApiResponse( $profile );
 	}
 
