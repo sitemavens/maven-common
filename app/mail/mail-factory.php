@@ -26,6 +26,11 @@ class MailFactory {
 			if ( !$provider ) {
 				$registry = \Maven\Settings\MavenRegistry::instance();
 				$provider = $registry->getEmailProvider();
+				
+				$provider = \Maven\Core\HookManager::instance()->applyFilters( 'maven/mail/provider', $provider );
+				
+				\Maven\Loggers\Logger::log()->message( 'Maven\Mail\build: Provider: ' .$provider );
+
 			}
 
 			switch ( $provider ) {
