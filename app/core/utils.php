@@ -39,7 +39,7 @@ class Utils {
 	 * @return string
 	 */
 
-	public function toCamelCase( $str, $capitaliseFirstChar = false ) {
+	public static function toCamelCase( $str, $capitaliseFirstChar = false ) {
 		if ( $capitaliseFirstChar ) {
 			$str[ 0 ] = strtoupper( $str[ 0 ] );
 		}

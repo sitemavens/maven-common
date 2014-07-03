@@ -347,6 +347,10 @@ abstract class Registry {
 		return $this->getPluginUrl() . "views/";
 	}
 	
+	public function getFrontViewsUrl(){
+		return $this->getPluginUrl() . "views/front/";
+	}
+	
 	public function getAdminViewsUrl(){
 		return $this->getPluginUrl() . "views/admin/";
 	}

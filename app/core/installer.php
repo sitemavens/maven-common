@@ -16,15 +16,15 @@ class Installer {
 		global $wpdb;
 
 		$create = array(
-		    "CREATE TABLE IF NOT EXISTS `mvn_attributes` (
-				  `id` int(11) NOT NULL AUTO_INCREMENT,
-				  `name` varchar(250) NOT NULL,
-				  `plugin_key` varchar(50) DEFAULT NULL,
-				  `description` varchar(500) DEFAULT NULL,
-				  `default_amount` float DEFAULT NULL,
-				  `default_wholesale_amount` float DEFAULT NULL,
-				  PRIMARY KEY (`id`)
-			)",
+		    "CREATE TABLE `mvn_attributes` (
+				`id` int(11) NOT NULL,
+				`name` varchar(250) NOT NULL,
+				`plugin_key` varchar(50) DEFAULT NULL,
+				`description` varchar(500) DEFAULT NULL,
+				`default_amount` float DEFAULT NULL,
+				`default_wholesale_amount` float DEFAULT NULL,
+				PRIMARY KEY (`id`)
+			  )",
 		    "CREATE TABLE IF NOT EXISTS `mvn_attributes_values` (
 				  `id` int(11) NOT NULL AUTO_INCREMENT,
 				  `attribute_id` int(11) NOT NULL,
