@@ -42,7 +42,7 @@ angular.module('mavenApp')
 				$scope.saveProfile = function() {
 					$scope.profile.$save(function(data) {
 						$scope.profile = data;
-						console.log($scope.profile);
+						//console.log($scope.profile);
 						ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
 							$scope.profile.isWpUser = iswpuser.result;
 							$scope.setRegister($scope.profile.isWpUser);

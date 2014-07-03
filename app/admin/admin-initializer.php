@@ -3,14 +3,14 @@
 namespace Maven\Admin;
 
 // Exit if accessed directly 
-if ( !defined( 'ABSPATH' ) )
+if ( ! defined( 'ABSPATH' ) )
 	exit;
 
 class AdminInitializer {
 
 	private $classes = array();
 
-	public function __construct () {
+	public function __construct() {
 
 		\Maven\Core\HookManager::instance()->addAction( 'admin_enqueue_scripts', array( $this, 'registerScripts' ), 10, 1 );
 
@@ -31,7 +31,7 @@ class AdminInitializer {
 		}
 	}
 
-	public function registerScripts ( $hook ) {
+	public function registerScripts( $hook ) {
 
 		$registry = \Maven\Settings\MavenRegistry::instance();
 
@@ -42,7 +42,7 @@ class AdminInitializer {
 
 				wp_enqueue_script( 'mavenApp', $registry->getScriptsUrl() . "admin/app.js", 'angular', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/global/directives/loading.js', $registry->getScriptsUrl() . "admin/global/directives/loading.js", 'mavenApp', $registry->getPluginVersion() );
-//			wp_enqueue_script( 'admin/services/admin-services.js', $registry->getScriptsUrl() . "admin/services/admin-services.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/global/directives/show-errors.js', $registry->getScriptsUrl() . "admin/global/directives/show-errors.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/global/controllers/main-nav.js', $registry->getScriptsUrl() . "admin/global/controllers/main-nav.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/dashboard/controllers/main.js', $registry->getScriptsUrl() . "admin/dashboard/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
 
@@ -87,14 +87,14 @@ class AdminInitializer {
 
 				wp_enqueue_script( 'admin/https/controllers/main.js', $registry->getScriptsUrl() . "admin/https/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/https/services/https.js', $registry->getScriptsUrl() . "admin/https/services/https.js", 'mavenApp', $registry->getPluginVersion() );
-			}else{
+			} else {
 				wp_enqueue_style( 'mainCss', $registry->getStylesUrl() . "main.min.css", array(), $registry->getPluginVersion() );
 				wp_enqueue_script( 'mainApp', $registry->getScriptsUrl() . "main.min.js", 'angular', $registry->getPluginVersion() );
 			}
 		}
 	}
 
-	public function registerRouters () {
+	public function registerRouters() {
 
 
 		foreach ( $this->classes as $class ) {

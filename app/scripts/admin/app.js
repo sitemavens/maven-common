@@ -6,6 +6,7 @@ angular
 			'ngSanitize',
 			'ngRoute',
 			'ui.bootstrap',
+			'ui.bootstrap.showErrors',
 			'mavenApp.services',
 			'mavenApp.controllers'
 		])

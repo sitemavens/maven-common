@@ -11,6 +11,13 @@ angular.module('mavenApp')
 					$scope.rol = new Rol({enabled: true});
 				}
 				$scope.saveRol = function() {
+					//broadcast to validate form
+					$scope.$broadcast('show-errors-check-validity');
+					//if form invalid, do nothing
+					if ($scope.rolesForm.$invalid) {
+						return;
+					}
+
 					$scope.rol.$save();
 				};
 				$scope.cancelEdit = function() {

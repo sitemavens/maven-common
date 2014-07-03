@@ -53,24 +53,32 @@ ul.subsubsub a:hover {
 	font-size: 14px;
 	font-weight: 600;
 }
- 
+
 
 #delete-address.profile-edit-address {
-    float: right;
+	float: right;
 }
 a.accordion-toggle{
 	text-decoration: none;
-	
+
 }
- 
+
 .ng-cloak { display:none; }
 
 .form-group {
-    clear: both;
+	clear: both;
+}
+
+.form-group .help-block {
+	display: none;
+}
+
+.form-group.has-error .help-block {
+	display: block;
 }
 
 .form-horizontal.profile.profile-edition.ng-scope {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 .nopadding{
