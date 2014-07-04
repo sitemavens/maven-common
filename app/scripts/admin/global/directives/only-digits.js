@@ -19,14 +19,11 @@ angular.module("mavenApp").directive("onlyDigits", function ()
                 var digits = inputValue.split('').filter(function (s,i)
                 {
                     var b = (!isNaN(s) && s != ' ');
-                    if (!b && attrs.allowDecimal && attrs.allowDecimal == "true")
-                    {
                         if (s == "." && decimalFound == false)
                         {
                             decimalFound = true;
                             b = true;
                         }
-                    }
                     if (!b && attrs.allowNegative && attrs.allowNegative == "true")
                     {
                         b = (s == '-' && i == 0);
@@ -34,6 +31,7 @@ angular.module("mavenApp").directive("onlyDigits", function ()
 
                     return b;
                 }).join('');
+				console.log(digits);
                 if (attrs.maxNum && !isNaN(attrs.maxNum) && parseFloat(digits) > parseFloat(attrs.maxNum))
                 {
                     digits = attrs.maxNum;
