@@ -31,7 +31,7 @@ class Tax extends \Maven\Core\DomainObject {
 		    'slug' => \Maven\Core\SanitizationRule::Slug,
 		    'country' => \Maven\Core\SanitizationRule::Text,
 		    'state' => \Maven\Core\SanitizationRule::Text,
-		    'value' => \Maven\Core\SanitizationRule::Text,
+		    'value' => \Maven\Core\SanitizationRule::Float,
 		    'forShipping' => \Maven\Core\SanitizationRule::Boolean,
 		    'compound' => \Maven\Core\SanitizationRule::Boolean,
 		    'enabled' => \Maven\Core\SanitizationRule::Boolean,

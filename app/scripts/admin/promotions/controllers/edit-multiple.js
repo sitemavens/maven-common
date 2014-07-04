@@ -7,6 +7,7 @@ angular.module('mavenApp')
 						$scope.promotion = {};
 						$scope.sections = CachedSections;
 						$scope.types = CachedTypes;
+						$scope.quantityStatus;
 
 						if ($routeParams.id) {
 							$scope.promotion = Promotion.get({id: $routeParams.id});
@@ -27,7 +28,11 @@ angular.module('mavenApp')
 						};
 
 						$scope.savePromotion = function() {
-							$scope.promotion.$save().then(function(){
+							$scope.$broadcast('show-errors-check-validity');
+							if ($scope.promotionForm.$invalid) {
+								return;
+							}
+							$scope.promotion.$save().then(function() {
 								$location.path('/promotions');
 							});
 

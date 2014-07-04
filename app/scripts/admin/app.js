@@ -78,11 +78,11 @@ angular
 						controller: 'TaxesCtrl'
 					})
 					.when('/taxes/new', {
-						templateUrl: Maven.adminViewsUrl + 'taxes/taxes-edit.php',
+						templateUrl: Maven.viewHandlerUrl + 'maven/taxes-edit',
 						controller: 'TaxesEditCtrl'
 					})
 					.when('/taxes/edit/:id', {
-						templateUrl: Maven.adminViewsUrl + 'taxes/taxes-edit.php',
+						templateUrl: Maven.viewHandlerUrl + 'maven/taxes-edit',
 						controller: 'TaxesEditCtrl'
 					})
 					.when('/attributes', {

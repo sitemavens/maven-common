@@ -11,10 +11,8 @@ angular.module('mavenApp')
 						$scope.open = function($event) {
 							$event.preventDefault();
 							$event.stopPropagation();
-
 							$scope.opened = true;
 						};
-
 
 						if ($routeParams.id) {
 							$scope.promotion = Promotion.get({id: $routeParams.id});
@@ -35,6 +33,10 @@ angular.module('mavenApp')
 						};
 
 						$scope.savePromotion = function() {
+							$scope.$broadcast('show-errors-check-validity');
+							if ($scope.promotionForm.$invalid) {
+								return;
+							}
 							$scope.promotion.$save();
 
 						};

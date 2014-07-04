@@ -147,8 +147,11 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	public function getView( $view ) {
 		switch ( $view ) {
 			case "profiles-edit":
+				$roleManager = new \Maven\Security\RoleManager();
 				$countries = \Maven\Core\CountriesApi::getAllCountries();
 				$addresses = \Maven\Core\Domain\AddressType::getAddressesTypesCollection();
+				$defaultRole = $roleManager->get( (get_option( 'default_role' ) ) );
+				$this->addJSONData( "cachedDefaultRole", $defaultRole );
 				$this->addJSONData( "cachedAddresses", $addresses );
 				$this->addJSONData( "cachedCountries", $countries );
 				return $this->getOutput()->getAdminView( "profiles/{$view}" );

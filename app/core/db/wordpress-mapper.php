@@ -154,7 +154,6 @@ abstract class WordpressMapper extends Mapper {
 		$query = $this->db->prepare( "SELECT * FROM {$tableName} WHERE id = {$format} ", $value );
 
 		$row = $this->db->get_row( $query );
-
 		$this->checkError();
 
 		return $row;
@@ -229,11 +228,11 @@ abstract class WordpressMapper extends Mapper {
 	 * @return array
 	 */
 	protected function updateById( $id, $data, $format = null, $tableName = false ) {
-
+		
 		if ( ! $tableName ) {
 			$tableName = $this->tableName;
 		}
-
+		
 		$result = $this->db->update( $tableName, $data, array( 'id' => $id ), $format, array( '%d' ) );
 
 		$this->checkError();
@@ -251,8 +250,8 @@ abstract class WordpressMapper extends Mapper {
 	}
 
 	protected function executeQuery( $query ) {
-
 		return $this->db->query( $query );
+		
 	}
 
 	/**

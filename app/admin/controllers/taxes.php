@@ -3,17 +3,17 @@
 namespace Maven\Admin\Controllers;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) )
+	exit;
 
-
-class Taxes extends \Maven\Admin\Controllers\MavenAdminController {
+class Taxes extends \Maven\Admin\Controllers\MavenAdminController implements \Maven\Core\Interfaces\iView{
 
 	public function __construct() {
 		parent::__construct();
 	}
-	
-	public function registerRoutes( $routes ){
-		
+
+	public function registerRoutes( $routes ) {
+
 		$routes[ '/maven/taxes' ] = array(
 			array( array( $this, 'getTaxes' ), \WP_JSON_Server::READABLE ),
 			array( array( $this, 'newTax' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
@@ -23,11 +23,11 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController {
 			array( array( $this, 'editTax' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
 			array( array( $this, 'deleteTax' ), \WP_JSON_Server::DELETABLE ),
 		);
-		
+
 		return $routes;
 	}
-	
-	public function getTaxes () {
+
+	public function getTaxes() {
 		$manager = new \Maven\Core\TaxManager();
 
 		$filter = new \Maven\Core\Domain\TaxFilter();
@@ -38,7 +38,7 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController {
 		$this->getOutput()->sendApiResponse( $taxes );
 	}
 
-	public function newTax ( $data ) {
+	public function newTax( $data ) {
 		$manager = new \Maven\Core\TaxManager();
 
 		$tax = new \Maven\Core\Domain\Tax();
@@ -50,14 +50,14 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController {
 		$this->getOutput()->sendApiResponse( $tax );
 	}
 
-	public function getTax ( $id ) {
+	public function getTax( $id ) {
 		$manager = new \Maven\Core\TaxManager();
 		$tax = $manager->get( $id );
 
 		$this->getOutput()->sendApiResponse( $tax );
 	}
 
-	public function editTax ( $id, $data ) {
+	public function editTax( $id, $data ) {
 
 		$manager = new \Maven\Core\TaxManager();
 
@@ -70,16 +70,22 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController {
 		$this->getOutput()->sendApiResponse( $tax );
 	}
 
-	public function deleteTax ( $id ) {
+	public function deleteTax( $id ) {
 		$manager = new \Maven\Core\TaxManager();
-		
-		$manager->delete($id);
-		
+
+		$manager->delete( $id );
+
 		$this->getOutput()->sendApiResponse( new \stdClass() );
 	}
-	
-	public function getView( $view){
+
+	public function getView( $view ) {
+		switch ( $view ) {
+			case "taxes-edit":
+				$countries = \Maven\Core\CountriesApi::getAllCountries();
+				$this->addJSONData( "cachedCountries", $countries );
+				return $this->getOutput()->getAdminView( "taxes/{$view}" );
+		}
 		return $view;
 	}
- 
+
 }

@@ -68,7 +68,7 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 
 		$promotions = $manager->getPromotions( $filter, $sortBy, $order, (($page - 1) * $perPage ), $perPage );
 		$count = $manager->getPromotionsCount( $filter );
-
+		
 		$response = array(
 			"items" => $promotions,
 			"totalItems" => $count
@@ -172,7 +172,7 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 	public function getPromotion( $id ) {
 		$manager = new \Maven\Core\PromotionManager();
 		$promotion = $manager->get( $id );
-
+		
 		$this->getOutput()->sendApiResponse( $promotion );
 	}
 

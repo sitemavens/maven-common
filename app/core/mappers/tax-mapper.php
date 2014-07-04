@@ -95,9 +95,8 @@ class TaxMapper extends \Maven\Core\Db\WordpressMapper {
 		if ( ! $row )
 			throw new \Maven\Exceptions\NotFoundException();
 
-
+		
 		$this->fillObject( $tax, $row );
-
 		return $tax;
 	}
 
@@ -117,8 +116,6 @@ class TaxMapper extends \Maven\Core\Db\WordpressMapper {
 		    'enabled' => $tax->isEnabled() ? 1 : 0,
 		    'plugin_key' => $tax->getPluginKey()
 		);
-
-
 		$format = array(
 		    '%s', //name
 		    '%s', //slug

@@ -78,13 +78,11 @@ class PromotionMapper extends \Maven\Core\Db\WordpressMapper {
 			throw new \Maven\Exceptions\MissingParameterException( 'Id: is required' );
 
 		$row = $this->getRowById( $id );
-
 		if ( ! $row )
 			throw new \Maven\Exceptions\NotFoundException();
 
-
+		
 		$this->fillObject( $promotion, $row );
-
 		return $promotion;
 	}
 
