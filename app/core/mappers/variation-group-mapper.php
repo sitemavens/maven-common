@@ -156,7 +156,7 @@ class VariationGroupMapper extends \Maven\Core\Db\WordpressMapper {
 	 */
 	public function delete( $id ) {
 		//delete the address
-		return parent::delete( $id );
+		return parent::deleteRow( $id );
 	}
 
 	public function deleteByThingId( $thingId, $pluginKey ) {

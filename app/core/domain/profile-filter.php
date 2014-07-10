@@ -6,22 +6,14 @@ namespace Maven\Core\Domain;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 
-class ProfileFilter {
+class ProfileFilter extends BaseFilter{
 
 	private $email;
 	private $firstName;
 	private $lastName;
 	
-	private function protectField( $field ) {
-
-		if ( ! ( $field instanceof \Maven\Core\MavenDateTime ) )
-			return esc_sql( sanitize_text_field( $field ) );
-
-		return $field;
-	}
-
 	public function __construct() {
-		;
+		parent::__construct();
 	}
 
 	public function getEmail() {

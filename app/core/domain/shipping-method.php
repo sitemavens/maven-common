@@ -8,18 +8,7 @@ if ( !defined( 'ABSPATH' ) )
 
 class ShippingMethod extends \Maven\Core\DomainObject {
 
-	public function __construct ( $id = false ) {
-		parent::__construct( $id );
-
-		$rules = array(
-			'name' => \Maven\Core\SanitizationRule::Text,
-			'enabled' => \Maven\Core\SanitizationRule::Boolean,
-			'method' => \Maven\Core\SanitizationRule::SerializedObject,
-			'description' => \Maven\Core\SanitizationRule::Text
-		);
-
-		$this->setSanitizationRules( $rules );
-	}
+	
 
 	private $name;
 
@@ -37,6 +26,21 @@ class ShippingMethod extends \Maven\Core\DomainObject {
 	
 	private $description;
 
+	
+	public function __construct ( $id = false ) {
+		parent::__construct( $id );
+
+		$rules = array(
+			'name' => \Maven\Core\SanitizationRule::Text,
+			'enabled' => \Maven\Core\SanitizationRule::Boolean,
+			'method' => \Maven\Core\SanitizationRule::SerializedObject,
+			'description' => \Maven\Core\SanitizationRule::Text
+		);
+
+		$this->setSanitizationRules( $rules );
+	}
+	
+	
 	public function getName () {
 		return $this->name;
 	}
@@ -67,6 +71,10 @@ class ShippingMethod extends \Maven\Core\DomainObject {
 	 */
 	public function setMethod ( $method ) {
 
+		if ( ! $method ){
+			return;
+		}
+		
 		if ( $method instanceof \Maven\Core\Domain\ShippingMethodType ) {
 			$this->method = $method;
 		} else {

@@ -26,7 +26,7 @@ class Director implements ActionControllerObserver {
 	 * 
 	 * @return \Maven\Core\Director
 	 */
-	public function getInstance() {
+	public static function getInstance() {
 
 		if ( !self::$instance ) {
 			self::$instance = new self();

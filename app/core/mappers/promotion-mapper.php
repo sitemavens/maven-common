@@ -262,7 +262,7 @@ class PromotionMapper extends \Maven\Core\Db\WordpressMapper {
 
 	public function delete( $orderId ) {
 		//delete the promotion
-		return parent::delete( $orderId );
+		return parent::deleteRow( $orderId );
 	}
 
 }

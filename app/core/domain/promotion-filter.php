@@ -6,23 +6,15 @@ namespace Maven\Core\Domain;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 
-class PromotionFilter {
+class PromotionFilter extends BaseFilter{
 
 	private $pluginKey;
 	private $code;
 	private $date;
 	private $enabled;
 
-	private function protectField( $field ) {
-
-		if ( ! ( $field instanceof \Maven\Core\MavenDateTime ) )
-			return esc_sql( sanitize_text_field( $field ) );
-
-		return $field;
-	}
-
 	public function __construct() {
-		;
+		parent::__construct();
 	}
 
 	public function getPluginKey() {

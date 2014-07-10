@@ -8,6 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class ShippingMethodTypeAvailable{
 	
 	const FlatRate = "flatRate";
-	const OrderAmountTiers = "OrderAmountTiersShippingMethod";
+	const OrderAmountTiers = "orderAmountTiers";
 	
 }

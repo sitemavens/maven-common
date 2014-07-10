@@ -6,7 +6,7 @@ namespace Maven\Core\Domain;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 
-class OrderFilter {
+class OrderFilter extends BaseFilter{
 
 	private $pluginKey;
 	private $number;
@@ -15,16 +15,8 @@ class OrderFilter {
 	private $userID;
 	private $statusID;
 
-	private function protectField( $field ) {
-
-		if ( ! ( $field instanceof \Maven\Core\MavenDateTime ) )
-			return esc_sql( sanitize_text_field( $field ) );
-
-		return $field;
-	}
-
 	public function __construct() {
-		;
+		parent::__construct();
 	}
 
 	public function getPluginKey() {

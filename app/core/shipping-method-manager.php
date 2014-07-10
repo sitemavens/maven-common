@@ -16,6 +16,19 @@ class ShippingMethodManager extends Manager{
 		
 		$this->mapper = new Mappers\ShippingMethodMapper();
 	}
+	
+	public function getAll( Domain\ShippingMethodFilter $filter, $orderBy = "name", $orderType = 'desc', $start = 0, $limit = 1000 ) {
+
+		return $this->mapper->getAll( $filter, $orderBy, $orderType, $start, $limit );
+	}
+	
+	
+	public function getCount(Domain\ShippingMethodFilter $filter ) {
+		
+
+		return $this->mapper->getCount( $filter );
+	}
+	
 
 	public function get ( $shippingMethodId ) {
 

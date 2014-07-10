@@ -21,6 +21,7 @@ class AdminInitializer {
 		$this->classes[ 'profiles' ] = new Controllers\Profiles();
 		$this->classes[ 'orders' ] = new Controllers\Orders();
 		$this->classes[ 'promotions' ] = new Controllers\Promotions();
+		$this->classes[ 'shippingMethods' ] = new Controllers\ShippingMethods();
 		$this->classes[ 'attributes' ] = new Controllers\Attributes();
 		$this->classes[ 'https' ] = new Controllers\Https();
 
@@ -73,6 +74,10 @@ class AdminInitializer {
 				wp_enqueue_script( 'admin/attributes/services/attribute.js', $registry->getScriptsUrl() . "admin/attributes/services/attribute.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/attributes/services/attribute-filter.js', $registry->getScriptsUrl() . "admin/attributes/services/attribute-filter.js", 'mavenApp', $registry->getPluginVersion() );
 
+				wp_enqueue_script( 'admin/shipping-methods/controllers/list.js', $registry->getScriptsUrl() . "admin/shipping-methods/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/shipping-methods/controllers/edit.js', $registry->getScriptsUrl() . "admin/shipping-methods/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/shipping-methods/services/shipping-method.js', $registry->getScriptsUrl() . "admin/shipping-methods/services/shipping-method.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/shipping-methods/services/shipping-method-filter.js', $registry->getScriptsUrl() . "admin/shipping-methods/services/shipping-method-filter.js", 'mavenApp', $registry->getPluginVersion() );
 
 				wp_enqueue_script( 'admin/profiles/controllers/list.js', $registry->getScriptsUrl() . "admin/profiles/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/profiles/controllers/edit.js', $registry->getScriptsUrl() . "admin/profiles/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
@@ -97,10 +102,14 @@ class AdminInitializer {
 
 	public function registerRouters() {
 
-
+		// Only admin can register routes
+		if ( ! current_user_can( 'manage_options') )
+			return;
+		
 		foreach ( $this->classes as $class ) {
 			\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $class, 'registerRoutes' ) );
 		}
+		
 	}
 
 }
