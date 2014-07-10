@@ -610,9 +610,10 @@ class Cart {
 
 		$emailReceipt = TemplateProcessor::DefaultEmailReceipt;
 
-		$emailReceipt = HookManager::instance()->applyFilters( 'maven/templates/emailReceipt', $emailReceipt );
+		$emailReceiptFullPath = HookManager::instance()->applyFilters( 'maven/cart/emailReceiptTemplateFullPath' );
 
-		$message = $output->getTemplate( $emailReceipt );
+		$message = $emailReceiptFullPath ? $output->getExternalTemplate( $emailReceiptFullPath ) : $output->getTemplate( $emailReceipt );
+		
 
 		$mail = \Maven\Mail\MailFactory::build();
 		$mail->to( $mavenSettings->getBccNotificationsTo() )
