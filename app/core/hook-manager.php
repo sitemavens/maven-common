@@ -85,7 +85,6 @@ class HookManager {
 
 		$args = func_get_args();
 		return call_user_func_array("apply_filters", $args);
-		
 	}
 
 	/**
