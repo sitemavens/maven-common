@@ -97,6 +97,18 @@ angular
 						templateUrl: Maven.adminViewsUrl + 'attributes/attributes-edit.php',
 						controller: 'AttrEditCtrl'
 					})
+					.when('/shipping-methods', {
+						templateUrl: Maven.adminViewsUrl + 'shipping-methods/shipping-methods.php',
+						controller: 'ShippingMethodsCtrl'
+					})
+					.when('/shipping-methods/new', {
+						templateUrl: Maven.adminViewsUrl + 'shipping-methods/shipping-methods-edit.php',
+						controller: 'ShippingMethodsEditCtrl'
+					})
+					.when('/shipping-methods/edit/:id', {
+						templateUrl: Maven.adminViewsUrl + 'shipping-methods/shipping-methods-edit.php',
+						controller: 'ShippingMethodsEditCtrl'
+					})
 					.when('/settings', {
 						templateUrl: Maven.viewHandlerUrl + 'maven/settings',
 						controller: 'SettingsController'

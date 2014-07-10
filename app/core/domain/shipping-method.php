@@ -1,6 +1,7 @@
 <?php
 
 namespace Maven\Core\Domain;
+use \Maven\Core\Shipping\ShippingMethodTypes;
 
 // Exit if accessed directly 
 if ( !defined( 'ABSPATH' ) )
@@ -8,18 +9,7 @@ if ( !defined( 'ABSPATH' ) )
 
 class ShippingMethod extends \Maven\Core\DomainObject {
 
-	public function __construct ( $id = false ) {
-		parent::__construct( $id );
-
-		$rules = array(
-			'name' => \Maven\Core\SanitizationRule::Text,
-			'enabled' => \Maven\Core\SanitizationRule::Boolean,
-			'method' => \Maven\Core\SanitizationRule::SerializedObject,
-			'description' => \Maven\Core\SanitizationRule::Text
-		);
-
-		$this->setSanitizationRules( $rules );
-	}
+	
 
 	private $name;
 
@@ -35,8 +25,25 @@ class ShippingMethod extends \Maven\Core\DomainObject {
 	 */
 	private $method;
 	
+	private $methodType;
+	
 	private $description;
 
+	
+	public function __construct ( $id = false ) {
+		parent::__construct( $id );
+
+		$rules = array(
+			'name' => \Maven\Core\SanitizationRule::Text,
+			'enabled' => \Maven\Core\SanitizationRule::Boolean,
+			'method' => \Maven\Core\SanitizationRule::SerializedObject,
+			'description' => \Maven\Core\SanitizationRule::Text
+		);
+
+		$this->setSanitizationRules( $rules );
+	}
+	
+	
 	public function getName () {
 		return $this->name;
 	}
@@ -67,14 +74,18 @@ class ShippingMethod extends \Maven\Core\DomainObject {
 	 */
 	public function setMethod ( $method ) {
 
+		if ( ! $method ){
+			return;
+		}
+		
 		if ( $method instanceof \Maven\Core\Domain\ShippingMethodType ) {
 			$this->method = $method;
 		} else {
 			switch ( $method ) {
-				case \Maven\Core\Shipping\ShippingMethodTypeAvailable::FlatRate:
+				case \Maven\Core\Shipping\ShippingMethodTypes::FlatRate:
 					$this->method = new \Maven\Core\Shipping\FlatRateShippingMethod();
 					break;
-				case \Maven\Core\Shipping\ShippingMethodTypeAvailable::OrderAmountTiers:
+				case \Maven\Core\Shipping\ShippingMethodTypes::OrderAmountTiers:
 					$this->method = new \Maven\Core\Shipping\OrderAmountTiersShippingMethod();
 					break;
 				default:
@@ -92,5 +103,18 @@ class ShippingMethod extends \Maven\Core\DomainObject {
 		$this->description = $description;
 	}
 	
+	public function getMethodType () {
+		return $this->methodType;
+	}
+
+	public function setMethodType ( $methodType ) {
+		
+		if ( !ShippingMethodTypes::isValid( $methodType ) ) {
+			throw new \Maven\Exceptions\MavenException( 'Invalid shipping method: ' . $methodType );
+		}
+
+		$this->methodType = $methodType;
+		
+	}
 	
 }

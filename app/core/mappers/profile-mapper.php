@@ -269,7 +269,7 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 			throw new \Maven\Exceptions\MissingParameterException( "Id is required" );
 		}
 
-		$this->delete( $id, "%d", $this->profileTableName );
+		$this->deleteRow( $id, "%d", $this->profileTableName );
 
 		$addressMapper = new AddressMapper();
 		$addressMapper->deleteByProfile( $id );

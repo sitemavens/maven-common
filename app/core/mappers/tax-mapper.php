@@ -262,7 +262,7 @@ class TaxMapper extends \Maven\Core\Db\WordpressMapper {
 
 	public function delete( $orderId ) {
 		//delete the tax
-		return parent::delete( $orderId );
+		return parent::deleteRow( $orderId );
 	}
 
 }

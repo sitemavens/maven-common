@@ -13,22 +13,67 @@ class ShippingMethodMapper extends \Maven\Core\Db\WordpressMapper {
 		parent::__construct( "mvn_shipping_methods" );
 	}
 
-	public function getAll( $orderBy = "name" ) {
+	public function getCount( \Maven\Core\Domain\ShippingMethodFilter $filter ) {
 
-		$instances = array( );
-		$results = $this->getResults( $orderBy );
+		$where = '';
+		$values = array();
 
-		foreach ( $results as $row ) {
-
-			$instance = new \Maven\Core\Domain\ShippingMethod();
-
-			$this->fillObject( $instance, $row );
-
-			$instances[ ] = $instance;
+		$name = $filter->getName();
+		if ( $name ) {
+			$values[] = "%{$name}%";
+			$where.=" AND name LIKE %s";
 		}
 
-		return $instances;
+		$query = "select count(*)
+				from {$this->tableName} 
+				where 1=1
+				{$where}";
+
+		$query = $this->prepare( $query, $values );
+
+		return $this->getVar( $query );
 	}
+	
+	public function getAll( \Maven\Core\Domain\ShippingMethodFilter $filter, $orderBy = "name", $orderType = 'desc', $start = 0, $limit = 1000 ) {
+		$where = '';
+		$values = array();
+
+		$name = $filter->getName();
+		if ( $name ) {
+			$values[] = "%{$name}%";
+			$where.=" AND name LIKE %s";
+		}
+		
+		if ( !$orderBy ) {
+			$orderBy = 'id';
+		}
+
+		$values[] = $start;
+		$values[] = $limit;
+
+		$query = "select	{$this->tableName}.*
+					from {$this->tableName} 
+					where 1=1 
+					{$where} order by {$orderBy} {$orderType}
+					LIMIT %d , %d;";
+
+		$query = $this->prepare( $query, $values );
+
+		$results = $this->getQuery( $query );
+
+		$items = array();
+
+		foreach ( $results as $row ) {
+			$item = new \Maven\Core\Domain\ShippingMethod();
+			$this->fillObject( $item, $row );
+
+			$items[] = $item;
+		}
+
+		return $items;
+	}
+	
+	 
 	
 	/**
 	 * 
@@ -110,7 +155,7 @@ class ShippingMethodMapper extends \Maven\Core\Db\WordpressMapper {
 
 	public function delete( $id ) {
 		
-		return parent::delete( $id );
+		return parent::deleteRow( $id );
 	}
 
 }

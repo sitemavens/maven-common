@@ -171,6 +171,8 @@ if ( is_admin() ) {
 
 	$promotions = $componentManager->createComponent( 'Promotions', 'Maven\\Admin\\Controllers\\Promotions' );
 
+	$shippingMethods = $componentManager->createComponent( 'Shipping', 'Maven\\Admin\\Controllers\\ShippingMethods' );
+
 	$taxes = $componentManager->createComponent( 'Taxes', 'Maven\\Admin\\Controllers\\Taxes' );
     $attributes = $componentManager->createComponent( 'Attributes', 'Maven\\Admin\\Controllers\\Attributes' );
 	$https = $componentManager->createComponent( 'Https', 'Maven\\Admin\\Controllers\\Https' );
@@ -182,6 +184,7 @@ if ( is_admin() ) {
     $menuManager->registerMenu( $profiles );
 	$menuManager->registerMenu( $orders );
 	$menuManager->registerMenu( $promotions );
+	$menuManager->registerMenu( $shippingMethods );
 	$menuManager->registerMenu( $taxes );
     $menuManager->registerMenu( $attributes );
 	$menuManager->registerMenu( $https );

@@ -171,8 +171,9 @@ abstract class WordpressMapper extends Mapper {
 	 */
 	protected function insert( $data, $format = null, $tableName = false ) {
 
-		if ( ! $tableName )
+		if ( !$tableName ) {
 			$tableName = $this->tableName;
+		}
 
 		$this->db->insert( $tableName, $data, $format );
 		$this->checkError();
@@ -192,10 +193,11 @@ abstract class WordpressMapper extends Mapper {
 	 * @param type $format
 	 * @return type
 	 */
-	protected function delete( $id, $format = '%d', $tableName = false ) {
+	protected function deleteRow( $id, $format = '%d', $tableName = false ) {
 
-		if ( ! $tableName )
+		if ( !$tableName ) {
 			$tableName = $this->tableName;
+		}
 
 		$query = $this->db->prepare( "DELETE FROM {$tableName} WHERE id = {$format}", $id );
 
@@ -286,7 +288,7 @@ abstract class WordpressMapper extends Mapper {
 		return $result;
 	}
 
-	public function getCount() {
+	public function getRowsCount() {
 
 		$query = "select count(*) from {$this->tableName}";
 		return $this->getVar( $query );

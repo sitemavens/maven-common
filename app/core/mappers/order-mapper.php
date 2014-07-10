@@ -664,7 +664,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		return $this->getVar( $query );
 	}
 
-	public function delete( $orderId ) {
+	public function deleteOrder( $orderId ) {
 		$orderItemtable = $this->orderItemTable;
 
 		//delete the items
@@ -679,7 +679,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		$this->executeQuery( $query );
 
 		//delete the order
-		return parent::delete( $orderId );
+		return parent::deleteRow( $orderId );
 	}
 
 }

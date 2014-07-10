@@ -404,7 +404,7 @@ class OrderManager {
 
 	public function delete( $orderId ) {
 
-		$this->mapper->delete( $orderId );
+		$this->mapper->deleteOrder( $orderId );
 
 		$orderStatusMapper = new OrderStatusManager();
 

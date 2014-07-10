@@ -6,7 +6,7 @@
 namespace Maven\Core;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 use \Maven\Core\OrdersApi;
@@ -26,7 +26,7 @@ class Cart {
 	 */
 	private static $instance;
 
-	private function __construct() {
+	private function __construct () {
 		
 	}
 
@@ -34,9 +34,9 @@ class Cart {
 	 * Hold the cart instance
 	 * @return \Maven\Core\Cart 
 	 */
-	public static function current() {
+	public static function current () {
 
-		if ( ! self::$instance ) {
+		if ( !self::$instance ) {
 			self::$instance = new static();
 		}
 
@@ -49,7 +49,7 @@ class Cart {
 	 * 
 	 * @return \Maven\Core\Domain\Order
 	 */
-	public function loadOrder( $orderId ) {
+	public function loadOrder ( $orderId ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/loadOrder' );
 
@@ -60,18 +60,18 @@ class Cart {
 			throw new \Maven\Exceptions\MavenException( 'The Order is completed, you can\'t load it' );
 		}
 
-		if ( ! $order->isEmpty() ) {
+		if ( !$order->isEmpty() ) {
 			return $this->newOrder( $order );
 		}
 
 		return false;
 	}
 
-	private function newOrder( \Maven\Core\Domain\Order $order = null ) {
+	private function newOrder ( \Maven\Core\Domain\Order $order = null ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/newOrder' );
 
-		if ( $order && ! $order->isEmpty() ) {
+		if ( $order && !$order->isEmpty() ) {
 			$this->loadExistingOrder( $order );
 		} else {
 			$this->createNewOrder();
@@ -88,7 +88,7 @@ class Cart {
 		return $this->order;
 	}
 
-	public function updateItemQuantity( $identifier, $newQuantity ) {
+	public function updateItemQuantity ( $identifier, $newQuantity ) {
 
 		$order = $this->getOrder();
 
@@ -105,7 +105,7 @@ class Cart {
 		return \Maven\Core\Message\MessageManager::createErrorMessage( 'Item not found' );
 	}
 
-	public function loadExistingOrder( \Maven\Core\Domain\Order $order ) {
+	public function loadExistingOrder ( \Maven\Core\Domain\Order $order ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/loadExistingOrder' );
 
@@ -121,7 +121,7 @@ class Cart {
 		HookManager::instance()->doAction( 'maven/cart/loadOrder', $this->order );
 	}
 
-	public function createNewOrder() {
+	public function createNewOrder () {
 
 
 		\Maven\Loggers\Logger::log()->message( 'Cart: createNewOrder' );
@@ -135,16 +135,16 @@ class Cart {
 		HookManager::instance()->doAction( 'maven/cart/newOrder', $this->order );
 	}
 
-	private function orderExists() {
+	private function orderExists () {
 
-		return ! Utils::isEmpty( $this->order );
+		return !Utils::isEmpty( $this->order );
 	}
 
 	/**
 	 * Return the result
 	 * @return \Maven\Core\Message\Message
 	 */
-	public function getResult() {
+	public function getResult () {
 		return $this->result;
 	}
 
@@ -153,12 +153,12 @@ class Cart {
 	 * @param \Maven\Core\Message\Message $message
 	 * @return type
 	 */
-	public function setResult( \Maven\Core\Message\Message $message ) {
+	public function setResult ( \Maven\Core\Message\Message $message ) {
 		$this->result = $message;
 		return $this->result;
 	}
 
-	private function getSessionKey() {
+	private function getSessionKey () {
 
 		//$sesionKey = $this->registry->getPluginKey();
 		$sesionKey = "maven-session-key-order";
@@ -169,10 +169,10 @@ class Cart {
 	/**
 	 * 
 	 */
-	public function isReadyToBePaid() {
+	public function isReadyToBePaid () {
 
 		$result = $this->orderExists() && $this->order->hasItems();
-		$result = $result && ! $this->order->getContact()->isCompleted() && ! $this->order->getBillingContact()->isCompleted() && ! $this->order->getShippingContact()->isCompleted();
+		$result = $result && !$this->order->getContact()->isCompleted() && !$this->order->getBillingContact()->isCompleted() && !$this->order->getShippingContact()->isCompleted();
 
 		return $result;
 	}
@@ -181,11 +181,11 @@ class Cart {
 	 * Return the order
 	 * @return \Maven\Core\Domain\Order
 	 */
-	public function getOrder() {
+	public function getOrder () {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/getOrder' );
 
-		if ( ! $this->order ) {
+		if ( !$this->order ) {
 
 			// Check if it exists in session
 			$session = \Maven\Session\SessionManager::get();
@@ -193,7 +193,7 @@ class Cart {
 			$order = $session->getData( $this->getSessionKey() );
 
 
-			if ( $order && ! $order->isEmpty() ) {
+			if ( $order && !$order->isEmpty() ) {
 
 				\Maven\Loggers\Logger::log()->message( 'Cart: getOrder - Order exists in session' );
 
@@ -231,7 +231,7 @@ class Cart {
 	 * @return \Maven\Core\Message\Message
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function addToCart( \Maven\Core\Domain\OrderItem $item ) {
+	public function addToCart ( \Maven\Core\Domain\OrderItem $item ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/addToCart' );
 
@@ -239,7 +239,7 @@ class Cart {
 		$order = $this->getOrder();
 
 		// If we don't have an order yet, lets create a new one
-		if ( ! $this->orderExists() ) {
+		if ( !$this->orderExists() ) {
 			$this->newOrder();
 		}
 
@@ -263,7 +263,7 @@ class Cart {
 	 * @param string | \Maven\Core\Domain\OrderItem $item
 	 * @return \Maven\Core\Message\Message message
 	 */
-	public function removeItem( $item ) {
+	public function removeItem ( $item ) {
 
 		if ( is_object( $item ) ) {
 			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/removeItem: Object: ' . $item->getIdentifier() );
@@ -293,7 +293,7 @@ class Cart {
 	 * @param string $pluginKey
 	 * @return \Maven\Core\Domain\OrderItem
 	 */
-	public function newItem( $pluginKey ) {
+	public function newItem ( $pluginKey ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/newItem' );
 
@@ -306,11 +306,11 @@ class Cart {
 	 * Verify if the cart has items or not
 	 * @return boolean
 	 */
-	public function hasItems() {
+	public function hasItems () {
 
 		$order = $this->getOrder();
 
-		if ( ! $order ) {
+		if ( !$order ) {
 			return false;
 		}
 
@@ -322,7 +322,7 @@ class Cart {
 	 * 
 	 * @return array
 	 */
-	public function getCartInfo() {
+	public function getCartInfo () {
 
 		$data = array(
 			'itemsCount' => 0,
@@ -331,7 +331,7 @@ class Cart {
 
 		$order = $this->getOrder();
 
-		if ( ! $order ) {
+		if ( !$order ) {
 			return $data;
 		}
 
@@ -341,10 +341,10 @@ class Cart {
 		return $data;
 	}
 
-	public function getItemsCount() {
+	public function getItemsCount () {
 		$order = $this->getOrder();
 
-		if ( ! $order ) {
+		if ( !$order ) {
 			return 0;
 		}
 
@@ -355,7 +355,7 @@ class Cart {
 	 * Pay the order
 	 * @return \Maven\Core\Message\Message
 	 */
-	public function pay() {
+	public function pay () {
 
 		//Check if the cc information is valid
 		$order = $this->getOrder();
@@ -363,7 +363,7 @@ class Cart {
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Start:' . date( 'h:i:s' ) );
 
 
-		if ( ! $order->getCreditCard() || ! $order->getCreditCard()->isValid() ) {
+		if ( !$order->getCreditCard() || !$order->getCreditCard()->isValid() ) {
 			return $this->setResult( Message\MessageManager::createErrorMessage( 'Invalid credit card' ) );
 		}
 
@@ -377,7 +377,7 @@ class Cart {
 			}
 		}
 
-		if ( ! empty( $invalidPromotions ) ) {
+		if ( !empty( $invalidPromotions ) ) {
 			//some promotions are no longer valid, maybe they are expired
 			// or use limit has been reached.
 			//Remove the promotion from the order
@@ -505,7 +505,7 @@ class Cart {
 	 * @description It will fire when an attendee is added
 	 * @param \MavenEvents\Core\Domain\Attendee $attendee
 	 */
-	public function trackTransaction( \Maven\Core\Domain\Order $order ) {
+	public function trackTransaction ( \Maven\Core\Domain\Order $order ) {
 
 		$transaction = new \Maven\Tracking\EcommerceTransaction();
 		$transaction->setTotal( $order->getTotal() );
@@ -532,7 +532,7 @@ class Cart {
 		//do_action('action:mavenEvents/attendee/add', $attendee);
 	}
 
-	public function sendInvalidTransactionEmail( \Maven\Core\Domain\Order $order, \Maven\Gateways\Gateway $gateway ) {
+	public function sendInvalidTransactionEmail ( \Maven\Core\Domain\Order $order, \Maven\Gateways\Gateway $gateway ) {
 		$mavenSettings = \Maven\Settings\MavenRegistry::instance();
 
 		$admin = TRUE;
@@ -557,7 +557,7 @@ class Cart {
 	 * 
 	 * TODO// Todo esto hay que moverlo a una clase que se encargue del parseo
 	 */
-	public function sendEmail( \Maven\Core\Domain\Order $order ) {
+	public function sendEmail ( \Maven\Core\Domain\Order $order ) {
 
 		$mavenSettings = \Maven\Settings\MavenRegistry::instance();
 
@@ -573,9 +573,10 @@ class Cart {
 
 		$emailReceipt = TemplateProcessor::DefaultEmailReceipt;
 
-		$emailReceipt = HookManager::instance()->applyFilters( 'maven/cart/emailReceiptTemplate', $emailReceipt );
+		$emailReceiptFullPath = HookManager::instance()->applyFilters( 'maven/cart/emailReceiptTemplateFullPath' );
 
-		$message = $output->getTemplate( $emailReceipt );
+		$message = $emailReceiptFullPath ? $output->getExternalTemplate( $emailReceiptFullPath ) : $output->getTemplate( $emailReceipt );
+
 		$subject = "Receipt for Order " . $order->getNumber();
 		$subject = HookManager::instance()->applyFilters( 'maven/cart/receipOrderSubject', $subject );
 
@@ -592,7 +593,7 @@ class Cart {
 		$this->sendNotificationEmail( $order, 'New order placed' );
 	}
 
-	private function sendNotificationEmail( \Maven\Core\Domain\Order $order, $subject ) {
+	private function sendNotificationEmail ( \Maven\Core\Domain\Order $order, $subject ) {
 
 		$mavenSettings = \Maven\Settings\MavenRegistry::instance();
 
@@ -622,7 +623,7 @@ class Cart {
 				->send();
 	}
 
-	private function saveOrder( $addStatus = true ) {
+	private function saveOrder ( $addStatus = true ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/saveOrder' );
 
@@ -639,7 +640,7 @@ class Cart {
 	 * @return \Maven\Core\Domain\Oorder
 	 * @throws \Maven\Exceptions\MavenException
 	 */
-	public function update( \Maven\Core\Domain\Order $orderToSave = null ) {
+	public function update ( \Maven\Core\Domain\Order $orderToSave = null ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/update' );
 
@@ -649,7 +650,7 @@ class Cart {
 
 
 
-		if ( ! $order ) {
+		if ( !$order ) {
 			throw new \Maven\Exceptions\MavenException( ' The order was not initialized' );
 		}
 
@@ -662,7 +663,7 @@ class Cart {
 		return $this->order;
 	}
 
-	public function clear() {
+	public function clear () {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/clear' );
 
@@ -678,7 +679,7 @@ class Cart {
 	 * @param string $promotionCode
 	 * @return boolean
 	 */
-	public function applyPromotion( $promotionCode ) {
+	public function applyPromotion ( $promotionCode ) {
 
 		$order = $this->getOrder();
 
@@ -709,7 +710,7 @@ class Cart {
 		return $this->result;
 	}
 
-	private function loadUserInformation( Domain\User $user ) {
+	private function loadUserInformation ( Domain\User $user ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/loadUserLoggedProfile: User found: ' . $user->getId() );
 
@@ -719,7 +720,7 @@ class Cart {
 			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/loadUserLoggedProfile: Inside' );
 
 
-			if ( ! $this->order->getContact()->isCompleted() ) {
+			if ( !$this->order->getContact()->isCompleted() ) {
 
 				\Maven\Loggers\Logger::log()->message( 'Maven/Cart/loadUserLoggedProfile: Empty contact' );
 
@@ -733,7 +734,7 @@ class Cart {
 			}
 
 
-			if ( ! $this->order->getBillingContact()->isCompleted() ) {
+			if ( !$this->order->getBillingContact()->isCompleted() ) {
 
 				\Maven\Loggers\Logger::log()->message( 'Maven/Cart/loadUserLoggedProfile: Empty Billing Contact' );
 
@@ -746,7 +747,7 @@ class Cart {
 				\Maven\Loggers\Logger::log()->message( 'Maven/Cart/loadUserLoggedProfile: Billing Contact- ' . $this->order->getBillingContact()->getBillingAddress()->getFullAddress() );
 			}
 
-			if ( ! $this->order->getShippingContact()->isCompleted() ) {
+			if ( !$this->order->getShippingContact()->isCompleted() ) {
 
 				\Maven\Loggers\Logger::log()->message( 'Maven/Cart/loadUserLoggedProfile: Empty Shipping Contact' );
 
@@ -766,7 +767,7 @@ class Cart {
 		$this->order->setUser( $user );
 	}
 
-	private function loadUserLoggedProfile() {
+	private function loadUserLoggedProfile () {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/loadUserLoggedProfile' );
 
@@ -776,7 +777,7 @@ class Cart {
 			$user = UserManager::getLoggedUser();
 		}
 
-		if ( ! $user ) {
+		if ( !$user ) {
 			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/loadUserLoggedProfile: User not found' );
 			return;
 		}
@@ -784,15 +785,15 @@ class Cart {
 		$this->loadUserInformation( $user );
 	}
 
-	public function logout() {
+	public function logout () {
 
 		// If the user is being loged out, we need to clean the cart
 		$this->clear();
 	}
 
-	public function login( $userLogin, $wpUser ) {
+	public function login ( $userLogin, $wpUser ) {
 
-		if ( ! $userLogin ) {
+		if ( !$userLogin ) {
 			return false;
 		}
 
@@ -805,12 +806,12 @@ class Cart {
 		$order = $this->order;
 
 		// If there is no order in session, lets try to find sometning in the db
-		if ( ! $this->hasOrder() || $this->order->isEmpty() ) {
+		if ( !$this->hasOrder() || $this->order->isEmpty() ) {
 
 			$orderManager = new OrderManager();
 			$order = $orderManager->getLastPendingOrder( $user->getId() );
 
-			if ( $order && ! $order->isEmpty() ) {
+			if ( $order && !$order->isEmpty() ) {
 				\Maven\Loggers\Logger::log()->message( 'Maven/Cart/login: Order Id: ' . $order->getId() );
 
 				// We need to ensure that the order will be placed to the logged user. Since he could start it without being logged.
@@ -832,7 +833,7 @@ class Cart {
 		}
 	}
 
-	public function removePromotion( $promotionCode ) {
+	public function removePromotion ( $promotionCode ) {
 
 		$order = $this->getOrder();
 
@@ -854,7 +855,7 @@ class Cart {
 		return false;
 	}
 
-	public function hasOrder() {
+	public function hasOrder () {
 
 		return $this->getOrder() ? true : false;
 	}
