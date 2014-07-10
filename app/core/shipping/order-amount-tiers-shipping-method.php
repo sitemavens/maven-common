@@ -19,5 +19,14 @@ class OrderAmountTiersShippingMethod extends \Maven\Core\Domain\ShippingMethodTy
 	public function applyShipping ( \Maven\Core\Domain\Order $order ) {
 		
 	}
+	
+	public function getHtml(){
+		
+		
+		
+		
+		
+		
+	}
 
 }

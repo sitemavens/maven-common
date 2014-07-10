@@ -45,7 +45,7 @@ class CronJobs {
 	
 	
 
-	function addScheduleInterval ( $schedules ) {
+	public static function addScheduleInterval ( $schedules ) {
 
 		// add a 'weekly' schedule to the existing set
 		$schedules[ 'every24Hours' ] = array(
