@@ -558,7 +558,7 @@ class Cart {
 	 * TODO// Todo esto hay que moverlo a una clase que se encargue del parseo
 	 */
 	public function sendEmail( \Maven\Core\Domain\Order $order ) {
-		
+
 		$mavenSettings = \Maven\Settings\MavenRegistry::instance();
 
 		//Process the form
@@ -588,7 +588,7 @@ class Cart {
 				->fromAccount( $mavenSettings->getSenderEmail() )
 				->fromMessage( $mavenSettings->getSenderName() )
 				->send();
-
+		die( var_dump( $mail->send() ) );
 		//Notify admins
 		$this->sendNotificationEmail( $order, 'New order placed' );
 	}
@@ -610,7 +610,7 @@ class Cart {
 
 		$emailReceipt = TemplateProcessor::DefaultEmailReceipt;
 
-		$emailReceiptFullPath = HookManager::instance()->applyFilters( 'maven/cart/emailReceiptTemplateFullPath' , '');
+		$emailReceiptFullPath = HookManager::instance()->applyFilters( 'maven/cart/emailReceiptTemplateFullPath', '' );
 
 		$message = $emailReceiptFullPath ? $output->getExternalTemplate( $emailReceiptFullPath ) : $output->getTemplate( $emailReceipt );
 
