@@ -574,7 +574,7 @@ class Cart {
 
 		$emailReceipt = TemplateProcessor::DefaultEmailReceipt;
 		
-		$emailReceiptFullPath = HookManager::instance()->applyFilters( 'maven/cart/emailReceiptTemplateFullPath', $emailReceipt );
+		$emailReceiptFullPath = HookManager::instance()->applyFilters( 'maven/cart/emailReceiptTemplateFullPath' );
 
 		$message = $emailReceiptFullPath ? $output->getTemplate( $emailReceipt ) : $output->getExternalTemplate( $emailReceiptFullPath );
 
