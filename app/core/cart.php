@@ -573,10 +573,10 @@ class Cart {
 		);
 
 		$emailReceipt = TemplateProcessor::DefaultEmailReceipt;
+		
+		$emailReceiptFullPath = HookManager::instance()->applyFilters( 'maven/cart/emailReceiptTemplateFullPath', $emailReceipt );
 
-		$emailReceipt = HookManager::instance()->applyFilters( 'maven/cart/emailReceiptTemplate', $emailReceipt );
-
-		$message = $output->getTemplate( $emailReceipt );
+		$message = $emailReceiptFullPath ? $output->getTemplate( $emailReceipt ) : $output->getExternalTemplate( $emailReceiptFullPath );
 
 		$subject = "Receipt for Order " . $order->getNumber();
 		$subject = HookManager::instance()->applyFilters( 'maven/cart/receipOrderSubject', $subject );

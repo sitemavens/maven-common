@@ -153,6 +153,19 @@ class Output {
 		$output = ob_get_clean();
 		return $output;
 	}
+	
+	function getExternalTemplate( $templatePath) {
+		ob_start();
+		extract( $this->data );
+
+		if ( ! file_exists( $templatePath ) ) {
+			throw new \Maven\Exceptions\MavenException( 'File not found: ' . $templatePath );
+		}
+
+		require $templatePath;
+		$output = ob_get_clean();
+		return $output;
+	}
 
 	function loadFrontView( $viewName ) {
 
