@@ -72,12 +72,15 @@ abstract class WordpressMapper extends Mapper {
 		return $this->db->get_results( $query );
 	}
 
-	protected function getResults( $order_by, $order_type = 'asc', $limit = false, $row_count = false ) {
+	protected function getResults( $order_by, $order_type = 'asc', $limit = false, $row_count = false, $published = false ) {
 
+
+		$query = "SELECT t.* FROM {$this->tableName} AS t ";
+		if ( $published ) {
+			$query .= "INNER JOIN {$this->db->posts} AS p ON t.id = p.id AND p.post_status = 'publish' ";
+		}
 		if ( $order_by ) {
-			$query = "select * from {$this->tableName} order by {$order_by} {$order_type} ";
-		} else {
-			$query = "select * from {$this->tableName} ";
+			$query .= "ORDER BY {$order_by} {$order_type} ";
 		}
 		if ( $limit && $row_count ) {
 			$query.="LIMIT {$limit}, {$row_count}";
@@ -228,11 +231,11 @@ abstract class WordpressMapper extends Mapper {
 	 * @return array
 	 */
 	protected function updateById( $id, $data, $format = null, $tableName = false ) {
-		
+
 		if ( ! $tableName ) {
 			$tableName = $this->tableName;
 		}
-		
+
 		$result = $this->db->update( $tableName, $data, array( 'id' => $id ), $format, array( '%d' ) );
 
 		$this->checkError();
@@ -251,7 +254,6 @@ abstract class WordpressMapper extends Mapper {
 
 	protected function executeQuery( $query ) {
 		return $this->db->query( $query );
-		
 	}
 
 	/**
@@ -265,7 +267,7 @@ abstract class WordpressMapper extends Mapper {
 		if ( strpos( $query, '%' ) === false ) {
 			return $query;
 		}
-		
+
 		$argsAux = func_get_args();
 		if ( count( $argsAux ) > 2 )
 			array_shift( $argsAux );

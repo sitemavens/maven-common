@@ -23,7 +23,6 @@ class CheckoutAction extends Action {
     public function execute () {
 
         $result = $this->getCart()->pay();
- 
 		
 		return $result;
     }

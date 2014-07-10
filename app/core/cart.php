@@ -87,23 +87,22 @@ class Cart {
 
 		return $this->order;
 	}
-	
-	public function updateItemQuantity( $identifier, $newQuantity){
-		
+
+	public function updateItemQuantity( $identifier, $newQuantity ) {
+
 		$order = $this->getOrder();
-		
+
 		if ( $order->itemExists( $identifier ) ) {
 			$orderItem = &$order->getItem( $identifier );
-			
+
 			$orderItem->setQuantity( $newQuantity );
-			
+
 			$this->update();
-			
+
 			return \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Item updated' );
 		}
-		
+
 		return \Maven\Core\Message\MessageManager::createErrorMessage( 'Item not found' );
-		
 	}
 
 	public function loadExistingOrder( \Maven\Core\Domain\Order $order ) {
@@ -280,12 +279,12 @@ class Cart {
 		//TODO: Check if the item exists, we have to remove it and add the new one.
 		if ( $this->getOrder()->itemExists( $item->getIdentifier() ) ) {
 			$orderApi->removeItem( $this->order, $item );
-			
+
 			$this->update();
-			
+
 			return Message\MessageManager::createRegularMessage( 'Item removed sucessfully', $this->order );
 		}
-		
+
 		return Message\MessageManager::createRegularMessage( 'Item not found', $this->order );
 	}
 
@@ -326,8 +325,8 @@ class Cart {
 	public function getCartInfo() {
 
 		$data = array(
-		    'itemsCount' => 0,
-		    'total' => 0
+			'itemsCount' => 0,
+			'total' => 0
 		);
 
 		$order = $this->getOrder();
@@ -538,20 +537,20 @@ class Cart {
 
 		$admin = TRUE;
 		$output = new Ui\Output( "", array(
-		    'order' => $order,
-		    'admin' => $admin,
-		    'gateway' => $gateway )
+			'order' => $order,
+			'admin' => $admin,
+			'gateway' => $gateway )
 		);
 
 		$message = $output->getTemplate( 'email-invalid-transaction.html' );
 
 		$mail = \Maven\Mail\MailFactory::build();
 		$mail->to( $mavenSettings->getExceptionNotification() )
-			->message( $message )
-			->subject( $mavenSettings->getLanguage()->__( $mavenSettings->getOrganizationName() . ': Transaction Error' ) )
-			->fromAccount( $mavenSettings->getSenderEmail() )
-			->fromMessage( $mavenSettings->getSenderName() )
-			->send();
+				->message( $message )
+				->subject( $mavenSettings->getLanguage()->__( $mavenSettings->getOrganizationName() . ': Transaction Error' ) )
+				->fromAccount( $mavenSettings->getSenderEmail() )
+				->fromMessage( $mavenSettings->getSenderName() )
+				->send();
 	}
 
 	/**
@@ -567,9 +566,9 @@ class Cart {
 		$admin = FALSE;
 
 		$output = new Ui\Output( "", array(
-		    'order' => $order,
-		    'url' => $url,
-		    'admin' => $admin )
+			'order' => $order,
+			'url' => $url,
+			'admin' => $admin )
 		);
 
 		$emailReceipt = TemplateProcessor::DefaultEmailReceipt;
@@ -577,18 +576,17 @@ class Cart {
 		$emailReceipt = HookManager::instance()->applyFilters( 'maven/cart/emailReceiptTemplate', $emailReceipt );
 
 		$message = $output->getTemplate( $emailReceipt );
-
 		$subject = "Receipt for Order " . $order->getNumber();
 		$subject = HookManager::instance()->applyFilters( 'maven/cart/receipOrderSubject', $subject );
 
 		$mail = \Maven\Mail\MailFactory::build();
 		$mail->bcc( $mavenSettings->getBccNotificationsTo() )
-			->to( $order->getContact()->getEmail() )
-			->message( $message )
-			->subject( $subject )
-			->fromAccount( $mavenSettings->getSenderEmail() )
-			->fromMessage( $mavenSettings->getSenderName() )
-			->send();
+				->to( $order->getContact()->getEmail() )
+				->message( $message )
+				->subject( $subject )
+				->fromAccount( $mavenSettings->getSenderEmail() )
+				->fromMessage( $mavenSettings->getSenderName() )
+				->send();
 
 		//Notify admins
 		$this->sendNotificationEmail( $order, 'New order placed' );
@@ -604,9 +602,9 @@ class Cart {
 		$admin = TRUE;
 
 		$output = new Ui\Output( "", array(
-		    'order' => $order,
-		    'url' => $url,
-		    'admin' => $admin )
+			'order' => $order,
+			'url' => $url,
+			'admin' => $admin )
 		);
 
 		$emailReceipt = TemplateProcessor::DefaultEmailReceipt;
@@ -617,11 +615,11 @@ class Cart {
 
 		$mail = \Maven\Mail\MailFactory::build();
 		$mail->to( $mavenSettings->getBccNotificationsTo() )
-			->message( $message )
-			->subject( $mavenSettings->getLanguage()->__( $subject ) )
-			->fromAccount( $mavenSettings->getSenderEmail() )
-			->fromMessage( $mavenSettings->getSenderName() )
-			->send();
+				->message( $message )
+				->subject( $mavenSettings->getLanguage()->__( $subject ) )
+				->fromAccount( $mavenSettings->getSenderEmail() )
+				->fromMessage( $mavenSettings->getSenderName() )
+				->send();
 	}
 
 	private function saveOrder( $addStatus = true ) {
