@@ -71,9 +71,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	public function getProfileOrders( $id ) {
 		$manager = new \Maven\Core\OrderManager();
 		$orders = $manager->getProfileOrders( $id );
-		$response['data'] = $orders;
-	
-		$this->getOutput()->sendApiResponse( $response );
+		$this->getOutput()->sendApiResponse( $orders );
 	}
 
 	public function newProfile( $data ) {
