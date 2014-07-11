@@ -3,19 +3,19 @@
 namespace Maven\Core;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class OrderManager {
 
 	private $mapper;
 
-	public function __construct() {
+	public function __construct () {
 
 		$this->mapper = new Mappers\OrderMapper( );
 	}
 
-	public function initOrder() {
+	public function initOrder () {
 
 		$order = new \Maven\Core\Domain\Order();
 
@@ -25,14 +25,14 @@ class OrderManager {
 			$order->setUser( UserManager::getLoggedUser() );
 			$order->getStatus()->setStatusDescription( "User " . $order->getUser()->getEmail() . " placed an order" );
 
-			if ( ! $order->getUser()->getProfile()->isEmpty() ) {
+			if ( !$order->getUser()->getProfile()->isEmpty() ) {
 				$order->setContactId( $order->getUser()->getProfile()->getProfileId() );
 			}
 		}
 
 		$defaultShippingCountry = HookManager::instance()->applyFilters( 'maven/order/defaultShippingCountry', "" );
 
-		if ( ! $order->getShippingContact() ) {
+		if ( !$order->getShippingContact() ) {
 			$order->setShippingContact( new Domain\Contact() );
 		}
 
@@ -45,7 +45,7 @@ class OrderManager {
 		return $this->addOrder( $order );
 	}
 
-	public function removeItem( \Maven\Core\Domain\Order $order, \Maven\Core\Domain\OrderItem $item ) {
+	public function removeItem ( \Maven\Core\Domain\Order $order, \Maven\Core\Domain\OrderItem $item ) {
 
 		$order->removeItem( $item->getIdentifier() );
 
@@ -54,7 +54,7 @@ class OrderManager {
 		return $order;
 	}
 
-	public function removeExtraField( \Maven\Core\Domain\Order $order, \Maven\Core\Domain\ExtraField $extraField ) {
+	public function removeExtraField ( \Maven\Core\Domain\Order $order, \Maven\Core\Domain\ExtraField $extraField ) {
 
 		$order->removeExtraField( $extraField->getLabel() );
 
@@ -67,7 +67,7 @@ class OrderManager {
 	 * @param \Maven\Core\Domain\OrderItem $item
 	 * @return boolean
 	 */
-	public function reCalculateOrderTotals( \Maven\Core\Domain\Order $order ) {
+	public function reCalculateOrderTotals ( \Maven\Core\Domain\Order $order ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/OrderManager/reCalculateOrderTotals' );
 
@@ -95,7 +95,7 @@ class OrderManager {
 		return $order;
 	}
 
-	public function addItem( \Maven\Core\Domain\Order $order, \Maven\Core\Domain\OrderItem $item ) {
+	public function addItem ( \Maven\Core\Domain\Order $order, \Maven\Core\Domain\OrderItem $item ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/OrderManager/addItem: Name: ' . $item->getName() );
 
@@ -107,7 +107,7 @@ class OrderManager {
 		return $order;
 	}
 
-	public function addExtraField( \Maven\Core\Domain\Order $order, \Maven\Core\Domain\ExtraField $extrafield ) {
+	public function addExtraField ( \Maven\Core\Domain\Order $order, \Maven\Core\Domain\ExtraField $extrafield ) {
 
 		if ( $order->extraFieldExists( $extrafield->getLabel() ) ) {
 			return $order;
@@ -125,16 +125,16 @@ class OrderManager {
 	 * @return \Maven\Core\Domain\Order
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function addOrder( \Maven\Core\Domain\Order $order, $addStatus = true ) {
+	public function addOrder ( \Maven\Core\Domain\Order $order, $addStatus = true ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/OrderManager/addOrder ' );
 
-		if ( ! ($order->getStatus() && $order->getStatus()->getId() ) ) {
+		if ( !($order->getStatus() && $order->getStatus()->getId() ) ) {
 			throw new \Maven\Exceptions\MissingParameterException( "Order Status is required" );
 		}
 
 
-		if ( ! $order->getOrderDate() ) {
+		if ( !$order->getOrderDate() ) {
 			$date = new MavenDateTime();
 
 			$order->setOrderDate( $date->mySqlFormatDateTime() );
@@ -142,21 +142,21 @@ class OrderManager {
 
 		// If the contact is not an existing one, we have to verify 
 		// We set the contacts id to make search easier and faster
-		if ( $order->getContact()->getEmail() && ! $order->getContact()->getId() ) {
+		if ( $order->getContact()->getEmail() && !$order->getContact()->getId() ) {
 
 			$verifiedContact = $this->verifyProfile( $order->getContact() );
 			$order->setContact( $verifiedContact );
 			$order->setContactId( $order->getContact()->getId() );
 		}
 
-		if ( $order->getBillingContact()->getEmail() && ! $order->getBillingContact()->getId() ) {
+		if ( $order->getBillingContact()->getEmail() && !$order->getBillingContact()->getId() ) {
 
 			$verifiedBillingContact = $this->verifyProfile( $order->getBillingContact() );
 			$order->setBillingContact( $verifiedBillingContact );
 			$order->setBillingContactId( $order->getBillingContact()->getId() );
 		}
 
-		if ( $order->getShippingContact()->getEmail() && ! $order->getShippingContact()->getId() ) {
+		if ( $order->getShippingContact()->getEmail() && !$order->getShippingContact()->getId() ) {
 
 			$verifiedShippingContact = $this->verifyProfile( $order->getShippingContact() );
 			$order->setShippingContact( $verifiedShippingContact );
@@ -189,7 +189,7 @@ class OrderManager {
 		return $order;
 	}
 
-	public function sendShipmentNotice( Domain\Order $order ) {
+	public function sendShipmentNotice ( Domain\Order $order ) {
 
 		try {
 			$shippingStatus = OrderStatusManager::getShippedStatus();
@@ -249,7 +249,7 @@ class OrderManager {
 	 * @param \Maven\Core\Domain\Order $order
 	 * @return \Maven\Core\Domain\Order
 	 */
-	public function updateOrderNumber( \Maven\Core\Domain\Order $order ) {
+	public function updateOrderNumber ( \Maven\Core\Domain\Order $order ) {
 
 		$orderNumber = $this->mapper->updateOrderNumber( $order->getId() );
 
@@ -258,7 +258,7 @@ class OrderManager {
 		return $order;
 	}
 
-	private function applyShipping( \Maven\Core\Domain\Order $order ) {
+	private function applyShipping ( \Maven\Core\Domain\Order $order ) {
 
 		$shippingMethodManager = new ShippingMethodManager();
 		$shippingAddress = $order->getShippingContact()->getShippingAddress();
@@ -279,7 +279,7 @@ class OrderManager {
 		$order->calculateTotal();
 	}
 
-	private function updateProfile( \Maven\Core\Domain\Profile $profile ) {
+	private function updateProfile ( \Maven\Core\Domain\Profile $profile ) {
 
 		if ( $profile && $profile->getEmail() ) {
 			$profileManager = new ProfileManager();
@@ -294,14 +294,14 @@ class OrderManager {
 	 * @param \Maven\Core\Domain\Contact $contact
 	 * @return \Maven\Core\Domain\Contact
 	 */
-	private function verifyProfile( \Maven\Core\Domain\Profile $contact ) {
+	private function verifyProfile ( \Maven\Core\Domain\Profile $contact ) {
 
 		$profileManager = new ProfileManager();
 
 		// Check if the profile exists
 		$existingProfileId = $profileManager->exists( $contact->getEmail() );
 
-		if ( ! $existingProfileId ) {
+		if ( !$existingProfileId ) {
 			$profile = $profileManager->addProfile( $contact );
 
 			$existingProfileId = $profile->getId();
@@ -312,8 +312,8 @@ class OrderManager {
 		return $contact;
 	}
 
-	public function getOrderLastUpdate( $orderId ) {
-		if ( ! $orderId ) {
+	public function getOrderLastUpdate ( $orderId ) {
+		if ( !$orderId ) {
 			throw new \Maven\Exceptions\MissingParameterException( "Order id is required" );
 		}
 
@@ -326,7 +326,7 @@ class OrderManager {
 	 * @param mixed $orderId
 	 * @return boolean
 	 */
-	public function orderExists( $orderId ) {
+	public function orderExists ( $orderId ) {
 		return $this->mapper->orderExist( $orderId );
 	}
 
@@ -336,9 +336,9 @@ class OrderManager {
 	 * @return \Maven\Core\Domain\Order
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function get( $orderId ) {
+	public function get ( $orderId ) {
 
-		if ( ! $orderId ) {
+		if ( !$orderId ) {
 			throw new \Maven\Exceptions\MissingParameterException( "Event id is required" );
 		}
 
@@ -361,13 +361,20 @@ class OrderManager {
 		return $order;
 	}
 
-	public function getProfileOrders( $profileId ) {
+	public function getProfileOrders ( $profileId ) {
 
-		if ( ! $profileId ) {
+		if ( !$profileId ) {
 			throw new \Maven\Exceptions\MissingParameterException( "Profile id is required" );
 		}
 
-		$orders = $this->mapper->getProfileOrders( $profileId );
+		$profileManager = new ProfileManager();
+		$profile = $profileManager->get( $profileId );
+		
+		$orders = array();
+
+		if ( $profile ) {
+			$orders = $this->mapper->getProfileOrders( $profile->getUserId() );
+		}
 
 		return $orders;
 	}
@@ -378,14 +385,14 @@ class OrderManager {
 	 * @return \Maven\Core\Domain\Order
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function getLastPendingOrder( $userId ) {
+	public function getLastPendingOrder ( $userId ) {
 
 		return $this->mapper->getLastPendingOrder( $userId );
 	}
 
-	public function getByPlugin( $pluginKey ) {
+	public function getByPlugin ( $pluginKey ) {
 
-		if ( ! $pluginKey ) {
+		if ( !$pluginKey ) {
 			throw new \Maven\Exceptions\MissingParameterException( "Plugin Key is required" );
 		}
 
@@ -397,7 +404,7 @@ class OrderManager {
 	 * @param \Maven\Core\Domain\OrderFilter  $filter
 	 * @return \Maven\Core\Domain\Order[]
 	 */
-	public function getOrders( \Maven\Core\Domain\OrderFilter $filter, $orderBy = "id", $orderType = 'asc', $start = "0", $limit = "1000" ) {
+	public function getOrders ( \Maven\Core\Domain\OrderFilter $filter, $orderBy = "id", $orderType = 'asc', $start = "0", $limit = "1000" ) {
 
 		//if ( ! $filter->getPluginKey() )
 		//	throw new \Maven\Exceptions\MissingParameterException( "Plugin Key is required" );
@@ -405,14 +412,14 @@ class OrderManager {
 		return $this->mapper->getOrders( $filter, $orderBy, $orderType, $start, $limit );
 	}
 
-	public function getOrdersCount( \Maven\Core\Domain\OrderFilter $filter ) {
+	public function getOrdersCount ( \Maven\Core\Domain\OrderFilter $filter ) {
 		//if ( ! $filter->getPluginKey() )
 		//	throw new \Maven\Exceptions\MissingParameterException( "Plugin Key is required" );
 
 		return $this->mapper->getOrdersCount( $filter );
 	}
 
-	public function delete( $orderId ) {
+	public function delete ( $orderId ) {
 
 		$this->mapper->deleteOrder( $orderId );
 
@@ -430,7 +437,7 @@ class OrderManager {
 	 * @param MavenDateTime $to
 	 * @return int
 	 */
-	public function getCount( $status, $from = false, $to = false ) {
+	public function getCount ( $status, $from = false, $to = false ) {
 		return $this->mapper->getCount( $status, $from, $to );
 	}
 
@@ -440,14 +447,14 @@ class OrderManager {
 	 * @param MavenDateTime $to
 	 * @return int
 	 */
-	public function getRevenue( $status, $from = false, $to = false ) {
+	public function getRevenue ( $status, $from = false, $to = false ) {
 		return $this->mapper->getRevenue( $status, $from, $to );
 	}
 
 	/**
 	 * Remove all received orders that are older than a week and has no information
 	 */
-	public function cleanReceivedOrders() {
+	public function cleanReceivedOrders () {
 
 		$filter = new \Maven\Core\Domain\OrderFilter();
 		$filter->setStatusID( OrderStatusManager::getReceivedStatus()->getId() );
@@ -465,7 +472,7 @@ class OrderManager {
 		foreach ( $orders as $order ) {
 
 			//Check if the order has some contact on it.
-			if ( ! $order->hasBillingInformation() && ! $order->hasShippingInformation() && ! $order->hasContactInformation() ) {
+			if ( !$order->hasBillingInformation() && !$order->hasShippingInformation() && !$order->hasContactInformation() ) {
 				$this->delete( $order->getId() );
 			}
 		}

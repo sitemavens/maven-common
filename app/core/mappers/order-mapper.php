@@ -603,14 +603,8 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 	}
 
 	public function getProfileOrders( $profileId ) {
-		$args = array();
-		$query = "SELECT {$this->tableName}.*
-					FROM {$this->tableName} 
-					WHERE 1=1 AND {$this->tableName}.user_id = {$profileId}";
 
-		$query = $this->prepare( $query, $args );
-
-		$results = $this->getQuery( $query );
+		$results = $this->getResultsBy('user_id', $profileId);
 
 		$statusMapper = new OrderStatusMapper();
 		$instances = array();

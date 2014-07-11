@@ -29,8 +29,9 @@ angular.module('mavenApp')
 								}
 
 								$scope.profile = data;
-								ProfileOrders.getOrders($scope.profile.id).success(function(data){
-									$scope.profile.orders = data;
+								ProfileOrders.getOrders($scope.profile.id).then(function(response){
+									$scope.profile.orders = response.data;
+									console.log($scope.profile.orders);
 								});
 								ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
 									$scope.profile.isWpUser = iswpuser.result;

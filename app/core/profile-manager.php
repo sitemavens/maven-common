@@ -23,9 +23,8 @@ class ProfileManager {
 	}
 
 	/*
-	 * return Domain\Profile
+	 * return \Maven\Core\Domain\Profile
 	 */
-
 	public function get( $id ) {
 
 		if ( ! $id ) {

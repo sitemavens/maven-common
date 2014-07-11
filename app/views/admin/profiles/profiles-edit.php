@@ -295,7 +295,7 @@
 				</div>
 			</tab>
 			<tab heading="Orders">
-				<div class="form-horizontal profile profile-edition">
+				<table class="form-horizontal profile profile-edition">
 					<thead>
 						<tr>
 							<th>Status</th>
@@ -305,7 +305,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="order in profile.orders">
+						<tr ng-repeat="order in profile.orders">{{order}}
 							<td>
 								<img ng-src="{{order.status.imageUrl}}" />{{order.status.name}}
 							</td>
@@ -320,7 +320,7 @@
 							</td>
 						</tr>
 					</tbody>
-				</div>
+				</table>
 			</tab>
 
 		</tabset>
