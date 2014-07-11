@@ -15,21 +15,23 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	public function registerRoutes( $routes ) {
 
 		$routes[ '/maven/profiles' ] = array(
-		    array( array( $this, 'getProfiles' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'newProfile' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			array( array( $this, 'getProfiles' ), \WP_JSON_Server::READABLE ),
+			array( array( $this, 'newProfile' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
 		$routes[ '/maven/profiles/(?P<id>\d+)' ] = array(
-		    array( array( $this, 'getProfile' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'editProfile' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
-		    array( array( $this, 'deleteProfile' ), \WP_JSON_Server::DELETABLE ),
+			array( array( $this, 'getProfile' ), \WP_JSON_Server::READABLE ),
+			array( array( $this, 'editProfile' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			array( array( $this, 'deleteProfile' ), \WP_JSON_Server::DELETABLE ),
 		);
 		$routes[ '/maven/profileaddress/(?P<id>\d+)' ] = array(
-		    array( array( $this, 'getProfileAddress' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'deleteProfileAddress' ), \WP_JSON_Server::DELETABLE ),
+			array( array( $this, 'getProfileAddress' ), \WP_JSON_Server::READABLE ),
+			array( array( $this, 'deleteProfileAddress' ), \WP_JSON_Server::DELETABLE ),
 		);
 		$routes[ '/maven/profilewpuser/(?P<id>\D+)' ] = array(
-		    array( array( $this, 'isWpUser' ), \WP_JSON_Server::READABLE ),
-//		    array( array( $this, 'deleteProfileAddress' ), \WP_JSON_Server::DELETABLE ),
+			array( array( $this, 'isWpUser' ), \WP_JSON_Server::READABLE ),
+		);
+		$routes[ '/maven/profileorders/(?P<id>\d+)' ] = array(
+			array( array( $this, 'getProfileOrders' ), \WP_JSON_Server::READABLE ),
 		);
 
 		return $routes;
@@ -59,10 +61,18 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$count = $manager->getCount( $filter );
 
 		$response = array(
-		    "items" => $profile,
-		    "totalItems" => $count
+			"items" => $profile,
+			"totalItems" => $count
 		);
 
+		$this->getOutput()->sendApiResponse( $response );
+	}
+
+	public function getProfileOrders( $id ) {
+		$manager = new \Maven\Core\OrderManager();
+		$orders = $manager->getProfileOrders( $id );
+		$response['data'] = $orders;
+	
 		$this->getOutput()->sendApiResponse( $response );
 	}
 
@@ -117,7 +127,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$password = FALSE;
 		if ( isset( $data[ 'password' ] ) && $data[ 'password' ] )
 			$password = $data[ 'password' ];
-		
+
 		$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
 		$this->getOutput()->sendApiResponse( $profile );
 	}

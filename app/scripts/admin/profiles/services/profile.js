@@ -24,3 +24,11 @@ app.factory('ProfileRoles', ['$resource', function($resource) {
 app.factory('ProfileWpUser', ['$resource', function($resource) {
 		return $resource('/wp-json/maven/profilewpuser/:id', {id: '@id'});
 	}]);
+app.factory('ProfileOrders', ['$resource', function($resource) {
+		return $resource('/wp-json/maven/profileorders/:id', {id: '@id'},{
+			query: {
+				method: 'GET',
+				isArray: false
+			}
+		});
+	}]);

@@ -265,27 +265,27 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 				}
 
 				$data = array(
-				    'name' => $item->getName(),
-				    'quantity' => $item->getQuantity(),
-				    'price' => $item->getPrice(),
-				    'order_id' => $order->getId(),
-				    'thing_id' => $item->getThingId(),
-				    'sku' => $item->getSku(),
-				    'plugin_key' => $item->getPluginKey(),
-				    'thing_variation_id' => $item->getThingVariationId(),
-				    'attributes' => serialize( $item->getAttributes() )
+					'name' => $item->getName(),
+					'quantity' => $item->getQuantity(),
+					'price' => $item->getPrice(),
+					'order_id' => $order->getId(),
+					'thing_id' => $item->getThingId(),
+					'sku' => $item->getSku(),
+					'plugin_key' => $item->getPluginKey(),
+					'thing_variation_id' => $item->getThingVariationId(),
+					'attributes' => serialize( $item->getAttributes() )
 				);
 
 				$format = array(
-				    '%s', //name
-				    '%d', //quantity
-				    '%f', //price
-				    '%d', //order_id
-				    '%d', //id
-				    '%s', //sku
-				    '%s', //plugin_key
-				    '%d', //thing_variation_id
-				    '%s' //attributes
+					'%s', //name
+					'%d', //quantity
+					'%f', //price
+					'%d', //order_id
+					'%d', //id
+					'%s', //sku
+					'%s', //plugin_key
+					'%d', //thing_variation_id
+					'%s' //attributes
 				);
 
 				if ( ! $item->getId() ) {
@@ -356,59 +356,59 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 
 
 		$data = array(
-		    'description' => $order->getDescription(),
-		    'order_date' => $order->getOrderDate(),
-		    'subtotal' => $order->getSubtotal(),
-		    'total' => $order->getTotal(),
-		    'shipping_method' => serialize( $order->getShippingMethod() ),
-		    'shipping_amount' => $order->getShippingAmount(),
-		    'discount_amount' => $order->getDiscountAmount(),
-		    'plugin_key' => $order->getPluginId(),
-		    'contact_id' => $order->getContactId(),
-		    'contact' => serialize( $order->getContact() ),
-		    'billing_contact_id' => $order->getBillingContactId(),
-		    'billing_contact' => serialize( $order->getBillingContact() ),
-		    'shipping_contact_id' => $order->getShippingContactId(),
-		    'shipping_contact' => serialize( $order->getShippingContact() ),
-		    'extra_fields' => serialize( $order->getExtraFields() ),
-		    'status_id' => $order->getStatusId() ? $order->getStatusId() : $order->getStatus()->getId(),
-		    'promotions' => serialize( $order->getPromotions() ),
-		    'credit_card' => $creditCard,
-		    'transaction_id' => $order->getTransactionId(),
-		    'user' => '',
-		    'user_id' => '',
-		    'last_update' => \Maven\Core\MavenDateTime::getWPCurrentDateTime(),
-		    'shipping_carrier' => $order->getShippingCarrier(),
-		    'shipping_tracking_code' => $order->getShippingTrackingCode(),
-		    'shipping_tracking_url' => $order->getShippingTrackingUrl()
+			'description' => $order->getDescription(),
+			'order_date' => $order->getOrderDate(),
+			'subtotal' => $order->getSubtotal(),
+			'total' => $order->getTotal(),
+			'shipping_method' => serialize( $order->getShippingMethod() ),
+			'shipping_amount' => $order->getShippingAmount(),
+			'discount_amount' => $order->getDiscountAmount(),
+			'plugin_key' => $order->getPluginId(),
+			'contact_id' => $order->getContactId(),
+			'contact' => serialize( $order->getContact() ),
+			'billing_contact_id' => $order->getBillingContactId(),
+			'billing_contact' => serialize( $order->getBillingContact() ),
+			'shipping_contact_id' => $order->getShippingContactId(),
+			'shipping_contact' => serialize( $order->getShippingContact() ),
+			'extra_fields' => serialize( $order->getExtraFields() ),
+			'status_id' => $order->getStatusId() ? $order->getStatusId() : $order->getStatus()->getId(),
+			'promotions' => serialize( $order->getPromotions() ),
+			'credit_card' => $creditCard,
+			'transaction_id' => $order->getTransactionId(),
+			'user' => '',
+			'user_id' => '',
+			'last_update' => \Maven\Core\MavenDateTime::getWPCurrentDateTime(),
+			'shipping_carrier' => $order->getShippingCarrier(),
+			'shipping_tracking_code' => $order->getShippingTrackingCode(),
+			'shipping_tracking_url' => $order->getShippingTrackingUrl()
 		);
 
 		$format = array(
-		    '%s', //description
-		    '%s', //order_date
-		    '%f', //subtotal
-		    '%f', //total
-		    '%s', //shipping_method
-		    '%f', //shipping_amount
-		    '%f', //discount_amount
-		    '%s', //plugin_key
-		    '%s', //contact_id
-		    '%s', //contact
-		    '%d', //contact_billing_id
-		    '%s', //contact_billing
-		    '%d', //contact_shipping_id
-		    '%s', //contact_shipping
-		    '%s', //extra_fields
-		    '%s', //status_id
-		    '%s', //promotions
-		    '%s', //credit_card
-		    '%s', //transaction_id
-		    '%s', // user
-		    '%d', // user_id
-		    '%s', //last_update
-		    '%s', //shipping_carrier
-		    '%s', //shipping_tracking_code
-		    '%s' //shipping_tracking_url
+			'%s', //description
+			'%s', //order_date
+			'%f', //subtotal
+			'%f', //total
+			'%s', //shipping_method
+			'%f', //shipping_amount
+			'%f', //discount_amount
+			'%s', //plugin_key
+			'%s', //contact_id
+			'%s', //contact
+			'%d', //contact_billing_id
+			'%s', //contact_billing
+			'%d', //contact_shipping_id
+			'%s', //contact_shipping
+			'%s', //extra_fields
+			'%s', //status_id
+			'%s', //promotions
+			'%s', //credit_card
+			'%s', //transaction_id
+			'%s', // user
+			'%d', // user_id
+			'%s', //last_update
+			'%s', //shipping_carrier
+			'%s', //shipping_tracking_code
+			'%s' //shipping_tracking_url
 		);
 
 
@@ -580,6 +580,35 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		$values[] = $limit;
 		//$query = $this->prepare( $query, $filter->getPluginKey(), $orderBy, $orderType, $start, $limit );
 		$query = $this->prepare( $query, $values );
+
+		$results = $this->getQuery( $query );
+
+		$statusMapper = new OrderStatusMapper();
+		$instances = array();
+		foreach ( $results as $row ) {
+			$instance = new \Maven\Core\Domain\Order();
+			$this->fillObject( $instance, $row );
+
+			//Set Status
+			if ( $instance->getStatusId() ) {
+				$instance->setStatus( $statusMapper->get( $instance->getStatusId() ) );
+			} else {
+				//TODO: Maybe we should get a default status, or a 'empty' status
+			}
+
+			$instances[] = $instance;
+		}
+
+		return $instances;
+	}
+
+	public function getProfileOrders( $profileId ) {
+		$args = array();
+		$query = "SELECT {$this->tableName}.*
+					FROM {$this->tableName} 
+					WHERE 1=1 AND {$this->tableName}.user_id = {$profileId}";
+
+		$query = $this->prepare( $query, $args );
 
 		$results = $this->getQuery( $query );
 

@@ -39,9 +39,9 @@ class OrderManager {
 		$order->getShippingContact()->getShippingAddress()->setCountry( $defaultShippingCountry );
 
 		$handlingFee = \Maven\Settings\MavenRegistry::instance()->getOrderHandlingFee();
-		
+
 		$order->setHandlingFee( $handlingFee );
-		
+
 		return $this->addOrder( $order );
 	}
 
@@ -69,13 +69,13 @@ class OrderManager {
 	 */
 	public function reCalculateOrderTotals( \Maven\Core\Domain\Order $order ) {
 
-		\Maven\Loggers\Logger::log()->message('Maven/OrderManager/reCalculateOrderTotals' );
+		\Maven\Loggers\Logger::log()->message( 'Maven/OrderManager/reCalculateOrderTotals' );
 
 		// Recalculate the promotions
 		//$promotionManager = new PromotionManager( );
 
 		$order->recalculateSubtotal();
-		
+
 		// First we need to reset the total amount 
 		$order->setTotal( $order->getSubtotal() );
 
@@ -97,8 +97,8 @@ class OrderManager {
 
 	public function addItem( \Maven\Core\Domain\Order $order, \Maven\Core\Domain\OrderItem $item ) {
 
-		\Maven\Loggers\Logger::log()->message('Maven/OrderManager/addItem: Name: '.$item->getName() );
-		
+		\Maven\Loggers\Logger::log()->message( 'Maven/OrderManager/addItem: Name: ' . $item->getName() );
+
 		// Add the item
 		$order->addItem( $item );
 
@@ -127,7 +127,7 @@ class OrderManager {
 	 */
 	public function addOrder( \Maven\Core\Domain\Order $order, $addStatus = true ) {
 
-		\Maven\Loggers\Logger::log()->message('Maven/OrderManager/addOrder ' );
+		\Maven\Loggers\Logger::log()->message( 'Maven/OrderManager/addOrder ' );
 
 		if ( ! ($order->getStatus() && $order->getStatus()->getId() ) ) {
 			throw new \Maven\Exceptions\MissingParameterException( "Order Status is required" );
@@ -189,7 +189,6 @@ class OrderManager {
 		return $order;
 	}
 
-	
 	public function sendShipmentNotice( Domain\Order $order ) {
 
 		try {
@@ -214,12 +213,12 @@ class OrderManager {
 			$items = "<ul>{$items}</ul>";
 
 			$variables = array(
-			    'first_name' => $firstName,
-			    'order_number' => $order->getNumber(),
-			    'items' => $items,
-			    'carrier' => $order->getShippingCarrier(),
-			    'tracking_code' => $order->getShippingTrackingCode(),
-			    'tracking_code_url' => $order->getShippingTrackingUrl()
+				'first_name' => $firstName,
+				'order_number' => $order->getNumber(),
+				'items' => $items,
+				'carrier' => $order->getShippingCarrier(),
+				'tracking_code' => $order->getShippingTrackingCode(),
+				'tracking_code_url' => $order->getShippingTrackingUrl()
 			);
 
 			$mavenSettings = \Maven\Settings\MavenRegistry::instance();
@@ -231,16 +230,16 @@ class OrderManager {
 			$mail = \Maven\Mail\MailFactory::build();
 
 			$mail->to( $email )
-				->bcc( $mavenSettings->getBccNotificationsTo() )
-				->message( $message )
-				->subject( 'Your order has been shipped' )
-				->fromAccount( $mavenSettings->getSenderEmail() )
-				->fromMessage( $mavenSettings->getSenderName() )
-				->send();
+					->bcc( $mavenSettings->getBccNotificationsTo() )
+					->message( $message )
+					->subject( 'Your order has been shipped' )
+					->fromAccount( $mavenSettings->getSenderEmail() )
+					->fromMessage( $mavenSettings->getSenderName() )
+					->send();
 
 			return $shippingStatus;
 		} catch ( \Exception $e ) {
-			\Maven\Loggers\Logger::log($e->message);
+			\Maven\Loggers\Logger::log( $e->message );
 			return false;
 		}
 	}
@@ -275,8 +274,8 @@ class OrderManager {
 		}
 
 		$order->setShippingAmount( $shippingAmount );
-		\Maven\Loggers\Logger::log()->message('Maven/OrderManager/applyShipping: Amount: '.$shippingAmount );
-		
+		\Maven\Loggers\Logger::log()->message( 'Maven/OrderManager/applyShipping: Amount: ' . $shippingAmount );
+
 		$order->calculateTotal();
 	}
 
@@ -360,6 +359,17 @@ class OrderManager {
 		$order->setStatusHistory( $orderStatusManager->getOrderHistory( $order->getId() ) );
 
 		return $order;
+	}
+
+	public function getProfileOrders( $profileId ) {
+
+		if ( ! $profileId ) {
+			throw new \Maven\Exceptions\MissingParameterException( "Profile id is required" );
+		}
+
+		$orders = $this->mapper->getProfileOrders( $profileId );
+
+		return $orders;
 	}
 
 	/**

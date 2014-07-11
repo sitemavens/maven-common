@@ -2,8 +2,8 @@
 
 angular.module('mavenApp')
 		.controller('ProfileEditCtrl',
-				['$scope', '$routeParams', '$location', 'ProfileEdit', 'Profile', 'ProfileWpUser', 'Rol',
-					function($scope, $routeParams, $location, Profile, ProfileAddress, ProfileWpUser, Rol) {
+				['$scope', '$routeParams', '$location', 'ProfileEdit', 'Profile', 'ProfileWpUser', 'ProfileOrders', 'Rol',
+					function($scope, $routeParams, $location, Profile, ProfileAddress, ProfileWpUser, ProfileOrders, Rol) {
 						$scope.oneAtATime = true;
 						$scope.profile = {};
 						$scope.addressExists = {};
@@ -29,6 +29,11 @@ angular.module('mavenApp')
 								}
 
 								$scope.profile = data;
+								ProfileOrders.query({id: $scope.profile.id}, function(orders) {
+									$scope.profile.orders = [];
+									$scope.profile.orders = orders.data;
+									console.log($scope.profile.orders);
+								});
 								ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
 									$scope.profile.isWpUser = iswpuser.result;
 									$scope.setRegister($scope.profile.isWpUser);

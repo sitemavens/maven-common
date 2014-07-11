@@ -294,6 +294,35 @@
 					</div>
 				</div>
 			</tab>
+			<tab heading="Orders">
+				<div class="form-horizontal profile profile-edition">
+					{{profile.orders}}
+					<thead>
+						<tr>
+							<th>Status</th>
+							<th>Number</th>
+							<th>Date</th>
+							<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="order in profile.orders">
+							<td>
+								<img ng-src="{{order.status.imageUrl}}" />{{order.status.name}}
+							</td>
+							<td>
+								{{order.number}}
+							</td>
+							<td>
+								{{order.orderDate}}
+							</td>
+							<td>
+								{{order.total|currency}}
+							</td>
+						</tr>
+					</tbody>
+				</div>
+			</tab>
 
 		</tabset>
 	</ng-form>
