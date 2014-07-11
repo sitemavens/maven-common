@@ -2,8 +2,8 @@
 
 angular.module('mavenApp')
 		.controller('ProfileEditCtrl',
-				['$scope', '$http', '$routeParams', '$location', 'ProfileEdit', 'Profile', 'ProfileWpUser', 'Rol',
-					function($scope, $http, $routeParams, $location, Profile, ProfileAddress, ProfileWpUser, Rol) {
+				['$scope', '$http', '$routeParams', '$location', 'ProfileEdit', 'ProfileOrders', 'Profile', 'ProfileWpUser', 'Rol',
+					function($scope, $http, $routeParams, $location, Profile, ProfileOrders, ProfileAddress, ProfileWpUser, Rol) {
 						$scope.oneAtATime = true;
 						$scope.profile = {};
 						$scope.addressExists = {};
@@ -29,9 +29,8 @@ angular.module('mavenApp')
 								}
 
 								$scope.profile = data;
-								$http.get('/wp-json/maven/profileorders/' + $scope.profile.id).success(function(data) {
+								ProfileOrders.getOrders($scope.profile.id).success(function(data){
 									$scope.profile.orders = data;
-									console.log($scope.profile.orders);
 								});
 								ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
 									$scope.profile.isWpUser = iswpuser.result;
