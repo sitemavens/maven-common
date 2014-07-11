@@ -296,7 +296,6 @@
 			</tab>
 			<tab heading="Orders">
 				<div class="form-horizontal profile profile-edition">
-					{{profile.orders}}
 					<thead>
 						<tr>
 							<th>Status</th>
