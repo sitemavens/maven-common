@@ -588,7 +588,6 @@ class Cart {
 				->fromAccount( $mavenSettings->getSenderEmail() )
 				->fromMessage( $mavenSettings->getSenderName() )
 				->send();
-		die( var_dump( $mail->send() ) );
 		//Notify admins
 		$this->sendNotificationEmail( $order, 'New order placed' );
 	}

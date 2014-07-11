@@ -37,7 +37,7 @@ class WordpressMail extends MailBase {
 		$headers = "From: {$this->getFromMessage()} <{$this->getFromAccount()}> \r\n";
 		if ( $this->getHtml() )
 			$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-
+		
 		//Send notification
 		return \wp_mail( $this->getEmailTo(), $this->getSubject(), $this->getMessage(), $headers );
 	}
