@@ -97,3 +97,6 @@ a.list-view:hover{
 .row-actions.maven{
 	visibility: visible;
 }
+.td{
+	display: table-cell;
+}

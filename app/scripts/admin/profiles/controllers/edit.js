@@ -13,6 +13,7 @@ angular.module('mavenApp')
 						$scope.defaultRole = DefaultRole;
 						$scope.radioModel = 'false';
 						$scope.newAddress = {};
+						$scope.orderDetail = {};
 						$scope.salutations =
 								[
 									{id: 'dr', value: 'Dr.'},
@@ -27,11 +28,11 @@ angular.module('mavenApp')
 								if (data.userName === null) {
 									data.userName = data.email;
 								}
-
+								
 								$scope.profile = data;
+								console.log($scope.profile);
 								ProfileOrders.getOrders($scope.profile.id).then(function(response){
 									$scope.profile.orders = response.data;
-									console.log($scope.profile.orders);
 								});
 								ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
 									$scope.profile.isWpUser = iswpuser.result;
@@ -158,14 +159,15 @@ angular.module('mavenApp')
 						$scope.profileHasPrimaryAddress = function() {
 							if (Object.keys($scope.profile.addresses).length === 0) {
 								$scope.hasPrimaryAddress = true;
-								return;
 							}
 							angular.forEach($scope.profile.addresses, function(profileAddress) {
 								if (profileAddress.primary) {
 									$scope.hasPrimaryAddress = true;
-									return;
 								}
 							});
+							if ($scope.hasPrimaryAddress){
+								return true;
+							}
 							$scope.hasPrimaryAddress = false;
 							return;
 						};
@@ -234,5 +236,9 @@ angular.module('mavenApp')
 							});
 
 							return name;
+						};
+						
+						$scope.showDetail = function(idx){
+							$scope.orderDetail[idx] = !$scope.orderDetail[idx];
 						};
 					}]);

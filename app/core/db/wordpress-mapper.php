@@ -110,7 +110,6 @@ abstract class WordpressMapper extends Mapper {
 
 		if ( ! $tableName )
 			$tableName = $this->tableName;
-
 		if ( $order_by )
 			$order_by = " ORDER BY {$order_by} {$order_type}";
 
