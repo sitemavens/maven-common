@@ -21,6 +21,7 @@ abstract class MailBase {
 	private $subject = "";
 	private $fromAccount = "";
 	private $fromMessage = "";
+	private $useTemplate = true;
 	
 	
 	public function __construct() {
@@ -57,7 +58,7 @@ abstract class MailBase {
  
 	public function getFullMessage() {
 
-		return \Maven\Core\MailFormatter::prepareContentEmail( $this->message );
+		return \Maven\Core\MailFormatter::prepareContentEmail( $this->message, $this->useTemplate );
 	}
 
 	public function getSubject() {
@@ -141,7 +142,15 @@ abstract class MailBase {
 		$this->message = $message;
 		return $this;
 	}
+	
+	
 
+	public function useTemplate ( $useTemplate ) {
+		$this->useTemplate = $useTemplate;
+		return $this;
+	}
+
+	
 	/**
 	 * Send the email.
 	 */

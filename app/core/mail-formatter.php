@@ -46,14 +46,20 @@ class MailFormatter {
 		return $newMailArgs;
 	}
 
-	public static function prepareContentEmail ( $message ) {
+	public static function prepareContentEmail ( $message, $useTemplate = true ) {
 
 		$registry = \Maven\Settings\MavenRegistry::instance();
 
-		// We need to get the template file  
-		$templateFile = $registry->getCurrentEmailThemePath();
-		
-		$templateContent = \Maven\Core\Loader::getFileContent( $templateFile );
+
+
+		$templateContent = "";
+		if ( $useTemplate ) {
+
+			// We need to get the template file  
+			$templateFile = $registry->getCurrentEmailThemePath();
+
+			$templateContent = \Maven\Core\Loader::getFileContent( $templateFile );
+		}
 
 		$date = new \Maven\Core\MavenDateTime();
 		$date = $date->getDateFormated();
@@ -70,16 +76,20 @@ class MailFormatter {
 			'signature' => $registry->getSignature(),
 			'background_color' => $registry->getEmailBackgroundColor()
 		);
-		
-	 
+
+
 		$templateProcessor = new \Maven\Core\TemplateProcessor( $message, $mailVariables );
 
 		$message = $templateProcessor->getProcessedTemplate();
 
-		// Process the whole template
-		$filledTemplate = $templateProcessor->getProcessedTemplate( $templateContent );
- 		
-		return $filledTemplate;
+		if ( $useTemplate ) {
+			// Process the whole template
+			$filledTemplate = $templateProcessor->getProcessedTemplate( $templateContent );
+
+			return $filledTemplate;
+		}
+
+		return $message;
 	}
 
 }
