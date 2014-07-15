@@ -3,19 +3,19 @@
 namespace Maven\Core\Mappers;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 
 	private $orderItemTable = "mvn_orders_items";
 
-	public function __construct() {
+	public function __construct () {
 
 		parent::__construct( "mvn_orders" );
 	}
 
-	public function getAll( $orderBy = "order_id" ) {
+	public function getAll ( $orderBy = "order_id" ) {
 		$instances = array();
 		$results = $this->getResults( $orderBy );
 
@@ -28,11 +28,11 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		return $instances;
 	}
 
-	public function getRevenue( $status, $from = false, $to = false ) {
+	public function getRevenue ( $status, $from = false, $to = false ) {
 
 		$from = '';
 
-		if ( ! $from ) {
+		if ( !$from ) {
 			$fromDate = new \Maven\Core\MavenDateTime();
 			$fromDate->subFromInterval( 'P14D' );
 			$from = $fromDate->mySqlFormatDate();
@@ -42,7 +42,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		}
 
 
-		if ( ! $to ) {
+		if ( !$to ) {
 			$today = $to;
 			$today = new \Maven\Core\MavenDateTime();
 			$to = $today->mySqlFormatDate();
@@ -66,11 +66,11 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		return $this->getVar( $query );
 	}
 
-	public function getCount( $status, $from = false, $to = false ) {
+	public function getCount ( $status, $from = false, $to = false ) {
 
 		$from = '';
 
-		if ( ! $from ) {
+		if ( !$from ) {
 			$fromDate = new \Maven\Core\MavenDateTime();
 			$fromDate->subFromInterval( 'P14D' );
 			$from = $fromDate->mySqlFormatDate();
@@ -80,7 +80,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		}
 
 
-		if ( ! $to ) {
+		if ( !$to ) {
 			$today = $to;
 			$today = new \Maven\Core\MavenDateTime();
 			$to = $today->mySqlFormatDate();
@@ -106,7 +106,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		return $this->getVar( $query );
 	}
 
-	public function getOrderLastUpdate( $orderId ) {
+	public function getOrderLastUpdate ( $orderId ) {
 
 		$query = "select last_update from {$this->tableName} where id=%d";
 
@@ -120,7 +120,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 	 * @param int $id
 	 * @return \Maven\Core\Domain\Order
 	 */
-	public function get( $id ) {
+	public function get ( $id ) {
 
 		$order = $this->getOnlyOrder( $id );
 
@@ -131,7 +131,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		return $order;
 	}
 
-	public function getOrderItems( $orderId ) {
+	public function getOrderItems ( $orderId ) {
 
 		$items = array();
 
@@ -158,11 +158,11 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 	 * @return \Maven\Core\Domain\Order
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function getLastPendingOrder( $userId ) {
+	public function getLastPendingOrder ( $userId ) {
 
 		$order = new \Maven\Core\Domain\Order();
 
-		if ( ! $userId ) {
+		if ( !$userId ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'User Id: is required' );
 		}
 
@@ -170,7 +170,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 
 		$row = $this->getQueryRow( $query );
 
-		if ( ! $row ) {
+		if ( !$row ) {
 			return $order;
 		}
 
@@ -194,27 +194,27 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 	 * @param int $orderId
 	 * @return boolean
 	 */
-	public function orderExist( $orderId ) {
+	public function orderExist ( $orderId ) {
 		$row = $this->getRowById( ( int ) $orderId );
 
-		if ( ! $row ) {
+		if ( !$row ) {
 			return false;
 		}
 
 		return true;
 	}
 
-	private function getOnlyOrder( $id ) {
+	private function getOnlyOrder ( $id ) {
 
 		$order = new \Maven\Core\Domain\Order();
 
-		if ( ! $id ) {
+		if ( !$id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Id: is required' );
 		}
 
 		$row = $this->getRowById( ( int ) $id );
 
-		if ( ! $row ) {
+		if ( !$row ) {
 			throw new \Maven\Exceptions\NotFoundException();
 		}
 
@@ -251,7 +251,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		return $order;
 	}
 
-	private function addItems( \Maven\Core\Domain\Order $order ) {
+	private function addItems ( \Maven\Core\Domain\Order $order ) {
 
 		$items = $order->getItems();
 
@@ -260,35 +260,35 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		if ( $items ) {
 			foreach ( $items as $item ) {
 				//TODO: Move this validation to manager (on add item)
-				if ( ! $item->getPluginKey() ) {
+				if ( !$item->getPluginKey() ) {
 					throw new \Maven\Exceptions\RequiredException( "Plugin key is required: " . $item->getName() );
 				}
 
 				$data = array(
-				    'name' => $item->getName(),
-				    'quantity' => $item->getQuantity(),
-				    'price' => $item->getPrice(),
-				    'order_id' => $order->getId(),
-				    'thing_id' => $item->getThingId(),
-				    'sku' => $item->getSku(),
-				    'plugin_key' => $item->getPluginKey(),
-				    'thing_variation_id' => $item->getThingVariationId(),
-				    'attributes' => serialize( $item->getAttributes() )
+					'name' => $item->getName(),
+					'quantity' => $item->getQuantity(),
+					'price' => $item->getPrice(),
+					'order_id' => $order->getId(),
+					'thing_id' => $item->getThingId(),
+					'sku' => $item->getSku(),
+					'plugin_key' => $item->getPluginKey(),
+					'thing_variation_id' => $item->getThingVariationId(),
+					'attributes' => serialize( $item->getAttributes() )
 				);
 
 				$format = array(
-				    '%s', //name
-				    '%d', //quantity
-				    '%f', //price
-				    '%d', //order_id
-				    '%d', //id
-				    '%s', //sku
-				    '%s', //plugin_key
-				    '%d', //thing_variation_id
-				    '%s' //attributes
+					'%s', //name
+					'%d', //quantity
+					'%f', //price
+					'%d', //order_id
+					'%d', //id
+					'%s', //sku
+					'%s', //plugin_key
+					'%d', //thing_variation_id
+					'%s' //attributes
 				);
 
-				if ( ! $item->getId() ) {
+				if ( !$item->getId() ) {
 					$insertedItemId = $this->insert( $data, $format, $this->orderItemTable );
 					$item->setId( $insertedItemId );
 				} else {
@@ -333,7 +333,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 	 * @param \Maven\Core\Domain\Order $order
 	 * @return \Maven\Core\Domain\Order
 	 */
-	public function save( \Maven\Core\Domain\Order $order ) {
+	public function save ( \Maven\Core\Domain\Order $order ) {
 
 		$order->sanitize();
 
@@ -356,59 +356,59 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 
 
 		$data = array(
-		    'description' => $order->getDescription(),
-		    'order_date' => $order->getOrderDate(),
-		    'subtotal' => $order->getSubtotal(),
-		    'total' => $order->getTotal(),
-		    'shipping_method' => serialize( $order->getShippingMethod() ),
-		    'shipping_amount' => $order->getShippingAmount(),
-		    'discount_amount' => $order->getDiscountAmount(),
-		    'plugin_key' => $order->getPluginId(),
-		    'contact_id' => $order->getContactId(),
-		    'contact' => serialize( $order->getContact() ),
-		    'billing_contact_id' => $order->getBillingContactId(),
-		    'billing_contact' => serialize( $order->getBillingContact() ),
-		    'shipping_contact_id' => $order->getShippingContactId(),
-		    'shipping_contact' => serialize( $order->getShippingContact() ),
-		    'extra_fields' => serialize( $order->getExtraFields() ),
-		    'status_id' => $order->getStatusId() ? $order->getStatusId() : $order->getStatus()->getId(),
-		    'promotions' => serialize( $order->getPromotions() ),
-		    'credit_card' => $creditCard,
-		    'transaction_id' => $order->getTransactionId(),
-		    'user' => '',
-		    'user_id' => '',
-		    'last_update' => \Maven\Core\MavenDateTime::getWPCurrentDateTime(),
-		    'shipping_carrier' => $order->getShippingCarrier(),
-		    'shipping_tracking_code' => $order->getShippingTrackingCode(),
-		    'shipping_tracking_url' => $order->getShippingTrackingUrl()
+			'description' => $order->getDescription(),
+			'order_date' => $order->getOrderDate(),
+			'subtotal' => $order->getSubtotal(),
+			'total' => $order->getTotal(),
+			'shipping_method' => serialize( $order->getShippingMethod() ),
+			'shipping_amount' => $order->getShippingAmount(),
+			'discount_amount' => $order->getDiscountAmount(),
+			'plugin_key' => $order->getPluginId(),
+			'contact_id' => $order->getContactId(),
+			'contact' => serialize( $order->getContact() ),
+			'billing_contact_id' => $order->getBillingContactId(),
+			'billing_contact' => serialize( $order->getBillingContact() ),
+			'shipping_contact_id' => $order->getShippingContactId(),
+			'shipping_contact' => serialize( $order->getShippingContact() ),
+			'extra_fields' => serialize( $order->getExtraFields() ),
+			'status_id' => $order->getStatusId() ? $order->getStatusId() : $order->getStatus()->getId(),
+			'promotions' => serialize( $order->getPromotions() ),
+			'credit_card' => $creditCard,
+			'transaction_id' => $order->getTransactionId(),
+			'user' => '',
+			'user_id' => '',
+			'last_update' => \Maven\Core\MavenDateTime::getWPCurrentDateTime(),
+			'shipping_carrier' => $order->getShippingCarrier(),
+			'shipping_tracking_code' => $order->getShippingTrackingCode(),
+			'shipping_tracking_url' => $order->getShippingTrackingUrl()
 		);
 
 		$format = array(
-		    '%s', //description
-		    '%s', //order_date
-		    '%f', //subtotal
-		    '%f', //total
-		    '%s', //shipping_method
-		    '%f', //shipping_amount
-		    '%f', //discount_amount
-		    '%s', //plugin_key
-		    '%s', //contact_id
-		    '%s', //contact
-		    '%d', //contact_billing_id
-		    '%s', //contact_billing
-		    '%d', //contact_shipping_id
-		    '%s', //contact_shipping
-		    '%s', //extra_fields
-		    '%s', //status_id
-		    '%s', //promotions
-		    '%s', //credit_card
-		    '%s', //transaction_id
-		    '%s', // user
-		    '%d', // user_id
-		    '%s', //last_update
-		    '%s', //shipping_carrier
-		    '%s', //shipping_tracking_code
-		    '%s' //shipping_tracking_url
+			'%s', //description
+			'%s', //order_date
+			'%f', //subtotal
+			'%f', //total
+			'%s', //shipping_method
+			'%f', //shipping_amount
+			'%f', //discount_amount
+			'%s', //plugin_key
+			'%s', //contact_id
+			'%s', //contact
+			'%d', //contact_billing_id
+			'%s', //contact_billing
+			'%d', //contact_shipping_id
+			'%s', //contact_shipping
+			'%s', //extra_fields
+			'%s', //status_id
+			'%s', //promotions
+			'%s', //credit_card
+			'%s', //transaction_id
+			'%s', // user
+			'%d', // user_id
+			'%s', //last_update
+			'%s', //shipping_carrier
+			'%s', //shipping_tracking_code
+			'%s' //shipping_tracking_url
 		);
 
 
@@ -417,7 +417,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 			$data[ 'user_id' ] = $order->getUser()->getId();
 		}
 
-		if ( ! $order->getId() ) {
+		if ( !$order->getId() ) {
 
 //			$query = "INSERT INTO {$this->tableName}
 //							(
@@ -492,7 +492,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 	 * @param int $id
 	 * @return int The new order number
 	 */
-	public function updateOrderNumber( $id ) {
+	public function updateOrderNumber ( $id ) {
 
 
 		$query = $this->prepare( "UPDATE {$this->tableName}  SET number = ( SELECT x.newNumber
@@ -512,7 +512,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		return $number;
 	}
 
-	public function getOrders( \Maven\Core\Domain\OrderFilter $filter, $orderBy = 'id', $orderType = 'desc', $start = 0, $limit = 1000 ) {
+	public function getOrders ( \Maven\Core\Domain\OrderFilter $filter, $orderBy = 'id', $orderType = 'desc', $start = 0, $limit = 1000 ) {
 
 		$where = '';
 		$values = array();
@@ -563,7 +563,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 			$where.=" AND user_id = %s";
 		}
 
-		if ( ! $orderBy )
+		if ( !$orderBy )
 			$orderBy = 'id';
 
 
@@ -602,7 +602,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		return $instances;
 	}
 
-	public function getProfileOrders( $profileId ) {
+	public function getProfileOrders ( $profileId ) {
 
 		$results = $this->getResultsBy( 'contact_id', $profileId );
 		$statusMapper = new OrderStatusMapper();
@@ -629,7 +629,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		return $instances;
 	}
 
-	public function getOrdersCount( \Maven\Core\Domain\OrderFilter $filter ) {
+	public function getOrdersCount ( \Maven\Core\Domain\OrderFilter $filter ) {
 
 		$where = '';
 		$values = array();
@@ -691,7 +691,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		return $this->getVar( $query );
 	}
 
-	public function deleteOrder( $orderId ) {
+	public function deleteOrder ( $orderId ) {
 		$orderItemtable = $this->orderItemTable;
 
 		//delete the items
