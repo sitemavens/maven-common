@@ -13,7 +13,7 @@
 							<label for="salutation" class="col-sm-2 control-label">Salutation</label>
 							<div class="col-sm-10">
 								<select class="form-control" name="profileSalutation" ng-model="profile.salutation"
-									ng-options="salutation.id as salutation.value for salutation in salutations" id="addressSelect"></select>
+										ng-options="salutation.id as salutation.value for salutation in salutations" id="addressSelect"></select>
 							</div>
 						</div>
 						<div class="form-group">
@@ -97,7 +97,7 @@
 							<label for="addressSelect" class="col-sm-2 control-label">Address</label>
 							<div class="col-sm-5 nopadding">
 								<select class="form-control" ng-model="newAddress.type"
-									ng-options="Address.id as Address.name for Address in addresses" id="addressSelect" />
+										ng-options="Address.id as Address.name for Address in addresses" id="addressSelect" />
 							</div>
 							<div class="col-sm-1">
 								<button ng-click="addAddress(newAddress)" class="btn btn-primary">Add Address</button>
@@ -113,7 +113,7 @@
 				<div class="form-group">
 					<accordion close-others="oneAtATime">
 						<accordion-group is-open="status.isFirstOpen" 
-								 is-disabled="status.isFirstDisabled" ng-repeat="address in profile.addresses track by address.type"> 
+										 is-disabled="status.isFirstDisabled" ng-repeat="address in profile.addresses track by address.type"> 
 							<accordion-heading>
 								<span class="glyphicon glyphicon-home" > {{getAddressTypeName(address.type)}}</span>
 								<span ng-show="address.firstLine"> - {{address.firstLine}} </span>
@@ -127,7 +127,7 @@
 								<label for="addressTypeEdit" class="col-sm-2 control-label">Type</label>
 								<div class="col-sm-10">
 									<select class="form-control" name="profileType" ng-model="address.type"
-										ng-options="addressType.id as addressType.name for addressType in addresses" id="addressTypeEdit"></select>
+											ng-options="addressType.id as addressType.name for addressType in addresses" id="addressTypeEdit"></select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -177,7 +177,7 @@
 								<label for="addressCountryEdit" class="col-sm-2 control-label">Country</label>
 								<div class="col-sm-10">
 									<select class="form-control" ng-model="address.country"
-										ng-options="countryI as country.name for (countryI, country) in countries" id="addressSelect"></select>
+											ng-options="countryI as country.name for (countryI, country) in countries" id="addressSelect"></select>
 								</div>
 							</div>	
 							<div class="form-group">
@@ -299,21 +299,21 @@
 					<thead>
 						<tr>
 							<th></th>
-							<th>Status</th>
 							<th>Number</th>
 							<th>Date</th>
 							<th>Total</th>
+							<th>Status</th>
 						</tr>
 					</thead>
-					<tbody ng-repeat="order in profile.orders">
+					<tbody ng-repeat="order in profile.orders| orderBy:'-orderDate'">
 						<tr>
 							<td class="row-actions maven">
-								<span class="edit">
+								<span class="edit" ng-hide="orderDetail[$index]">
 									<a class="list-view" ng-click="showDetail($index)">View Detail</a>
 								</span>
-							</td>
-							<td>
-								<img ng-src="{{order.status.imageUrl}}" />{{order.status.name}}
+								<span class="edit" ng-show="orderDetail[$index]">
+									<a class="list-view" ng-click="showDetail($index)">Hide Detail</a>
+								</span>
 							</td>
 							<td>
 								{{order.number}}
@@ -324,16 +324,19 @@
 							<td>
 								{{order.total|currency}}
 							</td>
+							<td>
+								<img ng-src="{{order.status.imageUrl}}" />{{order.status.name}}
+							</td>
 						</tr>
 						<tr ng-show="orderDetail[$index]">
 							<td colspan="5" style="padding: 0">
 								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th>Name</th>
-											<th>Quantity</th>
-											<th>Price</th>
-											<th>Total</th>
+											<th></th>
+											<th style="width: 15%;">Quantity</th>
+											<th style="width: 30%;">Price</th>
+											<th style="width: 37%;">Total</th>
 										</tr>
 									</thead>
 									<tbody>
