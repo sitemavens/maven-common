@@ -80,13 +80,15 @@ class MailFormatter {
 
 		$templateProcessor = new \Maven\Core\TemplateProcessor( $message, $mailVariables );
 
-		$message = $templateProcessor->getProcessedTemplate();
-
 		if ( $useTemplate ) {
 			// Process the whole template
 			$filledTemplate = $templateProcessor->getProcessedTemplate( $templateContent );
-
+			\Maven\Loggers\Logger::log()->message("\Maven\Core\MailFormatter\PrepareContentEmail: With template");
 			return $filledTemplate;
+			
+		} else {
+			\Maven\Loggers\Logger::log()->message("\Maven\Core\MailFormatter\PrepareContentEmail: Without template");
+			$message = $templateProcessor->getProcessedTemplate();
 		}
 
 		return $message;
