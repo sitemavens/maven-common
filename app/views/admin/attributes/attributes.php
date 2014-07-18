@@ -1,4 +1,4 @@
-<h1>Attributes <button class="btn btn-default" ng-click="newAttr()">New</button></h1>
+<h2>Attributes <button class="btn btn-default" ng-click="newAttr()">New</button></h2>
 <table class="table table-striped">
     <thead>
         <tr>

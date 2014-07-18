@@ -1,4 +1,4 @@
-<h1>Roles </h1>
+<h2>Roles </h2>
 <div class="form-horizontal">
 	<ng-form name="rolesForm">
 		<div class="form-group" show-errors>

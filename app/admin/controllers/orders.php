@@ -61,6 +61,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 
 		$orders = $manager->getOrders( $orderFilter, $sortBy, $order, (($page - 1) * $perPage ), $perPage );
 		$count = $manager->getOrdersCount( $orderFilter );
+		$ordersTotal = $manager->getOrdersTotal($orders);
 		/* foreach ( $orders as $row ) {
 		  $temp = $row->toArray();
 
@@ -75,7 +76,8 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 
 		$response = array(
 		    "items" => $orders,
-		    "totalItems" => $count
+		    "totalItems" => $count,
+			"ordersTotal" => $ordersTotal
 		);
 		$this->getOutput()->sendApiResponse( $response );
 	}

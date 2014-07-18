@@ -100,3 +100,12 @@ a.list-view:hover{
 .td{
 	display: table-cell;
 }
+.orders-header {
+    font-size: 16px;
+}
+.orders-header .col-md-2 {
+    width: auto;
+}
+.orders-header span:first-child {
+	padding-left: 0px;
+}

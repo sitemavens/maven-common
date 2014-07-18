@@ -1,7 +1,7 @@
 <?php \Maven\Core\UI\HtmlComponent::jSonComponent( "DefaultRole", $cachedDefaultRole ); ?>
 <?php \Maven\Core\UI\HtmlComponent::jSonComponent( "CachedAddresses", $cachedAddresses ); ?>
 <?php \Maven\Core\UI\HtmlComponent::jSonComponent( "CachedCountries", $cachedCountries ); ?>
-<h1>Profiles </h1>
+<h2>Profiles </h2>
 <div class="form-group">
 	<ng-form name="profileForm">
 		<tabset>

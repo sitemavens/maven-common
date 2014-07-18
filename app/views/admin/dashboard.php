@@ -1,2 +1,2 @@
-<h1>Dashboard!</h1> 
+<h2>Dashboard!</h2> 
 <p>{{title}}</p>

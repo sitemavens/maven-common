@@ -1,5 +1,5 @@
-<h1>Orders</h1>
-
+<h2>Orders</h2>
+<p class="orders-header"><span class="col-md-2"><b>{{totalItems}}</b> Orders</span><span class="col-md-2"><b>{{ordersTotal|currency}}</b> Total Sales</span><span class="col-md-2"><b>{{ordersTotal / totalItems |currency}}</b> Average Sale</span></p>
 <table class="table table-striped">
 	<thead>
 		<tr>

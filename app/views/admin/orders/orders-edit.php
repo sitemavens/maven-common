@@ -1,4 +1,4 @@
-<h1>Order #{{order.number}} <span ng-show="order.transactionId !== ''">| <small>Transaction ID:<em>{{order.transactionId}}</em></small></span> | <small>Status: {{order.status.name}} <img ng-src="{{order.status.imageUrl}}"/></small></h1>
+<h2>Order #{{order.number}} <span ng-show="order.transactionId !== ''">| <small>Transaction ID:<em>{{order.transactionId}}</em></small></span> | <small>Status: {{order.status.name}} <img ng-src="{{order.status.imageUrl}}"/></small></h2>
 <table class="table panel panel-default">
 	<thead class="panel-heading">
 		<tr>

@@ -1,4 +1,4 @@
-<h1>Profiles <button class="btn btn-default" ng-click="newProfile()">New</button></h1>
+<h2>Profiles <button class="btn btn-default" ng-click="newProfile()">New</button></h2>
 <table class="table table-striped">
 	<thead>
 		<tr>

@@ -1,4 +1,4 @@
-<h1>Attributes </h1>
+<h2>Attributes </h2>
 <div class="form-horizontal">
 	<ng-form name="attributesForm">
 		<div class="form-group" show-errors>

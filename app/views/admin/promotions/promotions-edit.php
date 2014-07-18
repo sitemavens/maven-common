@@ -1,7 +1,7 @@
 <?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedSections', $cachedSections ); ?>
 <?php \Maven\Core\UI\HtmlComponent::jSonComponent( 'CachedTypes', $cachedTypes ); ?>
 
-<h1>Promotions </h1>
+<h2>Promotions </h2>
 <div class="form-horizontal">
 	<ng-form name="promotionForm">
 		<div class="form-group">

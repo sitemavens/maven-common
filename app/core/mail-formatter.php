@@ -79,7 +79,6 @@ class MailFormatter {
 
 
 		$templateProcessor = new \Maven\Core\TemplateProcessor( $message, $mailVariables );
-
 		if ( $useTemplate ) {
 			// Process the whole template
 			$filledTemplate = $templateProcessor->getProcessedTemplate( $templateContent );

@@ -1,4 +1,4 @@
-<h1>Taxes <button class="btn btn-default" ng-click="newTax()">New</button></h1>
+<h2>Taxes <button class="btn btn-default" ng-click="newTax()">New</button></h2>
 
 <table class="table table-striped">
 	<thead>

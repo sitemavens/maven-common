@@ -1,5 +1,5 @@
 <?php \Maven\Core\UI\HtmlComponent::jSonComponent( "CachedCountries", $cachedCountries ); ?>
-<h1>Taxes </h1>
+<h2>Taxes </h2>
 <div class="form-horizontal">
 	<ng-form name="taxesForm">
 		<div class="form-group">
