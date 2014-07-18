@@ -15,5 +15,7 @@ angular.module('mavenApp').controller('MainNavCtrl', ['$scope', '$location', fun
 			//(to allow things like /viewLocation/edit
 			return ($location.path().indexOf(viewLocation) === 0);
 		};
+		
+		$scope.loadingPath=Maven.ajaxLoadingPath;
 
 	}]);

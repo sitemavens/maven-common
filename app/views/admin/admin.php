@@ -1,8 +1,8 @@
 
 <div ng-app="mavenApp" >
 	<div class="wrap" >
-		<div class="header " >
-			<ul class="nav nav-pills subsubsub" ng-controller='MainNavCtrl'>
+		<div class="header "  ng-controller='MainNavCtrl'>
+			<ul class="nav nav-pills subsubsub">
 				<li class="" ng-class="{active:isActive('/')}"><a ng-href="#/"><i class="glyphicon glyphicon-dashboard"></i>&nbsp;Dashboard</a></li>
 				<li class="" ng-class="{active:isActive('/roles')}"><a ng-href="#/roles"><i class="glyphicon glyphicon-user"></i>&nbsp; Roles</a></li>
 				<li class="" ng-class="{active:isActive('/profiles')}"><a ng-href="#/profiles"><i class="glyphicon glyphicon-eye-open"></i>&nbsp; Profiles</a></li>
@@ -14,10 +14,11 @@
 				<li class="" ng-class="{active:isActive('/https')}"><a ng-href="#/https"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;Https</a></li>
 				<li class="" ng-class="{active:isActive('/settings')}"><a ng-href="#/settings"><i class="glyphicon glyphicon-cog"></i>&nbsp;Settings</a></li>
 			</ul>
+			<div data-loading class="pull-right" style="padding-top: 12px;"><img src="{{loadingPath}}" alt="loading" />&nbsp;<strong>Loading</strong></div>
 		</div>
 		<br/>
 		<!-- Add your site or application content here -->
-		<div data-loading class="clear">Loading...</div>
+
 		<div ng-view class="clear" ></div>
 	</div>
 </div>
