@@ -1,9 +1,9 @@
-<h1>Shipping method </h1>
+<h2>Shipping method </h2>
 
 <div class="form-horizontal">
 	<ng-form name="entityForm">
 		<div ng-controller="OrderAmountTiersController">
-			{{prueba}}
+			<!--{{prueba}}-->
 		</div>
 		
 		<div class="form-group" show-errors>

@@ -1,4 +1,4 @@
-<h1>Shipping Methods <button class="btn btn-default" ng-click="new ()">New</button></h1>
+<h2>Shipping Methods <button class="btn btn-default" ng-click="new ()">New</button></h2>
 <table class="table table-striped">
     <thead>
         <tr>
