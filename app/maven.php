@@ -129,6 +129,8 @@ $hookManager->addLogoutAction( array( $cart, 'logout' ) );
 
 Front\AjaxFrontEnd::registerFrontEndHooks();
 
+ShortCodes\ShortCodeManager::addShortCodes();
+
 $adminInitizalizer = new Admin\AdminInitializer();
 $hookManager->addAction( 'wp_json_server_before_serve', array( $adminInitizalizer, 'registerRouters' ) );
 

@@ -91,7 +91,7 @@ class Blocker {
 
 		$page = get_page_by_path( $loginPage );
 		if ( !$page ) {
-			throw new \Maven\Exceptions\MavenException( 'Invalid page:' . $loginPage );
+			throw new \Maven\Exceptions\MavenException( 'Invalid page, you have to use a valid page path:' . $loginPage );
 		}
 
 		$loginPageUrl = get_permalink( $page );
