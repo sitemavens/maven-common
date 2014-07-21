@@ -109,3 +109,6 @@ a.list-view:hover{
 .orders-header span:first-child {
 	padding-left: 0px;
 }
+.no-float{
+	float: none;
+}

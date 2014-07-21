@@ -5,6 +5,8 @@ app.factory('OrderFilter', [function() {
 		return {
 			page: 1,
 			number: null,
-			status: null
+			status: null,
+			start:null,
+			end:null
 		};
 	}]);

@@ -3,49 +3,52 @@
 namespace Maven\Admin\Controllers;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
-class Orders extends \Maven\Admin\Controllers\MavenAdminController {
+class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \Maven\Core\Interfaces\iView {
 
-	public function __construct() {
+	public function __construct () {
 		parent::__construct();
 	}
 
-	public function registerRoutes( $routes ) {
+	public function registerRoutes ( $routes ) {
 
 		$routes[ '/maven/orders' ] = array(
-		    array( array( $this, 'getOrders' ), \WP_JSON_Server::READABLE ),
-			//array( array( $this, 'newOrder' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			array( array( $this, 'getOrders' ), \WP_JSON_Server::READABLE ),
+				//array( array( $this, 'newOrder' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
 		$routes[ '/maven/orders/(?P<id>\d+)' ] = array(
-		    array( array( $this, 'getOrder' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'editOrder' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
-		    array( array( $this, 'deleteOrder' ), \WP_JSON_Server::DELETABLE ),
+			array( array( $this, 'getOrder' ), \WP_JSON_Server::READABLE ),
+			array( array( $this, 'editOrder' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			array( array( $this, 'deleteOrder' ), \WP_JSON_Server::DELETABLE ),
 		);
 
 		return $routes;
 	}
 
-	public function getOrders( $filter = array(), $page = 1 ) {
+	public function getOrders ( $filter = array(), $page = 1 ) {
 		$manager = new \Maven\Core\OrderManager();
-
 		$orderFilter = new \Maven\Core\Domain\OrderFilter();
-
-		if ( key_exists( 'number', $filter ) && $filter[ 'number' ] ) {
-			$orderFilter->setNumber( $filter[ 'number' ] );
+		if ( key_exists( 'number', $_GET ) && $_GET[ 'number' ] ) {
+			$orderFilter->setNumber( $_GET[ 'number' ] );
 		}
 
-		if ( key_exists( 'start', $filter ) && $filter[ 'start' ] ) {
-			$orderFilter->setOrderDateFrom( $filter[ 'start' ] );
+		if ( key_exists( 'start', $_GET ) && $_GET[ 'start' ] ) {
+			$startDate = $_GET[ 'start' ];
+			$fixed = date( 'Y-m-d', strtotime( $startDate ) );
+			$orderFilter->setOrderDateFrom( $fixed );
+		}
+		
+
+		if ( key_exists( 'end', $_GET ) && $_GET[ 'end' ] ) {
+			$endDate = $_GET[ 'end' ];
+			$fixed = date( 'Y-m-d', strtotime( $endDate ) );
+			$orderFilter->setOrderDateTo( $fixed );
 		}
 
-		if ( key_exists( 'end', $filter ) && $filter[ 'end' ] ) {
-			$orderFilter->setOrderDateTo( $filter[ 'end' ] );
-		}
-
-		if ( key_exists( 'status', $filter ) && $filter[ 'status' ] ) {
-			$orderFilter->setStatusID( $filter[ 'status' ] );
+		if ( key_exists( 'status', $_GET ) && $_GET[ 'status' ] ) {
+			$orderFilter->setStatusID( $_GET[ 'status' ] );
 		}
 
 		$perPage = 10; //$data[ 'per_page' ];
@@ -61,7 +64,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 
 		$orders = $manager->getOrders( $orderFilter, $sortBy, $order, (($page - 1) * $perPage ), $perPage );
 		$count = $manager->getOrdersCount( $orderFilter );
-		$ordersTotal = $manager->getOrdersTotal($orders);
+		$ordersTotal = $manager->getOrdersTotal( $orders );
 		/* foreach ( $orders as $row ) {
 		  $temp = $row->toArray();
 
@@ -75,18 +78,18 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		  $out[] = $response; */
 
 		$response = array(
-		    "items" => $orders,
-		    "totalItems" => $count,
+			"items" => $orders,
+			"totalItems" => $count,
 			"ordersTotal" => $ordersTotal
 		);
 		$this->getOutput()->sendApiResponse( $response );
 	}
 
-	public function newOrder( $data ) {
+	public function newOrder ( $data ) {
 		return new \WP_Error( 'maven_common_order_not_implemented_method', __( 'Not implemented.' ), array( 'status' => 500 ) );
 	}
 
-	public function getOrder( $id ) {
+	public function getOrder ( $id ) {
 		$manager = new \Maven\Core\OrderManager();
 
 		$order = $manager->get( $id );
@@ -94,7 +97,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		$this->getOutput()->sendApiResponse( $order );
 	}
 
-	public function editOrder( $id, $data ) {
+	public function editOrder ( $id, $data ) {
 
 		$manager = new \Maven\Core\OrderManager();
 
@@ -123,7 +126,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		$this->getOutput()->sendApiResponse( $order );
 	}
 
-	public function deleteOrder( $id ) {
+	public function deleteOrder ( $id ) {
 		$manager = new \Maven\Core\OrderManager();
 
 		$manager->delete( $id );
@@ -131,7 +134,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		$this->getOutput()->sendApiResponse( new \stdClass() );
 	}
 
-	public function showForm() {
+	public function showForm () {
 
 		$statusManager = new \Maven\Core\OrderStatusManager();
 		$statuses = $statusManager->getAll();
@@ -153,19 +156,19 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		$this->getOutput()->loadAdminView( "orders" );
 	}
 
-	public function cancel() {
+	public function cancel () {
 		
 	}
 
-	public function save() {
+	public function save () {
 		
 	}
 
-	public function showList() {
+	public function showList () {
 		
 	}
 
-	public function orderStatsEntryPoint() {
+	public function orderStatsEntryPoint () {
 		try {
 			$event = $this->getRequest()->getProperty( 'event' );
 
@@ -211,7 +214,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		}
 	}
 
-	public function orderEntryPoint() {
+	public function orderEntryPoint () {
 		try {
 			$event = $this->getRequest()->getProperty( 'event' );
 			//$presenterManager = new \MavenEvents\Core\PresenterManager();
@@ -325,7 +328,14 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController {
 		}
 	}
 
-	public function getView( $view ) {
+	public function getView ( $view ) {
+		switch ( $view ) {
+			case "orders":
+				$orderApi = new \Maven\Core\OrdersApi();
+				$statuses = $orderApi->getStatuses();
+				$this->addJSONData( "cachedStatuses", $statuses );
+				return $this->getOutput()->getAdminView( "orders/{$view}" );
+		}
 		return $view;
 	}
 

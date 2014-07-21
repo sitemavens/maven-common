@@ -41,7 +41,7 @@ angular
 						controller: 'ProfileEditCtrl'
 					})
 					.when('/orders', {
-						templateUrl: Maven.adminViewsUrl + 'orders/orders.php',
+						templateUrl:  Maven.viewHandlerUrl + 'maven/orders',
 						controller: 'OrdersCtrl'
 					})
 					.when('/orders/edit/:id', {
