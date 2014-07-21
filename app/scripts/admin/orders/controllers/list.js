@@ -9,6 +9,8 @@ angular.module('mavenApp')
 						var today = new Date();
 						var year = today.getFullYear();
 						var month = today.getMonth();
+						$scope.startDate = null;
+						$scope.endDate = null;
 						var firstDayCurrentMonth = new Date(year, month, 1);
 						var lastDayCurrentMonth = new Date(year, month + 1, 0);
 						var firstDayLastMonth = new Date(year, month - 1, 1);
@@ -30,7 +32,7 @@ angular.module('mavenApp')
 							{name: "Last Month", value: lastDayLastMonth}
 						];
 						$scope.OrderFilter = OrderFilter;
-
+						$scope.OrderFilter.status = "completed";
 						console.log($scope.rangeStart);
 						$scope.getPage = function() {
 							Order.getPage($scope.OrderFilter, function(result) {

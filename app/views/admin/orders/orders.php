@@ -1,7 +1,7 @@
 <?php \Maven\Core\UI\HtmlComponent::jSonComponent( "CachedStatuses", $cachedStatuses ); ?>
 <h2>Orders</h2>
 <p class="orders-header"><span class="col-md-2"><b>{{totalItems}}</b> Orders</span><span class="col-md-2"><b>{{ordersTotal|currency}}</b> Total Sales</span><span class="col-md-2"><b>{{ordersTotal / totalItems|currency}}</b> Average Sale</span></p>
-<input ng-change="applyFilters()"  ng-model="OrderFilter.number"/>
+<input placeholder="Number" ng-change="applyFilters()"  ng-model="OrderFilter.number"/>
 <select ng-change="applyFilters()" ng-model="OrderFilter.status" ng-init=""
 		ng-options="statusI as status.name for (statusI,status) in cachedStatuses">
 	<option value="">Show All</option>
@@ -31,7 +31,7 @@
 	</ul>
 </div>
 <button type="button" class="btn btn-primary dropdown-toggle" ng-click="searchAll()">
-	All Orders <span class="caret"></span>
+	All Orders
 </button>
 <table class="table table-striped">
 	<thead>
