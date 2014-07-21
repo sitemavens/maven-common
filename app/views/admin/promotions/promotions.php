@@ -20,11 +20,11 @@
 		<tr ng-repeat="promotion in promotions">
 			<td class="row-actions maven">
 				<span class="edit">
-				<a class="list-view" ng-click="editPromotion(promotion.id)">Edit</a>
-				|
+					<a class="list-view" ng-click="editPromotion(promotion.id)">Edit</a>
+					|
 				</span>
 				<span class="trash">
-				<a class="list-view delete" ng-click="deletePromotion($index)">Delete</a>
+					<a class="list-view delete" ng-click="deletePromotion($index)">Delete</a>
 				</span>
 			</td>
 			<td>
@@ -51,5 +51,7 @@
 		</tr>
 	</tbody>
 </table>
-<pagination total-items="totalItems" ng-model="PromotionFilter.page" max-size="5" class="" boundary-links="true" class="pagination-sm"
-            ng-change="selectPage(PromotionFilter.page)"></pagination>
+<div class="text-center">
+	<pagination total-items="totalItems" ng-model="PromotionFilter.page" max-size="5" class="" boundary-links="true" class="pagination-sm"
+				ng-change="selectPage(PromotionFilter.page)"></pagination>
+</div>

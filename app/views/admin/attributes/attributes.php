@@ -12,11 +12,11 @@
         <tr ng-repeat="attr in Attributes">
             <td class="row-actions maven">
 				<span class="edit">
-				<a class="list-view" ng-click="editAttr(attr.id)">Edit</a>
-				|
+					<a class="list-view" ng-click="editAttr(attr.id)">Edit</a>
+					|
 				</span>
 				<span class="trash">
-				<a class="list-view delete" ng-click="deleteAttr($index)">Delete</a>
+					<a class="list-view delete" ng-click="deleteAttr($index)">Delete</a>
 				</span>
 			</td>
             <td>
@@ -31,5 +31,7 @@
         </tr>
     </tbody>
 </table>
-<pagination total-items="totalItems" ng-model="AttributeFilter.page" max-size="5" class="" boundary-links="true" class="pagination-sm"
-            ng-change="selectPage(AttributeFilter.page)"></pagination>
+<div class="text-center">
+	<pagination total-items="totalItems" ng-model="AttributeFilter.page" max-size="5" class="" boundary-links="true" class="pagination-sm"
+				ng-change="selectPage(AttributeFilter.page)"></pagination>
+</div>
