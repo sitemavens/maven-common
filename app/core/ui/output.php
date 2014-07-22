@@ -39,7 +39,6 @@ class Output {
 		$this->templatePath = $registry->getTemplatePath();
 		$this->outputTranslator = new OutputTranslator();
 		$this->data = $data;
-		 
 	}
 
 	public function sendData( $data ) {
@@ -52,8 +51,16 @@ class Output {
 		$this->outputTranslator->sendError( $data );
 	}
 
-	public function sendApiResponse( $data ) {
-		$this->outputTranslator->sendApiResponse( $data );
+	public function sendApiResponse( $data, $status = 200, $statusText = 'OK' ) {
+		$this->outputTranslator->sendApiResponse( $data, $status, $statusText );
+	}
+
+	public function sendApiSuccess( $object, $message = 'OK' ) {
+		$this->outputTranslator->sendApiSuccess( $object, $message );
+	}
+
+	public function sendApiError( $object, $message ) {
+		$this->outputTranslator->sendApiError( $object, $message );
 	}
 
 	public function toJSON( $data ) {
@@ -153,8 +160,8 @@ class Output {
 		$output = ob_get_clean();
 		return $output;
 	}
-	
-	function getExternalTemplate( $templatePath) {
+
+	function getExternalTemplate( $templatePath ) {
 		ob_start();
 		extract( $this->data );
 

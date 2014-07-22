@@ -8,8 +8,18 @@ class OutputTranslator {
 		;
 	}
 
-	public function sendApiResponse( $object ) {
+	public function sendApiResponse( $object, $status = '200', $statusText = 'OK' ) {
+		header( "HTTP/1.0 {$status} {$statusText}" );
+
 		wp_send_json( $this->convert( $object ) );
+	}
+
+	public function sendApiSuccess( $object, $message = 'OK' ) {
+		$this->sendApiResponse( $object, 200, $message );
+	}
+
+	public function sendApiError( $object, $message ) {
+		$this->sendApiResponse( $object, 500, $message );
 	}
 
 	public function sendData( $object ) {

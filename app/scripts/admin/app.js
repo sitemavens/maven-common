@@ -18,6 +18,7 @@ angular
 							if (response.config.method !== 'GET') {
 								//If not get, we show a success message
 								
+								alert(response.statusText);
 								//show success message
 								console.log('successs', response);
 							}
@@ -28,19 +29,25 @@ angular
 							if (response.status === 400) {
 								//error
 								console.log("error", response);
-							}
+							} else
 							if (response.status === 401) {
 								//unauthorized
 								console.log("unauthorized", response);
 
-							}
+							} else
 							if (response.status === 404) {
 								//not found
 								console.log("not found", response);
+							} else
+							if (response.status === 500) {
+								//server error
+								alert(response.statusText);
+								console.log("server error", response);
+							} else {
+								//unhandled error
+								// Also log it in the console for debug purposes
+								console.log("error", response);
 							}
-
-							// Also log it in the console for debug purposes
-							console.log("error", response);
 
 							return $q.reject(response);
 						});
