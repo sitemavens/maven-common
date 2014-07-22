@@ -40,6 +40,8 @@ class Utils {
 	 */
 
 	public static function toCamelCase( $str, $capitaliseFirstChar = false ) {
+//		if ( is_scalar( $str ))
+//			die('ashdfasdfasdf');
 		if ( $capitaliseFirstChar ) {
 			$str[ 0 ] = strtoupper( $str[ 0 ] );
 		}

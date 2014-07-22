@@ -1,6 +1,6 @@
 <?php
 
-namespace Maven\ShortCodes;
+namespace Maven\Shortcodes;
 
 // Exit if accessed directly 
 if ( !defined( 'ABSPATH' ) )
@@ -15,7 +15,7 @@ class ShortCodeManager  {
 		);
 
 		foreach( $classes as $class ){
-			$class->addShortCodes();
+			$class->addShortcodes();
 		}
 		 
 	}

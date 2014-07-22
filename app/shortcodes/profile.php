@@ -1,6 +1,6 @@
 <?php
 
-namespace Maven\ShortCodes;
+namespace Maven\Shortcodes;
 
 // Exit if accessed directly 
 if ( !defined( 'ABSPATH' ) )
@@ -14,7 +14,7 @@ class Profile extends Base {
 	
 	public function addShortCodes () {
 
-		$this->addShortCode( 'mvn-profile', array( $this, 'getProfileData' ) );
+		$this->addShortcode( 'mvn-profile', array( $this, 'getProfileData' ) );
 	}
 
 	public function getProfileData ( $attrs ) {
