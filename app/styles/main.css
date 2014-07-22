@@ -125,3 +125,7 @@ a.list-view:hover{
 table.table.table-striped .table-bottom th {
     border-top: 1px solid #dddddd;
 }
+
+tr.no-items-maven td.colspanchange {
+    background: none repeat scroll 0 0 white !important;
+}

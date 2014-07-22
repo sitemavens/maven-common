@@ -12,8 +12,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-if="taxes.length == 0">
-			<td>
+		<tr class="no-items-maven" ng-if="taxes.length == 0">
+			<td class="colspanchange" colspan="6">
 				No Record Founds
 			</td>
 		</tr>
