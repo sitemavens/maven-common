@@ -33,7 +33,6 @@ angular.module('mavenApp')
 						];
 						$scope.OrderFilter = OrderFilter;
 						$scope.OrderFilter.status = "completed";
-						console.log($scope.rangeStart);
 						$scope.getPage = function() {
 							Order.getPage($scope.OrderFilter, function(result) {
 								$scope.orders = result.items;
@@ -64,7 +63,6 @@ angular.module('mavenApp')
 							if ($scope.endDate !== null) {
 								$scope.OrderFilter.end = $scope.endDate.toString();
 							};
-							console.log($scope.OrderFilter);
 							$scope.getPage();
 						};
 						$scope.selectPage = function(page) {

@@ -18,7 +18,7 @@ angular.module('mavenApp')
 								return;
 							}
 							
-							$scope.tax.$save(function(callBack){
+							$scope.tax.$save(function(){
 							});
 							/*Tax.save({id: $scope.tax.id}, $scope.tax,
 							 function(tax) {

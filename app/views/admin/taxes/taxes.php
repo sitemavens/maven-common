@@ -12,6 +12,11 @@
 		</tr>
 	</thead>
 	<tbody>
+		<tr ng-if="taxes.length == 0">
+			<td>
+				No Record Founds
+			</td>
+		</tr>
 		<tr ng-repeat="tax in taxes">
 			<td class="row-actions maven">
 				<span class="edit">
