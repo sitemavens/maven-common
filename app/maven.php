@@ -12,7 +12,7 @@
 namespace Maven;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 //These are the only require_once needed. Then you should use the Loader class
@@ -20,24 +20,19 @@ require_once plugin_dir_path( __FILE__ ) . '/core/loader.php';
 
 //We first load the registry 
 $files = array(
-    'core/domain-object',
-    'settings/option',
-    'settings/registry',
-    'settings/wordpress-registry',
-    'settings/maven-registry',
-    'core/ui/option-output-generator',
-    'core/ui/default-option-output-generator',
-    'core/language',
-    'core/utils',
-//	'core/action-controller',
-//	'core/request',
-//	'core/component',
-//	'core/component-manager',
-//	'core/ui/output',
-    'core/ui/html-component',
-    'core/observable',
-    'core/observer',
-    'gateways/gateway'
+	'core/domain-object',
+	'settings/option',
+	'settings/registry',
+	'settings/wordpress-registry',
+	'settings/maven-registry',
+	'core/ui/option-output-generator',
+	'core/ui/default-option-output-generator',
+	'core/language',
+	'core/utils',
+	'core/ui/html-component',
+	'core/observable',
+	'core/observer',
+	'gateways/gateway'
 );
 
 
@@ -135,62 +130,14 @@ $adminInitizalizer = new Admin\AdminInitializer();
 $hookManager->addAction( 'wp_json_server_before_serve', array( $adminInitizalizer, 'registerRouters' ) );
 
 $frontEndManager = \Maven\Front\FrontEndManager::current();
-$hookManager->addAction( 'wp_json_server_before_serve', array( $frontEndManager, 'registerRestApi' )  );
+$hookManager->addAction( 'wp_json_server_before_serve', array( $frontEndManager, 'registerRestApi' ) );
 
 $cartV2 = Api\V2\Cart::current();
-$hookManager->addAction( 'wp_json_server_before_serve', array( $cartV2, 'registerRestApi' )  );
+$hookManager->addAction( 'wp_json_server_before_serve', array( $cartV2, 'registerRestApi' ) );
 
-if ( ! is_admin() ) {
+if ( !is_admin() ) {
 	// Instantiate the front end
 	$hookManager->addInit( array( '\Maven\Front\FrontEndManager', 'init' ), 999 );
-}
-
-
-//if ( Core\Request::current()->isDoingAjax() ) {
-//	$hookManager->addAjaxAction( 'mavenAjaxCartHandler', array( '\Maven\Front\FrontEndManager', 'init' ) );
-//	$hookManager->addPublicAjaxAction( 'mavenAjaxCartHandler', array( '\Maven\Front\FrontEndManager', 'init' ) );
-//}
-
-
-if ( is_admin() ) {
-
-	$wpPosts = new Security\WpPosts();
-	$hookManager->addLoadPost( array( $wpPosts, 'init' ) );
-
-	// Initialize WP features
-	$hookManager->addAdminInit( array( '\Maven\Admin\Wp\Loader', 'adminInit' ) );
-
-	$componentManager = $director->getComponentManager( $registry );
-
-	/** Settings * */
-	$settings = $componentManager->createComponent( 'Settings', 'Maven\\Admin\\Controllers\\Settings' );
-    
-    $profiles = $componentManager->createComponent( 'Profiles', 'Maven\\Admin\\Controllers\\Profiles' );
-
-	$orders = $componentManager->createComponent( 'Orders', 'Maven\\Admin\\Controllers\\Orders' );
-    
-    $roles = $componentManager->createComponent( 'Roles', 'Maven\\Admin\\Controllers\\Roles' );
-
-	$promotions = $componentManager->createComponent( 'Promotions', 'Maven\\Admin\\Controllers\\Promotions' );
-
-	$shippingMethods = $componentManager->createComponent( 'Shipping', 'Maven\\Admin\\Controllers\\ShippingMethods' );
-
-	$taxes = $componentManager->createComponent( 'Taxes', 'Maven\\Admin\\Controllers\\Taxes' );
-    $attributes = $componentManager->createComponent( 'Attributes', 'Maven\\Admin\\Controllers\\Attributes' );
-	$https = $componentManager->createComponent( 'Https', 'Maven\\Admin\\Controllers\\Https' );
-
-	$menuManager = $director->getMenuManager( $registry );
-
-	$menuManager->registerMenu( $settings, "Maven", $registry->getAssetsUrl() . "images/icon.png" );
-    $menuManager->registerMenu( $roles );
-    $menuManager->registerMenu( $profiles );
-	$menuManager->registerMenu( $orders );
-	$menuManager->registerMenu( $promotions );
-	$menuManager->registerMenu( $shippingMethods );
-	$menuManager->registerMenu( $taxes );
-    $menuManager->registerMenu( $attributes );
-	$menuManager->registerMenu( $https );
-} else {
 
 	// TODO: We need to improve it
 	$ssl = new \Maven\Core\Ssl();
@@ -202,5 +149,42 @@ if ( is_admin() ) {
 	$hookManager->addFilter( 'wp_get_attachment_url', array( $ssl, 'forceSslImages' ) );
 	$hookManager->addFilter( 'wp_get_attachment_image_attributes', array( $ssl, 'forceSslImages' ) );
 	$hookManager->addFilter( 'wp_get_attachment_url', array( $ssl, 'forceSslImages' ) );
-}
- 
+} else {
+
+	$wpPosts = new Security\WpPosts();
+	$hookManager->addLoadPost( array( $wpPosts, 'init' ) );
+
+	// Initialize WP features
+	$hookManager->addAdminInit( array( '\Maven\Admin\Wp\Loader', 'adminInit' ) );
+
+	$componentManager = $director->getComponentManager( $registry );
+
+	/** Settings * */
+	$settings = $componentManager->createComponent( 'Settings', 'Maven\\Admin\\Controllers\\Settings' );
+
+	$profiles = $componentManager->createComponent( 'Profiles', 'Maven\\Admin\\Controllers\\Profiles' );
+
+	$orders = $componentManager->createComponent( 'Orders', 'Maven\\Admin\\Controllers\\Orders' );
+
+	$roles = $componentManager->createComponent( 'Roles', 'Maven\\Admin\\Controllers\\Roles' );
+
+	$promotions = $componentManager->createComponent( 'Promotions', 'Maven\\Admin\\Controllers\\Promotions' );
+
+	$shippingMethods = $componentManager->createComponent( 'Shipping', 'Maven\\Admin\\Controllers\\ShippingMethods' );
+
+	$taxes = $componentManager->createComponent( 'Taxes', 'Maven\\Admin\\Controllers\\Taxes' );
+	$attributes = $componentManager->createComponent( 'Attributes', 'Maven\\Admin\\Controllers\\Attributes' );
+	$https = $componentManager->createComponent( 'Https', 'Maven\\Admin\\Controllers\\Https' );
+
+	$menuManager = $director->getMenuManager( $registry );
+
+	$menuManager->registerMenu( $settings, "Maven", $registry->getAssetsUrl() . "images/icon.png" );
+	$menuManager->registerMenu( $roles );
+	$menuManager->registerMenu( $profiles );
+	$menuManager->registerMenu( $orders );
+	$menuManager->registerMenu( $promotions );
+	$menuManager->registerMenu( $shippingMethods );
+	$menuManager->registerMenu( $taxes );
+	$menuManager->registerMenu( $attributes );
+	$menuManager->registerMenu( $https );
+}  
