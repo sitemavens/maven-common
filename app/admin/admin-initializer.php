@@ -46,6 +46,8 @@ class AdminInitializer {
 				wp_enqueue_script( 'admin/global/directives/show-errors.js', $registry->getScriptsUrl() . "admin/global/directives/show-errors.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/global/directives/only-digits.js', $registry->getScriptsUrl() . "admin/global/directives/only-digits.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/global/controllers/main-nav.js', $registry->getScriptsUrl() . "admin/global/controllers/main-nav.js", 'mavenApp', $registry->getPluginVersion() );
+				wp_enqueue_script( 'admin/global/controllers/messages.js', $registry->getScriptsUrl() . "admin/global/controllers/messages.js", 'mavenApp', $registry->getPluginVersion() );
+				
 				wp_enqueue_script( 'admin/dashboard/controllers/main.js', $registry->getScriptsUrl() . "admin/dashboard/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
 
 				wp_enqueue_script( 'admin/settings/controllers/main.js', $registry->getScriptsUrl() . "admin/settings/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
