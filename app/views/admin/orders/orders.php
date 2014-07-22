@@ -45,6 +45,11 @@
 		</tr>
 	</thead>
 	<tbody>
+		<tr ng-if="totalItems == 0">
+			<td>
+				No Record Founds
+			</td>
+		</tr>
 		<tr ng-repeat="order in orders">
 			<td class="row-actions maven">
 				<span class="edit">

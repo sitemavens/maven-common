@@ -7,14 +7,19 @@
         </tr>
     </thead>
     <tbody>
+		<tr ng-if="totalItems == 0">
+			<td>
+				No Record Founds
+			</td>
+		</tr>
         <tr ng-repeat="rol in roles">
             <td class="row-actions maven">
 				<span class="edit">
-				<a class="list-view" ng-click="editRol(rol.id)">Edit</a>
+					<a class="list-view" ng-click="editRol(rol.id)">Edit</a>
 				</span>
 				<span class="trash" ng-hide="rol.systemRole">
-				|
-				<a class="list-view delete"  ng-click="deleteRol($index)">Delete</a>
+					|
+					<a class="list-view delete"  ng-click="deleteRol($index)">Delete</a>
 				</span>
 			</td>
             <td>

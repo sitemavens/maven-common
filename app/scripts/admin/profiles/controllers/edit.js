@@ -30,7 +30,6 @@ angular.module('mavenApp')
 								}
 								
 								$scope.profile = data;
-								console.log($scope.profile);
 								ProfileOrders.getOrders($scope.profile.id).then(function(response){
 									$scope.profile.orders = response.data;
 								});

@@ -31,7 +31,6 @@ angular.module("mavenApp").directive("onlyDigits", function ()
 
                     return b;
                 }).join('');
-				console.log(digits);
                 if (attrs.maxNum && !isNaN(attrs.maxNum) && parseFloat(digits) > parseFloat(attrs.maxNum))
                 {
                     digits = attrs.maxNum;
