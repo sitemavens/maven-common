@@ -112,3 +112,16 @@ a.list-view:hover{
 .no-float{
 	float: none;
 }
+.table {
+    background-color: #ffffff;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	border: none;
+}
+.table > thead > tr > th{
+	border-bottom: 1px solid #dddddd;
+}
+
+table.table.table-striped .table-bottom th {
+    border-top: 1px solid #dddddd;
+}

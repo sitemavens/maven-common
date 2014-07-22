@@ -42,7 +42,6 @@
 			<th>Customer</th>
 			<th>Date</th>
 			<th>Total</th>
-
 		</tr>
 	</thead>
 	<tbody>
