@@ -14,7 +14,7 @@ class Profile extends Base {
 	
 	public function addShortCodes () {
 
-		$this->addShortCode( 'mvnprofile', array( $this, 'getProfileData' ) );
+		$this->addShortCode( 'mvn-profile', array( $this, 'getProfileData' ) );
 	}
 
 	public function getProfileData ( $attrs ) {
