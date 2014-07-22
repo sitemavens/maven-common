@@ -62,16 +62,25 @@ class HookManager {
 		$this->actions[ $action ][] = $function;
 		add_action( $action, $function, $priority, $acceptedArgs );
 	}
-	
+
+	/**
+	 * Add shortcode
+	 * @param string $tag
+	 * @param $function
+	 */
+	public function addShortCode ( $tag, $function ) {
+		add_shortcode( $tag, $function );
+	}
+
 	/**
 	 * 
 	 * @param string $tag  The name of the filter hook.
 	 * @param mixed $value The value on which the filters hooked to <tt>$tag</tt> are applied on.
 	 * @return null Will return null if $tag does not exist in $wp_filter array
 	 */
-	public function doAction($tag, $value){
+	public function doAction ( $tag, $value ) {
 		$args = func_get_args();
-		return call_user_func_array("do_action", $args);
+		return call_user_func_array( "do_action", $args );
 	}
 
 	/**
@@ -84,7 +93,7 @@ class HookManager {
 	public function applyFilters ( $tag, $value ) {
 
 		$args = func_get_args();
-		return call_user_func_array("apply_filters", $args);
+		return call_user_func_array( "apply_filters", $args );
 	}
 
 	/**
@@ -109,7 +118,6 @@ class HookManager {
 
 		$this->addFilter( 'wp_login_failed', $function, $priority, $acceptedArgs );
 	}
-	
 
 	/**
 	 * 
@@ -136,7 +144,7 @@ class HookManager {
 
 		$this->addAction( 'admin_enqueue_scripts', $function, $priority, $acceptedArgs );
 	}
-	
+
 	/**
 	 * 
 	 * @param type $function
@@ -169,26 +177,26 @@ class HookManager {
 
 		$this->addAction( 'lostpassword_post', $function, $priority, $acceptedArgs );
 	}
-	
+
 	/**
 	 * 
 	 * @param type $function
 	 * @param int $priority
 	 * @param int $acceptedArgs
 	 */
-	public function addLoginAction( $function, $priority = 10, $acceptedArgs = 1 ) {
-		
+	public function addLoginAction ( $function, $priority = 10, $acceptedArgs = 1 ) {
+
 		$this->addAction( 'wp_login', $function, $priority, $acceptedArgs );
 	}
-	
+
 	/**
 	 * 
 	 * @param type $function
 	 * @param int $priority
 	 * @param int $acceptedArgs
 	 */
-	public function addLogoutAction( $function, $priority = 10, $acceptedArgs = 1 ) {
-		
+	public function addLogoutAction ( $function, $priority = 10, $acceptedArgs = 1 ) {
+
 		$this->addAction( 'wp_logout', $function, $priority, $acceptedArgs );
 	}
 
