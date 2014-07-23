@@ -50,7 +50,6 @@ class Roles extends MavenAdminController {
 
 	public function getRol( $id ) {
 		try {
-			throw new \Exception( 'testing' );
 			$manager = new \Maven\Security\RoleManager();
 			$role = $manager->get( $id );
 
