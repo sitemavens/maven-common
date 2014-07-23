@@ -16,7 +16,14 @@
 			</ul>
 			<div data-loading class="pull-right" style="padding-top: 12px;"><img src="{{loadingPath}}" alt="loading" />&nbsp;<strong>Loading</strong></div>
 		</div>
+		
 		<br/>
+		<div class="clear" ng-controller="MessagesCtrl">
+			<div ng-repeat="message in messages" class="alert alert-{{message.type}}" role="alert">
+				<button type="button" class="close" ng-click="removeMessage($index)" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				{{message.text}}
+			</div>
+		</div>
 		<!-- Add your site or application content here -->
 
 		<div ng-view class="clear" ></div>

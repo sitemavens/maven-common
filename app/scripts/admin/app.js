@@ -11,49 +11,8 @@ angular
 		'mavenApp.controllers'
 	])
 	.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
-			$httpProvider.responseInterceptors.push(['$q', function($q) {
-					return function(promise) {
-						return promise.then(function(response) {
-							// Do nothing
-							if (response.config.method !== 'GET') {
-								//If not get, we show a success message
-								
-								alert(response.statusText);
-								//show success message
-								console.log('successs', response);
-							}
-							return response;
-						}, function(response) {
-							// My notify service updates the UI with the error message
-							//notifyService(response);
-							if (response.status === 400) {
-								//error
-								console.log("error", response);
-							} else
-							if (response.status === 401) {
-								//unauthorized
-								console.log("unauthorized", response);
-
-							} else
-							if (response.status === 404) {
-								//not found
-								console.log("not found", response);
-							} else
-							if (response.status === 500) {
-								//server error
-								alert(response.statusText);
-								console.log("server error", response);
-							} else {
-								//unhandled error
-								// Also log it in the console for debug purposes
-								console.log("error", response);
-							}
-
-							return $q.reject(response);
-						});
-					};
-				}]);
-
+			$httpProvider.responseInterceptors.push('messageInterceptor');
+			
 			$routeProvider
 				.when('/', {
 					templateUrl: Maven.adminViewsUrl + 'dashboard/dashboard.php',

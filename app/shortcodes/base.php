@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Maven\ShortCodes;
+namespace Maven\Shortcodes;
 
 // Exit if accessed directly 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -14,9 +14,9 @@ abstract class Base {
 	}
 	
 	protected function addShortCode( $tag, $function ){
-		\Maven\Core\HookManager::instance()->addShortCode($tag, $function);
+		\Maven\Core\HookManager::instance()->addShortcode($tag, $function);
 	}
 	
-	abstract function addShortCodes();
+	abstract function addShortcodes();
 	
 }
