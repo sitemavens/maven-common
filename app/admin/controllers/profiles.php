@@ -3,7 +3,7 @@
 namespace Maven\Admin\Controllers;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements \Maven\Core\Interfaces\iView {
@@ -71,7 +71,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	public function getProfileOrders( $id ) {
 		$manager = new \Maven\Core\OrderManager();
 		$orders = $manager->getProfileOrders( $id );
-		
+
 		$this->getOutput()->sendApiResponse( $orders );
 	}
 
@@ -104,31 +104,43 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	}
 
 	public function getProfile( $id ) {
-		$manager = new \Maven\Core\ProfileManager();
-		$profile = $manager->get( $id );
-		$profile->setId( $profile->getProfileId() );
-		$this->getOutput()->sendApiResponse( $profile );
+		try {
+			$manager = new \Maven\Core\ProfileManager();
+			$profile = $manager->get( $id );
+			$profile->setId( $profile->getProfileId() );
+			$this->getOutput()->sendApiResponse( $profile );
+		} catch ( \Maven\Exceptions\NotFoundException $e ) {
+			//Specific exception
+			$this->getOutput()->sendApiError( $id, "Profile Not found" );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $id, "An error has ocurred" );
+		}
 	}
 
 	public function editProfile( $id, $data ) {
+		try {
+			$manager = new \Maven\Core\ProfileManager();
+			$profile = new \Maven\Core\Domain\Profile();
+			$profile->load( $data );
+			$registerWp = FALSE;
+			if ( isset( $data[ 'register' ] ) && $data[ 'register' ] == 1 )
+				$registerWp = true;
 
-		$manager = new \Maven\Core\ProfileManager();
-		$profile = new \Maven\Core\Domain\Profile();
-		$profile->load( $data );
-		$registerWp = FALSE;
-		if ( isset( $data[ 'register' ] ) && $data[ 'register' ] == 1 )
-			$registerWp = true;
+			$username = FALSE;
+			if ( isset( $data[ 'userName' ] ) && $data[ 'userName' ] )
+				$username = $data[ 'userName' ];
 
-		$username = FALSE;
-		if ( isset( $data[ 'userName' ] ) && $data[ 'userName' ] )
-			$username = $data[ 'userName' ];
+			$password = FALSE;
+			if ( isset( $data[ 'password' ] ) && $data[ 'password' ] )
+				$password = $data[ 'password' ];
 
-		$password = FALSE;
-		if ( isset( $data[ 'password' ] ) && $data[ 'password' ] )
-			$password = $data[ 'password' ];
-
-		$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
-		$this->getOutput()->sendApiResponse( $profile );
+			$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
+			$this->getOutput()->sendApiResponse( $profile, 'Provile saved' );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $data, $e->getMessage() );
+		}
 	}
 
 	public function deleteProfile( $id ) {

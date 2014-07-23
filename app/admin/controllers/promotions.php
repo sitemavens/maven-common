@@ -3,7 +3,7 @@
 namespace Maven\Admin\Controllers;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class Promotions extends \Maven\Admin\Controllers\MavenAdminController implements \Maven\Core\Interfaces\iView {
@@ -68,7 +68,7 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 
 		$promotions = $manager->getPromotions( $filter, $sortBy, $order, (($page - 1) * $perPage ), $perPage );
 		$count = $manager->getPromotionsCount( $filter );
-		
+
 		$response = array(
 			"items" => $promotions,
 			"totalItems" => $count
@@ -170,23 +170,35 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 	}
 
 	public function getPromotion( $id ) {
-		$manager = new \Maven\Core\PromotionManager();
-		$promotion = $manager->get( $id );
-		
-		$this->getOutput()->sendApiResponse( $promotion );
+		try {
+			$manager = new \Maven\Core\PromotionManager();
+			$promotion = $manager->get( $id );
+
+			$this->getOutput()->sendApiResponse( $promotion );
+		} catch ( \Maven\Exceptions\NotFoundException $e ) {
+			//Specific exception
+			$this->getOutput()->sendApiError( $id, "Promotion Not found" );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $id, "An error has ocurred" );
+		}
 	}
 
 	public function editPromotion( $id, $data ) {
+		try {
+			$manager = new \Maven\Core\PromotionManager();
 
-		$manager = new \Maven\Core\PromotionManager();
+			$promotion = new \Maven\Core\Domain\Promotion();
 
-		$promotion = new \Maven\Core\Domain\Promotion();
+			$promotion->load( $data );
 
-		$promotion->load( $data );
+			$promotion = $manager->addPromotion( $promotion );
 
-		$promotion = $manager->addPromotion( $promotion );
-
-		$this->getOutput()->sendApiResponse( $promotion );
+			$this->getOutput()->sendApiResponse( $promotion, 'Promotion saved' );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $data, $e->getMessage() );
+		}
 	}
 
 	public function deletePromotion( $id ) {

@@ -8,11 +8,11 @@ if ( !defined( 'ABSPATH' ) )
 
 class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \Maven\Core\Interfaces\iView {
 
-	public function __construct () {
+	public function __construct() {
 		parent::__construct();
 	}
 
-	public function registerRoutes ( $routes ) {
+	public function registerRoutes( $routes ) {
 
 		$routes[ '/maven/orders' ] = array(
 			array( array( $this, 'getOrders' ), \WP_JSON_Server::READABLE ),
@@ -27,7 +27,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 		return $routes;
 	}
 
-	public function getOrders ( $filter = array(), $page = 1 ) {
+	public function getOrders( $filter = array(), $page = 1 ) {
 		$manager = new \Maven\Core\OrderManager();
 		$orderFilter = new \Maven\Core\Domain\OrderFilter();
 		if ( key_exists( 'number', $_GET ) && $_GET[ 'number' ] ) {
@@ -39,7 +39,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 			$fixed = date( 'Y-m-d', strtotime( $startDate ) );
 			$orderFilter->setOrderDateFrom( $fixed );
 		}
-		
+
 
 		if ( key_exists( 'end', $_GET ) && $_GET[ 'end' ] ) {
 			$endDate = $_GET[ 'end' ];
@@ -85,48 +85,60 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 		$this->getOutput()->sendApiResponse( $response );
 	}
 
-	public function newOrder ( $data ) {
+	public function newOrder( $data ) {
 		return new \WP_Error( 'maven_common_order_not_implemented_method', __( 'Not implemented.' ), array( 'status' => 500 ) );
 	}
 
-	public function getOrder ( $id ) {
-		$manager = new \Maven\Core\OrderManager();
+	public function getOrder( $id ) {
+		try {
+			$manager = new \Maven\Core\OrderManager();
 
-		$order = $manager->get( $id );
+			$order = $manager->get( $id );
 
-		$this->getOutput()->sendApiResponse( $order );
-	}
-
-	public function editOrder ( $id, $data ) {
-
-		$manager = new \Maven\Core\OrderManager();
-
-		$order = new \Maven\Core\Domain\Order();
-
-		$order->load( $data );
-		$addStatus = false;
-		if ( key_exists( 'sendNotice', $data ) && $data[ 'sendNotice' ] ) {
-
-			$status = $manager->sendShipmentNotice( $order );
-
-			if ( $status ) {
-				$order->setStatus( $status );
-				$addStatus = true;
-			} else {
-				return new \WP_Error( 'maven_common_order_shipment', __( 'Error sending shipment notice.' ), array( 'status' => 500 ) );
-			}
+			$this->getOutput()->sendApiResponse( $order );
+		} catch ( \Maven\Exceptions\NotFoundException $e ) {
+			//Specific exception
+			$this->getOutput()->sendApiError( $id, "Order Not found" );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $id, "An error has ocurred" );
 		}
-
-		$order = $manager->addOrder( $order, $addStatus );
-
-		//get the order again, to catch all update 
-		//(this is wrong, but status change are not being updated on the orders
-		$order = $manager->get( $id );
-
-		$this->getOutput()->sendApiResponse( $order );
 	}
 
-	public function deleteOrder ( $id ) {
+	public function editOrder( $id, $data ) {
+		try {
+			$manager = new \Maven\Core\OrderManager();
+
+			$order = new \Maven\Core\Domain\Order();
+
+			$order->load( $data );
+			$addStatus = false;
+			if ( key_exists( 'sendNotice', $data ) && $data[ 'sendNotice' ] ) {
+
+				$status = $manager->sendShipmentNotice( $order );
+
+				if ( $status ) {
+					$order->setStatus( $status );
+					$addStatus = true;
+				} else {
+					return new \WP_Error( 'maven_common_order_shipment', __( 'Error sending shipment notice.' ), array( 'status' => 500 ) );
+				}
+			}
+
+			$order = $manager->addOrder( $order, $addStatus );
+
+			//get the order again, to catch all update 
+			//(this is wrong, but status change are not being updated on the orders
+			$order = $manager->get( $id );
+
+			$this->getOutput()->sendApiResponse( $order, 'Order saved' );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $data, $e->getMessage() );
+		}
+	}
+
+	public function deleteOrder( $id ) {
 		$manager = new \Maven\Core\OrderManager();
 
 		$manager->delete( $id );
@@ -134,7 +146,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 		$this->getOutput()->sendApiResponse( new \stdClass() );
 	}
 
-	public function showForm () {
+	public function showForm() {
 
 		$statusManager = new \Maven\Core\OrderStatusManager();
 		$statuses = $statusManager->getAll();
@@ -156,19 +168,19 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 		$this->getOutput()->loadAdminView( "orders" );
 	}
 
-	public function cancel () {
+	public function cancel() {
 		
 	}
 
-	public function save () {
+	public function save() {
 		
 	}
 
-	public function showList () {
+	public function showList() {
 		
 	}
 
-	public function orderStatsEntryPoint () {
+	public function orderStatsEntryPoint() {
 		try {
 			$event = $this->getRequest()->getProperty( 'event' );
 
@@ -214,7 +226,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 		}
 	}
 
-	public function orderEntryPoint () {
+	public function orderEntryPoint() {
 		try {
 			$event = $this->getRequest()->getProperty( 'event' );
 			//$presenterManager = new \MavenEvents\Core\PresenterManager();
@@ -328,7 +340,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 		}
 	}
 
-	public function getView ( $view ) {
+	public function getView( $view ) {
 		switch ( $view ) {
 			case "orders":
 				$orderApi = new \Maven\Core\OrdersApi();

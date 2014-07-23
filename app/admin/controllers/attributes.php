@@ -3,7 +3,7 @@
 namespace Maven\Admin\Controllers;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class Attributes extends \Maven\Admin\Controllers\MavenAdminController {
@@ -15,13 +15,13 @@ class Attributes extends \Maven\Admin\Controllers\MavenAdminController {
 	public function registerRoutes( $routes ) {
 
 		$routes[ '/maven/attributes' ] = array(
-		    array( array( $this, 'getAttributes' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'newAttribute' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			array( array( $this, 'getAttributes' ), \WP_JSON_Server::READABLE ),
+			array( array( $this, 'newAttribute' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
 		$routes[ '/maven/attributes/(?P<id>\d+)' ] = array(
-		    array( array( $this, 'getAttribute' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'editAttribute' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
-		    array( array( $this, 'deleteAttribute' ), \WP_JSON_Server::DELETABLE ),
+			array( array( $this, 'getAttribute' ), \WP_JSON_Server::READABLE ),
+			array( array( $this, 'editAttribute' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+			array( array( $this, 'deleteAttribute' ), \WP_JSON_Server::DELETABLE ),
 		);
 
 		return $routes;
@@ -43,8 +43,8 @@ class Attributes extends \Maven\Admin\Controllers\MavenAdminController {
 		$count = $manager->getCount( $filter );
 
 		$response = array(
-		    "items" => $attrs,
-		    "totalItems" => $count
+			"items" => $attrs,
+			"totalItems" => $count
 		);
 
 		$this->getOutput()->sendApiResponse( $response );
@@ -62,23 +62,34 @@ class Attributes extends \Maven\Admin\Controllers\MavenAdminController {
 	}
 
 	public function getAttribute( $id ) {
-		$manager = new \Maven\Core\AttributeManager();
-		$attrs = $manager->get( $id );
+		try {
+			$manager = new \Maven\Core\AttributeManager();
+			$attrs = $manager->get( $id );
 
-		$this->getOutput()->sendApiResponse( $attrs );
+			$this->getOutput()->sendApiResponse( $attrs );
+		} catch ( \Maven\Exceptions\NotFoundException $e ) {
+			$this->getOutput()->sendApiError( $id, "Attribute Not Found" );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $id, "An error has ocurred" );
+		}
 	}
 
 	public function editAttribute( $id, $data ) {
+		try {
+			$manager = new \Maven\Core\AttributeManager();
 
-		$manager = new \Maven\Core\AttributeManager();
+			$attrs = new \Maven\Core\Domain\Attribute();
 
-		$attrs = new \Maven\Core\Domain\Attribute();
+			$attrs->load( $data );
 
-		$attrs->load( $data );
+			$attrs = $manager->addAttribute( $attrs );
 
-		$attrs = $manager->addAttribute( $attrs );
-
-		$this->getOutput()->sendApiResponse( $attrs );
+			$this->getOutput()->sendApiResponse( $attrs, 'Attribute saved' );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $data, $e->getMessage() );
+		}
 	}
 
 	public function deleteAttribute( $id ) {
