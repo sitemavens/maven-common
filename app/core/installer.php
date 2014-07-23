@@ -17,7 +17,7 @@ class Installer {
 
 		$create = array(
 		    "CREATE TABLE `mvn_attributes` (
-				`id` int(11) NOT NULL,
+				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`name` varchar(250) NOT NULL,
 				`plugin_key` varchar(50) DEFAULT NULL,
 				`description` varchar(500) DEFAULT NULL,
