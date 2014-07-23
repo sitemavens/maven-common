@@ -87,12 +87,6 @@ class MandrillMail extends MailBase {
 			$bcc = $bcc[ 0 ];
 		}
 
-//		array(2) (
-//			[0] => (string) ejankowski@gmail.com,emiliano_jankowski@hotmail.com
-//			[1] => (string)
-//		  )
-
-
 		$message = array(
 			'subject' => $this->getSubject(),
 			'from_email' => $this->getFromAccount(),
