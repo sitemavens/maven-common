@@ -77,7 +77,6 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 	public function newProfile( $data ) {
 		$manager = new \Maven\Core\ProfileManager();
-
 		$profile = new \Maven\Core\Domain\Profile();
 		$profile->load( $data );
 		$registerWp = FALSE;

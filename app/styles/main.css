@@ -153,7 +153,6 @@ div.updated.maven-updated {
 div.updated.maven-updated .close {
     line-height: unset;
 }
-
 .updated.maven-updated.maven-danger {
     border-left: 4px solid red;
 }

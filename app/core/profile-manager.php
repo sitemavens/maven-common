@@ -3,7 +3,7 @@
 namespace Maven\Core;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class ProfileManager {
@@ -25,9 +25,10 @@ class ProfileManager {
 	/*
 	 * return \Maven\Core\Domain\Profile
 	 */
+
 	public function get( $id ) {
 
-		if ( ! $id ) {
+		if ( !$id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Profile Id is required' );
 		}
 
@@ -54,7 +55,7 @@ class ProfileManager {
 
 	private function addAddresses( \Maven\Core\Domain\Profile $profile ) {
 
-		if ( ! $profile->getProfileId() )
+		if ( !$profile->getProfileId() )
 			return $profile;
 
 		$addressManager = new AddressManager();
@@ -66,7 +67,7 @@ class ProfileManager {
 
 	private function addRoles( \Maven\Core\Domain\Profile $profile ) {
 
-		if ( ! $profile->getUserId() )
+		if ( !$profile->getUserId() )
 			return $profile;
 
 		$roleManager = new \Maven\Security\RoleManager();
@@ -84,7 +85,7 @@ class ProfileManager {
 	 */
 	public function getByEmail( $email ) {
 
-		if ( ! $email ) {
+		if ( !$email ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Profile email is required' );
 		}
 
@@ -107,7 +108,7 @@ class ProfileManager {
 	 */
 	public function exists( $email ) {
 
-		if ( ! $email ) {
+		if ( !$email ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Profile email is required' );
 		}
 
@@ -118,7 +119,7 @@ class ProfileManager {
 
 	public function isWPUser( $email ) {
 
-		if ( ! $email ) {
+		if ( !$email ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Email is required' );
 		}
 
@@ -127,7 +128,7 @@ class ProfileManager {
 
 	public function populateProfileByEmail( \Maven\Core\Domain\Profile $profile ) {
 
-		if ( ! $profile->getEmail() ) {
+		if ( !$profile->getEmail() ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Email is required' );
 		}
 
@@ -163,25 +164,31 @@ class ProfileManager {
 			$profileToUpdate = $profile;
 
 		$this->mapper = new Mappers\ProfileMapper( $this->profileTableName );
-
-		if ( $registerWp ) {
-			$registrationManager = new RegistrationManager();
-			$roleManager = new \Maven\Security\RoleManager();
-			$wpUser = $registrationManager->getByEmail( $username );
-
+		$registrationManager = new RegistrationManager();
+		$wpUser = $registrationManager->getByEmail( $username );
+		$roleManager = new \Maven\Security\RoleManager();
+		if ( $registerWp || !$wpUser === FALSE ) {
 			if ( $wpUser === FALSE ) {
 				$userId = $registrationManager->addWordpressUser( $profileToUpdate, $username, $password );
 			} else {
 				$userId = $wpUser->ID;
 			}
-			if ( ! is_wp_error( $userId ) ) {
+			if ( !is_wp_error( $userId ) ) {
 				$profileToUpdate->setUserId( $userId );
 				$defaultRole[] = $roleManager->get( (get_option( 'default_role' ) ) );
 				//Get roles of the user
 //				$existingRoles = $roleManager->getUserRoles( $profileToUpdate->getUserId() );
 //				$allRoles = array_unique( array_merge( $existingRoles, $profileToUpdate->getRoles() ), SORT_REGULAR );
 				//combine user roles, with roles set on the profile
-				$allRoles = $profileToUpdate->getRoles();
+				if ( $registerWp ) {
+					$allRoles = $profileToUpdate->getRoles();
+				} else {
+					$userCurrentRoles = $wpUser->roles;
+					if ( count( $userCurrentRoles ) !== 0 )
+						$allRoles[] = $roleManager->get( $userCurrentRoles[ 0 ] );
+					else
+						$allRoles = $profileToUpdate->getRoles();
+				}
 				//asign combined roles to the profile
 				if ( count( ( array ) $allRoles ) !== 0 ) {
 					$profileToUpdate->setRoles( $allRoles );
@@ -235,7 +242,7 @@ class ProfileManager {
 
 		$wpUser = get_user_by( 'email', $email );
 
-		if ( ! $wpUser ) {
+		if ( !$wpUser ) {
 			return false;
 		}
 
@@ -282,7 +289,7 @@ class ProfileManager {
 
 	public function delete( $id ) {
 
-		if ( ! $id ) {
+		if ( !$id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Id is required' );
 		}
 
@@ -304,7 +311,7 @@ class ProfileManager {
 
 		$profile = $this->getByEmail( $email );
 
-		if ( ! $profile ) {
+		if ( !$profile ) {
 			throw new \Maven\Exceptions\NotFoundException( 'Profile not found: ' . $email );
 		}
 
@@ -326,7 +333,7 @@ class ProfileManager {
 
 		$profile = $this->getByEmail( $email );
 
-		if ( ! $profile ) {
+		if ( !$profile ) {
 			throw new \Maven\Exceptions\NotFoundException( 'Profile not found: ' . $email );
 		}
 
@@ -337,7 +344,7 @@ class ProfileManager {
 
 		$profile = $this->getByEmail( $email );
 
-		if ( ! $profile ) {
+		if ( !$profile ) {
 			throw new \Maven\Exceptions\NotFoundException( 'Profile not found: ' . $email );
 		}
 

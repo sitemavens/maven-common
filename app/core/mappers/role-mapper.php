@@ -148,9 +148,9 @@ class RoleMapper extends \Maven\Core\Db\Mapper {
             return $profile;
 
         $user = new \WP_User( $profile->getUserId() );
-
         //first remove non existant roles
         foreach ( $user->roles as $role ) {
+			
             //search the role in the user role array
             $found = array_filter( $profile->getRoles(), function($item) use ($role) {
 

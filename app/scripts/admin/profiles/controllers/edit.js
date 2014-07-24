@@ -2,8 +2,8 @@
 
 angular.module('mavenApp')
 		.controller('ProfileEditCtrl',
-				['$scope', '$http', '$routeParams', '$location', 'ProfileEdit', 'ProfileOrders', 'Profile', 'ProfileWpUser', 'Rol',
-					function($scope, $http, $routeParams, $location, Profile, ProfileOrders, ProfileAddress, ProfileWpUser, Rol) {
+				['$scope', '$routeParams', '$location', 'ProfileOrders', 'Profile', 'ProfileAddress', 'ProfileWpUser', 'Rol',
+					function($scope, $routeParams, $location, ProfileOrders, Profile, ProfileAddress, ProfileWpUser, Rol) {
 						$scope.oneAtATime = true;
 						$scope.profile = {};
 						$scope.addressExists = {};
@@ -28,9 +28,10 @@ angular.module('mavenApp')
 								if (data.userName === null) {
 									data.userName = data.email;
 								}
-								
+
 								$scope.profile = data;
-								ProfileOrders.getOrders($scope.profile.id).then(function(response){
+								if ($scope.profile.userName)
+								ProfileOrders.getOrders($scope.profile.id).then(function(response) {
 									$scope.profile.orders = response.data;
 								});
 								ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
@@ -48,6 +49,9 @@ angular.module('mavenApp')
 						}
 
 						$scope.saveProfile = function() {
+							if ($scope.profile.userName === undefined){
+								$scope.profile.userName = $scope.profile.email;
+							}
 							$scope.$broadcast('show-errors-check-validity');
 							if ($scope.profileForm.profileStepOneForm.$invalid) {
 								return;
@@ -61,6 +65,7 @@ angular.module('mavenApp')
 							}
 							$scope.profile.$save(function(data) {
 								$scope.profile = data;
+								$location.path('/profiles/edit/'+data.profileId);
 								ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
 									$scope.profile.isWpUser = iswpuser.result;
 									$scope.setRegister($scope.profile.isWpUser);
@@ -164,7 +169,7 @@ angular.module('mavenApp')
 									$scope.hasPrimaryAddress = true;
 								}
 							});
-							if ($scope.hasPrimaryAddress){
+							if ($scope.hasPrimaryAddress) {
 								return true;
 							}
 							$scope.hasPrimaryAddress = false;
@@ -236,8 +241,8 @@ angular.module('mavenApp')
 
 							return name;
 						};
-						
-						$scope.showDetail = function(idx){
+
+						$scope.showDetail = function(idx) {
 							$scope.orderDetail[idx] = !$scope.orderDetail[idx];
 						};
 					}]);
