@@ -22,7 +22,7 @@
 						<div class="form-group" ng-repeat="page in httpsObj.pageList">
 							<div class="checkbox">
 								<label for="{{page.id}}">
-									{{page.title}} <input type="checkbox" id="{{page.id}}" class="form-control" name="httpsPages[]" ng-checked="page.https" ng-model="page.https" />
+									{{page.title}} <input type="checkbox" id="{{page.id}}" name="httpsPages[]" ng-checked="page.https" ng-model="page.https" />
 								</label>
 							</div>
 						</div>

@@ -31,16 +31,20 @@ ul.subsubsub a {
 	padding: 0;
 }
 ul.subsubsub li:first-child a { margin-left: 0; }
-ul.subsubsub li.active a {
+ul.subsubsub li.active a,
+ul.subsubsub li.active a:hover {
 	color: #000;
-	font-weight: 600;
 }
 ul.subsubsub a:hover {
-	color: #2ea2cc !important;
+	color: #2ea2cc;
 }
 .form-control {
 	padding: 6px 12px !important;
 	height: 34px !important;
+}
+input[type="checkbox"],
+input[type="radio"] {
+	outline: none !important;
 }
 .panel-default {
 	background-color: #fff;
@@ -158,4 +162,20 @@ div.updated.maven-updated .close {
 }
 .updated.maven-updated.maven-success {
     border-left: 4px solid #7ad03a;
+}
+.btn-default {
+	background: #e0e0e0;
+	border: none;
+	border-radius: 2px;
+	color: #0074A4;
+	font-size: 13px;
+	font-weight: 600;
+	text-shadow: none;
+	padding: 4px 8px;
+	position: relative;
+	top: -3px;
+}
+.btn-default:hover {
+	background: #2ea2cc;
+	color: #fff;
 }
