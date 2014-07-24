@@ -17,15 +17,10 @@ angular.module('mavenApp')
 							if ($scope.taxesForm.$invalid) {
 								return;
 							}
-							
-							$scope.tax.$save(function(){
+
+							$scope.tax.$save().then(function(data) {
+								$location.path('/taxes/edit/' + data.id);
 							});
-							/*Tax.save({id: $scope.tax.id}, $scope.tax,
-							 function(tax) {
-							 $location.path('/taxes/edit/' + tax.id).replace();
-							 });*/
-
-
 						};
 
 						$scope.cancelEdit = function() {

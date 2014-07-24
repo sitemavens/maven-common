@@ -15,7 +15,9 @@ angular.module('mavenApp')
 							if ($scope.shippingForm.$invalid) {
 								return;
 							}
-							$scope.item.$save();
+							$scope.item.$save().then(function(data) {
+								$location.path('/shipping-methods/edit/' + data.id);
+							});;
 						};
 						$scope.cancelEdit = function() {
 							$location.path('/shipping-methods/');

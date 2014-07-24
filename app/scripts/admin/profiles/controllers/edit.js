@@ -63,15 +63,8 @@ angular.module('mavenApp')
 								$scope.alertPrimaryAddress = true;
 								return;
 							}
-							$scope.profile.$save(function(data) {
-								$scope.profile = data;
+							$scope.profile.$save().then(function(data) {
 								$location.path('/profiles/edit/'+data.profileId);
-								ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
-									$scope.profile.isWpUser = iswpuser.result;
-									$scope.setRegister($scope.profile.isWpUser);
-								});
-								$scope.rolQuery();
-
 							});
 						};
 

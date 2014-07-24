@@ -15,7 +15,9 @@ angular.module('mavenApp')
 							if ($scope.attributesForm.$invalid) {
 								return;
 							}
-							$scope.attr.$save();
+							$scope.attr.$save().then(function(data) {
+								$location.path('/attributes/edit/' + data.id);
+							});
 						};
 						$scope.cancelEdit = function() {
 							$location.path('/attributes/');

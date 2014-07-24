@@ -3,7 +3,7 @@
 namespace Maven\Core\Mappers;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class AttributeMapper extends \Maven\Core\Db\WordpressMapper {
@@ -33,7 +33,7 @@ class AttributeMapper extends \Maven\Core\Db\WordpressMapper {
 
 		return $this->getVar( $query );
 	}
-	
+
 	public function getAll( \Maven\Core\Domain\AttributeFilter $filter, $orderBy = "name", $orderType = 'desc', $start = 0, $limit = 1000 ) {
 		$where = '';
 		$values = array();
@@ -43,7 +43,7 @@ class AttributeMapper extends \Maven\Core\Db\WordpressMapper {
 			$values[] = "%{$name}%";
 			$where.=" AND name LIKE %s";
 		}
-		
+
 		if ( !$orderBy ) {
 			$orderBy = 'id';
 		}
@@ -72,8 +72,7 @@ class AttributeMapper extends \Maven\Core\Db\WordpressMapper {
 
 		return $attributes;
 	}
-	
-	
+
 	/**
 	 * Return an Attribute object
 	 * @param int $id
@@ -123,8 +122,7 @@ class AttributeMapper extends \Maven\Core\Db\WordpressMapper {
 
 		return $attributes;
 	}
-	
-	
+
 	/**
 	 * Return the profile's address
 	 * @param int $id
@@ -132,10 +130,9 @@ class AttributeMapper extends \Maven\Core\Db\WordpressMapper {
 	 */
 	public function getAttributesByThingId( $thingId, $pluginKey ) {
 
-		throw new \Maven\Exceptions\MavenException('Not implemented yet');
+		throw new \Maven\Exceptions\MavenException( 'Not implemented yet' );
 	}
-	
-	
+
 	/**
 	 * Save address
 	 * @param \Maven\Core\Domain\Attribute $attribute
@@ -147,30 +144,29 @@ class AttributeMapper extends \Maven\Core\Db\WordpressMapper {
 		$attribute->sanitize();
 
 		$data = array(
-		    'name' => $attribute->getName(),
-		    'description' => $attribute->getDescription(),
-		    'plugin_key' => $attribute->getPluginKey(),
+			'name' => $attribute->getName(),
+			'description' => $attribute->getDescription(),
+			'plugin_key' => $attribute->getPluginKey(),
 			'default_amount' => $attribute->getDefaultAmount(),
 			'default_wholesale_amount' => $attribute->getDefaultWholesaleAmount()
 		);
 
 		$format = array(
-		    '%s', // name
-		    '%s', // description
-		    '%s', // plugin_key
+			'%s', // name
+			'%s', // description
+			'%s', // plugin_key
 			'%d', // default_amount
 			'%d'  // default_wholesale_amount
 		);
 
-		if ( ! $attribute->getId() ) {
+		if ( !$attribute->getId() ) {
 			$id = $this->insert( $data, $format );
 			$attribute->setId( $id );
 		} else {
 			$this->updateById( $attribute->getId(), $data, $format );
 		}
-		
-		return 	$attribute;	 
 
+		return $attribute;
 	}
 
 	/**

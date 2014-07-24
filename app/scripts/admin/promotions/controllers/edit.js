@@ -37,7 +37,10 @@ angular.module('mavenApp')
 							if ($scope.promotionForm.$invalid) {
 								return;
 							}
-							$scope.promotion.$save();
+							$scope.promotion.$save(function(data) {
+								console.log(data);
+								$location.path('/promotions/edit/' + data.id);
+							});
 
 						};
 
