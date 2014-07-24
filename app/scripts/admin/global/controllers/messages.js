@@ -86,7 +86,7 @@ angular.module('mavenApp').controller('MessagesCtrl', ['$q', '$scope', '$rootSco
 		$scope.checkAlerts = function() {
 			$timeout(function() {
 				$scope.removeAlerts();
-			}, 3000);
+			}, 5000);
 		};
 
 		//Remove Success alerts of array

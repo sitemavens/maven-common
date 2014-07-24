@@ -41,7 +41,7 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 
 			\Maven\Settings\MavenRegistry::instance()->saveOptions( $settings );
 
-			$this->getOutput()->sendApiResponse( $settings );
+			$this->getOutput()->sendApiSuccess( $settings, 'Settings Saved');
 		} catch ( \Exception $e ) {
 			//General exception, send general error
 			$this->getOutput()->sendApiError( $data, $e->getMessage() );
@@ -71,7 +71,7 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 					}
 				}
 			}
-			$this->getOutput()->sendApiResponse( $data );
+			$this->getOutput()->sendApiSuccess( $data, 'Gateway Settings saved' );
 		} catch ( \Exception $e ) {
 			//General exception, send general error
 			$this->getOutput()->sendApiError( $data, $e->getMessage() );
