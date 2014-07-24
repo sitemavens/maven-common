@@ -2,8 +2,8 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th></th>
             <th>Name</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -13,6 +13,9 @@
 			</td>
 		</tr>
         <tr ng-repeat="rol in roles">
+            <td>
+                {{rol.name}}
+            </td>
             <td class="row-actions maven">
 				<span class="edit">
 					<a class="list-view" ng-click="editRol(rol.id)">Edit</a>
@@ -22,9 +25,6 @@
 					<a class="list-view delete"  ng-click="deleteRol($index)">Delete</a>
 				</span>
 			</td>
-            <td>
-                {{rol.name}}
-            </td>
         </tr>
     </tbody>
 
