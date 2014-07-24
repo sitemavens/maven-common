@@ -8,11 +8,11 @@ if ( !defined( 'ABSPATH' ) )
 
 class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iView {
 
-	public function __construct () {
+	public function __construct() {
 		parent::__construct();
 	}
 
-	public function registerRoutes ( $routes ) {
+	public function registerRoutes( $routes ) {
 
 		$routes[ '/maven/settings' ] = array(
 			array( array( $this, 'getSettings' ), \WP_JSON_Server::READABLE ),
@@ -27,49 +27,58 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 		return $routes;
 	}
 
-	public function edit ( $data ) {
+	public function edit( $data ) {
 
+		try {
 
-		$settings = \Maven\Settings\MavenRegistry::instance()->getOptions();
+			$settings = \Maven\Settings\MavenRegistry::instance()->getOptions();
 
-		foreach ( $settings as $setting ) {
-			if ( isset( $data[ $setting->getName() ] ) ) {
-				$setting->setValue( $data[ $setting->getName() ] );
-			}
-		}
-
-		\Maven\Settings\MavenRegistry::instance()->saveOptions( $settings );
-
-		$this->getOutput()->sendApiResponse( $settings );
-	}
-
-	public function saveGateways ( $data ) {
-
-		$gateways = \Maven\Gateways\GatewayFactory::getAll();
-
-		foreach ( $gateways as $gateway ) {
-
-			foreach ( $data as $gateFromPost ) {
-				if ( $gateFromPost[ 'key' ] === $gateway->getKey() && $gateFromPost[ 'hasSettings' ] ) {
-
-					$settings = $gateway->getSettings();
-					$settingsFromPost = $gateFromPost['settings'];
-					
-					foreach ( $settings as $setting ) {
-						if ( isset( $settingsFromPost[ $setting->getName() ] ) ) {
-							$setting->setValue( $settingsFromPost[ $setting->getName() ]['value'] );
-						}
-					}
-					
-					$gateway->saveOptions($settings);
+			foreach ( $settings as $setting ) {
+				if ( isset( $data[ $setting->getName() ] ) ) {
+					$setting->setValue( $data[ $setting->getName() ] );
 				}
 			}
 
+			\Maven\Settings\MavenRegistry::instance()->saveOptions( $settings );
+
+			$this->getOutput()->sendApiResponse( $settings );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $data, $e->getMessage() );
 		}
-		$this->getOutput()->sendApiResponse( $data );
 	}
 
-	public function getView ( $view ) {
+	public function saveGateways( $data ) {
+		try {
+//			throw new \Exception('upss');
+			$gateways = \Maven\Gateways\GatewayFactory::getAll();
+
+			foreach ( $gateways as $gateway ) {
+
+				foreach ( $data as $gateFromPost ) {
+					if ( $gateFromPost[ 'key' ] === $gateway->getKey() && $gateFromPost[ 'hasSettings' ] ) {
+
+						$settings = $gateway->getSettings();
+						$settingsFromPost = $gateFromPost[ 'settings' ];
+
+						foreach ( $settings as $setting ) {
+							if ( isset( $settingsFromPost[ $setting->getName() ] ) ) {
+								$setting->setValue( $settingsFromPost[ $setting->getName() ][ 'value' ] );
+							}
+						}
+
+						$gateway->saveOptions( $settings );
+					}
+				}
+			}
+			$this->getOutput()->sendApiResponse( $data );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $data, $e->getMessage() );
+		}
+	}
+
+	public function getView( $view ) {
 
 		switch ( $view ) {
 			case "settings":
@@ -80,7 +89,7 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 		return $view;
 	}
 
-	public function getSettings () {
+	public function getSettings() {
 
 		$registry = \Maven\Settings\MavenRegistry::instance();
 
@@ -93,7 +102,7 @@ class Settings extends MavenAdminController implements \Maven\Core\Interfaces\iV
 		$this->getOutput()->sendApiResponse( $entity );
 	}
 
-	public function getGateways () {
+	public function getGateways() {
 
 		$gateways = \Maven\Gateways\GatewayFactory::getAll();
 

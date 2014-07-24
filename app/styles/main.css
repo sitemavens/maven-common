@@ -129,3 +129,24 @@ table.table.table-striped .table-bottom th {
 tr.no-items-maven td.colspanchange {
     background: none repeat scroll 0 0 white !important;
 }
+
+.repeat-enter,
+.repeat-leave,
+.repeat-move {
+	-webkit-transition:all linear 0.5s;
+	-moz-transition:all linear 0.5s;
+	-ms-transition:all linear 0.5s;
+	-o-transition:all linear 0.5s;
+	transition:all linear 0.5s;
+}
+
+.repeat-leave.repeat-leave-active {
+	opacity:0;
+	line-height:0;
+}
+
+div.updated.maven-updated {
+    margin-bottom: 5px;
+    margin-top: 28px;
+    padding: 7px 12px;
+}

@@ -194,7 +194,7 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 
 			$promotion = $manager->addPromotion( $promotion );
 
-			$this->getOutput()->sendApiResponse( $promotion, 'Promotion saved' );
+			$this->getOutput()->sendApiSuccess( $promotion, 'Promotion saved' );
 		} catch ( \Exception $e ) {
 			//General exception, send general error
 			$this->getOutput()->sendApiError( $data, $e->getMessage() );

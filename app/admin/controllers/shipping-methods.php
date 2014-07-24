@@ -86,7 +86,7 @@ class ShippingMethods extends \Maven\Admin\Controllers\MavenAdminController {
 
 			$item = $manager->addShippingMethod( $item );
 
-			$this->getOutput()->sendApiResponse( $item, 'Shipping Method saved' );
+			$this->getOutput()->sendApiSuccess( $item, 'Shipping Method saved' );
 		} catch ( \Exception $e ) {
 			//General exception, send general error
 			$this->getOutput()->sendApiError( $data, $e->getMessage() );

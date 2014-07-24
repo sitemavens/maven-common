@@ -85,7 +85,7 @@ class Attributes extends \Maven\Admin\Controllers\MavenAdminController {
 
 			$attrs = $manager->addAttribute( $attrs );
 
-			$this->getOutput()->sendApiResponse( $attrs, 'Attribute saved' );
+			$this->getOutput()->sendApiSuccess( $attrs, 'Attribute saved' );
 		} catch ( \Exception $e ) {
 			//General exception, send general error
 			$this->getOutput()->sendApiError( $data, $e->getMessage() );

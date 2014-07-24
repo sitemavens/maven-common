@@ -66,6 +66,7 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController implements \Ma
 
 	public function editTax ( $id, $data ) {
 		try {
+			throw new \Exception('asdasdsad');
 			$manager = new \Maven\Core\TaxManager();
 
 			$tax = new \Maven\Core\Domain\Tax();
@@ -74,7 +75,7 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController implements \Ma
 
 			$tax = $manager->addTax( $tax );
 
-			$this->getOutput()->sendApiResponse( $tax, 'Tax saved' );
+			$this->getOutput()->sendApiSuccess( $tax, 'Tax saved' );
 		} catch ( \Exception $e ) {
 			//General exception, send general error
 			$this->getOutput()->sendApiError( $data, $e->getMessage() );

@@ -131,7 +131,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 			//(this is wrong, but status change are not being updated on the orders
 			$order = $manager->get( $id );
 
-			$this->getOutput()->sendApiResponse( $order, 'Order saved' );
+			$this->getOutput()->sendApiSuccess( $order, 'Order saved' );
 		} catch ( \Exception $e ) {
 			//General exception, send general error
 			$this->getOutput()->sendApiError( $data, $e->getMessage() );
