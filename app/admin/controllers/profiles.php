@@ -92,7 +92,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 			$password = $data[ 'password' ];
 		$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
 
-		$this->getOutput()->sendApiResponse( $profile );
+		$this->getOutput()->sendApiSuccess( $profile, 'Profile Saved' );
 	}
 
 	public function isWpUser( $id ) {
@@ -135,7 +135,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 				$password = $data[ 'password' ];
 
 			$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
-			$this->getOutput()->sendApiSuccess( $profile, 'Provile saved' );
+			$this->getOutput()->sendApiSuccess( $profile, 'Provile Saved' );
 		} catch ( \Exception $e ) {
 			//General exception, send general error
 			$this->getOutput()->sendApiError( $data, $e->getMessage() );
@@ -147,7 +147,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 		$manager->delete( $id );
 
-		$this->getOutput()->sendApiResponse( new \stdClass() );
+		$this->getOutput()->sendApiSuccess( new \stdClass(), 'Profile Deleted' );
 	}
 
 	public function getProfileAddress( $id ) {
@@ -161,7 +161,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 		$manager->delete( $id );
 
-		$this->getOutput()->sendApiResponse( new \stdClass() );
+		$this->getOutput()->sendApiResponse( new \stdClass(), 'Address Deleted' );
 	}
 
 	public function getView( $view ) {

@@ -86,7 +86,7 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController implements \Ma
 
 		$manager->delete( $id );
 
-		$this->getOutput()->sendApiResponse( new \stdClass() );
+		$this->getOutput()->sendApiSuccess( new \stdClass(), 'Tax Deleted' );
 	}
 
 	public function getView ( $view ) {

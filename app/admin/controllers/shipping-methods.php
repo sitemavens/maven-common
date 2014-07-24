@@ -98,7 +98,7 @@ class ShippingMethods extends \Maven\Admin\Controllers\MavenAdminController {
 
 		$manager->delete( $id );
 
-		$this->getOutput()->sendApiResponse( new \stdClass() );
+		$this->getOutput()->sendApiResponse( new \stdClass(), 'Attribute Deleted' );
 	}
 
 	public function getView( $view ) {

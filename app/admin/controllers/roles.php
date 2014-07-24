@@ -89,7 +89,7 @@ class Roles extends MavenAdminController {
 
 		$manager->delete( $id );
 
-		$this->getOutput()->sendApiResponse( new \stdClass() );
+		$this->getOutput()->sendApiSuccess( new \stdClass(), 'Rol Deleted' );
 	}
 
 	public function getView( $view ) {

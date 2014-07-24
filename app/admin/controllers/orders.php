@@ -143,7 +143,7 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 
 		$manager->delete( $id );
 
-		$this->getOutput()->sendApiResponse( new \stdClass() );
+		$this->getOutput()->sendApiSuccess( new \stdClass(),'Order Deleted' );
 	}
 
 	public function showForm() {

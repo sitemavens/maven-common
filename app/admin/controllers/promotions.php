@@ -131,42 +131,52 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 	}
 
 	public function newPromotion( $data ) {
-		$manager = new \Maven\Core\PromotionManager();
+		try {
+			$manager = new \Maven\Core\PromotionManager();
 
-		$promotion = new \Maven\Core\Domain\Promotion();
+			$promotion = new \Maven\Core\Domain\Promotion();
 
-		if ( is_array( $data ) && key_exists( 'quantity', $data ) && $data[ 'quantity' ] ) {
+			if ( is_array( $data ) && key_exists( 'quantity', $data ) && $data[ 'quantity' ] ) {
 
-			$quantity = $data[ 'quantity' ];
+				$quantity = $data[ 'quantity' ];
+
+				$promotion->load( $data );
+
+				$response = $manager->addMultiplePromotions( $promotion, $quantity );
+			} else {
+
+				$promotion->load( $data );
+
+				$response = $manager->addPromotion( $promotion );
+			}
+
+			$this->getOutput()->sendApiSuccess( $response, 'Promotion Saved' );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $data, $e->getMessage() );
+		}
+	}
+
+	public function newMultiplePromotion( $data ) {
+		try {
+			$manager = new \Maven\Core\PromotionManager();
+
+			if ( is_array( $data ) && key_exists( 'quantity', $data ) && $data[ 'quantity' ] ) {
+				
+			}
+
+			$promotion = new \Maven\Core\Domain\Promotion();
 
 			$promotion->load( $data );
 
 			$response = $manager->addMultiplePromotions( $promotion, $quantity );
-		} else {
 
-			$promotion->load( $data );
 
-			$response = $manager->addPromotion( $promotion );
+			$this->getOutput()->sendApiSuccess( $response, 'Promotions Saved' );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $data, $e->getMessage() );
 		}
-
-		$this->getOutput()->sendApiResponse( $response );
-	}
-
-	public function newMultiplePromotion( $data ) {
-		$manager = new \Maven\Core\PromotionManager();
-
-		if ( is_array( $data ) && key_exists( 'quantity', $data ) && $data[ 'quantity' ] ) {
-			
-		}
-
-		$promotion = new \Maven\Core\Domain\Promotion();
-
-		$promotion->load( $data );
-
-		$response = $manager->addMultiplePromotions( $promotion, $quantity );
-
-
-		$this->getOutput()->sendApiResponse( $response );
 	}
 
 	public function getPromotion( $id ) {
@@ -206,7 +216,7 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 
 		$manager->delete( $id );
 
-		$this->getOutput()->sendApiResponse( new \stdClass() );
+		$this->getOutput()->sendApiSuccess( new \stdClass(), 'Promotion Deleted' );
 	}
 
 	public function showForm() {

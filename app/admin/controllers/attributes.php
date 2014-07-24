@@ -58,7 +58,7 @@ class Attributes extends \Maven\Admin\Controllers\MavenAdminController {
 		$attrs->load( $data );
 		$attrs = $manager->addAttribute( $attrs );
 
-		$this->getOutput()->sendApiResponse( $attrs );
+		$this->getOutput()->sendApiSuccess( $attrs, 'Attribute Saved' );
 	}
 
 	public function getAttribute( $id ) {
@@ -97,7 +97,7 @@ class Attributes extends \Maven\Admin\Controllers\MavenAdminController {
 
 		$manager->delete( $id );
 
-		$this->getOutput()->sendApiResponse( new \stdClass() );
+		$this->getOutput()->sendApiSuccess( new \stdClass(), 'Attribute Deleted' );
 	}
 
 	public function getView( $view ) {

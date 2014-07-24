@@ -10,7 +10,6 @@ class OutputTranslator {
 
 	public function sendApiResponse( $object, $status = '200', $statusText = 'OK' ) {
 		header( "HTTP/1.0 {$status} {$statusText}" );
-
 		wp_send_json( $this->convert( $object ) );
 	}
 
