@@ -66,7 +66,6 @@ class Taxes extends \Maven\Admin\Controllers\MavenAdminController implements \Ma
 
 	public function editTax ( $id, $data ) {
 		try {
-			throw new \Exception('asdasdsad');
 			$manager = new \Maven\Core\TaxManager();
 
 			$tax = new \Maven\Core\Domain\Tax();

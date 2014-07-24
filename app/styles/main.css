@@ -150,3 +150,13 @@ div.updated.maven-updated {
     margin-top: 28px;
     padding: 7px 12px;
 }
+div.updated.maven-updated .close {
+    line-height: unset;
+}
+
+.updated.maven-updated.maven-danger {
+    border-left: 4px solid red;
+}
+.updated.maven-updated.maven-success {
+    border-left: 4px solid #7ad03a;
+}
