@@ -54,9 +54,11 @@ class ProfileManager {
 	}
 
 	private function addAddresses( \Maven\Core\Domain\Profile $profile ) {
-
-		if ( !$profile->getProfileId() )
+		\Maven\Loggers\Logger::log()->message('\Maven\Core\ProfileManager: addAddresses: Profile Id'.$profile->getProfileId());
+		
+		if ( ! $profile->getProfileId() ) {
 			return $profile;
+		}
 
 		$addressManager = new AddressManager();
 
