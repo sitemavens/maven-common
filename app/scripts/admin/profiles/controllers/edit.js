@@ -2,8 +2,8 @@
 
 angular.module('mavenApp')
 		.controller('ProfileEditCtrl',
-				['$scope', '$routeParams', '$location', 'ProfileOrders', 'Profile', 'ProfileAddress', 'ProfileWpUser', 'Rol',
-					function($scope, $routeParams, $location, ProfileOrders, Profile, ProfileAddress, ProfileWpUser, Rol) {
+				['$scope', '$routeParams', '$location', 'ProfileOrders', 'Profile', 'ProfileAddress', 'ProfileWpUser', 'ProfileEntries', 'Rol',
+					function($scope, $routeParams, $location, ProfileOrders, Profile, ProfileAddress, ProfileWpUser, ProfileEntries, Rol) {
 						$scope.oneAtATime = true;
 						$scope.profile = {};
 						$scope.addressExists = {};
@@ -31,12 +31,15 @@ angular.module('mavenApp')
 
 								$scope.profile = data;
 								if ($scope.profile.userName)
-								ProfileOrders.getOrders($scope.profile.id).then(function(response) {
-									$scope.profile.orders = response.data;
-								});
+									ProfileOrders.getOrders($scope.profile.id).then(function(response) {
+										$scope.profile.orders = response.data;
+									});
 								ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
 									$scope.profile.isWpUser = iswpuser.result;
 									$scope.setRegister($scope.profile.isWpUser);
+								});
+								ProfileEntries.getEntries($scope.profile.email).then(function(response) {
+									$scope.profile.gfEntries = response.data;
 								});
 								$scope.rolQuery();
 							});
@@ -49,7 +52,7 @@ angular.module('mavenApp')
 						}
 
 						$scope.saveProfile = function() {
-							if ($scope.profile.userName === undefined){
+							if ($scope.profile.userName === undefined) {
 								$scope.profile.userName = $scope.profile.email;
 							}
 							$scope.$broadcast('show-errors-check-validity');
@@ -64,7 +67,7 @@ angular.module('mavenApp')
 								return;
 							}
 							$scope.profile.$save().then(function(data) {
-								$location.path('/profiles/edit/'+data.profileId);
+								$location.path('/profiles/edit/' + data.profileId);
 							});
 						};
 

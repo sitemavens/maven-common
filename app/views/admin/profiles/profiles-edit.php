@@ -361,6 +361,33 @@
 					</tbody>
 				</table>
 			</tab>
+			<tab heading="Forms Entries">
+				<ul class="list-group">
+					<li ng-repeat="form in profile.gfEntries" class="list-group-item" >
+						<div class="panel panel-default">
+							<!-- Default panel contents -->
+							<div class="panel-heading" > <a target="_blank" ng-href="{{form.link}}">Form Name: <span ng-bind="form.formName"></span></a> </div>
+							<!-- Table -->
+							<table class="table">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th ng-repeat="field in form.fields| limitTo:5" ng-bind="field.label"> </th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="entry in form.entries">
+										<td ng-repeat="value in entry.values| limitTo:6" >
+											<a ng-if="$index == 0" target="_blank" ng-href="{{value.value}}" ng-bind="entry.id"></a>
+											<span ng-if="$index != 0" ng-bind="value.value"></span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</li>
+				</ul>
+			</tab>
 
 		</tabset>
 	</ng-form>

@@ -33,6 +33,9 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$routes[ '/maven/profileorders/(?P<id>\d+)' ] = array(
 			array( array( $this, 'getProfileOrders' ), \WP_JSON_Server::READABLE ),
 		);
+		$routes[ '/maven/profileentries/(?P<id>\D+)' ] = array(
+			array( array( $this, 'getProfileEntries' ), \WP_JSON_Server::READABLE ),
+		);
 
 		return $routes;
 	}
@@ -71,8 +74,16 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	public function getProfileOrders( $id ) {
 		$manager = new \Maven\Core\OrderManager();
 		$orders = $manager->getProfileOrders( $id );
-
 		$this->getOutput()->sendApiResponse( $orders );
+	}
+
+	public function getProfileEntries( $id ) {
+		$formEntries = array();
+		if ( !\Maven\Validation::isGFMissing() ) {
+		$gfManager = new \Maven\Core\ProfileGF();
+		$formEntries = $gfManager->getGFEntries( $id );
+		$this->getOutput()->sendApiResponse( $formEntries );
+		}
 	}
 
 	public function newProfile( $data ) {
