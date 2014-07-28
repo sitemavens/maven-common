@@ -120,9 +120,9 @@
 								<span ng-show="address.city">- {{address.city}}</span>
 								<span ng-show="address.state"> - {{address.state}}</span>
 								<span ng-show="address.country"> - {{address.country}}</span>
-								<button id="delete-address" class="btn btn-info btn-xs profile-edit-address" ng-click="deleteAddress($index, $event)">Delete</button>	
-								<button id="delete-address" class="btn btn-info btn-xs profile-edit-address" ng-show="address.show">Hide details</button>
-								<button id="delete-address" class="btn btn-info btn-xs profile-edit-address" ng-hide="address.show">View details</button>
+								<button id="delete-address" class="btn btn-danger btn-xs profile-edit-address delete-address" ng-click="deleteAddress($index, $event)">Delete</button>	
+								<a href="" class="profile-edit-address view-hide-address" ng-show="address.show">Hide details</a>
+								<a href="" class="profile-edit-address view-hide-address" ng-hide="address.show">View details</a>
 							</accordion-heading>
 
 							<div class="form-group">

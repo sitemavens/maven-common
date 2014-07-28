@@ -184,3 +184,14 @@ div.updated.maven-updated .close {
     margin-top: -31px;
     width: 29px;
 }
+
+a.profile-edit-address.view-hide-address {
+    float: right;
+    font-size: 13px;
+    padding-right: 18px;
+    padding-top: 6px;
+}
+
+a.profile-edit-address.view-hide-address:hover{
+	text-decoration: none;
+}
