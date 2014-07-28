@@ -7,7 +7,7 @@
 		<div class="form-group">
 			<label for="enabled" class="col-sm-2 control-label">Enabled</label>
 			<div class="col-sm-6">
-				<input type="checkbox" class="form-control" id="enabled" ng-model="promotion.enabled" />
+				<input type="checkbox" id="enabled" ng-model="promotion.enabled" />
 			</div>
 		</div>
 		<div class="form-group" show-errors>

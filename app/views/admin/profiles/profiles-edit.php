@@ -135,7 +135,7 @@
 							<div class="form-group">
 								<label for="addressIsPrimary" class="col-sm-2 control-label">Primary Address</label>
 								<div class="col-sm-10">
-									<input type="checkbox" ng-change="changeToPrimaryAddress(address)" class="form-control" id="enabled" ng-model="address.primary" />
+									<input type="checkbox" ng-change="changeToPrimaryAddress(address)" id="enabled" ng-model="address.primary" />
 								</div>
 							</div>
 							<div class="form-group">
@@ -284,7 +284,7 @@
 					<div class="form-group" ng-show="profile.register || profile.isWpUser" ng-repeat="rol in listOfRoles">
 						<label for="" class="col-sm-2 control-label">{{rol.name}}: </label>
 						<div class="col-sm-4">
-							<input type="checkbox" class="form-control" id="" ng-model="rol.status" ng-click="selectRol(rol.id, $index)">
+							<input type="checkbox"  id="" ng-model="rol.status" ng-click="selectRol(rol.id, $index)">
 						</div>
 					</div>
 					<div class="form-group">
