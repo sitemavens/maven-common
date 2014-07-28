@@ -41,6 +41,9 @@ class AddressManager {
 	 * @return \Maven\Core\Domain\Address[]
 	 */
 	public function getAddresses( $profileId ) {
+		
+		\Maven\Loggers\Logger::log()->message('\Maven\Core\AddressManager: getAddresses: Profile Id: '.$profileId);
+		
 		return $this->mapper->getAddresses( $profileId );
 	}
 
