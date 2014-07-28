@@ -172,7 +172,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 		$manager->delete( $id );
 
-		$this->getOutput()->sendApiResponse( new \stdClass(), 'Address Deleted' );
+		$this->getOutput()->sendApiSuccess( new \stdClass(), 'Address Deleted' );
 	}
 
 	public function getView( $view ) {
