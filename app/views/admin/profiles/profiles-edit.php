@@ -90,7 +90,7 @@
 
 		<!--<tab heading="Photo"></tab>-->
 
-			<tab heading="Address">
+			<tab heading="Addresses">
 				<div class="form-horizontal profile profile-edition">
 					<ng-form name="profileStepTwoForm">
 						<div class="form-group">
@@ -112,7 +112,7 @@
 				</div>
 				<div class="form-group">
 					<accordion close-others="oneAtATime">
-						<accordion-group is-open="status.isFirstOpen" 
+						<accordion-group is-open="address.show" 
 										 is-disabled="status.isFirstDisabled" ng-repeat="address in profile.addresses track by address.type"> 
 							<accordion-heading>
 								<span class="glyphicon glyphicon-home" > {{getAddressTypeName(address.type)}}</span>
@@ -121,6 +121,8 @@
 								<span ng-show="address.state"> - {{address.state}}</span>
 								<span ng-show="address.country"> - {{address.country}}</span>
 								<button id="delete-address" class="btn btn-info btn-xs profile-edit-address" ng-click="deleteAddress($index, $event)">Delete</button>	
+								<button id="delete-address" class="btn btn-info btn-xs profile-edit-address" ng-show="address.show">Hide details</button>
+								<button id="delete-address" class="btn btn-info btn-xs profile-edit-address" ng-hide="address.show">View details</button>
 							</accordion-heading>
 
 							<div class="form-group">
@@ -133,8 +135,7 @@
 							<div class="form-group">
 								<label for="addressIsPrimary" class="col-sm-2 control-label">Primary Address</label>
 								<div class="col-sm-10">
-									<label class="btn btn-success" ng-change="changeToPrimaryAddress(address)" ng-model="address.primary" btn-radio="true" uncheckable>Yes</label>
-									<label class="btn btn-success" ng-change="changeToPrimaryAddress(address)" ng-model="address.primary" btn-radio="false" uncheckable>No</label>
+									<input type="checkbox" ng-change="changeToPrimaryAddress(address)" class="form-control" id="enabled" ng-model="address.primary" />
 								</div>
 							</div>
 							<div class="form-group">

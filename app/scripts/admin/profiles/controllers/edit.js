@@ -135,6 +135,7 @@ angular.module('mavenApp')
 								}
 							});
 							if (!$scope.addressExists.status) {
+								address.show = true;
 								$scope.profile.addresses.push(address);
 							}
 							$scope.addressExists.name = $scope.getAddressTypeName(address.type);
@@ -241,4 +242,5 @@ angular.module('mavenApp')
 						$scope.showDetail = function(idx) {
 							$scope.orderDetail[idx] = !$scope.orderDetail[idx];
 						};
+						
 					}]);

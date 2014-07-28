@@ -146,7 +146,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 				$password = $data[ 'password' ];
 
 			$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
-			$this->getOutput()->sendApiSuccess( $profile, 'Provile Saved' );
+			$this->getOutput()->sendApiSuccess( $profile, 'Profile Saved' );
 		} catch ( \Exception $e ) {
 			//General exception, send general error
 			$this->getOutput()->sendApiError( $data, $e->getMessage() );
