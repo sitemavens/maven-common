@@ -14,7 +14,7 @@
 	<tbody>
 		<tr class="no-items-maven" ng-if="taxes.length == 0">
 			<td class="colspanchange" colspan="6">
-				No Record Founds
+				No Record Found
 			</td>
 		</tr>
 		<tr ng-repeat="tax in taxes">

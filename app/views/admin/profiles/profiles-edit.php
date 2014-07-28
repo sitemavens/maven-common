@@ -306,6 +306,11 @@
 							<th>Status</th>
 						</tr>
 					</thead>
+					<tr class="no-items-maven" ng-if="profile.orders.length === 0">
+						<td class="colspanchange" colspan="5">
+							No Orders Found
+						</td>
+					</tr>
 					<tbody ng-repeat="order in profile.orders| orderBy:'-orderDate'">
 						<tr>
 							<td class="row-actions maven">
@@ -362,8 +367,15 @@
 					</tbody>
 				</table>
 			</tab>
-			<tab heading="Forms Entries">
+			<tab>
+				<tab-heading class="gravityForm-icon"><img ng-src="{{imageUrl}}/gravityformlogo.png"/> GF Entries</tab-heading>
+
 				<ul class="list-group">
+					<li ng-if="profile.gfEntries.length === 0" class="list-group-item">
+						<div>
+							<div class="panel-heading" ><span>No Gravity Form entries for this profile</span> </div>
+						</div>
+					</li>
 					<li ng-repeat="form in profile.gfEntries" class="list-group-item" >
 						<div class="panel panel-default">
 							<!-- Default panel contents -->

@@ -6,6 +6,7 @@ angular.module('mavenApp')
 					function($scope, $routeParams, $location, ProfileOrders, Profile, ProfileAddress, ProfileWpUser, ProfileEntries, Rol) {
 						$scope.oneAtATime = true;
 						$scope.profile = {};
+						$scope.imageUrl = Maven.imagesUrl;
 						$scope.addressExists = {};
 						$scope.hasPrimaryAddress;
 						$scope.addresses = CachedAddresses;

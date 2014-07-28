@@ -19,7 +19,7 @@
 	<tbody>
 		<tr class="no-items-maven" ng-if="totalItems == 0">
 			<td class="colspanchange" colspan="8">
-				No Record Founds
+				No Record Found
 			</td>
 		</tr>
 		<tr ng-repeat="promotion in promotions">

@@ -179,3 +179,8 @@ div.updated.maven-updated .close {
 	background: #2ea2cc;
 	color: #fff;
 }
+.gravityForm-icon.ng-scope > img {
+	margin-bottom: -27px;
+    margin-top: -31px;
+    width: 29px;
+}
