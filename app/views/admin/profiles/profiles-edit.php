@@ -56,8 +56,7 @@
 						<div class="form-group">
 							<label for="wholesale" class="col-sm-2 control-label">Wholesale</label>
 							<div class="col-sm-10">
-								<label class="btn btn-success" ng-model="profile.wholesale" btn-radio="true" >Yes</label>
-								<label class="btn btn-default" ng-model="profile.wholesale" btn-radio="false" >No</label>
+								<input type="checkbox" id="enabled" ng-model="profile.wholesale" />
 							</div>
 						</div>
 						<div class="form-group">
