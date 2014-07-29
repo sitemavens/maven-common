@@ -271,18 +271,26 @@ class Cart {
 			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/removeItem: Identifier: ' . $item );
 		}
 
+		
 		$item = is_object( $item ) ? $item : $this->getOrder()->getItem( $item );
 
 		$orderApi = new OrdersApi( );
 
+		
 //		die(print_r($this->getOrder()->getItems(),true));
 		//TODO: Check if the item exists, we have to remove it and add the new one.
 		if ( $this->getOrder()->itemExists( $item->getIdentifier() ) ) {
+			
+			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/removeItem: Item found: ' . $item->getIdentifier() );
+			
 			$orderApi->removeItem( $this->order, $item );
-
+			
+			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/removeItem: Updating order after item removed: ' . $item->getIdentifier() );
 			$this->update();
 
 			return Message\MessageManager::createRegularMessage( 'Item removed sucessfully', $this->order );
+			
+			
 		}
 
 		return Message\MessageManager::createRegularMessage( 'Item not found', $this->order );
@@ -659,11 +667,13 @@ class Cart {
 		if ( !$order ) {
 			throw new \Maven\Exceptions\MavenException( ' The order was not initialized' );
 		}
-
+		
 		$session = \Maven\Session\SessionManager::get();
 
 		$this->saveOrder( false );
-
+		
+		//die(print_r($message,true));
+			
 		$session->addData( $this->getSessionKey(), $order );
 
 		return $this->order;

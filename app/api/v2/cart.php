@@ -58,7 +58,7 @@ class Cart {
 
 		$this->isValid();
 
-//		die('antes');
+		
 		$result = $this->getCurrentCart()->removeItem( $identifier );
 
 //		die('despues');

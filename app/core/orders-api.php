@@ -187,11 +187,12 @@ class OrdersApi {
 	 */
 	public function addOrder( \Maven\Core\Domain\Order $order, $addStatus = true ) {
 
-		\Maven\Loggers\Logger::log()->message( 'OrdersApi/addOrder: Add Status:' . ( string ) $addStatus );
+		
+		\Maven\Loggers\Logger::log()->message( 'Maven/Core/OrdersApi/addOrder: Add Status:' .  $addStatus?'true':'false' );
 
 		$status = $order->getStatus() && $order->getStatus()->getId() ? $order->getStatus()->getId() : 'empty';
 
-		\Maven\Loggers\Logger::log()->message( 'OrdersApi/addOrder: Status id:' . $status );
+		\Maven\Loggers\Logger::log()->message( 'Maven/Core/OrdersApi/addOrder: Status id:' . $status );
 
 		return $this->manager->addOrder( $order, $addStatus );
 	}
