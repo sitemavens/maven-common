@@ -117,7 +117,7 @@ class Cart {
 	}
 
 	private function sendResponse ( \Maven\Core\Message\Message $result ) {
-		die(print_r($result));
+		 
 		$output = new \Maven\Core\UI\OutputTranslator();
 		$transformedOrder = $output->convert( $this->getCurrentCart()->getOrder() );
 
