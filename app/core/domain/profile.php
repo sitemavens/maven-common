@@ -441,7 +441,7 @@ class Profile extends \Maven\Core\DomainObject {
 			}
 		}
 
-		//There was no type address, duplicate primary addres.
+		//There was no type address, duplicate primary address.
 		$primary = $this->getPrimaryAddress()->copy();
 
 		$primary->setType( $type );

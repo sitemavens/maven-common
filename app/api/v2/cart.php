@@ -58,12 +58,17 @@ class Cart {
 
 		$this->isValid();
 
-		$this->sendResponse( $this->getCurrentCart()->removeItem( $identifier ) );
+//		die('antes');
+		$result = $this->getCurrentCart()->removeItem( $identifier );
+
+//		die('despues');
+//		die(print_r($result,true));
+		$this->sendResponse( $result );
 	}
 
 	public function updateItem ( $identifier, $data ) {
 
-		$this->isValid();
+		
 
 		$quantity = ( int ) $data[ 'quantity' ];
 
@@ -112,7 +117,7 @@ class Cart {
 	}
 
 	private function sendResponse ( \Maven\Core\Message\Message $result ) {
-
+		die(print_r($result));
 		$output = new \Maven\Core\UI\OutputTranslator();
 		$transformedOrder = $output->convert( $this->getCurrentCart()->getOrder() );
 
@@ -122,6 +127,7 @@ class Cart {
 			$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
 		}
 
+		
 		die( json_encode( $result ) );
 	}
 

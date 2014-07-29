@@ -45,8 +45,9 @@ class AddressMapper extends \Maven\Core\Db\WordpressMapper {
 
 		$addresses = array();
 
-		if ( ! $profileId )
+		if ( !$profileId ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Profile ID: is required' );
+		}
 
 		$rows = $this->getResultsBy( 'profile_id', $profileId );
 
