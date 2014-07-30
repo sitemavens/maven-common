@@ -255,7 +255,7 @@ class Cart {
 
 		$this->update();
 
-		return Message\MessageManager::createRegularMessage( 'Item added sucessfully', $this->order );
+		return Message\MessageManager::createSuccessfulMessage( 'Item added sucessfully', $this->order );
 	}
 
 	/**
@@ -288,12 +288,12 @@ class Cart {
 			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/removeItem: Updating order after item removed: ' . $item->getIdentifier() );
 			$this->update();
 
-			return Message\MessageManager::createRegularMessage( 'Item removed sucessfully', $this->order );
+			return Message\MessageManager::createSuccessfulMessage( 'Item removed sucessfully', $this->order );
 			
 			
 		}
 
-		return Message\MessageManager::createRegularMessage( 'Item not found', $this->order );
+		return Message\MessageManager::createSuccessfulMessage( 'Item not found', $this->order );
 	}
 
 	/**
@@ -474,7 +474,7 @@ class Cart {
 			// Track the order 
 			$this->trackTransaction( $order );
 
-			$result = $this->setResult( Message\MessageManager::createRegularMessage( 'Success' ), $order );
+			$result = $this->setResult( Message\MessageManager::createSuccessfulMessage( 'Success' ), $order );
 
 			$items = $this->order->getItems();
 			foreach ( $items as $item ) {
