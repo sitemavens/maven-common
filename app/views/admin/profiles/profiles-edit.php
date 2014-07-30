@@ -218,17 +218,24 @@
 				</div>
 			</tab>
 
-			<tab heading="WP User">
+			<tab heading="WP User" ng-if="!hideSections">
 				<div class="form-horizontal profile profile-edition">
-					<div class="form-group">
-						<div class="col-sm-1"></div>
-						<div class="col-sm-6">
+					<div class="form-group" ng-if='!profile.isWpUser'>
+						<div class="col-sm-2"></div>
+						<div class="col-sm-4">
 							<alert type="info">
 								<p>
 									<span>A Wordpress user means that the user will be able to log in to your system</span></br>
-									<span>It will be associated with the <strong>"{{defaultRole.name}}"</strong> role.</span>
+									<span ng-if='!profile.userExists'>It will be associated with the <strong>"{{defaultRole.name}}"</strong> role.</span>
+									<span ng-if='profile.userExists'>It will be associated with his/her current roles in the system"</span>
 								</p>
 							</alert>	
+						</div>
+					</div>
+					<div class="form-group" ng-if="profile.userExists && !profile.isWpUser">
+						<label for="" class="col-sm-2 control-label"></label>
+						<div class="col-sm-4">
+									<span>A Wordpress user with that email has been found, do you want to link it?</span></br>
 						</div>
 					</div>
 					<div class="form-group" ng-show="profile.isWpUser">
@@ -240,26 +247,27 @@
 					<div class="form-group" ng-hide="profile.isWpUser">
 						<label for="" class="col-sm-2 control-label">Register</label>
 						<div class="col-sm-4">
-							<label class="btn btn-success" ng-model="profile.register" btn-radio="true">Yes</label>
-							<label class="btn btn-default" ng-model="profile.register" btn-radio="false">No</label>
+							<input type="checkbox" ng-change="enabledRegistration()" ng-model="profile.register" />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="" class="col-sm-2 control-label">WP Username: </label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" id="" ng-model="profile.userName" placeholder="" ng-disabled="profile.isWpUser">
+							<input type="text" class="form-control" id="" ng-model="profile.userName" placeholder="" ng-disabled="profile.isWpUser || profile.userExists">
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="" class="col-sm-2 control-label">Password: </label>
-						<div class="col-sm-4">
-							<input type="password" class="form-control" id="" ng-model="profile.password" placeholder="">
+					<div ng-if="!profile.userExists">
+						<div class="form-group">
+							<label for="" class="col-sm-2 control-label">Password: </label>
+							<div class="col-sm-4">
+								<input type="password" class="form-control" id="" ng-model="profile.password" placeholder="">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="" class="col-sm-2 control-label">Confirm Password: </label>
-						<div class="col-sm-4">
-							<input type="password" class="form-control" id="" ng-model="profile.confirmPassword" placeholder="">
+						<div class="form-group">
+							<label for="" class="col-sm-2 control-label">Confirm Password: </label>
+							<div class="col-sm-4">
+								<input type="password" class="form-control" id="" ng-model="profile.confirmPassword" placeholder="">
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -271,16 +279,16 @@
 				</div>
 			</tab>  
 
-			<tab heading="Roles">
+			<tab heading="Roles" ng-if="!hideSections">
 				<div class="form-horizontal profile profile-edition">
-					<div class="col-sm-6" ng-hide="profile.register || profile.isWpUser">
+					<div class="col-sm-6" ng-hide="profile.isWpUser">
 						<alert type="info">
 							<p>
 								<span>The profile need to be asociated with a Worpress User to asign roles.</span></br>
 							</p>
 						</alert>	
 					</div>
-					<div class="form-group" ng-show="profile.register || profile.isWpUser" ng-repeat="rol in listOfRoles">
+					<div class="form-group" ng-show="profile.isWpUser" ng-repeat="rol in listOfRoles">
 						<label for="" class="col-sm-2 control-label">{{rol.name}}: </label>
 						<div class="col-sm-4">
 							<input type="checkbox"  id="" ng-model="rol.status" ng-click="selectRol(rol.id, $index)">
@@ -294,7 +302,7 @@
 					</div>
 				</div>
 			</tab>
-			<tab heading="Orders">
+			<tab heading="Orders" ng-if="!hideSections">
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -366,7 +374,7 @@
 					</tbody>
 				</table>
 			</tab>
-			<tab>
+			<tab ng-if="!hideSections">
 				<tab-heading class="gravityForm-icon"><img ng-src="{{imageUrl}}/gravityformlogo.png"/> GF Entries</tab-heading>
 
 				<ul class="list-group">

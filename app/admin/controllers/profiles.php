@@ -108,8 +108,13 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 	public function isWpUser( $id ) {
 		$manager = new \Maven\Core\ProfileManager();
-		$result = $manager->isWPUser( $id );
-		$data = array( 'result' => $result );
+		$registrationManager = new \Maven\Core\RegistrationManager();
+		$userExists = $registrationManager->getByEmail( $id );
+		if ( $userExists !== FALSE ) {
+			$userExists = TRUE;
+		}
+		$isWpUser = $manager->isWPUser( $id );
+		$data = array( 'isWpUser' => $isWpUser,'userExists' => $userExists );
 		$this->getOutput()->sendApiResponse( $data );
 	}
 

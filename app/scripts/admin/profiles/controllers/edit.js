@@ -4,6 +4,7 @@ angular.module('mavenApp')
 		.controller('ProfileEditCtrl',
 				['$scope', '$routeParams', '$location', 'ProfileOrders', 'Profile', 'ProfileAddress', 'ProfileWpUser', 'ProfileEntries', 'Rol',
 					function($scope, $routeParams, $location, ProfileOrders, Profile, ProfileAddress, ProfileWpUser, ProfileEntries, Rol) {
+						$scope.hideSections = $location.path() === '/profiles/new';
 						$scope.oneAtATime = true;
 						$scope.profile = {};
 						$scope.imageUrl = Maven.imagesUrl;
@@ -22,35 +23,39 @@ angular.module('mavenApp')
 									{id: 'ms', value: 'Ms.'},
 									{id: 'mrs', value: 'Mrs.'}
 								];
-						if ($routeParams.id) {
-							//$scope.profile;
-							Profile.get({id: $routeParams.id}, function(data) {
-								//if username is empty, default to email
-								if (data.userName === null) {
-									data.userName = data.email;
-								}
 
-								$scope.profile = data;
-								if ($scope.profile.userName)
-									ProfileOrders.getOrders($scope.profile.id).then(function(response) {
-										$scope.profile.orders = response.data;
+						$scope.getProfile = function() {
+							if ($routeParams.id) {
+								//$scope.profile;
+								Profile.get({id: $routeParams.id}, function(data) {
+									//if username is empty, default to email
+									if (data.userName === null) {
+										data.userName = data.email;
+									}
+
+									$scope.profile = data;
+									if ($scope.profile.userName)
+										ProfileOrders.getOrders($scope.profile.id).then(function(response) {
+											$scope.profile.orders = response.data;
+										});
+									ProfileWpUser.get({id: $scope.profile.email}, function(result) {
+										$scope.profile.isWpUser = result.isWpUser;
+										$scope.profile.userExists = result.userExists;
+										$scope.setRegister($scope.profile.isWpUser);
 									});
-								ProfileWpUser.get({id: $scope.profile.email}, function(iswpuser) {
-									$scope.profile.isWpUser = iswpuser.result;
-									$scope.setRegister($scope.profile.isWpUser);
+									ProfileEntries.getEntries($scope.profile.email).then(function(response) {
+										$scope.profile.gfEntries = response.data;
+									});
+									$scope.rolQuery();
 								});
-								ProfileEntries.getEntries($scope.profile.email).then(function(response) {
-									$scope.profile.gfEntries = response.data;
-								});
-								$scope.rolQuery();
-							});
-						} else {
-							$scope.profile = new Profile({enabled: true});
-							$scope.profile.addresses = [];
-							$scope.profile.roles = [];
-							$scope.profile.orders = [];
-							$scope.profile.register = false;
-						}
+							} else {
+								$scope.profile = new Profile({enabled: true});
+								$scope.profile.addresses = [];
+								$scope.profile.roles = [];
+								$scope.profile.orders = [];
+								$scope.profile.register = false;
+							}
+						};
 
 						$scope.saveProfile = function() {
 							if ($scope.profile.userName === undefined) {
@@ -69,6 +74,7 @@ angular.module('mavenApp')
 							}
 							$scope.profile.$save().then(function(data) {
 								$location.path('/profiles/edit/' + data.profileId);
+								$scope.getProfile();
 							});
 						};
 
@@ -243,5 +249,7 @@ angular.module('mavenApp')
 						$scope.showDetail = function(idx) {
 							$scope.orderDetail[idx] = !$scope.orderDetail[idx];
 						};
-						
+
+						$scope.getProfile();
+
 					}]);
