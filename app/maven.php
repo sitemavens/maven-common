@@ -132,8 +132,7 @@ $hookManager->addAction( 'wp_json_server_before_serve', array( $adminInitizalize
 $frontEndManager = \Maven\Front\FrontEndManager::current();
 $hookManager->addAction( 'wp_json_server_before_serve', array( $frontEndManager, 'registerRestApi' ) );
 
-$cartV2 = Api\V2\Cart::current();
-$hookManager->addAction( 'wp_json_server_before_serve', array( $cartV2, 'registerRestApi' ) );
+Api\Loader::init();
 
 if ( !is_admin() ) {
 	// Instantiate the front end

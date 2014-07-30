@@ -63,16 +63,14 @@ class MessageManager {
 		return self::createMessageObj( $message, Message::Warning );
 	}
 
+	
+	
+	
 	/**
-	 * Create a new Regular Message
-	 * @deprecated since version 0.4.2.1, use createSuccessfulMessage instead;
+	 * Create a new Success Message
 	 * @param string $message
 	 * @return \Maven\Core\Message\Message
 	 */
-	public static function createRegularMessage( $message, $data = null ) {
-		return self::createSuccessfulMessage( $message, $data );
-	}
-	
 	public static function createSuccessfulMessage( $message, $data = null ) {
 		return self::createMessageObj( $message, Message::Successful, $data );
 	}
