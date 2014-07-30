@@ -588,7 +588,7 @@ class Cart {
 		$message = $emailReceiptFullPath ? $output->getExternalTemplate( $emailReceiptFullPath ) : $output->getTemplate( $emailReceipt );
 
 		$subject = "Receipt for Order " . $order->getNumber();
-		$subject = HookManager::instance()->applyFilters( 'maven/cart/receipOrderSubject', $subject );
+		$subject = HookManager::instance()->applyFilters( 'maven/cart/receipOrderSubject', $subject, $order );
 
 		$mail = \Maven\Mail\MailFactory::build();
 		$mail->bcc( $mavenSettings->getBccNotificationsTo() )
