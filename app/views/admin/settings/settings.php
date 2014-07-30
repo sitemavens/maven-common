@@ -66,7 +66,7 @@
 			</div>
 
 		</tab>
-		<tab heading="Shipping">
+		<tab heading="eCommerce">
 			<div class="col-md-4">
 				<div class="panel panel-default">
 					<div class="panel-heading">Order</div>
@@ -75,7 +75,11 @@
 							<label for="">Order Handling Fee: $</label>
 							<input type="text" ng-model="setting.orderHandlingFee" /> 
 						</div>
-						 
+						<div class="form-group"  >
+							<label for="">Next Order Number:</label>
+							<input type="text"  /> 
+							<p class="help-block">Set the next order number to sync with your accounting systems.</p>
+						</div>
 					</div>
 				</div>
 			</div>
