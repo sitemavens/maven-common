@@ -279,7 +279,7 @@
 				</div>
 			</tab>  
 
-			<tab heading="Roles" ng-if="!hideSections">
+			<tab heading="Roles" ng-if="!hideSections && profile.isWpUser">
 				<div class="form-horizontal profile profile-edition">
 					<div class="col-sm-6" ng-hide="profile.isWpUser">
 						<alert type="info">
