@@ -23,8 +23,8 @@
 									<input required type="text" class="form-control" ng-model="setting.organizationName" name="organizationName" />
 								</div>
 								<div class="form-group"  >
-									<label for="signature">Signature</label>						
-									<input required type="text" class="form-control" ng-model="setting.signature" name="signature" />
+									<label for="signature">Signature</label>		
+									<textarea required  rows="5" class="form-control" ng-model="setting.signature" name="signature" ></textarea>
 								</div>
 							</div>
 						</div>

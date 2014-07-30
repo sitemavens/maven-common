@@ -225,8 +225,9 @@ abstract class MailBase {
 		// If options exists we need to merge them with the default ones
 		if ( $existingsOptions ) {
 			foreach ( $existingsOptions as $option ) {
-				if ( isset( $options[ $option->getName() ] ) )
+				if ( isset( $options[ $option->getName() ] ) ) {
 					$options[ $option->getName() ]->setValue( $option->getValue() );
+				}
 			}
 		}
 
