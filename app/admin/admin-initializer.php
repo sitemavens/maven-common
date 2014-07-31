@@ -3,14 +3,14 @@
 namespace Maven\Admin;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class AdminInitializer {
 
 	private $classes = array();
 
-	public function __construct() {
+	public function __construct () {
 
 		\Maven\Core\HookManager::instance()->addAction( 'admin_enqueue_scripts', array( $this, 'registerScripts' ), 10, 1 );
 
@@ -32,7 +32,7 @@ class AdminInitializer {
 		}
 	}
 
-	public function registerScripts( $hook ) {
+	public function registerScripts ( $hook ) {
 
 		$registry = \Maven\Settings\MavenRegistry::instance();
 
@@ -47,7 +47,7 @@ class AdminInitializer {
 				wp_enqueue_script( 'admin/global/directives/only-digits.js', $registry->getScriptsUrl() . "admin/global/directives/only-digits.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/global/controllers/main-nav.js', $registry->getScriptsUrl() . "admin/global/controllers/main-nav.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/global/controllers/messages.js', $registry->getScriptsUrl() . "admin/global/controllers/messages.js", 'mavenApp', $registry->getPluginVersion() );
-				
+
 				wp_enqueue_script( 'admin/dashboard/controllers/main.js', $registry->getScriptsUrl() . "admin/dashboard/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
 
 				wp_enqueue_script( 'admin/settings/controllers/main.js', $registry->getScriptsUrl() . "admin/settings/controllers/main.js", 'mavenApp', $registry->getPluginVersion() );
@@ -81,6 +81,7 @@ class AdminInitializer {
 				wp_enqueue_script( 'admin/shipping-methods/services/shipping-method.js', $registry->getScriptsUrl() . "admin/shipping-methods/services/shipping-method.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/shipping-methods/services/shipping-method-filter.js', $registry->getScriptsUrl() . "admin/shipping-methods/services/shipping-method-filter.js", 'mavenApp', $registry->getPluginVersion() );
 
+				wp_enqueue_script( 'admin/profiles/controllers/modal.js', $registry->getScriptsUrl() . "admin/profiles/controllers/modal.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/profiles/controllers/list.js', $registry->getScriptsUrl() . "admin/profiles/controllers/list.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/profiles/controllers/edit.js', $registry->getScriptsUrl() . "admin/profiles/controllers/edit.js", 'mavenApp', $registry->getPluginVersion() );
 				wp_enqueue_script( 'admin/profiles/services/profile.js', $registry->getScriptsUrl() . "admin/profiles/services/profile.js", 'mavenApp', $registry->getPluginVersion() );
@@ -102,16 +103,15 @@ class AdminInitializer {
 		}
 	}
 
-	public function registerRouters() {
+	public function registerRouters () {
 
 		// Only admin can register routes
-		if ( ! current_user_can( 'manage_options') )
+		if ( !current_user_can( 'manage_options' ) )
 			return;
-		
+
 		foreach ( $this->classes as $class ) {
 			\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $class, 'registerRoutes' ) );
 		}
-		
 	}
 
 }

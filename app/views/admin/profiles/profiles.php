@@ -1,3 +1,18 @@
+<script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Link Profile with Wordpress User</h3>
+        </div>
+        <div class="modal-body">
+			<div>
+				<span ng-bind="message"></span>
+			</div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+</script>
+
 <h2>Profiles <button class="btn btn-default" ng-click="newProfile()">New</button></h2>
 <table class="table table-striped">
 	<thead>
@@ -28,8 +43,8 @@
 				</span>
 			</td>
 			<td>
-				<img ng-src="{{imageUrl}}/profile-status/status-enabled.png" ng-show="hasRoles(profile.roles)" src=""/>
-				<img ng-src="{{imageUrl}}/profile-status/status-disabled.png" ng-hide="hasRoles(profile.roles)" src=""/>
+				<img style="cursor: pointer"  ng-src="{{imageUrl}}/profile-status/status-enabled.png" ng-show="hasRoles(profile.roles)" ng-click="open($index)" src=""/>
+				<img style="cursor: pointer" ng-src="{{imageUrl}}/profile-status/status-disabled.png" ng-hide="hasRoles(profile.roles)" ng-click="open($index)" src=""/>
 			</td>
 			<td>
 				{{profile.email}}

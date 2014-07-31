@@ -8,11 +8,11 @@ if ( !defined( 'ABSPATH' ) )
 
 class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements \Maven\Core\Interfaces\iView {
 
-	public function __construct() {
+	public function __construct () {
 		parent::__construct();
 	}
 
-	public function registerRoutes( $routes ) {
+	public function registerRoutes ( $routes ) {
 
 		$routes[ '/maven/profiles' ] = array(
 			array( array( $this, 'getProfiles' ), \WP_JSON_Server::READABLE ),
@@ -36,11 +36,15 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$routes[ '/maven/profileentries/(?P<id>\D+)' ] = array(
 			array( array( $this, 'getProfileEntries' ), \WP_JSON_Server::READABLE ),
 		);
+		$routes[ '/maven/profiletowpuser/(?P<id>\D+)' ] = array(
+			array( array( $this, 'linkProfiletoWp' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		);
+
 
 		return $routes;
 	}
 
-	public function getProfiles( $filter = array(), $page = 1 ) {
+	public function getProfiles ( $filter = array(), $page = 1 ) {
 		$manager = new \Maven\Core\ProfileManager();
 		$filter = new \Maven\Core\Domain\ProfileFilter();
 
@@ -71,22 +75,22 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$this->getOutput()->sendApiResponse( $response );
 	}
 
-	public function getProfileOrders( $id ) {
+	public function getProfileOrders ( $id ) {
 		$manager = new \Maven\Core\OrderManager();
 		$orders = $manager->getProfileOrders( $id );
 		$this->getOutput()->sendApiResponse( $orders );
 	}
 
-	public function getProfileEntries( $id ) {
+	public function getProfileEntries ( $id ) {
 		$formEntries = array();
 		if ( !\Maven\Validation::isGFMissing() ) {
-		$gfManager = new \Maven\Core\ProfileGF();
-		$formEntries = $gfManager->getGFEntries( $id );
-		$this->getOutput()->sendApiResponse( $formEntries );
+			$gfManager = new \Maven\Core\ProfileGF();
+			$formEntries = $gfManager->getGFEntries( $id );
+			$this->getOutput()->sendApiResponse( $formEntries );
 		}
 	}
 
-	public function newProfile( $data ) {
+	public function newProfile ( $data ) {
 		$manager = new \Maven\Core\ProfileManager();
 		$profile = new \Maven\Core\Domain\Profile();
 		$profile->load( $data );
@@ -106,7 +110,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$this->getOutput()->sendApiSuccess( $profile, 'Profile Saved' );
 	}
 
-	public function isWpUser( $id ) {
+	public function isWpUser ( $id ) {
 		$manager = new \Maven\Core\ProfileManager();
 		$registrationManager = new \Maven\Core\RegistrationManager();
 		$userExists = $registrationManager->getByEmail( $id );
@@ -114,11 +118,17 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 			$userExists = TRUE;
 		}
 		$isWpUser = $manager->isWPUser( $id );
-		$data = array( 'isWpUser' => $isWpUser,'userExists' => $userExists );
+		$data = array( 'isWpUser' => $isWpUser, 'userExists' => $userExists );
 		$this->getOutput()->sendApiResponse( $data );
 	}
 
-	public function getProfile( $id ) {
+	public function linkProfiletoWp ( $id ) {
+		$registerWp = FALSE;
+		die(print_r($id,true));
+//		$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
+	}
+
+	public function getProfile ( $id ) {
 		try {
 			$manager = new \Maven\Core\ProfileManager();
 			$profile = $manager->get( $id );
@@ -133,7 +143,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		}
 	}
 
-	public function editProfile( $id, $data ) {
+	public function editProfile ( $id, $data ) {
 		try {
 			$manager = new \Maven\Core\ProfileManager();
 			$profile = new \Maven\Core\Domain\Profile();
@@ -158,7 +168,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		}
 	}
 
-	public function deleteProfile( $id ) {
+	public function deleteProfile ( $id ) {
 		$manager = new \Maven\Core\ProfileManager();
 
 		$manager->delete( $id );
@@ -166,13 +176,13 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$this->getOutput()->sendApiSuccess( new \stdClass(), 'Profile Deleted' );
 	}
 
-	public function getProfileAddress( $id ) {
+	public function getProfileAddress ( $id ) {
 		$manager = new \Maven\Core\AddressManager();
 		$address = $manager->get( $id );
 		$this->getOutput()->sendApiResponse( $address );
 	}
 
-	public function deleteProfileAddress( $id ) {
+	public function deleteProfileAddress ( $id ) {
 		$manager = new \Maven\Core\AddressManager();
 
 		$manager->delete( $id );
@@ -180,7 +190,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$this->getOutput()->sendApiSuccess( new \stdClass(), 'Address Deleted' );
 	}
 
-	public function getView( $view ) {
+	public function getView ( $view ) {
 		switch ( $view ) {
 			case "profiles-edit":
 				$roleManager = new \Maven\Security\RoleManager();

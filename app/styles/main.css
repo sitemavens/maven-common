@@ -195,3 +195,6 @@ a.profile-edit-address.view-hide-address {
 a.profile-edit-address.view-hide-address:hover{
 	text-decoration: none;
 }
+body.modal-open{
+	overflow: auto;
+}

@@ -21,6 +21,14 @@ app.factory('ProfileWpUser', ['$resource', function($resource) {
 		return $resource('/wp-json/maven/profilewpuser/:id', {id: '@id'});
 	}]);
 
+app.factory('ProfileToWp', ['$http', function($http) {
+		return {
+			registerProfile: function(email) {
+				$http.post('/wp-json/maven/profiletowpuser/' + email);
+			}
+		};
+	}]);
+
 app.factory('ProfileEntries', ['$http', function($http) {
 		return {
 			getEntries: function(email) {
