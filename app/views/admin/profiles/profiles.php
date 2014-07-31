@@ -2,14 +2,32 @@
         <div class="modal-header">
             <h3 class="modal-title">Link Profile with Wordpress User</h3>
         </div>
-        <div class="modal-body">
+		<div ng-if="!userCreated" class="modal-body">
 			<div>
 				<span>{{message}}</span>
 			</div>
-        </div>
+		</div>
+        <div ng-if="userCreated" class="modal-body">
+			<div>
+				<span>{{message}}</span>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-4 control-label">Username: </label>
+				<div class="col-sm-2">
+					<span ng-bind="userEmail"></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="col-sm-4 control-label">Password: </label>
+				<div class="col-sm-2">
+					<span ng-bind="userPassword"></span>
+				</div>
+			</div>
+		</div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-primary" ng-if="!showClose" ng-click="ok()">OK</button>
+            <button class="btn btn-default" ng-if="!showClose"  ng-click="cancel()">Cancel</button>
+			<button class="btn btn-default" ng-if="showClose"  ng-click="close()">Close</button>
         </div>
 </script>
 

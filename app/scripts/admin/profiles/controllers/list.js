@@ -72,5 +72,6 @@ angular.module('mavenApp')
 							});
 
 						};
+						
 
 					}]);
