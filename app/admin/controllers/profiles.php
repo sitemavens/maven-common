@@ -36,7 +36,7 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$routes[ '/maven/profileentries/(?P<id>\D+)' ] = array(
 			array( array( $this, 'getProfileEntries' ), \WP_JSON_Server::READABLE ),
 		);
-		$routes[ '/maven/profiletowpuser/(?P<id>\D+)' ] = array(
+		$routes[ '/maven/profiletowpuser/(?P<id>\d+)' ] = array(
 			array( array( $this, 'linkProfiletoWp' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
 
@@ -123,9 +123,38 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	}
 
 	public function linkProfiletoWp ( $id ) {
-		$registerWp = FALSE;
-		die(print_r($id,true));
-//		$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
+		try {
+			$manager = new \Maven\Core\ProfileManager();
+			$registrationManager = new \Maven\Core\RegistrationManager();
+			$profile = $manager->get( $id );
+			$registerWp = FALSE;
+			$password = FALSE;
+			$username = $profile->getEmail();
+			$isWpUser = $manager->isWPUser( $username );
+			if ( !$isWpUser ) {
+				$registerWp = TRUE;
+				$userExists = $registrationManager->getByEmail( $username );
+				if ( $userExists === FALSE ) {
+					$password = $manager->generateWpPassword();
+				}
+			} else {
+				$profile->setUserId( 0 );
+			}
+			$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
+			if ( $password !== FALSE ) {
+				$this->getOutput()->sendApiSuccess( $password, 'Profile Linked Sucessfully' );
+			} else if (!$password && $registerWp) {
+				$this->getOutput()->sendApiSuccess( '', 'Profile Linked Sucessfully' );
+			}else{
+				$this->getOutput()->sendApiSuccess( 'removed', 'Profile Linked Sucessfully' );
+			}
+		} catch ( \Maven\Exceptions\NotFoundException $e ) {
+			//Specific exception
+			$this->getOutput()->sendApiError( $id, "Profile Not found" );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $id, "An error has ocurred" );
+		}
 	}
 
 	public function getProfile ( $id ) {

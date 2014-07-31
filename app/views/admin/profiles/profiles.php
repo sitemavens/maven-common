@@ -4,7 +4,7 @@
         </div>
         <div class="modal-body">
 			<div>
-				<span ng-bind="message"></span>
+				<span>{{message}}</span>
 			</div>
         </div>
         <div class="modal-footer">
@@ -43,8 +43,8 @@
 				</span>
 			</td>
 			<td>
-				<img style="cursor: pointer"  ng-src="{{imageUrl}}/profile-status/status-enabled.png" ng-show="hasRoles(profile.roles)" ng-click="open($index)" src=""/>
-				<img style="cursor: pointer" ng-src="{{imageUrl}}/profile-status/status-disabled.png" ng-hide="hasRoles(profile.roles)" ng-click="open($index)" src=""/>
+				<img style="cursor: pointer"  ng-src="{{imageUrl}}/profile-status/status-enabled.png" ng-if="profile.userId !== '0'" ng-click="open($index)" src=""/>
+				<img style="cursor: pointer" ng-src="{{imageUrl}}/profile-status/status-disabled.png" ng-if="profile.userId === '0'" ng-click="open($index)" src=""/>
 			</td>
 			<td>
 				{{profile.email}}

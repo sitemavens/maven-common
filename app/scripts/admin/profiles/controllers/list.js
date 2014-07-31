@@ -1,8 +1,8 @@
 'use strict';
 angular.module('mavenApp')
 		.controller('ProfileCtrl',
-				['$scope', '$location', '$modal', 'Profile', 'ProfileFilter', 'ProfileToWp',
-					function($scope, $location, $modal, Profile, ProfileFilter, ProfileToWp) {
+				['$scope', '$location', '$modal', 'Profile', 'ProfileFilter', 'ProfileToWp', 'ProfileWpUser',
+					function($scope, $location, $modal, Profile, ProfileFilter, ProfileToWp, ProfileWpUser) {
 						$scope.imageUrl = Maven.imagesUrl;
 						$scope.registrationContainer = false;
 						$scope.mailtoRegister = '';
@@ -14,12 +14,6 @@ angular.module('mavenApp')
 								$scope.totalItems = result.totalItems;
 							});
 						};
-						$scope.hasRoles = function(roles) {
-							if (roles.length > 0) {
-								return true;
-							}
-							return false;
-						};
 						$scope.ProfileFilter = ProfileFilter;
 						$scope.getPage();
 
@@ -27,7 +21,6 @@ angular.module('mavenApp')
 							ProfileFilter.page = page;
 							$scope.getPage();
 						};
-
 
 						$scope.newProfile = function() {
 							$location.path('profiles/new');
@@ -47,22 +40,19 @@ angular.module('mavenApp')
 									});
 						};
 
-						$scope.linkProfile = function(idx) {
-							$scope.mailtoRegister = $scope.Profiles[idx].email;
-							$scope.registrationContainer = !$scope.registrationContainer;
-
-						};
-
-						$scope.toggleLinkToWp = function() {
-							$scope.registrationContainer = !$scope.registrationContainer;
-						};
-
 						$scope.open = function(idx) {
-							var isWpUser = $scope.hasRoles($scope.Profiles[idx].roles);
-							if (isWpUser) {
-								$scope.message = "Do you wish to link this profile with a Wordpress User?"
+							ProfileWpUser.get({id: $scope.Profiles[idx].email}, function(result) {
+								$scope.isWpUser = result.isWpUser;
+								$scope.userExists = result.userExists;
+							});
+							if (!$scope.isWpUser) {
+								if ($scope.userExists) {
+									$scope.message = "Do you wish to link this profile with a Wordpress User?";
+								} else {
+									$scope.message = "Do you wish to create a Wordpress user and link it with this profile?";
+								}
 							} else {
-								$scope.message = "Do you wish to create a Wordpress user and link it with this profile?"
+								$scope.message = "Do you wish to remove the link within this profile and its Wordpress User?";
 							}
 							$modal.open({
 								scope: $scope,
@@ -73,6 +63,9 @@ angular.module('mavenApp')
 										return $scope.message;
 									},
 									id: function() {
+										return $scope.Profiles[idx].id;
+									},
+									email: function() {
 										return $scope.Profiles[idx].email;
 									}
 								}
