@@ -31,7 +31,11 @@
         </div>
 </script>
 
-<h2>Profiles <button class="btn btn-default" ng-click="newProfile()">New</button></h2>
+<h2>Profiles <button class="btn btn-default" ng-click="newProfile()">New</button>
+	<input placeholder="Filter by email" ng-change="getPage()"  ng-model="ProfileFilter.email"/>
+	<input placeholder="Filter by first name" ng-change="getPage()"  ng-model="ProfileFilter.firstName"/>
+	<input placeholder="Filter by last name" ng-change="getPage()"  ng-model="ProfileFilter.lastName"/>
+</h2>
 <table class="table table-striped">
 	<thead>
 		<tr>

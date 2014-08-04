@@ -48,16 +48,16 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$manager = new \Maven\Core\ProfileManager();
 		$filter = new \Maven\Core\Domain\ProfileFilter();
 
-		if ( key_exists( 'email', $filter ) && $filter[ 'email' ] ) {
-			$filter->setEmail( $filter[ 'email' ] );
+		if ( key_exists( 'email', $_GET ) && $_GET[ 'email' ] ) {
+			$filter->setEmail( $_GET[ 'email' ] );
 		}
 
-		if ( key_exists( 'firstName', $filter ) && $filter[ 'firstName' ] ) {
-			$filter->setFirstName( $filter[ 'firstName' ] );
+		if ( key_exists( 'firstName', $_GET ) && $_GET[ 'firstName' ] ) {
+			$filter->setFirstName( $_GET[ 'firstName' ] );
 		}
 
-		if ( key_exists( 'lastName', $filter ) && $filter[ 'lastName' ] ) {
-			$filter->setLastName( $filter[ 'lastName' ] );
+		if ( key_exists( 'lastName', $_GET ) && $_GET[ 'lastName' ] ) {
+			$filter->setLastName( $_GET[ 'lastName' ] );
 		}
 
 		$sortBy = 'email';

@@ -209,3 +209,10 @@ div.modal-body{
 .modal-footer{
 	margin-top: 0;	
 }
+h2 input {
+    font-size: 14px;
+    height: 30px;
+    position: relative;
+    top: -3px;
+    width: 178px;
+}
