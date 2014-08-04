@@ -86,17 +86,28 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 	public function getProfileEntries ( $id ) {
 		$formEntries = array();
-		
+
 		if ( !\Maven\Core\GravityFormManager::isGFMissing() ) {
 			$gfManager = new \Maven\Core\GravityFormManager();
 			$formEntries = $gfManager->getEntries( $id );
 		}
-		
+
 		$this->getOutput()->sendApiResponse( $formEntries );
 	}
 
-	public function getMandrillInfo () {
+	public function getMandrillInfo ( $id ) {
+
+		$profileManager = new \Maven\Core\ProfileManager();
+		$profile = $profileManager->get( $id );
+
+		if ( $profile->isEmpty() ) {
+			$this->getOutput()->sendApiError( null, 'Profile Not found' );
+		}
 		
+		$mandrillManager = new \Maven\Core\MandrillManager();
+		$messages = $mandrillManager->getMessages( $profile->getEmail() );
+		
+		$this->getOutput()->sendApiSuccess( $messages, 'Mandrill Messages' );
 	}
 
 	public function newProfile ( $data ) {

@@ -235,7 +235,7 @@
 					<div class="form-group" ng-if="profile.userExists && !profile.isWpUser">
 						<label for="" class="col-sm-2 control-label"></label>
 						<div class="col-sm-4">
-									<span>A Wordpress user with that email has been found, do you want to link it?</span></br>
+							<span>A Wordpress user with that email has been found, do you want to link it?</span></br>
 						</div>
 					</div>
 					<div class="form-group" ng-show="profile.isWpUser">
@@ -408,7 +408,50 @@
 					</li>
 				</ul>
 			</tab>
-			
+			<tab ng-if="!hideSections">
+				<tab-heading class="gravityForm-icon"><img style="width:40px;" ng-src="{{imageUrl}}/mandrill-logo.png"/> Mandrill messages</tab-heading>
+
+				<ul class="list-group">
+					<li ng-if="profile.mandrillMessages.length === 0" class="list-group-item">
+						<div>
+							<div class="panel-heading" ><span>No Mandrill Messages for this profile</span> </div>
+						</div>
+					</li>
+					<li class="list-group-item" ng-if="profile.mandrillMessages" >
+						<div  class="panel panel-default">
+							<!-- Default panel contents -->
+							<div class="panel-heading" >  Messages </div>
+							<!-- Table -->
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Date</th>
+										<th>Subject</th>
+										<th>Opens</th>
+										<th>Clicks</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="message in profile.mandrillMessages">
+										<td>
+											<span  ng-bind="message.ts"></span>
+										</td>
+										<td>
+											<span  ng-bind="message.subject"></span>
+										</td>
+										<td>
+											<span  ng-bind="message.opens"></span>
+										</td>
+										<td>
+											<span  ng-bind="message.clicks"></span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</li>
+				</ul>
+			</tab>
 		</tabset>
 	</ng-form>
 </div>

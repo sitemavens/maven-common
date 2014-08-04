@@ -187,3 +187,11 @@ if ( !is_admin() ) {
 	$menuManager->registerMenu( $attributes );
 	$menuManager->registerMenu( $https );
 }  
+
+
+//
+//$profile = new Core\Domain\Profile();
+//
+//var_dump(is_subclass_of( $profile, "DomainObject" ) );
+//
+//var_dump(is_subclass_of( $profile, "\Maven\Core\DomainObject" ) );

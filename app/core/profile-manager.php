@@ -22,10 +22,13 @@ class ProfileManager {
 		$this->mapper = new Mappers\ProfileMapper( $this->profileTableName );
 	}
 
-	/*
-	 * return \Maven\Core\Domain\Profile
+	 
+	/**
+	 * 
+	 * @param int $id
+	 * @return \Maven\Core\Domain\Profile
+	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-
 	public function get ( $id ) {
 
 		if ( !$id ) {

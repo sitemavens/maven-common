@@ -20,9 +20,7 @@ class MandrillMail extends MailBase {
 		$this->setId( "mandrill" );
 
 		$defaultOptions = array(
-			new Option(
-					"apiKey", "Api Key", '', '', OptionType::Input
-			),
+			 
 		);
 
 		$this->addSettings( $defaultOptions );
@@ -37,9 +35,8 @@ class MandrillMail extends MailBase {
 
 		require_once __DIR__ . '/../libs/mandrill/Mandrill.php';
 
-		$apiKey = $this->getSetting( 'apiKey' );
-		$apiKey = \Maven\Core\HookManager::instance()->applyFilters( 'maven/mail/mandrill/api-key', $apiKey );
-
+		$apiKey = \Maven\Settings\MavenRegistry::getMandrillApiKey();
+		 
 		if ( !$apiKey ) {
 			throw new \Maven\Exceptions\RequiredException( 'Mandrill Api Key is required' );
 		}

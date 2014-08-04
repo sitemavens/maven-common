@@ -81,6 +81,8 @@ class MavenRegistry extends WordpressRegistry {
 				    "gatewayTestingMode", "Gateway Testing Mode", true, true, OptionType::CheckBox
 			    ),new Option(
 				    "orderHandlingFee", "Order Handling Fee", 0, 0, OptionType::Input
+			    ),new Option(
+				    "mandrillApiKey", "Mandrill Api Key", '', '', OptionType::Input
 			    )
 			);
 
@@ -89,6 +91,14 @@ class MavenRegistry extends WordpressRegistry {
 		}
 
 		return self::$instance;
+	}
+	
+	public function getMandrillApiKey(){
+		
+		$apiKey = $this->getValue( 'mandrillApiKey' );
+		$apiKey = \Maven\Core\HookManager::instance()->applyFilters( 'maven/mail/mandrill/api-key', $apiKey );
+		
+		return $apiKey;
 	}
 
 	public function getHttpsPages() {
