@@ -198,3 +198,21 @@ a.profile-edit-address.view-hide-address:hover{
 body.modal-open{
 	overflow: auto;
 }
+h3.modal-title {
+    text-align: center;
+}
+div.modal-body{
+	display: table;
+    margin: 0 auto;
+}
+
+.modal-footer{
+	margin-top: 0;	
+}
+h2 input {
+    font-size: 14px;
+    height: 30px;
+    position: relative;
+    top: -3px;
+    width: 178px;
+}
