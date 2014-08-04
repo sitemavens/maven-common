@@ -43,10 +43,9 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$routes[ '/maven/profile/(?P<id>\d+)/mandrill' ] = array(
 			array( array( $this, 'getMandrillInfo' ), \WP_JSON_Server::READABLE ),
 		);
-		
+
 		return $routes;
 	}
-	
 
 	public function getProfiles ( $filter = array(), $page = 1 ) {
 		$manager = new \Maven\Core\ProfileManager();
@@ -87,19 +86,19 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 	public function getProfileEntries ( $id ) {
 		$formEntries = array();
-		if ( !\Maven\Validation::isGFMissing() ) {
-			$gfManager = new \Maven\Core\ProfileGF();
-			$formEntries = $gfManager->getGFEntries( $id );
-			$this->getOutput()->sendApiResponse( $formEntries );
+		
+		if ( !\Maven\Core\GravityFormManager::isGFMissing() ) {
+			$gfManager = new \Maven\Core\GravityFormManager();
+			$formEntries = $gfManager->getEntries( $id );
 		}
+		
+		$this->getOutput()->sendApiResponse( $formEntries );
 	}
 
-	
-	public function getMandrillInfo(){
+	public function getMandrillInfo () {
 		
 	}
-	
-	
+
 	public function newProfile ( $data ) {
 		$manager = new \Maven\Core\ProfileManager();
 		$profile = new \Maven\Core\Domain\Profile();
@@ -153,9 +152,9 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 			$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
 			if ( $password !== FALSE ) {
 				$this->getOutput()->sendApiSuccess( $password, 'Profile Linked Sucessfully' );
-			} else if (!$password && $registerWp) {
+			} else if ( !$password && $registerWp ) {
 				$this->getOutput()->sendApiSuccess( '', 'Profile Linked Sucessfully' );
-			}else{
+			} else {
 				$this->getOutput()->sendApiSuccess( 'removed', 'Profile Linked Sucessfully' );
 			}
 		} catch ( \Maven\Exceptions\NotFoundException $e ) {
