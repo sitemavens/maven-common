@@ -40,9 +40,13 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 			array( array( $this, 'linkProfiletoWp' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
 
-
+		$routes[ '/maven/profile/(?P<id>\d+)/mandrill' ] = array(
+			array( array( $this, 'getMandrillInfo' ), \WP_JSON_Server::READABLE ),
+		);
+		
 		return $routes;
 	}
+	
 
 	public function getProfiles ( $filter = array(), $page = 1 ) {
 		$manager = new \Maven\Core\ProfileManager();
@@ -90,6 +94,12 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		}
 	}
 
+	
+	public function getMandrillInfo(){
+		
+	}
+	
+	
 	public function newProfile ( $data ) {
 		$manager = new \Maven\Core\ProfileManager();
 		$profile = new \Maven\Core\Domain\Profile();

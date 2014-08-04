@@ -408,7 +408,7 @@
 					</li>
 				</ul>
 			</tab>
-
+			
 		</tabset>
 	</ng-form>
 </div>
