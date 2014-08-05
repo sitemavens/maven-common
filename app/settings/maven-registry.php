@@ -91,13 +91,23 @@ class MavenRegistry extends WordpressRegistry {
 					"currencyCountry", "Currency Country", 'US', 'US', OptionType::DropDown
 				),new Option(
 					"currencyDisplayFormat", "Currency Display Format", 'symbol_number', 'symbol_number', OptionType::DropDown
-				)
+				),new Option(
+				    "mandrillApiKey", "Mandrill Api Key", '', '', OptionType::Input
+			    )
 			);
 			self::$instance = new self( );
 			self::$instance->setOptions( $defaultOptions );
 		}
 
 		return self::$instance;
+	}
+	
+	public function getMandrillApiKey(){
+		
+		$apiKey = $this->getValue( 'mandrillApiKey' );
+		$apiKey = \Maven\Core\HookManager::instance()->applyFilters( 'maven/mail/mandrill/api-key', $apiKey );
+		
+		return $apiKey;
 	}
 
 	public function getHttpsPages() {

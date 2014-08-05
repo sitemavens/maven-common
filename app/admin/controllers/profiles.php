@@ -36,10 +36,13 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$routes[ '/maven/profileentries/(?P<id>\D+)' ] = array(
 			array( array( $this, 'getProfileEntries' ), \WP_JSON_Server::READABLE ),
 		);
-		$routes[ '/maven/profiletowpuser/(?P<id>\D+)' ] = array(
+		$routes[ '/maven/profiletowpuser/(?P<id>\d+)' ] = array(
 			array( array( $this, 'linkProfiletoWp' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
 
+		$routes[ '/maven/profile/(?P<id>\d+)/mandrill' ] = array(
+			array( array( $this, 'getMandrillInfo' ), \WP_JSON_Server::READABLE ),
+		);
 
 		return $routes;
 	}
@@ -48,16 +51,16 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 		$manager = new \Maven\Core\ProfileManager();
 		$filter = new \Maven\Core\Domain\ProfileFilter();
 
-		if ( key_exists( 'email', $filter ) && $filter[ 'email' ] ) {
-			$filter->setEmail( $filter[ 'email' ] );
+		if ( key_exists( 'email', $_GET ) && $_GET[ 'email' ] ) {
+			$filter->setEmail( $_GET[ 'email' ] );
 		}
 
-		if ( key_exists( 'firstName', $filter ) && $filter[ 'firstName' ] ) {
-			$filter->setFirstName( $filter[ 'firstName' ] );
+		if ( key_exists( 'firstName', $_GET ) && $_GET[ 'firstName' ] ) {
+			$filter->setFirstName( $_GET[ 'firstName' ] );
 		}
 
-		if ( key_exists( 'lastName', $filter ) && $filter[ 'lastName' ] ) {
-			$filter->setLastName( $filter[ 'lastName' ] );
+		if ( key_exists( 'lastName', $_GET ) && $_GET[ 'lastName' ] ) {
+			$filter->setLastName( $_GET[ 'lastName' ] );
 		}
 
 		$sortBy = 'email';
@@ -83,11 +86,28 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 
 	public function getProfileEntries ( $id ) {
 		$formEntries = array();
-		if ( !\Maven\Validation::isGFMissing() ) {
-			$gfManager = new \Maven\Core\ProfileGF();
-			$formEntries = $gfManager->getGFEntries( $id );
-			$this->getOutput()->sendApiResponse( $formEntries );
+
+		if ( !\Maven\Core\GravityFormManager::isGFMissing() ) {
+			$gfManager = new \Maven\Core\GravityFormManager();
+			$formEntries = $gfManager->getEntries( $id );
 		}
+
+		$this->getOutput()->sendApiResponse( $formEntries );
+	}
+
+	public function getMandrillInfo ( $id ) {
+
+		$profileManager = new \Maven\Core\ProfileManager();
+		$profile = $profileManager->get( $id );
+
+		if ( $profile->isEmpty() ) {
+			$this->getOutput()->sendApiError( null, 'Profile Not found' );
+		}
+		
+		$mandrillManager = new \Maven\Core\MandrillManager();
+		$messages = $mandrillManager->getMessages( $profile->getEmail() );
+		
+		$this->getOutput()->sendApiSuccess( $messages, 'Mandrill Messages' );
 	}
 
 	public function newProfile ( $data ) {
@@ -123,9 +143,38 @@ class Profiles extends \Maven\Admin\Controllers\MavenAdminController implements 
 	}
 
 	public function linkProfiletoWp ( $id ) {
-		$registerWp = FALSE;
-		die(print_r($id,true));
-//		$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
+		try {
+			$manager = new \Maven\Core\ProfileManager();
+			$registrationManager = new \Maven\Core\RegistrationManager();
+			$profile = $manager->get( $id );
+			$registerWp = FALSE;
+			$password = FALSE;
+			$username = $profile->getEmail();
+			$isWpUser = $manager->isWPUser( $username );
+			if ( !$isWpUser ) {
+				$registerWp = TRUE;
+				$userExists = $registrationManager->getByEmail( $username );
+				if ( $userExists === FALSE ) {
+					$password = $manager->generateWpPassword();
+				}
+			} else {
+				$profile->setUserId( 0 );
+			}
+			$profile = $manager->addProfile( $profile, $registerWp, $username, $password );
+			if ( $password !== FALSE ) {
+				$this->getOutput()->sendApiSuccess( $password, 'Profile Linked Sucessfully' );
+			} else if ( !$password && $registerWp ) {
+				$this->getOutput()->sendApiSuccess( '', 'Profile Linked Sucessfully' );
+			} else {
+				$this->getOutput()->sendApiSuccess( 'removed', 'Profile Linked Sucessfully' );
+			}
+		} catch ( \Maven\Exceptions\NotFoundException $e ) {
+			//Specific exception
+			$this->getOutput()->sendApiError( $id, "Profile Not found" );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $id, "An error has ocurred" );
+		}
 	}
 
 	public function getProfile ( $id ) {

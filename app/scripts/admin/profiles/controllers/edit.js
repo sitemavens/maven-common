@@ -2,11 +2,13 @@
 
 angular.module('mavenApp')
 		.controller('ProfileEditCtrl',
-				['$scope', '$routeParams', '$location', 'ProfileOrders', 'Profile', 'ProfileAddress', 'ProfileWpUser', 'ProfileEntries', 'Rol',
-					function($scope, $routeParams, $location, ProfileOrders, Profile, ProfileAddress, ProfileWpUser, ProfileEntries, Rol) {
+				['$scope', '$routeParams', '$location', 'ProfileOrders', 'Profile', 'ProfileAddress', 'ProfileWpUser', 'ProfileEntries', 'Rol','Mandrill',
+					function($scope, $routeParams, $location, ProfileOrders, Profile, ProfileAddress, ProfileWpUser, ProfileEntries, Rol, Mandrill) {
 						$scope.hideSections = $location.path() === '/profiles/new';
 						$scope.oneAtATime = true;
-						$scope.profile = {};
+						$scope.profile = {
+							mandrillMessages : false
+						};
 						$scope.imageUrl = Maven.imagesUrl;
 						$scope.addressExists = {};
 						$scope.hasPrimaryAddress;
@@ -46,6 +48,11 @@ angular.module('mavenApp')
 									ProfileEntries.getEntries($scope.profile.email).then(function(response) {
 										$scope.profile.gfEntries = response.data;
 									});
+									
+									Mandrill.getMessages($scope.profile.profileId).then(function(response){
+										$scope.profile.mandrillMessages = response.data;
+									});
+									
 									$scope.rolQuery();
 								});
 							} else {

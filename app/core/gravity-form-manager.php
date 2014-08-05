@@ -5,13 +5,28 @@ namespace Maven\Core;
 if ( !defined( 'ABSPATH' ) )
 	exit;
 
-class profileGF {
+class GravityFormManager {
 
 	public function __construct() {
 		;
 	}
 
-	public function getGFEntries( $searchValue ) {
+	public static function isGFMissing () {
+
+		$result = class_exists( '\GFForms' );
+
+		// If the common plugin isn't activate, lets add a default option.
+		if ( !$result ) {
+			$exists = in_array( 'gravityforms/gravityforms.php', (array) get_option( 'active_plugins', array() ) );
+			if ( $exists ) {
+				$result = require_once( ABSPATH . "wp-content/plugins/gravityforms/gravityforms.php" );
+			} 
+		}
+
+		return !$result;
+	}
+	
+	public function getEntries( $searchValue ) {
 		
 		$search_criteria[ "field_filters" ][] = array( 'value' => $searchValue );
 

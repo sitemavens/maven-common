@@ -4,29 +4,30 @@ namespace Maven\Core\UI;
 
 class OutputTranslator {
 
-	public function __construct() {
+	public function __construct () {
 		;
 	}
 
-	public function sendApiResponse( $object, $status = '200', $statusText = 'OK' ) {
+	public function sendApiResponse ( $object, $status = '200', $statusText = 'OK' ) {
 		header( "HTTP/1.0 {$status} {$statusText}" );
+
 		wp_send_json( $this->convert( $object ) );
 	}
 
-	public function sendApiSuccess( $object, $message = 'OK' ) {
+	public function sendApiSuccess ( $object, $message = 'OK' ) {
 		$this->sendApiResponse( $object, 200, $message );
 	}
 
-	public function sendApiError( $object, $message ) {
+	public function sendApiError ( $object, $message ) {
 		$this->sendApiResponse( $object, 500, $message );
 	}
 
-	public function sendData( $object ) {
+	public function sendData ( $object ) {
 
 		wp_send_json_success( $this->convert( $object ) );
 	}
 
-	public function sendError( $object ) {
+	public function sendError ( $object ) {
 
 		wp_send_json_error( $this->convert( $object ) );
 	}
@@ -54,13 +55,13 @@ class OutputTranslator {
 //	}
 //	
 
-	private function toArrayMagic( $obj ) {
+	private function toArrayMagic ( $obj ) {
 
 		$return = array();
 
 		if ( is_array( $obj ) ) {
 			foreach ( $obj as $key => $value ) {
-				if ( ! is_object( $value ) && ! is_array( $value ) ) {
+				if ( !is_object( $value ) && !is_array( $value ) ) {
 					$return[ $key ] = $value;
 				} else {
 					$return[ $key ] = $this->toArrayMagic( $value );
@@ -134,8 +135,9 @@ class OutputTranslator {
 		}
 
 		//Not sure why it doesn't read the id property, so that's way we are adding it manually.
-		if ( is_callable( array( $obj, 'getId' ) ) )
+		if ( is_callable( array( $obj, 'getId' ) ) ) {
 			$return[ 'id' ] = $obj->getId();
+		}
 
 		if ( empty( $return ) ) {
 			//the array is empty, convert to empty object
@@ -145,11 +147,13 @@ class OutputTranslator {
 		return $return;
 	}
 
-	public function convert( $object ) {
+	public function convert ( $object ) {
 
-		if ( ! is_object( $object ) && ! is_array( $object ) ) {
+		if ( !is_object( $object ) && !is_array( $object ) ) {
 			return $object;
 		}
+
+		 
 
 		$return = $this->toArrayMagic( $object );
 
