@@ -11,7 +11,7 @@ class CurrencyManager {
 	 * Return an array with all currency displays availables
 	 * @return array	Currency formats
 	 */
-	public static function pricingDisplaySetting( $option = '' ) {
+	public static function getPricingDisplaySetting( $option = '' ) {
 		$options = array('symbol_number' => array('format' => '%symbol%%number%', 'example' => '$99.99'),
 						'symbol_space_number' => array('format' => '%symbol% %number%', 'example' => '$ 99.99'),
 						'number_symbol' => array('format' => '%number%%symbol%', 'example' => '99.99$'),
@@ -35,7 +35,7 @@ class CurrencyManager {
 	 * @param string	$option Possible values 'decimals' | 'thousand_separator' | 'decimal_separator'
 	 * @return mixed	Array pricing options, String specific pricing option or null
 	 */
-	public static function pricingSettings( $option = ARRAY_A ) {
+	public static function getPricingSettings( $option = ARRAY_A ) {
 		$mavenRegistry = MavenRegistry::instance();
 		$pricing['decimalDigits'] = (int) $mavenRegistry->getCurrencyDecimalDigits();
 		$pricing['decimalSeparator'] = ( $mavenRegistry->getCurrencyDecimalSeparator() ? $mavenRegistry->getCurrencyDecimalSeparator() : '.' );
@@ -57,12 +57,12 @@ class CurrencyManager {
 							thousand_separator
 	 * @return string 
 	 */
-	public static function numberFormat($value, $options = array()) {
+	public static function formatNumber($value, $options = array()) {
 		if( empty($value) && $value != 0 ){
 			return '';
 		}
 
-		$pricingSettings = self::pricingSettings();
+		$pricingSettings = self::getPricingSettings();
 
 		$pricingSettings = wp_parse_args($options, $pricingSettings);
 
@@ -105,7 +105,7 @@ class CurrencyManager {
 	 * @param string $return	Possibles values 'code' | 'symbol'
 	 * @return mixed	Array with currrency values, String with specific currency value or null
 	 */
-	public static function currencyData($return = ARRAY_A) {
+	public static function getCurrencyData($return = ARRAY_A) {
 		$country = CountryManager::instance()->get( MavenRegistry::instance()->getCurrencyCountry() );
 		$currency = ( isset( $country['currency'] ) ) ? $country['currency'] : null;
 		if( !$currency ){
@@ -128,7 +128,7 @@ class CurrencyManager {
 	 */
 	public static function getPricingDisplay( $key = ARRAY_A, $currencyDisplay = '' ) {
 		$currencyDisplay = ( !empty($currencyDisplay ) ? $currencyDisplay : MavenRegistry::instance()->getCurrencyDisplayFormat() );
-		$displayOptions = self::pricingDisplaySetting();
+		$displayOptions = self::getPricingDisplaySetting();
 
 		if( $displayOptions ) {
 			if($key == ARRAY_A){
@@ -177,13 +177,13 @@ class CurrencyManager {
 			$options['thousandSeparator'] = $thousandSeparator;
 		}
 
-		$value = self::numberFormat($value, $options);
+		$value = self::formatNumber($value, $options);
 		$output = $value;
-		$currencyDisplay = ($currencyDisplay) ? self::pricingDisplaySetting('format', $currencyDisplay) : self::getPricingDisplay('format');
+		$currencyDisplay = ($currencyDisplay) ? self::getPricingDisplaySetting('format', $currencyDisplay) : self::getPricingDisplay('format');
 
 		if( $currencyDisplay && is_string($currencyDisplay) ) {
-			$currencySymbol = ($currencySymbol) ? $currencySymbol : self::currencyData('symbol');
-			$currencyCode =  ($currencyCode) ? $currencyCode: self::currencyData('code');
+			$currencySymbol = ($currencySymbol) ? $currencySymbol : self::getCurrencyData('symbol');
+			$currencyCode =  ($currencyCode) ? $currencyCode: self::getCurrencyData('code');
 			$output = str_replace( array('%code%', '%symbol%', '%number%'), array($currencyCode, $currencySymbol, $value), $currencyDisplay );
 		}
 

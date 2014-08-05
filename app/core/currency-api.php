@@ -12,7 +12,7 @@ class CurrencyApi {
 	 * @return array	Currency formats or empty if the format provided doesn't exist
 	 */
 	public static function getCurrencyFormats( $format = '' ) {
-		return CurrencyManager::pricingDisplaySetting( $format );
+		return CurrencyManager::getPricingDisplaySetting( $format );
 	}
 	
 	/**
@@ -24,8 +24,8 @@ class CurrencyApi {
 							thousand_separator
 	 * @return string 
 	 */
-	public static function numberFormat($value, $options = array()) {
-		return CurrencyManager::numberFormat( $value, $options );
+	public static function formatNumber($value, $options = array()) {
+		return CurrencyManager::formatNumber( $value, $options );
 	}
 
 	/**
