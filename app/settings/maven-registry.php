@@ -81,9 +81,18 @@ class MavenRegistry extends WordpressRegistry {
 				    "gatewayTestingMode", "Gateway Testing Mode", true, true, OptionType::CheckBox
 			    ),new Option(
 				    "orderHandlingFee", "Order Handling Fee", 0, 0, OptionType::Input
-			    )
+			    ),new Option(
+				    "currencyDecimalDigits", "Currency Number of Decimal Digits", 2, 2, OptionType::Input
+				),new Option(
+				    "currencyDecimalSeparator", "Currency Decimal Separator", '.', '.', OptionType::Input
+			    ),new Option(
+				    "currencyThousandSeparator", "Currency Thousand Separator", ' ', ' ', OptionType::Input
+			    ),new Option(
+					"currencyCountry", "Currency Country", 'US', 'US', OptionType::DropDown
+				),new Option(
+					"currencyDisplayFormat", "Currency Display Format", 'symbol_number', 'symbol_number', OptionType::DropDown
+				)
 			);
-
 			self::$instance = new self( );
 			self::$instance->setOptions( $defaultOptions );
 		}
@@ -355,6 +364,50 @@ class MavenRegistry extends WordpressRegistry {
 
 	public function getCartUrl() {
 		return $this->getValue( 'cartUrl' );
+	}
+
+	public function getCurrencyDisplayFormat() {
+		return $this->getValue( 'currencyDisplayFormat' );
+	}
+	
+	public static function getCurrencyFormatOptions() {
+		$options = \Maven\Core\CurrencyManager::pricingDisplaySetting();
+		$formatOptions = array();
+		if( is_array( $options ) && $options ){
+			foreach ( $options as $optionKey => $optionValue ) {
+				array_push( $formatOptions, array( 'id' => $optionKey, 'name' => $optionValue['example'] ) );
+			}
+		}
+		return $formatOptions;
+	}
+
+	public function getCurrencyCountry() {
+		return $this->getValue( 'currencyCountry' );
+	}
+	
+	
+	public static function getCountryOptions() {
+		$options = \Maven\Core\CountryManager::instance()->getAll( false );
+		$countryOptions = array();
+		if( is_array( $options ) && $options ){
+			foreach ( $options as $optionKey => $optionValue ) {
+				$name = sprintf( '%s (%s)', $optionValue['name'], $optionValue['currency']['symbol'] );
+				array_push( $countryOptions, array( 'id' => $optionKey, 'name' => $name ) );
+			}
+		}
+		return $countryOptions;
+	}
+
+	public function getCurrencyDecimalDigits() {
+		return $this->getValue( 'currencyDecimalDigits' );
+	}
+
+	public function getCurrencyDecimalSeparator() {
+		return $this->getValue( 'currencyDecimalSeparator' );
+	}
+
+	public function getCurrencyThousandSeparator() {
+		return $this->getValue( 'currencyThousandSeparator' );
 	}
 	
 	public function init() {

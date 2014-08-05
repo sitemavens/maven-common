@@ -8,7 +8,21 @@ if ( !defined( 'ABSPATH' ) )
 
 class CountryManager {
 
+	private static $instance;
+	
 	private $countries = array();
+	
+	/**
+	 * 
+	 * @return CountryManager 
+	 */
+	static function instance () {
+		if ( !isset( self::$instance ) ) {
+			self::$instance = new self( );
+		}
+
+		return self::$instance;
+	}
 
 	public function __construct () {
 		$countries[ '*' ] = array( 'name' => __( 'Worldwide', 'maven' ),'code'=>'CA', 'currency' => array( 'code' => 'USD', 'symbol' => '$' ), 'units' => 'metric' );
