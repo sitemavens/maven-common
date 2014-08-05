@@ -379,33 +379,9 @@ class MavenRegistry extends WordpressRegistry {
 	public function getCurrencyDisplayFormat() {
 		return $this->getValue( 'currencyDisplayFormat' );
 	}
-	
-	public static function getCurrencyFormatOptions() {
-		$options = \Maven\Core\CurrencyManager::pricingDisplaySetting();
-		$formatOptions = array();
-		if( is_array( $options ) && $options ){
-			foreach ( $options as $optionKey => $optionValue ) {
-				array_push( $formatOptions, array( 'id' => $optionKey, 'name' => $optionValue['example'] ) );
-			}
-		}
-		return $formatOptions;
-	}
 
 	public function getCurrencyCountry() {
 		return $this->getValue( 'currencyCountry' );
-	}
-	
-	
-	public static function getCountryOptions() {
-		$options = \Maven\Core\CountryManager::instance()->getAll( false );
-		$countryOptions = array();
-		if( is_array( $options ) && $options ){
-			foreach ( $options as $optionKey => $optionValue ) {
-				$name = sprintf( '%s (%s)', $optionValue['name'], $optionValue['currency']['symbol'] );
-				array_push( $countryOptions, array( 'id' => $optionKey, 'name' => $name ) );
-			}
-		}
-		return $countryOptions;
 	}
 
 	public function getCurrencyDecimalDigits() {
