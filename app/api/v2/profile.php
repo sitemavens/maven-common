@@ -40,7 +40,7 @@ class Profile {
 			array( array( $this, 'add' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
 
-		$routes[ '/maven/v2/profile/(?P<identifier>.+)' ] = array(
+		$routes[ '/maven/v2/profile/(?P<identifier>\d+)' ] = array(
 			array( array( $this, 'update' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
 
