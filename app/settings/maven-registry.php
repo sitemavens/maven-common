@@ -82,10 +82,19 @@ class MavenRegistry extends WordpressRegistry {
 			    ),new Option(
 				    "orderHandlingFee", "Order Handling Fee", 0, 0, OptionType::Input
 			    ),new Option(
+				    "currencyDecimalDigits", "Currency Number of Decimal Digits", 2, 2, OptionType::Input
+				),new Option(
+				    "currencyDecimalSeparator", "Currency Decimal Separator", '.', '.', OptionType::Input
+			    ),new Option(
+				    "currencyThousandSeparator", "Currency Thousand Separator", ' ', ' ', OptionType::Input
+			    ),new Option(
+					"currencyCountry", "Currency Country", 'US', 'US', OptionType::DropDown
+				),new Option(
+					"currencyDisplayFormat", "Currency Display Format", 'symbol_number', 'symbol_number', OptionType::DropDown
+				),new Option(
 				    "mandrillApiKey", "Mandrill Api Key", '', '', OptionType::Input
 			    )
 			);
-
 			self::$instance = new self( );
 			self::$instance->setOptions( $defaultOptions );
 		}
@@ -365,6 +374,26 @@ class MavenRegistry extends WordpressRegistry {
 
 	public function getCartUrl() {
 		return $this->getValue( 'cartUrl' );
+	}
+
+	public function getCurrencyDisplayFormat() {
+		return $this->getValue( 'currencyDisplayFormat' );
+	}
+
+	public function getCurrencyCountry() {
+		return $this->getValue( 'currencyCountry' );
+	}
+
+	public function getCurrencyDecimalDigits() {
+		return $this->getValue( 'currencyDecimalDigits' );
+	}
+
+	public function getCurrencyDecimalSeparator() {
+		return $this->getValue( 'currencyDecimalSeparator' );
+	}
+
+	public function getCurrencyThousandSeparator() {
+		return $this->getValue( 'currencyThousandSeparator' );
 	}
 	
 	public function init() {

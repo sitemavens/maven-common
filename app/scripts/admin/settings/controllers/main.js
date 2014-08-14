@@ -7,6 +7,9 @@ app.controller('SettingsController', ['$scope', 'Setting', 'Gateway', function($
 		$scope.gatewaySettings = {
 			active: 'dummy'
 		};
+		
+		$scope.countries = CountriesCached;
+		$scope.currencyFormats = CurrencyFormatsCached;
 
 		Setting.get().then(function(result) {
 			$scope.setting = result.data;

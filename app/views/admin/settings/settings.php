@@ -83,6 +83,41 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">Pricing</div>
+					<div class="panel-body">
+						<div class="form-group"  >
+							<label for="">Currency:</label>
+							<?php 
+							$countries = \Maven\Core\CountriesApi::getAllCountries( false );
+							\Maven\Core\UI\HtmlComponent::jSonVar('CountriesCached', $countries); 
+							?>
+							<select  required ng-model="setting.currencyCountry" class="form-control" ng-options="countryI as country.name + ' ' + '(' + country.currency.symbol + ')' for (countryI,country) in countries" ></select>
+						</div>
+						<div class="form-group"  >
+							<label for="">Display Format:</label>
+							<?php 
+							$currencyFormats = \Maven\Core\CurrencyApi::getCurrencyFormats( );
+							\Maven\Core\UI\HtmlComponent::jSonVar('CurrencyFormatsCached', $currencyFormats); 
+							?>
+							<select  required ng-model="setting.currencyDisplayFormat" class="form-control" ng-options="currencyI as currency.example for (currencyI, currency) in currencyFormats" ></select>
+						</div>
+						<div class="form-group"  >
+							<label for="">Thousand Separator:</label>
+							<input type="text" ng-model="setting.currencyThousandSeparator" /> 
+						</div>
+						<div class="form-group"  >
+							<label for="">Decimal Separator:</label>
+							<input type="text" ng-model="setting.currencyDecimalSeparator" /> 
+						</div>
+						<div class="form-group"  >
+							<label for=""># of Decimal Digits:</label>
+							<input type="text" ng-model="setting.currencyDecimalDigits" /> 
+						</div>
+					</div>
+				</div>
+			</div>
 		</tab>
 		<tab heading="Gateways">
 			<div class="col-md-4">

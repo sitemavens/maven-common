@@ -44,26 +44,49 @@ class Profile {
 			array( array( $this, 'update' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
 
-
+		$routes[ '/maven/v2/profile/convert-from-user' ] = array(
+			array( array( $this, 'convertFromUser' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
+		);
 
 		return $routes;
 	}
- 
 
-	public function update ( $identifier, $data ) {
+	public function convertFromUser ( $data ) {
+
+		if ( $this->userCan() ) {
+
+			if ( isset( $data[ 'email' ] ) ) {
+				$result = $this->profileManager->convertWpUserToMaven( $data[ 'email' ] );
+				
+				$this->sendResponse( \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'User converted' ) );
+			} else {
+				$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'You need to specify the email' ) );
+			}
+		}
+	}
+
+	private function userCan () {
 
 		if ( !current_user_can( 'edit_users' ) ) {
 			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'You don\'t have permissions to do it' ) );
 		}
 
-		$this->isValid();
+		return true;
+	}
 
-		$profile = new \Maven\Core\Domain\Profile();
-		$profile->load( $data );
-		
-		$this->profileManager->addProfile($profile);
+	public function update ( $identifier, $data ) {
 
-		$this->sendResponse( \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Profile added' ) );
+		if ( $this->userCan() ) {
+
+			$this->isValid();
+
+			$profile = new \Maven\Core\Domain\Profile();
+			$profile->load( $data );
+
+			$this->profileManager->addProfile( $profile );
+
+			$this->sendResponse( \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Profile added' ) );
+		}
 	}
 
 	public function addItem ( $data ) {
