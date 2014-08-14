@@ -76,6 +76,7 @@ class ResourceManager implements ActionControllerObserver {
 		    'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 		    'loadingImagePath' => $registry->getImagesUrl() . "loading.gif",
 		    'ajaxLoadingPath' => $registry->getAssetsUrl() . "images/ajax-loader.gif",
+			'imagesPathUrl' => $registry->getImagesUrl() ,
 		    'printUrl' => get_bloginfo( 'url' ) . '/' . $registry->getPrintUrl()
 			)
 		);

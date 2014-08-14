@@ -52,7 +52,8 @@ class Users extends \Maven\Core\Domain\WpBase {
 
 		wp_enqueue_script( 'wp-users-script', $this->getRegistry()->getAdminWpScriptsUrl() . 'users.js', array( 'maven' ) );
 
-		wp_localize_script( 'wp-users-script', 'Users', array( 'action' => 'convertUser', 'nonce' => wp_create_nonce( 'convertUser' ) ) );
+		wp_localize_script( 'wp-users-script', 'Users', array( 'action' => 'convertUser', 'nonce' => wp_create_nonce( 'wp_json' ) ) );
+		
 	}
 
 	public function addIsMavenColumn ( $columns ) {
