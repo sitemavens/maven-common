@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) )
 class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 
 	protected static $profileTable = 'mvn_profile';
+	private $wishlistItemTable = "mvn_wishlist_items";
 	protected $profileTableName = 'mvn_profile';
 	protected $profileSelectFields = "  `mvn_profile`.`id`,
 							`mvn_profile`.`description`,
@@ -162,8 +163,6 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 		  }
 		  } */
 
-
-
 		$addresses = array();
 		if ( $profile->hasAddresses() ) {
 			$addresses = $profile->getAddresses();
@@ -173,6 +172,9 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 		$addressMapper->addAddresses( $addresses, $profile );
 
 		//die();
+		
+		//Update items
+		$this->addWishlistItems( $profileId );
 
 		return $profile;
 	}
@@ -211,6 +213,10 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 
 			$profile->setUserName( $user->user_login );
 		}
+		
+		$items = $this->getWishlistItems( $profile->getId() );
+
+		$profile->setWhishlist( $items );
 
 
 		return $profile;
@@ -273,6 +279,11 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 
 		$addressMapper = new AddressMapper();
 		$addressMapper->deleteByProfile( $id );
+		
+		//delete the wishlist items
+		$query = "DELETE FROM {$this->wishlistItemTable} where profile_id=%d";
+		$query = $this->prepare( $query, $id );
+		$this->executeQuery( $query );
 
 		return true;
 	}
@@ -502,5 +513,84 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 
 		$this->updateById( $profileId, $data );
 	}
+	
+	private function addWishlistItems ( \Maven\Core\Domain\Profile $profile ) {
 
+		$wishlistItems = $profile->getWishlist();
+
+		$existingId = array();
+
+		if ( $wishlistItems ) {
+			foreach ( $wishlistItems as $item ) {
+				//TODO: Move this validation to manager (on add item)
+				if ( !$item->getPluginKey() ) {
+					throw new \Maven\Exceptions\RequiredException( "Plugin key is required: " . $item->getName() );
+				}
+
+				$data = array(
+					'name' => $item->getName(),
+					'price' => $item->getPrice(),
+					'profile_id' => $profile->getId(),
+					'thing_id' => $item->getThingId(),
+					'sku' => $item->getSku(),
+					'plugin_key' => $item->getPluginKey(),
+					'thing_variation_id' => $item->getThingVariationId(),
+					'attributes' => serialize( $item->getAttributes() )
+				);
+
+				$format = array(
+					'%s', //name
+					'%f', //price
+					'%d', //profile_id
+					'%d', //id
+					'%s', //sku
+					'%s', //plugin_key
+					'%d', //thing_variation_id
+					'%s' //attributes
+				);
+
+				if ( !$item->getId() ) {
+					$insertedItemId = $this->insert( $data, $format, $this->orderItemTable );
+					$item->setId( $insertedItemId );
+				} else {
+					$this->updateById( $item->getId(), $data, $format, $this->orderItemTable );
+				}
+
+				$existingId[] = $item->getId();
+			}
+		}
+
+		if ( count( $existingId ) == 0 ) {
+			$query = $this->prepare( "DELETE FROM {$this->orderItemTable} WHERE order_id = %d", $profile->getId() );
+			return;
+		}
+
+		$items = implode( ',', $existingId );
+
+		//Delete the removed items.
+		$query = $this->prepare( "DELETE FROM {$this->orderItemTable} WHERE id NOT IN ({$items}) AND profile_id = %d", $profile->getId() );
+
+		$this->executeQuery( $query );
+	}
+	
+	public function getWishlistItems ( $profileId ) {
+
+		$items = array();
+
+		//Get items
+		$itemsRows = $this->getResultsBy( 'profile_id', $profileId, 'id', 'asc', '%s', $this->wishlistItemTable );
+
+		if ( $itemsRows ) {
+
+			foreach ( $itemsRows as $itemRow ) {
+				//TODO: Check if passing the plugin key on creation is correct
+				$item = new \Maven\Core\Domain\WishlistItem( $itemRow->plugin_key );
+				$this->fillObject( $item, $itemRow );
+
+				$items[] = $item;
+			}
+		}
+
+		return $items;
+	}
 }
