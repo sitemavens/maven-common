@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) )
 class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 
 	protected static $profileTable = 'mvn_profile';
-	private $wishlistItemTable = "mvn_wishlist_items";
+	private $wishlistItemTable = "mvn_whishlist_items";
 	protected $profileTableName = 'mvn_profile';
 	protected $profileSelectFields = "  `mvn_profile`.`id`,
 							`mvn_profile`.`description`,
@@ -174,7 +174,7 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 		//die();
 		
 		//Update items
-		$this->addWishlistItems( $profileId );
+		$this->addWishlistItems( $profile );
 
 		return $profile;
 	}
@@ -550,10 +550,10 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 				);
 
 				if ( !$item->getId() ) {
-					$insertedItemId = $this->insert( $data, $format, $this->orderItemTable );
+					$insertedItemId = $this->insert( $data, $format, $this->wishlistItemTable);
 					$item->setId( $insertedItemId );
 				} else {
-					$this->updateById( $item->getId(), $data, $format, $this->orderItemTable );
+					$this->updateById( $item->getId(), $data, $format, $this->wishlistItemTable );
 				}
 
 				$existingId[] = $item->getId();
@@ -561,14 +561,14 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 		}
 
 		if ( count( $existingId ) == 0 ) {
-			$query = $this->prepare( "DELETE FROM {$this->orderItemTable} WHERE order_id = %d", $profile->getId() );
+			$query = $this->prepare( "DELETE FROM {$this->wishlistItemTable} WHERE order_id = %d", $profile->getId() );
 			return;
 		}
 
 		$items = implode( ',', $existingId );
 
 		//Delete the removed items.
-		$query = $this->prepare( "DELETE FROM {$this->orderItemTable} WHERE id NOT IN ({$items}) AND profile_id = %d", $profile->getId() );
+		$query = $this->prepare( "DELETE FROM {$this->wishlistItemTable} WHERE id NOT IN ({$items}) AND profile_id = %d", $profile->getId() );
 
 		$this->executeQuery( $query );
 	}
