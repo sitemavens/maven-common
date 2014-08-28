@@ -30,11 +30,11 @@ class Cart {
 
 	public function registerRouters ( $routes ) {
 
-		$routes[ '/maven/v2/cart/item' ] = array(
+		$routes['/maven/v2/cart/item'] = array(
 			array( array( $this, 'addItem' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
 
-		$routes[ '/maven/v2/cart/item/(?P<identifier>.+)' ] = array(
+		$routes['/maven/v2/cart/item/(?P<identifier>.+)'] = array(
 			array( array( $this, 'removeItem' ), \WP_JSON_Server::DELETABLE ),
 			array( array( $this, 'updateItem' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
@@ -58,7 +58,7 @@ class Cart {
 
 		$this->isValid();
 
-		
+
 		$result = $this->getCurrentCart()->removeItem( $identifier );
 
 //		die('despues');
@@ -68,9 +68,9 @@ class Cart {
 
 	public function updateItem ( $identifier, $data ) {
 
-		
 
-		$quantity = ( int ) $data[ 'quantity' ];
+
+		$quantity = ( int ) $data['quantity'];
 
 		$this->sendResponse( $this->getCurrentCart()->updateItemQuantity( $identifier, $quantity ) );
 	}
@@ -82,21 +82,23 @@ class Cart {
 			'pluginKey' => '',
 			'name' => '',
 			'quantity' => 0,
+			'sku' => '',
 			'price' => 0
 		);
 
 		$item = wp_parse_args( $data, $defaultItem );
 
-		if ( !$item[ 'pluginKey' ] ) {
+		if ( !$item['pluginKey'] ) {
 			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'Plugin Key is required' ) );
 		}
 
 		$orderItem = new \Maven\Core\Domain\OrderItem();
-		$orderItem->setName( $item[ 'name' ] );
-		$orderItem->setPluginKey( $item[ 'pluginKey' ] );
-		$orderItem->setThingId( $item[ 'id' ] );
-		$orderItem->setPrice( $item[ 'price' ] );
-		$orderItem->setQuantity( $item[ 'quantity' ] );
+		$orderItem->setName( $item['name'] );
+		$orderItem->setPluginKey( $item['pluginKey'] );
+		$orderItem->setThingId( $item['id'] );
+		$orderItem->setSku( $item['sku'] );
+		$orderItem->setPrice( $item['price'] );
+		$orderItem->setQuantity( $item['quantity'] );
 
 
 		$this->sendResponse( $this->getCurrentCart()->addToCart( $orderItem ) );
@@ -117,7 +119,7 @@ class Cart {
 	}
 
 	private function sendResponse ( \Maven\Core\Message\Message $result ) {
-		 
+
 		$output = new \Maven\Core\UI\OutputTranslator();
 		$transformedOrder = $output->convert( $this->getCurrentCart()->getOrder() );
 
@@ -127,7 +129,7 @@ class Cart {
 			$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
 		}
 
-		
+
 		die( json_encode( $result ) );
 	}
 
