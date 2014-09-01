@@ -98,7 +98,7 @@ class Cart {
 		$orderItem->setPrice( $item[ 'price' ] );
 		$orderItem->setQuantity( $item[ 'quantity' ] );
 
-
+		
 		$this->sendResponse( $this->getCurrentCart()->addToCart( $orderItem ) );
 	}
 
