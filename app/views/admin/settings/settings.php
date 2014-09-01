@@ -146,6 +146,7 @@
 
 								<label for="{{gSetting.name}}" ng-bind="gSetting.label"></label>			
 								<div ng-switch on="gSetting.type">
+									<input ng-switch-when="password" ng-required="{{gSetting.required}}" type="{{gSetting.type}}" class="form-control" ng-model="gSetting.value" name="theInput" />
 									<input ng-switch-when="input" ng-required="{{gSetting.required}}" type="{{gSetting.type}}" class="form-control" ng-model="gSetting.value" name="theInput" />
 									<select ng-switch-when="dropdown" ng-required="{{gSetting.required}}"  class="form-control" ng-model="gSetting.value" name="theInput" ng-options="gOption.id as gOption.name for gOption in gSetting.options" />
 								</div>
