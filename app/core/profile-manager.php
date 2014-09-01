@@ -357,4 +357,20 @@ class ProfileManager {
 		return false;
 	}
 
+	public function addWishlistItem ( \Maven\Core\Domain\Profile $profile, \Maven\Core\Domain\WishlistItem $item ) {
+
+		\Maven\Loggers\Logger::log()->message( 'Maven/ProfileManager/addWishlistItem: Name: ' . $item->getName() );
+
+		// Add the item
+		$profile->addWishlistItem( $item );
+
+		return $profile;
+	}
+	
+	public function removeWishlistItem ( \Maven\Core\Domain\Profile $profile, \Maven\Core\Domain\WishlistItem $item ) {
+
+		$profile->removeWhishlistItem( $item->getIdentifier() );
+
+		return $order;
+	}
 }

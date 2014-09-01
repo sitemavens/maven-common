@@ -30,7 +30,6 @@ class Profile extends \Maven\Core\DomainObject {
 	protected $wholesale;
 	private $lastUpdate;
 	private $createdOn;
-	
 
 	/**
 	 *
@@ -68,6 +67,13 @@ class Profile extends \Maven\Core\DomainObject {
 	 */
 	protected $roles = array();
 
+	/**
+	 *
+	 * @var \Maven\Core\Domain\WhishlistItem[] 
+	 * @collectionType: \Maven\Core\Domain\WhishlistItem
+	 */
+	protected $whishlist = array();
+
 	public function __construct( $id = false ) {
 
 		parent::__construct( $id );
@@ -92,7 +98,7 @@ class Profile extends \Maven\Core\DomainObject {
 		    'adminNotes' => \Maven\Core\SanitizationRule::TextWithHtml,
 		    'userId' => \Maven\Core\SanitizationRule::Integer,
 		    'wholesale' => \Maven\Core\SanitizationRule::Boolean,
-			'lastUpdate' =>  \Maven\Core\SanitizationRule::DateTime
+		    'lastUpdate' => \Maven\Core\SanitizationRule::DateTime
 		);
 
 
@@ -412,7 +418,7 @@ class Profile extends \Maven\Core\DomainObject {
 		}
 
 		//there is no primary address, create a new one
-		
+
 		$address = new Address();
 		$address->setPrimary( true );
 		$address->setType( AddressType::Home );
@@ -446,7 +452,7 @@ class Profile extends \Maven\Core\DomainObject {
 
 		$primary->setType( $type );
 		$primary->setPrimary( FALSE );
-		
+
 		$this->addresses[ $type ] = $primary;
 
 		return $primary;
@@ -555,15 +561,15 @@ class Profile extends \Maven\Core\DomainObject {
 
 		return $profile;
 	}
-	
-	public function getLastUpdate () {
+
+	public function getLastUpdate() {
 		return $this->lastUpdate;
 	}
 
-	public function setLastUpdate ( $lastUpdate ) {
+	public function setLastUpdate( $lastUpdate ) {
 		$this->lastUpdate = $lastUpdate;
 	}
-	
+
 	public function getCreatedOn() {
 		return $this->createdOn;
 	}
@@ -572,8 +578,65 @@ class Profile extends \Maven\Core\DomainObject {
 		$this->createdOn = $createdOn;
 	}
 
+	/**
+	 * Get whishlist
+	 * @collectionType: \Maven\Core\Domain\WhishlistItem
+	 * @return \Maven\Core\Domain\WhishlistItem[] 
+	 */
+	public function getWishlist() {
+		return $this->whishlist;
+	}
 
+	public function hasWhishlist() {
+		return $this->whishlist && count( $this->whishlist ) > 0;
+	}
 
+	/**
+	 * 
+	 * @param \Maven\Core\Domain\WhishlistItem[]
+	 */
+	public function setWhishlist( $whishlist ) {
+		$this->whishlist = $whishlist;
+	}
 
+	/**
+	 * Add wihslist item to the profile
+	 * @param \Maven\Core\Domain\WishlistItem $item
+	 */
+	public function addWishlistItem( \Maven\Core\Domain\WishlistItem $item ) {
+
+		if ( ! $item->getPluginKey() ) {
+			throw new \Maven\Exceptions\MissingParameterException( 'Plugin Key is required' );
+		}
+
+		//TODO: Check if the item exists, we have to remove it and add the new one.
+		if ( $this->itemExists( $item->getIdentifier() ) ) {
+			$this->removeItem( $item->getIdentifier() );
+		}
+
+		$this->whishlist[ $item->getIdentifier() ] = $item;
+	}
+	
+	/**
+	 * Remove wishlits item from profile
+	 * @param int $identifier
+	 * @return boolean
+	 */
+	public function removeWhishlistItem( $identifier ) {
+
+		if ( $this->wishlistItemExists( $identifier ) ) {
+
+			unset( $this->items[ $identifier ] );
+
+			return true;
+		}
+
+		return false;
+	}
+	
+	public function wishlistItemExists( $identifier ) {
+
+		return $this->whishlist && count( $this->wishlist ) > 0 && isset( $this->wishlist[ $identifier ] );
+	}
 
 }

@@ -21,15 +21,15 @@ angular.module('mavenApp')
 
 				$scope.newMultiplePromotion = function() {
 					$location.path('promotions/new-multiple');
-				}
+				};
 
 				$scope.newPromotion = function() {
 					$location.path('promotions/new');
-				}
+				};
 
 				$scope.editPromotion = function(id) {
 					$location.path('promotions/edit/' + id);
-				}
+				};
 
 				$scope.deletePromotion = function(idx) {
 					var promotion = $scope.promotions[idx];
