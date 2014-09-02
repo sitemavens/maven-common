@@ -38,6 +38,11 @@ class Cart {
 			array( array( $this, 'removeItem' ), \WP_JSON_Server::DELETABLE ),
 			array( array( $this, 'updateItem' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
+		
+		$routes['/maven/v2/cart/promotions/(?P<identifier>.+)'] = array(
+			array( array( $this, 'applyPromotion' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		);
+
 
 
 //		$routes[ '/maven/taxes' ] = array(
@@ -53,6 +58,15 @@ class Cart {
 
 		return $routes;
 	}
+	
+	public function applyPromotion( $identifier ){
+		
+		$this->isValid();
+		
+		$result = $this->getCurrentCart()->applyPromotion($identifier);
+		
+		$this->sendResponse( $result );
+	}
 
 	public function removeItem ( $identifier ) {
 
@@ -61,8 +75,6 @@ class Cart {
 
 		$result = $this->getCurrentCart()->removeItem( $identifier );
 
-//		die('despues');
-//		die(print_r($result,true));
 		$this->sendResponse( $result );
 	}
 

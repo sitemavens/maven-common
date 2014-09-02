@@ -319,6 +319,8 @@ class PromotionManager {
 
 		//TODO: what happend if final price is negative?, for now, we return 0
 		//return $discount;
+		
+		return $order;
 	}
 
 	/**
