@@ -60,17 +60,30 @@ class Wishlist {
 		$this->isValid();
 
 		$wishlist = array();
+
 		if ( $this->getCurrentUser()->getProfile()->hasWishlist() ) {
 			$wishlist = $this->getCurrentUser()->getProfile()->getWishlist();
 		}
-		$this->sendResponse( \Maven\Core\Message\MessageManager::createSuccessfulMessage( '', $wishlist ) );
+		$result = array();
+
+		foreach ( $wishlist as $item ) {
+			$result[] = $item->toArray();
+		}
+
+		$this->sendResponse( \Maven\Core\Message\MessageManager::createSuccessfulMessage( '', $result ) );
 	}
 
 	public function removeItem( $identifier ) {
 
 		$this->isValid();
 
-		$result = $this->getCurrentUser()->getProfile()->removeWishlistItem( $identifier );
+		$profile = $this->getCurrentUser()->getProfile();
+
+		$result = $profile->removeWishlistItem( $identifier );
+
+		$manager = new \Maven\Core\ProfileManager();
+
+		$manager->addProfile( $profile );
 
 		$this->sendResponse( $result );
 	}
@@ -98,8 +111,15 @@ class Wishlist {
 		$wishlistItem->setSku( $item[ 'sku' ] );
 		$wishlistItem->setPrice( $item[ 'price' ] );
 
+		$profile = $this->getCurrentUser()->getProfile();
 
-		$this->sendResponse( $this->getCurrentUser()->getProfile()->addWishlistItem( $wishlistItem ) );
+		$result = $profile->addWishlistItem( $wishlistItem );
+
+		$manager = new \Maven\Core\ProfileManager();
+
+		$manager->addProfile( $profile );
+
+		$this->sendResponse( $result );
 	}
 
 	private function isValid() {

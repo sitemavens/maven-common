@@ -3,22 +3,22 @@
 namespace Maven\Core;
 
 // Exit if accessed directly 
-if ( !defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 class UserManager extends \Maven\Core\Manager {
 
-	public function __construct () {
+	public function __construct() {
 		parent::__construct();
 	}
 
-	public static function init () {
+	public static function init() {
 
 		HookManager::instance()->addFilter( 'retrieve_password_message', array( __CLASS__, 'resetPassword' ), 10, 2 );
 	}
 
-	public static function resetPassword ( $content, $key ) {
+	public static function resetPassword( $content, $key ) {
 		$mavenSettings = \Maven\Settings\MavenRegistry::instance();
 
 		$website = urlencode( site_url() );
@@ -31,26 +31,26 @@ class UserManager extends \Maven\Core\Manager {
 		$email = $user->getEmail();
 
 		$autoLoginLink = "";
-		
+
 		// Check if it has a profile on it.
-		if ( !$user->getProfile()->isEmpty() ) {
+		if ( ! $user->getProfile()->isEmpty() ) {
 			$profileManager = new ProfileManager();
 			$autoLoginLink = site_url( $mavenSettings->getAutoLoginUrl() . "?email={$email}&key=" . $profileManager->generateAutoLoginKey( $user->getEmail() ) );
 		}
-		
+
 		$organizationSignature = $mavenSettings->getSignature();
 		$resetLink = site_url( "wp-login.php?redirect_to={$website}&action=rp&key={$key}&login=" . urlencode( $userLogin ) );
 
 		$output = new Ui\Output( "", array(
-			'organizationSignature' => $organizationSignature,
-			'resetLink' => $resetLink,
-			'userLogin' => $userLogin,
-			'autoLoginLink' => $autoLoginLink )
+		    'organizationSignature' => $organizationSignature,
+		    'resetLink' => $resetLink,
+		    'userLogin' => $userLogin,
+		    'autoLoginLink' => $autoLoginLink )
 		);
 		$message = $output->getTemplate( 'email-reset-password.html' );
 
 		$message = \Maven\Core\MailFormatter::prepareContentEmail( $message );
-		
+
 		return $message;
 	}
 
@@ -58,7 +58,7 @@ class UserManager extends \Maven\Core\Manager {
 	 * Check if a user is logged in or not
 	 * @return boolean
 	 */
-	public static function isUserLoggedIn () {
+	public static function isUserLoggedIn() {
 		return is_user_logged_in();
 	}
 
@@ -66,13 +66,13 @@ class UserManager extends \Maven\Core\Manager {
 	 * Return a logged user information
 	 * @return \Maven\Core\User
 	 */
-	public static function getLoggedUser () {
+	public static function getLoggedUser() {
 
 		\Maven\Loggers\Logger::log()->message( 'UserManager: getLoggedUser' );
 
-		/*if ( !self::isUserLoggedIn() ) {
+		if ( ! self::isUserLoggedIn() ) {
 			return new \Maven\Core\Domain\User();
-		}*/
+		}
 
 		$wpUser = wp_get_current_user();
 
@@ -81,7 +81,7 @@ class UserManager extends \Maven\Core\Manager {
 		return $user;
 	}
 
-	public static function getUserByLoginOrEmail ( $value ) {
+	public static function getUserByLoginOrEmail( $value ) {
 
 		if ( strpos( $value, '@' ) ) {
 			$wpUser = get_user_by( 'email', $value );
@@ -89,14 +89,14 @@ class UserManager extends \Maven\Core\Manager {
 			$wpUser = get_user_by( 'login', $value );
 		}
 
-		if ( !$wpUser ) {
+		if ( ! $wpUser ) {
 			throw new \Maven\Exceptions\NotFoundException( 'Invalid user' . $value );
 		}
 
 		return self::loadUser( $wpUser );
 	}
 
-	private static function loadUser ( $wpUser ) {
+	private static function loadUser( $wpUser ) {
 
 		$user = new \Maven\Core\Domain\User();
 
@@ -113,8 +113,8 @@ class UserManager extends \Maven\Core\Manager {
 			$user->setProfile( $profile );
 		}
 
-		\Maven\Loggers\Logger::log()->message('Maven/UserManager/loadUser: Profile User Id: '.$profile->getUserId() );
-		
+		\Maven\Loggers\Logger::log()->message( 'Maven/UserManager/loadUser: Profile User Id: ' . $profile->getUserId() );
+
 		return $user;
 	}
 
@@ -124,9 +124,9 @@ class UserManager extends \Maven\Core\Manager {
 	 * @return \Maven\Core\Domain\User
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public static function getUserByLogin ( $login ) {
+	public static function getUserByLogin( $login ) {
 
-		if ( !$login ) {
+		if ( ! $login ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Login is required' );
 		}
 
@@ -143,32 +143,32 @@ class UserManager extends \Maven\Core\Manager {
 		return $user;
 	}
 
-	public static function autoLogin ( $userEmail, $key ) {
+	public static function autoLogin( $userEmail, $key ) {
 
 		// Check if it has a profile on it.
 		$profileManager = new ProfileManager();
 
-		if ( !$profileManager->exists( $userEmail ) ) {
+		if ( ! $profileManager->exists( $userEmail ) ) {
 			return false;
 		}
 
 		$result = $profileManager->validateAutoLoginKey( $userEmail, $key );
 
 		if ( $result ) {
-			
+
 			$user = get_user_by( 'email', $userEmail );
 
 			if ( $user ) {
-				
+
 				// Clean the token
 				$profileManager->resetAutoLoginKey( $userEmail );
-				
+
 				wp_set_current_user( $user->ID, $user->user_login );
 				wp_set_auth_cookie( $user->ID );
 				do_action( 'wp_login', $user->user_login, $user );
-				
-				
-				
+
+
+
 				return true;
 			}
 		}

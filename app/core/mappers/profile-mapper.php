@@ -530,7 +530,7 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 				$data = array(
 					'name' => $item->getName(),
 					'price' => $item->getPrice(),
-					'profile_id' => $profile->getId(),
+					'profile_id' => $profile->getProfileId(),
 					'thing_id' => $item->getThingId(),
 					'sku' => $item->getSku(),
 					'plugin_key' => $item->getPluginKey(),
