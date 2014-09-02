@@ -22,7 +22,7 @@ class ProfileProductListsManager {
 
 	public function getWishListItems ( $profileId ) {
 
-		return $this->getListItems( $profileId, 'whishlist' );
+		return $this->getListItems( $profileId, 'wishlist' );
 		
 	}
 

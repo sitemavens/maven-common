@@ -30,7 +30,7 @@ class WishlistItem extends \Maven\Core\DomainObject {
 	protected $identifier;
 
 	/**
-	 * Instantiate whishlist item
+	 * Instantiate wishlist item
 	 * @param string $groupKey
 	 * @param int $id
 	 */

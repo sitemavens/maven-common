@@ -369,8 +369,8 @@ class ProfileManager {
 	
 	public function removeWishlistItem ( \Maven\Core\Domain\Profile $profile, \Maven\Core\Domain\WishlistItem $item ) {
 
-		$profile->removeWhishlistItem( $item->getIdentifier() );
+		$profile->removeWishlistItem( $item->getIdentifier() );
 
-		return $order;
+		return $profile;
 	}
 }

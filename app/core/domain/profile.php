@@ -69,10 +69,10 @@ class Profile extends \Maven\Core\DomainObject {
 
 	/**
 	 *
-	 * @var \Maven\Core\Domain\WhishlistItem[] 
-	 * @collectionType: \Maven\Core\Domain\WhishlistItem
+	 * @var \Maven\Core\Domain\WishlistItem[] 
+	 * @collectionType: \Maven\Core\Domain\WishlistItem
 	 */
-	protected $whishlist = array();
+	protected $wishlist = array();
 
 	public function __construct( $id = false ) {
 
@@ -579,24 +579,24 @@ class Profile extends \Maven\Core\DomainObject {
 	}
 
 	/**
-	 * Get whishlist
-	 * @collectionType: \Maven\Core\Domain\WhishlistItem
-	 * @return \Maven\Core\Domain\WhishlistItem[] 
+	 * Get wishlist
+	 * @collectionType: \Maven\Core\Domain\WishlistItem
+	 * @return \Maven\Core\Domain\WishlistItem[] 
 	 */
 	public function getWishlist() {
-		return $this->whishlist;
+		return $this->wishlist;
 	}
 
-	public function hasWhishlist() {
-		return $this->whishlist && count( $this->whishlist ) > 0;
+	public function hasWishlist() {
+		return $this->wishlist && count( $this->wishlist ) > 0;
 	}
 
 	/**
 	 * 
-	 * @param \Maven\Core\Domain\WhishlistItem[]
+	 * @param \Maven\Core\Domain\WishlistItem[]
 	 */
-	public function setWhishlist( $whishlist ) {
-		$this->whishlist = $whishlist;
+	public function setWishlist( $wishlist ) {
+		$this->wishlist = $wishlist;
 	}
 
 	/**
@@ -614,7 +614,7 @@ class Profile extends \Maven\Core\DomainObject {
 			$this->removeItem( $item->getIdentifier() );
 		}
 
-		$this->whishlist[ $item->getIdentifier() ] = $item;
+		$this->wishlist[ $item->getIdentifier() ] = $item;
 	}
 	
 	/**
@@ -622,7 +622,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 * @param int $identifier
 	 * @return boolean
 	 */
-	public function removeWhishlistItem( $identifier ) {
+	public function removeWishlistItem( $identifier ) {
 
 		if ( $this->wishlistItemExists( $identifier ) ) {
 
@@ -636,7 +636,7 @@ class Profile extends \Maven\Core\DomainObject {
 	
 	public function wishlistItemExists( $identifier ) {
 
-		return $this->whishlist && count( $this->wishlist ) > 0 && isset( $this->wishlist[ $identifier ] );
+		return $this->wishlist && count( $this->wishlist ) > 0 && isset( $this->wishlist[ $identifier ] );
 	}
 
 }
