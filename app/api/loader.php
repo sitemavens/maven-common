@@ -14,6 +14,9 @@ class Loader {
 		$profile = new V2\Profile();
 		$hookManager->addAction( 'wp_json_server_before_serve', array( $profile, 'registerRestApi' ) );
 		
+		$wishlist = new V2\Wishlist();
+		$hookManager->addAction( 'wp_json_server_before_serve', array( $wishlist, 'registerRestApi' ) );
+		
 	}
 
 }

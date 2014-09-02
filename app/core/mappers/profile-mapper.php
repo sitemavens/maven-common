@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) )
 class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 
 	protected static $profileTable = 'mvn_profile';
-	private $wishlistItemTable = "mvn_whishlist_items";
+	private $wishlistItemTable = "mvn_wishlist_items";
 	protected $profileTableName = 'mvn_profile';
 	protected $profileSelectFields = "  `mvn_profile`.`id`,
 							`mvn_profile`.`description`,
@@ -216,7 +216,7 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 		
 		$items = $this->getWishlistItems( $profile->getId() );
 
-		$profile->setWhishlist( $items );
+		$profile->setWishlist( $items );
 
 
 		return $profile;

@@ -242,7 +242,7 @@ class Installer {
 				`profile_product_list_id` int(11) unsigned NOT NULL,
 				PRIMARY KEY (`id`)
 			  )",
-		    "CREATE TABLE IF NOT EXISTS `mvn_whishlist_items` (
+		    "CREATE TABLE IF NOT EXISTS `mvn_wishlist_items` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`profile_id` int NOT NULL,
 				`name` varchar(500) DEFAULT NULL,

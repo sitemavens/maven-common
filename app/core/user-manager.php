@@ -70,9 +70,9 @@ class UserManager extends \Maven\Core\Manager {
 
 		\Maven\Loggers\Logger::log()->message( 'UserManager: getLoggedUser' );
 
-		if ( !self::isUserLoggedIn() ) {
+		/*if ( !self::isUserLoggedIn() ) {
 			return new \Maven\Core\Domain\User();
-		}
+		}*/
 
 		$wpUser = wp_get_current_user();
 
