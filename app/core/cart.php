@@ -709,7 +709,6 @@ class Cart {
 		$promotionApi = new \Maven\Core\PromotionsApi( );
 
 		$result = $promotionApi->isValid( $promotionCode );
-
 		if ( $result->isSuccessful() ) {
 
 			$promotionApi->applyPromotion( $promotionCode, $order );

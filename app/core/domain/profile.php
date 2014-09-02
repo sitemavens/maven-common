@@ -3,7 +3,7 @@
 namespace Maven\Core\Domain;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 use \Maven\Core\Domain\AddressType;
@@ -74,135 +74,135 @@ class Profile extends \Maven\Core\DomainObject {
 	 */
 	protected $wishlist = array();
 
-	public function __construct( $id = false ) {
+	public function __construct ( $id = false ) {
 
 		parent::__construct( $id );
 
 		$rules = array(
-		    'salutation' => \Maven\Core\SanitizationRule::Text,
-		    'email' => \Maven\Core\SanitizationRule::Email,
-		    'firstName' => \Maven\Core\SanitizationRule::Text,
-		    'lastName' => \Maven\Core\SanitizationRule::Text,
-		    'sex' => \Maven\Core\SanitizationRule::Text,
-		    'profileImage' => \Maven\Core\SanitizationRule::Integer,
-		    'profileId' => \Maven\Core\SanitizationRule::Integer,
-		    'maillist' => \Maven\Core\SanitizationRule::Text,
-		    'website' => \Maven\Core\SanitizationRule::Text,
-		    'company' => \Maven\Core\SanitizationRule::Text,
-		    'twitter' => \Maven\Core\SanitizationRule::URL,
-		    'facebook' => \Maven\Core\SanitizationRule::URL,
-		    'googlePlus' => \Maven\Core\SanitizationRule::URL,
-		    'linkedIn' => \Maven\Core\SanitizationRule::URL,
-		    'phone' => \Maven\Core\SanitizationRule::Text,
-		    'notes' => \Maven\Core\SanitizationRule::TextWithHtml,
-		    'adminNotes' => \Maven\Core\SanitizationRule::TextWithHtml,
-		    'userId' => \Maven\Core\SanitizationRule::Integer,
-		    'wholesale' => \Maven\Core\SanitizationRule::Boolean,
-		    'lastUpdate' => \Maven\Core\SanitizationRule::DateTime
+			'salutation' => \Maven\Core\SanitizationRule::Text,
+			'email' => \Maven\Core\SanitizationRule::Email,
+			'firstName' => \Maven\Core\SanitizationRule::Text,
+			'lastName' => \Maven\Core\SanitizationRule::Text,
+			'sex' => \Maven\Core\SanitizationRule::Text,
+			'profileImage' => \Maven\Core\SanitizationRule::Integer,
+			'profileId' => \Maven\Core\SanitizationRule::Integer,
+			'maillist' => \Maven\Core\SanitizationRule::Text,
+			'website' => \Maven\Core\SanitizationRule::Text,
+			'company' => \Maven\Core\SanitizationRule::Text,
+			'twitter' => \Maven\Core\SanitizationRule::URL,
+			'facebook' => \Maven\Core\SanitizationRule::URL,
+			'googlePlus' => \Maven\Core\SanitizationRule::URL,
+			'linkedIn' => \Maven\Core\SanitizationRule::URL,
+			'phone' => \Maven\Core\SanitizationRule::Text,
+			'notes' => \Maven\Core\SanitizationRule::TextWithHtml,
+			'adminNotes' => \Maven\Core\SanitizationRule::TextWithHtml,
+			'userId' => \Maven\Core\SanitizationRule::Integer,
+			'wholesale' => \Maven\Core\SanitizationRule::Boolean,
+			'lastUpdate' => \Maven\Core\SanitizationRule::DateTime
 		);
 
 
 		$this->setSanitizationRules( $rules );
 	}
 
-	public function getMaillist() {
+	public function getMaillist () {
 		return $this->maillist;
 	}
 
-	public function setMaillist( $maillist ) {
+	public function setMaillist ( $maillist ) {
 		$this->maillist = $maillist;
 	}
 
-	public function getDescription() {
+	public function getDescription () {
 		return $this->description;
 	}
 
-	public function setDescription( $description ) {
+	public function setDescription ( $description ) {
 		$this->description = $description;
 	}
 
-	public function getUserId() {
+	public function getUserId () {
 		return $this->userId;
 	}
 
-	public function setUserId( $userId ) {
+	public function setUserId ( $userId ) {
 		$this->userId = $userId;
 	}
 
-	public function getSalutation() {
+	public function getSalutation () {
 		return $this->salutation;
 	}
 
-	public function setSalutation( $salutation ) {
+	public function setSalutation ( $salutation ) {
 		$this->salutation = $salutation;
 	}
 
-	public function getFirstName() {
+	public function getFirstName () {
 		return $this->firstName;
 	}
 
-	public function setFirstName( $firstName ) {
+	public function setFirstName ( $firstName ) {
 		$this->firstName = $firstName;
 	}
 
-	public function getLastName() {
+	public function getLastName () {
 		return $this->lastName;
 	}
 
-	public function setLastName( $lastName ) {
+	public function setLastName ( $lastName ) {
 		$this->lastName = $lastName;
 	}
 
-	public function getEmail() {
+	public function getEmail () {
 		return $this->email;
 	}
 
-	public function setEmail( $email ) {
+	public function setEmail ( $email ) {
 		$this->email = $email;
 	}
 
-	public function getPhone() {
+	public function getPhone () {
 		return $this->phone;
 	}
 
-	public function setPhone( $phone ) {
+	public function setPhone ( $phone ) {
 		$this->phone = $phone;
 	}
 
-	public function getNotes() {
+	public function getNotes () {
 		return $this->notes;
 	}
 
-	public function setNotes( $notes ) {
+	public function setNotes ( $notes ) {
 		$this->notes = $notes;
 	}
 
-	public function getAdminNotes() {
+	public function getAdminNotes () {
 		return $this->adminNotes;
 	}
 
-	public function setAdminNotes( $adminNotes ) {
+	public function setAdminNotes ( $adminNotes ) {
 		$this->adminNotes = $adminNotes;
 	}
 
-	public function addExtraInfo( $key, $value ) {
+	public function addExtraInfo ( $key, $value ) {
 
-		$this->extraInfo[ $key ] = $value;
+		$this->extraInfo[$key] = $value;
 	}
 
-	public function getExtraInfo() {
+	public function getExtraInfo () {
 		return $this->extraInfo;
 	}
 
-	public function getProfileImage() {
+	public function getProfileImage () {
 		return $this->profileImage;
 	}
 
-	public function setProfileImage( $profileImage ) {
+	public function setProfileImage ( $profileImage ) {
 		$this->profileImage = $profileImage;
 	}
 
-	public function getProfileImageUrl() {
+	public function getProfileImageUrl () {
 
 		if ( $this->profileImage ) {
 			return wp_get_attachment_url( $this->profileImage );
@@ -211,75 +211,75 @@ class Profile extends \Maven\Core\DomainObject {
 		return "";
 	}
 
-	public function getProfileId() {
+	public function getProfileId () {
 		return $this->profileId;
 	}
 
-	public function setProfileId( $profileId ) {
+	public function setProfileId ( $profileId ) {
 		$this->profileId = $profileId;
 	}
 
-	public function getWebsite() {
+	public function getWebsite () {
 		return $this->website;
 	}
 
-	public function setWebsite( $website ) {
+	public function setWebsite ( $website ) {
 		$this->website = $website;
 	}
 
-	public function getTwitter() {
+	public function getTwitter () {
 		return $this->twitter;
 	}
 
-	public function setTwitter( $twitter ) {
+	public function setTwitter ( $twitter ) {
 		$this->twitter = $twitter;
 	}
 
-	public function getFacebook() {
+	public function getFacebook () {
 		return $this->facebook;
 	}
 
-	public function setFacebook( $facebook ) {
+	public function setFacebook ( $facebook ) {
 		$this->facebook = $facebook;
 	}
 
-	public function getGooglePlus() {
+	public function getGooglePlus () {
 		return $this->googlePlus;
 	}
 
-	public function setGooglePlus( $googlePlus ) {
+	public function setGooglePlus ( $googlePlus ) {
 		$this->googlePlus = $googlePlus;
 	}
 
-	public function getLinkedIn() {
+	public function getLinkedIn () {
 		return $this->linkedIn;
 	}
 
-	public function setLinkedIn( $linkedIn ) {
+	public function setLinkedIn ( $linkedIn ) {
 		$this->linkedIn = $linkedIn;
 	}
 
-	public function getCompany() {
+	public function getCompany () {
 		return $this->company;
 	}
 
-	public function setCompany( $company ) {
+	public function setCompany ( $company ) {
 		$this->company = $company;
 	}
 
-	public function getSex() {
+	public function getSex () {
 		return $this->sex;
 	}
 
-	public function setSex( $sex ) {
+	public function setSex ( $sex ) {
 		$this->sex = $sex;
 	}
 
-	public function isWholesale() {
+	public function isWholesale () {
 		return $this->wholesale;
 	}
 
-	public function setWholesale( $wholesale ) {
+	public function setWholesale ( $wholesale ) {
 		if ( $wholesale === 'false' || $wholesale === false ) {
 			$this->wholesale = FALSE;
 		} else {
@@ -292,11 +292,11 @@ class Profile extends \Maven\Core\DomainObject {
 	 * @collectionType: \Maven\Core\Domain\Role
 	 * @return \Maven\Core\Domain\Role[] 
 	 */
-	public function getRoles() {
+	public function getRoles () {
 		return $this->roles;
 	}
 
-	public function hasRoles() {
+	public function hasRoles () {
 		return $this->roles && count( $this->roles ) > 0;
 	}
 
@@ -304,7 +304,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 * 
 	 * @param \Maven\Core\Domain\Role[]
 	 */
-	public function setRoles( $roles ) {
+	public function setRoles ( $roles ) {
 		$this->roles = $roles;
 	}
 
@@ -313,23 +313,23 @@ class Profile extends \Maven\Core\DomainObject {
 	 * @collectionType: \Maven\Core\Domain\Address
 	 * @return \Maven\Core\Domain\Address[] 
 	 */
-	public function getAddresses() {
+	public function getAddresses () {
 		return $this->addresses;
 	}
 
-	public function hasAddresses() {
+	public function hasAddresses () {
 		return $this->addresses && count( $this->addresses ) > 0;
 	}
 
-	public function hasAddress( $type ) {
-		return $this->hasAddresses() && isset( $this->addresses[ $type ] );
+	public function hasAddress ( $type ) {
+		return $this->hasAddresses() && isset( $this->addresses[$type] );
 	}
 
 	/**
 	 * 
 	 * @param \Maven\Core\Domain\Address[]
 	 */
-	public function setAddresses( $addresses ) {
+	public function setAddresses ( $addresses ) {
 		$this->addresses = $addresses;
 	}
 
@@ -337,7 +337,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 * 
 	 * @param \Maven\Core\Domain\Address $address
 	 */
-	public function setPrimaryAddress( \Maven\Core\Domain\Address $primaryAddress ) {
+	public function setPrimaryAddress ( \Maven\Core\Domain\Address $primaryAddress ) {
 
 		foreach ( $this->addresses as $address ) {
 			if ( $address->isPrimary() ) {
@@ -348,10 +348,10 @@ class Profile extends \Maven\Core\DomainObject {
 
 		$primaryAddress->setType( AddressType::Home );
 
-		$this->addresses[ AddressType::Home ] = $primaryAddress;
+		$this->addresses[AddressType::Home] = $primaryAddress;
 	}
 
-	public function cleanAddresses() {
+	public function cleanAddresses () {
 		$this->addresses[] = array();
 	}
 
@@ -359,7 +359,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 * 
 	 * @param \Maven\Core\Domain\Address $address
 	 */
-	public function setHomeAddress( \Maven\Core\Domain\Address $homeAddress ) {
+	public function setHomeAddress ( \Maven\Core\Domain\Address $homeAddress ) {
 
 		foreach ( $this->addresses as $address ) {
 			if ( $address->getType() == AddressType::Home ) {
@@ -370,14 +370,14 @@ class Profile extends \Maven\Core\DomainObject {
 
 		$homeAddress->setType( AddressType::Home );
 
-		$this->addresses[ AddressType::Home ] = $homeAddress;
+		$this->addresses[AddressType::Home] = $homeAddress;
 	}
 
 	/**
 	 * 
 	 * @param \Maven\Core\Domain\Address $address
 	 */
-	public function setBillingAddress( \Maven\Core\Domain\Address $billingAddress ) {
+	public function setBillingAddress ( \Maven\Core\Domain\Address $billingAddress ) {
 
 		foreach ( $this->addresses as $address ) {
 			if ( $address->getType() == AddressType::Billing ) {
@@ -388,10 +388,10 @@ class Profile extends \Maven\Core\DomainObject {
 
 		$billingAddress->setType( AddressType::Billing );
 
-		$this->addresses[ AddressType::Billing ] = $billingAddress;
+		$this->addresses[AddressType::Billing] = $billingAddress;
 	}
 
-	public function setShippingAddress( \Maven\Core\Domain\Address $shippingAddress ) {
+	public function setShippingAddress ( \Maven\Core\Domain\Address $shippingAddress ) {
 
 		foreach ( $this->addresses as $address ) {
 			if ( $address->getType() == AddressType::Shipping ) {
@@ -402,14 +402,14 @@ class Profile extends \Maven\Core\DomainObject {
 
 		$shippingAddress->setType( AddressType::Shipping );
 
-		$this->addresses[ AddressType::Shipping ] = $shippingAddress;
+		$this->addresses[AddressType::Shipping] = $shippingAddress;
 	}
 
 	/**
 	 * 
 	 * @return \Maven\Core\Domain\Address
 	 */
-	public function getPrimaryAddress() {
+	public function getPrimaryAddress () {
 
 		foreach ( $this->addresses as $address ) {
 			if ( $address->isPrimary() ) {
@@ -423,7 +423,7 @@ class Profile extends \Maven\Core\DomainObject {
 		$address->setPrimary( true );
 		$address->setType( AddressType::Home );
 
-		$this->addresses[ AddressType::Home ] = $address;
+		$this->addresses[AddressType::Home] = $address;
 
 		return $address;
 	}
@@ -432,7 +432,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 * 
 	 * @return \Maven\Core\Domain\Address
 	 */
-	public function getBillingAddress() {
+	public function getBillingAddress () {
 		return $this->getAddressByType( AddressType::Billing );
 	}
 
@@ -440,7 +440,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 * 
 	 * @return \Maven\Core\Domain\Address
 	 */
-	public function getAddressByType( $type ) {
+	public function getAddressByType ( $type ) {
 		foreach ( $this->addresses as $address ) {
 			if ( $address->getType() == $type ) {
 				return $address;
@@ -453,12 +453,12 @@ class Profile extends \Maven\Core\DomainObject {
 		$primary->setType( $type );
 		$primary->setPrimary( FALSE );
 
-		$this->addresses[ $type ] = $primary;
+		$this->addresses[$type] = $primary;
 
 		return $primary;
 	}
 
-	public function removeAddress( $type ) {
+	public function removeAddress ( $type ) {
 		$i = 0;
 		foreach ( $this->addresses as $address ) {
 			if ( $address->getType() == $type ) {
@@ -471,7 +471,7 @@ class Profile extends \Maven\Core\DomainObject {
 		return false;
 	}
 
-	public function removeAllAddressesExcept( $type ) {
+	public function removeAllAddressesExcept ( $type ) {
 		foreach ( $this->addresses as $address ) {
 			if ( $address->getType() == $type ) {
 				$this->addresses = array( $address );
@@ -484,7 +484,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 * 
 	 * @return \Maven\Core\Domain\Address
 	 */
-	public function getShippingAddress() {
+	public function getShippingAddress () {
 		return $this->getAddressByType( AddressType::Shipping );
 	}
 
@@ -492,7 +492,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 * 
 	 * @return \Maven\Core\Domain\Address
 	 */
-	public function getHomeAddress() {
+	public function getHomeAddress () {
 		return $this->getAddressByType( AddressType::Home );
 	}
 
@@ -500,38 +500,38 @@ class Profile extends \Maven\Core\DomainObject {
 	 * 
 	 * @return \Maven\Core\Domain\Address
 	 */
-	public function getWorkAddress() {
+	public function getWorkAddress () {
 		return $this->getAddressByType( AddressType::Work );
 	}
 
-	public function getStatusImageUrl() {
+	public function getStatusImageUrl () {
 		return $this->statusImageUrl;
 	}
 
-	public function getFullName() {
+	public function getFullName () {
 		return $this->firstName . " " . $this->lastName;
 	}
 
-	public function setStatusImageUrl( $statusImageUrl ) {
+	public function setStatusImageUrl ( $statusImageUrl ) {
 		$this->statusImageUrl = $statusImageUrl;
 	}
 
-	public function getUserName() {
+	public function getUserName () {
 		return $this->userName;
 	}
 
-	public function setUserName( $userName ) {
+	public function setUserName ( $userName ) {
 		$this->userName = $userName;
 	}
 
-	public function isEmpty() {
+	public function isEmpty () {
 		return Utils::isEmpty( $this->getProfileId() );
 	}
 
-	public function isCompleted() {
-		$result = ! Utils::isEmpty( $this->firstName ) && ! Utils::isEmpty( $this->lastName );
-		$result = $result && ! Utils::isEmpty( $this->email );
-		$result = $result && ! Utils::isEmpty( $this->getProfileId() );
+	public function isCompleted () {
+		$result = !Utils::isEmpty( $this->firstName ) && !Utils::isEmpty( $this->lastName );
+		$result = $result && !Utils::isEmpty( $this->email );
+		$result = $result && !Utils::isEmpty( $this->getProfileId() );
 
 		return $result;
 	}
@@ -540,7 +540,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 * Copy the current profile into a new objet
 	 * @return \Maven\Core\Domain\Profile
 	 */
-	public function copy() {
+	public function copy () {
 		$profile = new Profile();
 
 		$profile->setSalutation( $this->getSalutation() );
@@ -562,19 +562,19 @@ class Profile extends \Maven\Core\DomainObject {
 		return $profile;
 	}
 
-	public function getLastUpdate() {
+	public function getLastUpdate () {
 		return $this->lastUpdate;
 	}
 
-	public function setLastUpdate( $lastUpdate ) {
+	public function setLastUpdate ( $lastUpdate ) {
 		$this->lastUpdate = $lastUpdate;
 	}
 
-	public function getCreatedOn() {
+	public function getCreatedOn () {
 		return $this->createdOn;
 	}
 
-	public function setCreatedOn( $createdOn ) {
+	public function setCreatedOn ( $createdOn ) {
 		$this->createdOn = $createdOn;
 	}
 
@@ -583,11 +583,11 @@ class Profile extends \Maven\Core\DomainObject {
 	 * @collectionType: \Maven\Core\Domain\WishlistItem
 	 * @return \Maven\Core\Domain\WishlistItem[] 
 	 */
-	public function getWishlist() {
+	public function getWishlist () {
 		return $this->wishlist;
 	}
 
-	public function hasWishlist() {
+	public function hasWishlist () {
 		return $this->wishlist && count( $this->wishlist ) > 0;
 	}
 
@@ -595,7 +595,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 * 
 	 * @param \Maven\Core\Domain\WishlistItem[]
 	 */
-	public function setWishlist( $wishlist ) {
+	public function setWishlist ( $wishlist ) {
 		$this->wishlist = $wishlist;
 	}
 
@@ -603,40 +603,42 @@ class Profile extends \Maven\Core\DomainObject {
 	 * Add wihslist item to the profile
 	 * @param \Maven\Core\Domain\WishlistItem $item
 	 */
-	public function addWishlistItem( \Maven\Core\Domain\WishlistItem $item ) {
+	public function addWishlistItem ( \Maven\Core\Domain\WishlistItem $item ) {
 
-		if ( ! $item->getPluginKey() ) {
+		if ( !$item->getPluginKey() ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Plugin Key is required' );
 		}
 
 		//TODO: Check if the item exists, we have to remove it and add the new one.
-		if ( $this->itemExists( $item->getIdentifier() ) ) {
+		if ( $this->wishlistItemExists( $item->getIdentifier() ) ) {
 			$this->removeItem( $item->getIdentifier() );
 		}
 
-		$this->wishlist[ $item->getIdentifier() ] = $item;
+		$this->wishlist[$item->getIdentifier()] = $item;
+
+		return \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Item added sucessfully', $this->wishlist );
 	}
-	
+
 	/**
 	 * Remove wishlits item from profile
 	 * @param int $identifier
 	 * @return boolean
 	 */
-	public function removeWishlistItem( $identifier ) {
+	public function removeWishlistItem ( $identifier ) {
 
 		if ( $this->wishlistItemExists( $identifier ) ) {
 
-			unset( $this->items[ $identifier ] );
+			unset( $this->items[$identifier] );
 
 			return true;
 		}
 
 		return false;
 	}
-	
-	public function wishlistItemExists( $identifier ) {
 
-		return $this->wishlist && count( $this->wishlist ) > 0 && isset( $this->wishlist[ $identifier ] );
+	public function wishlistItemExists ( $identifier ) {
+
+		return $this->wishlist && count( $this->wishlist ) > 0 && isset( $this->wishlist[$identifier] );
 	}
 
 }

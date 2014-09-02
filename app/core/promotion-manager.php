@@ -379,7 +379,7 @@ class PromotionManager {
 			return Message\MessageManager::createErrorMessage( 'Promotion Code Out of Limit of Use' );
 		}
 
-		return Message\MessageManager::createRegularMessage( 'Valid promotion', $promotion );
+		return Message\MessageManager::createSuccessfulMessage( 'Valid promotion', $promotion );
 	}
 
 	private function outOfDate( Domain\Promotion $promotion ) {
