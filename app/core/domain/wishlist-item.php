@@ -3,7 +3,7 @@
 namespace Maven\Core\Domain;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class WishlistItem extends \Maven\Core\DomainObject {
@@ -16,6 +16,7 @@ class WishlistItem extends \Maven\Core\DomainObject {
 	protected $sku;
 	protected $thingId;
 	protected $attributes;
+	protected $timestamp;
 
 	/**
 	 *
@@ -34,57 +35,57 @@ class WishlistItem extends \Maven\Core\DomainObject {
 	 * @param string $groupKey
 	 * @param int $id
 	 */
-	public function __construct( $pluginKey = '' ) {
+	public function __construct ( $pluginKey = '' ) {
 
 		parent::__construct( false );
 
 		$this->pluginKey = $pluginKey;
 
 		$rules = array(
-		    'name' => \Maven\Core\SanitizationRule::Text,
-		    'profileId' => \Maven\Core\SanitizationRule::Integer,
-		    'price' => \Maven\Core\SanitizationRule::Float,
-		    'sku' => \Maven\Core\SanitizationRule::Text,
-		    'pluginKey' => \Maven\Core\SanitizationRule::Key,
-		    'variationId' => \Maven\Core\SanitizationRule::Integer
+			'name' => \Maven\Core\SanitizationRule::Text,
+			'profileId' => \Maven\Core\SanitizationRule::Integer,
+			'price' => \Maven\Core\SanitizationRule::Float,
+			'sku' => \Maven\Core\SanitizationRule::Text,
+			'pluginKey' => \Maven\Core\SanitizationRule::Key,
+			'variationId' => \Maven\Core\SanitizationRule::Integer
 		);
 
 		$this->setSanitizationRules( $rules );
 	}
 
-	public function getSku() {
+	public function getSku () {
 		return $this->sku;
 	}
 
-	public function setSku( $sku ) {
+	public function setSku ( $sku ) {
 		$this->sku = $sku;
 	}
 
-	public function getPrice() {
+	public function getPrice () {
 		return $this->price;
 	}
 
-	public function setPrice( $price ) {
+	public function setPrice ( $price ) {
 		$this->price = $price;
 	}
 
-	public function getOrderId() {
+	public function getOrderId () {
 		return $this->orderId;
 	}
 
-	public function setOrderId( $orderId ) {
+	public function setOrderId ( $orderId ) {
 		$this->orderId = $orderId;
 	}
 
-	public function getName() {
+	public function getName () {
 		return $this->name;
 	}
 
-	public function setName( $name ) {
+	public function setName ( $name ) {
 		$this->name = $name;
 	}
 
-	public function getHash() {
+	public function getHash () {
 		
 	}
 
@@ -92,7 +93,7 @@ class WishlistItem extends \Maven\Core\DomainObject {
 	 * Return the item Plugin Key
 	 * @return string
 	 */
-	public function getPluginKey() {
+	public function getPluginKey () {
 		return $this->pluginKey;
 	}
 
@@ -100,7 +101,7 @@ class WishlistItem extends \Maven\Core\DomainObject {
 	 * Set the Item Plugin Key
 	 * @param string $pluginKey
 	 */
-	public function setPluginKey( $pluginKey ) {
+	public function setPluginKey ( $pluginKey ) {
 		$this->pluginKey = $pluginKey;
 	}
 
@@ -108,23 +109,23 @@ class WishlistItem extends \Maven\Core\DomainObject {
 	 * Return the Item identifier. It will be unique among the groups
 	 * @return string
 	 */
-	public function getIdentifier() {
+	public function getIdentifier () {
 		return $this->getPluginKey() . "-" . $this->getThingId() . "-" . $this->getThingVariationId();
 	}
 
-	public function getThingVariationId() {
+	public function getThingVariationId () {
 		return $this->thingVariationId;
 	}
 
-	public function setThingVariationId( $thingVariationId ) {
+	public function setThingVariationId ( $thingVariationId ) {
 		$this->thingVariationId = $thingVariationId;
 	}
 
-	public function getThingId() {
+	public function getThingId () {
 		return $this->thingId;
 	}
 
-	public function setThingId( $thingId ) {
+	public function setThingId ( $thingId ) {
 		$this->thingId = $thingId;
 	}
 
@@ -133,12 +134,21 @@ class WishlistItem extends \Maven\Core\DomainObject {
 	 * @serialized
 	 * @return \Maven\Core\Domain\OrderItemAttribute[]
 	 */
-	public function getAttributes() {
+	public function getAttributes () {
 		return $this->attributes;
 	}
 
-	public function setAttributes( $attributes ) {
+	public function setAttributes ( $attributes ) {
 		$this->attributes = $attributes;
+	}
+
+	public function getTimestamp () {
+
+		return date( 'M j, Y', strtotime( $this->timestamp ) );
+	}
+
+	public function setTimestamp ( $timestamp ) {
+		$this->timestamp = $timestamp;
 	}
 
 	/**
@@ -147,7 +157,7 @@ class WishlistItem extends \Maven\Core\DomainObject {
 	 * @param string $name
 	 * @param float $price
 	 */
-	public function addAttribute( $id, $name, $price ) {
+	public function addAttribute ( $id, $name, $price ) {
 
 		$attribute = new OrderItemAttribute();
 		$attribute->setName( $name );
@@ -157,7 +167,7 @@ class WishlistItem extends \Maven\Core\DomainObject {
 		$this->attributes[] = $attribute;
 	}
 
-	public function sanitize() {
+	public function sanitize () {
 		parent::sanitize();
 
 		if ( \Maven\Core\Utils::isEmpty( $this->attributes ) ) {
@@ -169,16 +179,16 @@ class WishlistItem extends \Maven\Core\DomainObject {
 		}
 	}
 
-	public function hasAttributes() {
-		return ! \Maven\Core\Utils::isEmpty( $this->attributes );
+	public function hasAttributes () {
+		return !\Maven\Core\Utils::isEmpty( $this->attributes );
 	}
 
-	public function getAttributesNames() {
+	public function getAttributesNames () {
 
 		$names = "";
 		if ( $this->hasAttributes() ) {
 			foreach ( $this->attributes as $attribute ) {
-				if ( ! $names ) {
+				if ( !$names ) {
 					$names.=$attribute->getName();
 				} else {
 					$names.= ", " . $attribute->getName();

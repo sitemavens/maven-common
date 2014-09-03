@@ -85,7 +85,6 @@ class ProfileMapper extends \Maven\Core\Db\WordpressMapper {
 			throw new \Maven\Exceptions\RequiredException( 'Profile email is required' );
 		}
 
-
 		$profile->sanitize();
 
 

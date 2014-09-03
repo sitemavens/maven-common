@@ -3,7 +3,7 @@
 namespace Maven\Api\V2;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 /**
@@ -15,29 +15,29 @@ class Wishlist {
 
 	private static $instance;
 
-	public static function current() {
-		if ( ! self::$instance ) {
+	public static function current () {
+		if ( !self::$instance ) {
 			self::$instance = new self();
 		}
 
 		return self::$instance;
 	}
 
-	public function registerRestApi() {
+	public function registerRestApi () {
 
 		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $this, 'registerRouters' ) );
 	}
 
-	public function registerRouters( $routes ) {
+	public function registerRouters ( $routes ) {
 
-		$routes[ '/maven/v2/wishlist/item' ] = array(
-		    array( array( $this, 'getItems' ), \WP_JSON_Server::READABLE ),
-		    array( array( $this, 'addItem' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON )
+		$routes['/maven/v2/wishlist/item'] = array(
+			array( array( $this, 'getItems' ), \WP_JSON_Server::READABLE ),
+			array( array( $this, 'addItem' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
 
-		$routes[ '/maven/v2/wishlist/item/(?P<identifier>.+)' ] = array(
-		    array( array( $this, 'removeItem' ), \WP_JSON_Server::DELETABLE ),
-		    array( array( $this, 'updateItem' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
+		$routes['/maven/v2/wishlist/item/(?P<identifier>.+)'] = array(
+			array( array( $this, 'removeItem' ), \WP_JSON_Server::DELETABLE ),
+			array( array( $this, 'updateItem' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
 
 
@@ -56,7 +56,7 @@ class Wishlist {
 		return $routes;
 	}
 
-	public function getItems() {
+	public function getItems () {
 		$this->isValid();
 
 		$wishlist = array();
@@ -73,7 +73,7 @@ class Wishlist {
 		$this->sendResponse( \Maven\Core\Message\MessageManager::createSuccessfulMessage( '', $result ) );
 	}
 
-	public function removeItem( $identifier ) {
+	public function removeItem ( $identifier ) {
 
 		$this->isValid();
 
@@ -82,39 +82,36 @@ class Wishlist {
 		$result = $profile->removeWishlistItem( $identifier );
 
 		$manager = new \Maven\Core\ProfileManager();
-
-		$manager->addProfile( $profile );
-
+		$test = $manager->addProfile( $profile );
 		$this->sendResponse( $result );
 	}
 
-	public function addItem( $data ) {
+	public function addItem ( $data ) {
 
 		$defaultItem = array(
-		    'id' => '',
-		    'pluginKey' => '',
-		    'name' => '',
-		    'sku' => '',
-		    'price' => 0
+			'id' => '',
+			'pluginKey' => '',
+			'name' => '',
+			'sku' => '',
+			'price' => 0
 		);
 
 		$item = wp_parse_args( $data, $defaultItem );
 
-		if ( ! $item[ 'pluginKey' ] ) {
+		if ( !$item['pluginKey'] ) {
 			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'Plugin Key is required' ) );
 		}
 
 		$wishlistItem = new \Maven\Core\Domain\WishlistItem();
-		$wishlistItem->setName( $item[ 'name' ] );
-		$wishlistItem->setPluginKey( $item[ 'pluginKey' ] );
-		$wishlistItem->setThingId( $item[ 'id' ] );
-		$wishlistItem->setSku( $item[ 'sku' ] );
-		$wishlistItem->setPrice( $item[ 'price' ] );
+		$wishlistItem->setName( $item['name'] );
+		$wishlistItem->setPluginKey( $item['pluginKey'] );
+		$wishlistItem->setThingId( $item['id'] );
+		$wishlistItem->setSku( $item['sku'] );
+		$wishlistItem->setPrice( $item['price'] );
 
 		$profile = $this->getCurrentUser()->getProfile();
 
 		$result = $profile->addWishlistItem( $wishlistItem );
-
 		$manager = new \Maven\Core\ProfileManager();
 
 		$manager->addProfile( $profile );
@@ -122,9 +119,9 @@ class Wishlist {
 		$this->sendResponse( $result );
 	}
 
-	private function isValid() {
+	private function isValid () {
 
-		if ( ! $this->getCurrentUser()->hasProfile() ) {
+		if ( !$this->getCurrentUser()->hasProfile() ) {
 			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'There is no user/profile' ) );
 		}
 	}
@@ -133,7 +130,7 @@ class Wishlist {
 	 * 
 	 * @return \Maven\Core\Domain\User
 	 */
-	private function getCurrentUser() {
+	private function getCurrentUser () {
 		$userManager = new \Maven\Core\UserManager();
 		//$userApi = new \Maven\Core\UserApi();
 		$user = $userManager->getLoggedUser();
@@ -141,18 +138,18 @@ class Wishlist {
 		return $user;
 	}
 
-	private function getCurrentCart() {
+	private function getCurrentCart () {
 
 		$cart = \Maven\Core\Cart::current();
 
 		return $cart;
 	}
 
-	private function sendResponse( \Maven\Core\Message\Message $result ) {
+	private function sendResponse ( \Maven\Core\Message\Message $result ) {
 
 		$output = new \Maven\Core\UI\OutputTranslator();
 		$transformedOrder = $output->convert( $this->getCurrentCart()->getOrder() );
-		$transformedData=$output->convert($result->getData());
+		$transformedData = $output->convert( $result->getData() );
 
 		if ( $result->isSuccessful() ) {
 			$result = array( 'successful' => true, 'error' => false, 'description' => $result->getContent(), 'data' => $transformedData, 'order' => $transformedOrder );

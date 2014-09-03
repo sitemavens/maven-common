@@ -596,7 +596,9 @@ class Profile extends \Maven\Core\DomainObject {
 	 * @param \Maven\Core\Domain\WishlistItem[]
 	 */
 	public function setWishlist ( $wishlist ) {
-		$this->wishlist = $wishlist;
+		foreach ( $wishlist as $item ) {
+			$this->addWishlistItem( $item );
+		}
 	}
 
 	/**
@@ -611,7 +613,7 @@ class Profile extends \Maven\Core\DomainObject {
 
 		//TODO: Check if the item exists, we have to remove it and add the new one.
 		if ( $this->wishlistItemExists( $item->getIdentifier() ) ) {
-			$this->removeItem( $item->getIdentifier() );
+			$this->removeWishlistItem( $item->getIdentifier() );
 		}
 
 		$this->wishlist[$item->getIdentifier()] = $item;
@@ -627,13 +629,12 @@ class Profile extends \Maven\Core\DomainObject {
 	public function removeWishlistItem ( $identifier ) {
 
 		if ( $this->wishlistItemExists( $identifier ) ) {
+			unset( $this->wishlist[$identifier] );
 
-			unset( $this->items[$identifier] );
-
-			return true;
+			return \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Item removed sucessfully', $this->wishlist );
 		}
 
-		return false;
+		return \Maven\Core\Message\MessageManager::createErrorMessage( "Item doesn't exist" );
 	}
 
 	public function wishlistItemExists ( $identifier ) {
