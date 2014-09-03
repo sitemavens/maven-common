@@ -152,11 +152,12 @@ class Wishlist {
 
 		$output = new \Maven\Core\UI\OutputTranslator();
 		$transformedOrder = $output->convert( $this->getCurrentCart()->getOrder() );
+		$transformedData=$output->convert($result->getData());
 
 		if ( $result->isSuccessful() ) {
-			$result = array( 'successful' => true, 'error' => false, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
+			$result = array( 'successful' => true, 'error' => false, 'description' => $result->getContent(), 'data' => $transformedData, 'order' => $transformedOrder );
 		} else {
-			$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
+			$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent(), 'data' => $transformedData, 'order' => $transformedOrder );
 		}
 
 
