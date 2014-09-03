@@ -147,6 +147,9 @@ class WishlistItem extends \Maven\Core\DomainObject {
 		return date( 'M j, Y', strtotime( $this->timestamp ) );
 	}
 
+	public function setTimestamp ( $timestamp ) {
+		$this->timestamp = $timestamp;
+	}
 
 	/**
 	 * 
