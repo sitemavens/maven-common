@@ -63,6 +63,18 @@ class ShippingMethodManager extends Manager{
 
 		return $methods;
 	}
+	
+	public function getEnabledMethodById( $id ){
+	
+		$methods =  $this->getEnabledMethods();
+		foreach( $methods as $method ) {
+			if ( $method->getId() == $id ) 
+				return $method;
+		}
+		
+		return false;
+		
+	}
 
 	public function delete ( $id ) {
 

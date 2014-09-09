@@ -40,6 +40,12 @@ class ShippingApi{
 		
 	}
 	
+	public function getEnabledMethodById( $id ){
+		
+		return $this->shippingMethodManager->getEnabledMethodById( $id );
+		
+	}
+	
 	public function findShippingAmount( $total, $country = "*", $state = "*", Domain\ShippingMethod $shippingMethod = null ){
 		
 		return $this->shippingMethodManager->findShippingAmount($total, $country, $state, $shippingMethod);
