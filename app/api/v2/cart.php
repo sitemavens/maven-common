@@ -38,33 +38,37 @@ class Cart {
 			array( array( $this, 'removeItem' ), \WP_JSON_Server::DELETABLE ),
 			array( array( $this, 'updateItem' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
-		
+
 		$routes['/maven/v2/cart/promotions/(?P<identifier>.+)'] = array(
 			array( array( $this, 'applyPromotion' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
 
+		$routes['/maven/v2/cart/shipping/(?P<identifier>.+)'] = array(
+			array( array( $this, 'applyShipping' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		);
 
-
-//		$routes[ '/maven/taxes' ] = array(
-//			array( array( $this, 'getTaxes' ), \WP_JSON_Server::READABLE ),
-//			array( array( $this, 'newTax' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
-//		);
-//		$routes[ '/maven/taxes/(?P<id>\d+)' ] = array(
-//			array( array( $this, 'getTax' ), \WP_JSON_Server::READABLE ),
-//			array( array( $this, 'editTax' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
-//			array( array( $this, 'deleteTax' ), \WP_JSON_Server::DELETABLE ),
-//		);
-//		
 
 		return $routes;
 	}
-	
-	public function applyPromotion( $identifier ){
-		
+
+	public function applyPromotion ( $identifier ) {
+
 		$this->isValid();
-		
-		$result = $this->getCurrentCart()->applyPromotion($identifier);
-		
+
+		$result = $this->getCurrentCart()->applyPromotion( $identifier );
+
+		$this->sendResponse( $result );
+	}
+
+	public function applyShipping ( $identifier ) {
+		$this->isValid();
+		$shippingManager = new \Maven\Core\ShippingMethodManager();
+		$shippingMethod = $shippingManager->getEnabledMethodById( $identifier );
+		die(print_r($shippingManager,true));
+		if ( $shippingMethod ) {
+			$result = $this->getCurrentCart()->getOrder()->setShippingMethod( $shippingMethod );
+		}
+
 		$this->sendResponse( $result );
 	}
 
@@ -112,7 +116,7 @@ class Cart {
 		$orderItem->setPrice( $item['price'] );
 		$orderItem->setQuantity( $item['quantity'] );
 
-		
+
 		$this->sendResponse( $this->getCurrentCart()->addToCart( $orderItem ) );
 	}
 
