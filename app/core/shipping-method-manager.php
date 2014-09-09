@@ -108,12 +108,12 @@ class ShippingMethodManager extends Manager{
 	public function findShippingAmount ( $total, $country = "*", $state = "*", $shippingMethod = null ) {
 
 		
-		if ( !$shippingMethod || ! ( $shippingMethod instanceOf Domain\ShippingMethod && !$shippingMethod->getMethod() ) ) {
+		if ( !$shippingMethod  ) {
 			
 			// Lets find the default method
 			$shippingMethod = $this->getHookManager()->applyFilters('maven/shippingMethod/default', $shippingMethod  );
 		
-		}else{
+		}else if ( ! $shippingMethod instanceOf Domain\ShippingMethod ) {
 			$shippingMethod = $this->getEnabledMethodById( $shippingMethod );
 		}
 			
