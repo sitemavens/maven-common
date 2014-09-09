@@ -106,14 +106,19 @@ class ShippingMethodManager extends Manager{
 	 * @return int
 	 * @throws \Maven\Exceptions\RequiredException
 	 */
-	public function findShippingAmount ( $total, $country = "*", $state = "*", Domain\ShippingMethod $shippingMethod = null ) {
+	public function findShippingAmount ( $total, $country = "*", $state = "*", $shippingMethod = null ) {
 
-		if ( !$shippingMethod || !$shippingMethod->getMethod() ) {
+		
+		if ( !$shippingMethod || ! ( $shippingMethod instanceOf Domain\ShippingMethod && !$shippingMethod->getMethod() ) ) {
 			
 			// Lets find the default method
 			$shippingMethod = $this->getHookManager()->applyFilters('maven/shippingMethod/default', $shippingMethod  );
 		
+		}else{
+			$shippingMethod = $this->getEnabledMethodById( $shippingMethod );
 		}
+			
+		
 		
 		
 		//TODO @emiliano: What if there's no default shipping method
