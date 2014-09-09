@@ -25,7 +25,6 @@ class ShippingMethodManager extends Manager{
 	
 	public function getCount(Domain\ShippingMethodFilter $filter ) {
 		
-
 		return $this->mapper->getCount( $filter );
 	}
 	

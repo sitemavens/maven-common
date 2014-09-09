@@ -63,13 +63,14 @@ class Cart {
 	public function applyShipping ( $identifier ) {
 		$this->isValid();
 		$shippingManager = new \Maven\Core\ShippingMethodManager();
+		$orderManager = new \Maven\Core\OrderManager();
 		$shippingMethod = $shippingManager->getEnabledMethodById( $identifier );
-		die(print_r($shippingManager,true));
 		if ( $shippingMethod ) {
-			$result = $this->getCurrentCart()->getOrder()->setShippingMethod( $shippingMethod );
+			$this->getCurrentCart()->getOrder()->setShippingMethod( $shippingMethod );
+			$orderManager->reCalculateOrderTotals( $this->getCurrentCart()->getOrder() );
 		}
 
-		$this->sendResponse( $result );
+		$this->sendResponse( \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Shipping applied correctly', $this->getCurrentCart()->getOrder() ) );
 	}
 
 	public function removeItem ( $identifier ) {
