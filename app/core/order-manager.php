@@ -277,7 +277,6 @@ class OrderManager {
 		} else if ( $order->getShippingContact()->getShippingAddress()->getCountry() ) {
 			$shippingAmount = $shippingMethodManager->findShippingAmount( $order->getSubtotal(), $shippingAddress->getCountry(), $shippingAddress->getState() );
 		}
-
 		$order->setShippingAmount( $shippingAmount );
 		\Maven\Loggers\Logger::log()->message( 'Maven/OrderManager/applyShipping: Amount: ' . $shippingAmount );
 
