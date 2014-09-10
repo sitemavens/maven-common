@@ -118,10 +118,10 @@ class ShippingMethodManager extends Manager{
 		}
 			
 		
-		
+		\Maven\Loggers\Logger::log()->message( 'Maven/Core/ShippingMethodManager/findShippingAmount'. print_r($shippingMethod,true) );
 		
 		//TODO @emiliano: What if there's no default shipping method
-		if ( !$shippingMethod || !$shippingMethod->getMethod() ) {
+		if ( !$shippingMethod || ! method_exists($shippingMethod, 'getMethod') ) {
 			//There isnt a default shipping method, just return 0
 			return 0;
 		}
