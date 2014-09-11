@@ -3,7 +3,7 @@
 namespace Maven\Core\Domain;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class Order extends \Maven\Core\DomainObject {
@@ -20,7 +20,6 @@ class Order extends \Maven\Core\DomainObject {
 	private $taxAmount = 0;
 	private $pluginId;
 	private $statusId;
-	
 	private $handlingFee = 0;
 
 	/**
@@ -41,6 +40,8 @@ class Order extends \Maven\Core\DomainObject {
 	 * @var \Maven\Core\Domain\CreditCard 
 	 */
 	private $creditCard;
+	//Boolean to check if the order is paid with credit card of offline method
+	private $paidOffline = false;
 
 	/**
 	 *
@@ -106,7 +107,7 @@ class Order extends \Maven\Core\DomainObject {
 	private $shippingTrackingCode;
 	private $shippingTrackingUrl;
 
-	public function __construct( $id = false ) {
+	public function __construct ( $id = false ) {
 		parent::__construct( $id );
 
 		$this->billingContact = new Contact();
@@ -117,23 +118,24 @@ class Order extends \Maven\Core\DomainObject {
 		$this->status = new OrderStatus();
 
 		$rules = array(
-		    'contactId' => \Maven\Core\SanitizationRule::Integer,
-		    'shippingContactId' => \Maven\Core\SanitizationRule::Integer,
-		    'billingContactId' => \Maven\Core\SanitizationRule::Integer,
-		    'statusId' => \Maven\Core\SanitizationRule::Integer,
-		    'pluginId' => \Maven\Core\SanitizationRule::Key,
-		    'discountAmount' => \Maven\Core\SanitizationRule::Float,
-		    'total' => \Maven\Core\SanitizationRule::Float,
-		    'subTotal' => \Maven\Core\SanitizationRule::Float,
-		    'number' => \Maven\Core\SanitizationRule::Text,
-		    'description' => \Maven\Core\SanitizationRule::TextWithHtml,
-		    'transactionId' => \Maven\Core\SanitizationRule::Text,
-		    'shippingContact' => \Maven\Core\SanitizationRule::SerializedObject,
-		    'billingContact' => \Maven\Core\SanitizationRule::SerializedObject,
-		    'contact' => \Maven\Core\SanitizationRule::SerializedObject,
-		    'shippingCarrier' => \Maven\Core\SanitizationRule::Text,
-		    'shippingTrackingCode' => \Maven\Core\SanitizationRule::Text,
-		    'shippingTrackingUrl' => \Maven\Core\SanitizationRule::Text
+			'contactId' => \Maven\Core\SanitizationRule::Integer,
+			'shippingContactId' => \Maven\Core\SanitizationRule::Integer,
+			'billingContactId' => \Maven\Core\SanitizationRule::Integer,
+			'statusId' => \Maven\Core\SanitizationRule::Integer,
+			'pluginId' => \Maven\Core\SanitizationRule::Key,
+			'discountAmount' => \Maven\Core\SanitizationRule::Float,
+			'total' => \Maven\Core\SanitizationRule::Float,
+			'subTotal' => \Maven\Core\SanitizationRule::Float,
+			'number' => \Maven\Core\SanitizationRule::Text,
+			'paidOffline' => \Maven\Core\SanitizationRule::Boolean,
+			'description' => \Maven\Core\SanitizationRule::TextWithHtml,
+			'transactionId' => \Maven\Core\SanitizationRule::Text,
+			'shippingContact' => \Maven\Core\SanitizationRule::SerializedObject,
+			'billingContact' => \Maven\Core\SanitizationRule::SerializedObject,
+			'contact' => \Maven\Core\SanitizationRule::SerializedObject,
+			'shippingCarrier' => \Maven\Core\SanitizationRule::Text,
+			'shippingTrackingCode' => \Maven\Core\SanitizationRule::Text,
+			'shippingTrackingUrl' => \Maven\Core\SanitizationRule::Text
 		);
 
 		$this->setSanitizationRules( $rules );
@@ -143,11 +145,11 @@ class Order extends \Maven\Core\DomainObject {
 	 * @collectionType: \Maven\Core\Domain\OrderItem
 	 * @return \Maven\Core\Domain\OrderItem[]
 	 */
-	public function getItems() {
+	public function getItems () {
 		return $this->items;
 	}
 
-	public function getTotalQuantityItems() {
+	public function getTotalQuantityItems () {
 
 		$totalQuantity = 0;
 		foreach ( $this->items as $item ) {
@@ -161,7 +163,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @param \Maven\Core\Domain\OrderItem[] $items
 	 */
-	public function setItems( $items ) {
+	public function setItems ( $items ) {
 
 		//$this->items = $items;
 		//We need to add items one by one, to generate the keys for the array
@@ -174,9 +176,9 @@ class Order extends \Maven\Core\DomainObject {
 	 * Add item to the order
 	 * @param \Maven\Core\Domain\OrderItem $item
 	 */
-	public function addItem( \Maven\Core\Domain\OrderItem $item ) {
+	public function addItem ( \Maven\Core\Domain\OrderItem $item ) {
 
-		if ( ! $item->getPluginKey() ) {
+		if ( !$item->getPluginKey() ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Plugin Key is required' );
 		}
 
@@ -189,13 +191,13 @@ class Order extends \Maven\Core\DomainObject {
 			throw new \Maven\Exceptions\MavenException( 'Quantity must be at least 1' );
 		}
 
-		$this->items[ $item->getIdentifier() ] = $item;
+		$this->items[$item->getIdentifier()] = $item;
 
 		$this->recalculateSubtotal();
 	}
 
-	public function recalculateSubtotal() {
-		
+	public function recalculateSubtotal () {
+
 		$subTotal = 0;
 		foreach ( $this->items as $itemAux ) {
 			$subTotal += ( $itemAux->getPrice() * $itemAux->getQuantity() );
@@ -210,15 +212,15 @@ class Order extends \Maven\Core\DomainObject {
 	 * @param type $groupKey
 	 * @return type
 	 */
-	public function itemExists( $identifier ) {
+	public function itemExists ( $identifier ) {
 
-		return $this->items && count( $this->items ) > 0 && isset( $this->items[ $identifier ] );
+		return $this->items && count( $this->items ) > 0 && isset( $this->items[$identifier] );
 	}
 
-	public function getItem( $identifier ) {
+	public function getItem ( $identifier ) {
 
 		if ( $this->itemExists( $identifier ) ) {
-			return $this->items[ $identifier ];
+			return $this->items[$identifier];
 		}
 
 		return false;
@@ -229,25 +231,25 @@ class Order extends \Maven\Core\DomainObject {
 	 * @param int $identifier
 	 * @return boolean
 	 */
-	public function removeItem( $identifier ) {
+	public function removeItem ( $identifier ) {
 
 		if ( $this->itemExists( $identifier ) ) {
 
-			unset( $this->items[ $identifier ] );
+			unset( $this->items[$identifier] );
 
 			$this->recalculateSubtotal();
-			
+
 			return true;
 		}
 
 		return false;
 	}
 
-	public function getStatusId() {
+	public function getStatusId () {
 		return $this->statusId;
 	}
 
-	public function setStatusId( $statusId ) {
+	public function setStatusId ( $statusId ) {
 		$this->statusId = $statusId;
 	}
 
@@ -255,7 +257,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @return \Maven\Core\Domain\OrderStatus
 	 */
-	public function getStatus() {
+	public function getStatus () {
 		return $this->status;
 	}
 
@@ -263,50 +265,62 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @param \Maven\Core\Domain\OrderStatus $status
 	 */
-	public function setStatus( \Maven\Core\Domain\OrderStatus $status ) {
+	public function setStatus ( \Maven\Core\Domain\OrderStatus $status ) {
 		$this->status = $status;
 	}
 
-	public function getNumber() {
+	public function getNumber () {
 		return $this->number;
 	}
 
-	public function setNumber( $number ) {
+	public function setPaidOffline ( $paidOffline ) {
+		if ( $paidOffline === 'false' || $paidOffline === false ) {
+			$this->paidOffline = false;
+		} else {
+			$this->paidOffline = $paidOffline;
+		}
+	}
+
+	public function isPaidOffline () {
+		return $this->paidOffline;
+	}
+
+	public function setNumber ( $number ) {
 		$this->number = $number;
 	}
 
-	public function getDescription() {
+	public function getDescription () {
 		return $this->description;
 	}
 
-	public function setDescription( $description ) {
+	public function setDescription ( $description ) {
 		$this->description = $description;
 	}
 
-	public function getOrderDate() {
+	public function getOrderDate () {
 		return $this->orderDate;
 	}
 
-	public function setOrderDate( $orderDate ) {
+	public function setOrderDate ( $orderDate ) {
 		$this->orderDate = $orderDate;
 	}
 
-	public function getSubtotal() {
+	public function getSubtotal () {
 		return $this->subtotal;
 	}
 
-	public function setSubtotal( $subtotal ) {
+	public function setSubtotal ( $subtotal ) {
 		$this->subtotal = $subtotal;
 	}
 
-	public function getTotal() {
+	public function getTotal () {
 		return $this->total;
 	}
 
-	public function setTotal( $total ) {
+	public function setTotal ( $total ) {
 		$this->total = $total;
 	}
-	
+
 	public function getHandlingFee () {
 		return $this->handlingFee;
 	}
@@ -319,35 +333,35 @@ class Order extends \Maven\Core\DomainObject {
 	 * @serialized
 	 * @return \Maven\Core\Domain\ShippingMethod 
 	 */
-	public function getShippingMethod() {
+	public function getShippingMethod () {
 		return $this->shippingMethod;
 	}
 
-	public function setShippingMethod( \Maven\Core\Domain\ShippingMethod $shippingMethod ) {
+	public function setShippingMethod ( \Maven\Core\Domain\ShippingMethod $shippingMethod ) {
 		$this->shippingMethod = $shippingMethod;
 	}
 
-	public function getShippingAmount() {
+	public function getShippingAmount () {
 		return $this->shippingAmount;
 	}
 
-	public function setShippingAmount( $shippingAmount ) {
+	public function setShippingAmount ( $shippingAmount ) {
 		$this->shippingAmount = $shippingAmount;
 	}
 
-	public function getDiscountAmount() {
+	public function getDiscountAmount () {
 		return $this->discountAmount;
 	}
 
-	public function setDiscountAmount( $discountAmount ) {
+	public function setDiscountAmount ( $discountAmount ) {
 		$this->discountAmount = $discountAmount;
 	}
 
-	public function getPluginId() {
+	public function getPluginId () {
 		return $this->pluginId;
 	}
 
-	public function setPluginId( $pluginId ) {
+	public function setPluginId ( $pluginId ) {
 		$this->pluginId = $pluginId;
 	}
 
@@ -355,7 +369,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @return \Maven\Core\Domain\OrderItem
 	 */
-	public function newItem() {
+	public function newItem () {
 		$item = new \Maven\Core\Domain\OrderItem();
 
 		return $item;
@@ -365,7 +379,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * Check if the order has items.
 	 * @return boolean
 	 */
-	public function hasItems() {
+	public function hasItems () {
 		if ( $this->items && count( $this->items ) > 0 )
 			return true;
 
@@ -376,11 +390,11 @@ class Order extends \Maven\Core\DomainObject {
 	 * @serialized
 	 * @return \Maven\Core\Domain\CreditCard
 	 */
-	public function getCreditCard() {
+	public function getCreditCard () {
 		return $this->creditCard;
 	}
 
-	public function setCreditCard( \Maven\Core\Domain\CreditCard $creditCard ) {
+	public function setCreditCard ( \Maven\Core\Domain\CreditCard $creditCard ) {
 		$this->creditCard = $creditCard;
 	}
 
@@ -392,7 +406,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * @serialized
 	 * @return \Maven\Core\Domain\Contact
 	 */
-	public function getShippingContact() {
+	public function getShippingContact () {
 		return $this->shippingContact;
 	}
 
@@ -400,7 +414,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @param \Maven\Core\Domain\Contact $shippingContact
 	 */
-	public function setShippingContact( \Maven\Core\Domain\Profile $shippingContact ) {
+	public function setShippingContact ( \Maven\Core\Domain\Profile $shippingContact ) {
 		$this->shippingContact = $shippingContact;
 	}
 
@@ -408,7 +422,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @return int
 	 */
-	public function getShippingContactId() {
+	public function getShippingContactId () {
 		return $this->shippingContactId;
 	}
 
@@ -416,7 +430,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @param int $shippingContactId
 	 */
-	public function setShippingContactId( $shippingContactId ) {
+	public function setShippingContactId ( $shippingContactId ) {
 		$this->shippingContactId = $shippingContactId;
 	}
 
@@ -424,7 +438,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * @serialized
 	 * @return \Maven\Core\Domain\Contact
 	 */
-	public function getBillingContact() {
+	public function getBillingContact () {
 		return $this->billingContact;
 	}
 
@@ -432,7 +446,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @param \Maven\Core\Domain\Contact $billingContact
 	 */
-	public function setBillingContact( \Maven\Core\Domain\Profile $billingContact ) {
+	public function setBillingContact ( \Maven\Core\Domain\Profile $billingContact ) {
 		$this->billingContact = $billingContact;
 	}
 
@@ -440,11 +454,11 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @return int
 	 */
-	public function getBillingContactId() {
+	public function getBillingContactId () {
 		return $this->billingContactId;
 	}
 
-	public function setBillingContactId( $billingContactId ) {
+	public function setBillingContactId ( $billingContactId ) {
 		$this->billingContactId = $billingContactId;
 	}
 
@@ -452,7 +466,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * @serialized
 	 * @return \Maven\Core\Domain\Contact
 	 */
-	public function getContact() {
+	public function getContact () {
 		return $this->contact;
 	}
 
@@ -460,16 +474,16 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @param \Maven\Core\Domain\Contact $contact
 	 */
-	public function setContact( \Maven\Core\Domain\Profile $contact ) {
+	public function setContact ( \Maven\Core\Domain\Profile $contact ) {
 
 		$this->contact = $contact;
 	}
 
-	public function getContactId() {
+	public function getContactId () {
 		return $this->contactId;
 	}
 
-	public function setContactId( $contactId ) {
+	public function setContactId ( $contactId ) {
 		$this->contactId = $contactId;
 	}
 
@@ -478,7 +492,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * @serialized
 	 * @return \Maven\Core\Domain\Promotion[] 
 	 */
-	public function getPromotions() {
+	public function getPromotions () {
 
 		if ( $this->promotions )
 			return $this->promotions;
@@ -490,7 +504,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * Get the taxes
 	 * @return \Maven\Core\Domain\Tax[] 
 	 */
-	public function getTaxes() {
+	public function getTaxes () {
 
 		if ( $this->taxes )
 			return $this->taxes;
@@ -502,13 +516,13 @@ class Order extends \Maven\Core\DomainObject {
 	 * Add a Promotion
 	 * @param \Maven\Core\Domain\Promotion $promotion
 	 */
-	public function addPromotion( \Maven\Core\Domain\Promotion $promotion ) {
+	public function addPromotion ( \Maven\Core\Domain\Promotion $promotion ) {
 
-		if ( ! $this->isPromotionAdded( $promotion ) )
-			$this->promotions[ $promotion->getCode() ] = $promotion;
+		if ( !$this->isPromotionAdded( $promotion ) )
+			$this->promotions[$promotion->getCode()] = $promotion;
 	}
 
-	public function isPromotionAdded( $promotion ) {
+	public function isPromotionAdded ( $promotion ) {
 
 		$promotionCode = $promotion;
 
@@ -516,24 +530,24 @@ class Order extends \Maven\Core\DomainObject {
 			$promotionCode = $promotion->getCode();
 
 
-		return isset( $this->promotions[ $promotionCode ] );
+		return isset( $this->promotions[$promotionCode] );
 	}
 
-	public function hasPromotions() {
+	public function hasPromotions () {
 		return $this->promotions && count( $this->promotions ) > 0;
 	}
 
-	public function hasCreditCard() {
+	public function hasCreditCard () {
 		return $this->creditCard && $this->creditCard->getNumber();
 	}
 
-	public function removePromotion( \Maven\Core\Domain\Promotion $promotionToRemove ) {
+	public function removePromotion ( \Maven\Core\Domain\Promotion $promotionToRemove ) {
 
 		foreach ( $this->promotions as $promotion ) {
 
 			if ( $promotion->getCode() === $promotionToRemove->getCode() ) {
 
-				unset( $this->promotions[ $promotion->getCode() ] );
+				unset( $this->promotions[$promotion->getCode()] );
 			}
 		}
 	}
@@ -542,22 +556,22 @@ class Order extends \Maven\Core\DomainObject {
 	 * Add a Tax
 	 * @param \Maven\Core\Domain\Tax $tax
 	 */
-	public function addTax( \Maven\Core\Domain\Tax $tax ) {
+	public function addTax ( \Maven\Core\Domain\Tax $tax ) {
 
-		$this->taxes[ $tax->getId() ] = $tax;
+		$this->taxes[$tax->getId()] = $tax;
 	}
 
-	public function hasTaxes() {
+	public function hasTaxes () {
 		return $this->taxes && count( $this->taxes ) > 0;
 	}
 
-	public function removeTax( \Maven\Core\Domain\Tax $taxToRemove ) {
+	public function removeTax ( \Maven\Core\Domain\Tax $taxToRemove ) {
 
 		foreach ( $this->taxes as $tax ) {
 
 			if ( $tax->getId() === $taxToRemove->getId() ) {
 
-				unset( $this->taxes[ $tax->getId() ] );
+				unset( $this->taxes[$tax->getId()] );
 			}
 		}
 	}
@@ -566,7 +580,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * Check if the order has contact information
 	 * @return boolean
 	 */
-	public function hasContactInformation() {
+	public function hasContactInformation () {
 		return $this->getContact() && $this->getContact()->getEmail();
 	}
 
@@ -574,7 +588,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * Check if the order has billing information
 	 * @return boolean
 	 */
-	public function hasBillingInformation() {
+	public function hasBillingInformation () {
 		return $this->getShippingContact() && $this->getShippingContact()->getEmail();
 	}
 
@@ -582,7 +596,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * Check if the order has shipping information
 	 * @return boolean
 	 */
-	public function hasShippingInformation() {
+	public function hasShippingInformation () {
 		return $this->getBillingContact() && $this->getBillingContact()->getEmail();
 	}
 
@@ -590,11 +604,11 @@ class Order extends \Maven\Core\DomainObject {
 	 * Check if the order has user information
 	 * @return boolean
 	 */
-	public function hasUserInformation() {
+	public function hasUserInformation () {
 		return $this->getUser() && $this->getUser()->getEmail();
 	}
 
-	public function sanitize() {
+	public function sanitize () {
 
 		parent::sanitize();
 
@@ -608,7 +622,7 @@ class Order extends \Maven\Core\DomainObject {
 		$this->creditCard->sanitize();
 	}
 
-	public function calculateTotal() {
+	public function calculateTotal () {
 
 		$subtotal = $this->getSubtotal();
 
@@ -679,7 +693,7 @@ class Order extends \Maven\Core\DomainObject {
 		\Maven\Loggers\Logger::log()->message( 'Order/calculateTotal: Cart Discount: ' . $cartDiscount );
 
 		$handlingFee = $this->getHandlingFee();
-		
+
 		$total = ($subtotal + $taxAmount - $itemDiscount + $handlingFee) + ($shippingAmount - $shippingDiscount);
 
 		if ( $cartDiscount > $total ) {
@@ -708,7 +722,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @return \Maven\Core\Domain\ExtraField
 	 */
-	public function newExtraField() {
+	public function newExtraField () {
 		$extraField = new \Maven\Core\Domain\ExtraField();
 		$this->addExtraField( $extraField );
 		return $extraField;
@@ -718,7 +732,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * @serialized
 	 * @return \Maven\Core\Domain\ExtraField[]
 	 */
-	public function getExtraFields() {
+	public function getExtraFields () {
 		return $this->extraFields;
 	}
 
@@ -726,7 +740,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @param \Maven\Core\Domain\ExtraField[] $extraFields
 	 */
-	public function setExtraFields( $extraFields ) {
+	public function setExtraFields ( $extraFields ) {
 		$this->extraFields = $extraFields;
 	}
 
@@ -734,44 +748,44 @@ class Order extends \Maven\Core\DomainObject {
 	 * Add extra Field to the order
 	 * @param \Maven\Core\Domain\ExtraField $extraField
 	 */
-	public function addExtraField( \Maven\Core\Domain\ExtraField $extraField ) {
+	public function addExtraField ( \Maven\Core\Domain\ExtraField $extraField ) {
 
-		if ( ! $extraField->getId() )
+		if ( !$extraField->getId() )
 			throw new \Maven\Exceptions\MissingParameterException( 'Id is required' );
 
-		if ( ! $extraField->getLabel() )
+		if ( !$extraField->getLabel() )
 			throw new \Maven\Exceptions\MissingParameterException( 'Label is required' );
 
 
-		$this->extraFields[ $extraField->getId() ] = $extraField;
+		$this->extraFields[$extraField->getId()] = $extraField;
 	}
 
-	public function extraFieldExists( $id ) {
+	public function extraFieldExists ( $id ) {
 
-		return $this->extraFields && count( $this->extraFields ) > 0 && isset( $this->extraFields[ $id ] );
+		return $this->extraFields && count( $this->extraFields ) > 0 && isset( $this->extraFields[$id] );
 	}
 
-	public function getExtraField( $id ) {
+	public function getExtraField ( $id ) {
 
 		if ( $this->extraFieldExists( $id ) )
-			return $this->extraFields[ $id ];
+			return $this->extraFields[$id];
 
 		return false;
 	}
 
-	public function getExtraFieldValue( $id ) {
+	public function getExtraFieldValue ( $id ) {
 
 		if ( $this->extraFieldExists( $id ) )
-			return $this->extraFields[ $id ]->getValue();
+			return $this->extraFields[$id]->getValue();
 
 		return '';
 	}
 
-	public function removeExtraField( $label ) {
+	public function removeExtraField ( $label ) {
 
 		if ( $this->extraFieldExists( $label ) ) {
 
-			unset( $this->extraFields[ $label ] );
+			unset( $this->extraFields[$label] );
 
 			return true;
 		}
@@ -784,17 +798,16 @@ class Order extends \Maven\Core\DomainObject {
 	 * @collectionType: \Maven\Core\Domain\OrderStatus
 	 * @return \Maven\Core\Domain\OrderStatus[]
 	 */
-	public function getStatusHistory() {
+	public function getStatusHistory () {
 		return $this->statusHistory;
 	}
 
-	public function setStatusHistory( $statusHistory ) {
+	public function setStatusHistory ( $statusHistory ) {
 		$this->statusHistory = $statusHistory;
 	}
 
-	public function setPromotions( $promotions ) {
+	public function setPromotions ( $promotions ) {
 		//$this->promotions = $promotions;
-		
 		//I know this is ineficient, but we use promotion code as array key,
 		//and that information is not always available in the coming array.
 		foreach ( $promotions as $promo ) {
@@ -806,7 +819,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * 
 	 * @return string
 	 */
-	public function getTransactionId() {
+	public function getTransactionId () {
 		return $this->transactionId;
 	}
 
@@ -814,7 +827,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * Set transaction id 
 	 * @param string $transactionId
 	 */
-	public function setTransactionId( $transactionId ) {
+	public function setTransactionId ( $transactionId ) {
 		$this->transactionId = $transactionId;
 	}
 
@@ -823,7 +836,7 @@ class Order extends \Maven\Core\DomainObject {
 	 * @serialized
 	 * @return \Maven\Core\Domain\User
 	 */
-	public function getUser() {
+	public function getUser () {
 		return $this->user;
 	}
 
@@ -831,39 +844,39 @@ class Order extends \Maven\Core\DomainObject {
 	 * Save who is placing the order
 	 * @param \Maven\Core\Domain\User $user
 	 */
-	public function setUser( \Maven\Core\Domain\User $user ) {
+	public function setUser ( \Maven\Core\Domain\User $user ) {
 		$this->user = $user;
 	}
 
-	public function getShippingCarrier() {
+	public function getShippingCarrier () {
 		return $this->shippingCarrier;
 	}
 
-	public function getShippingTrackingCode() {
+	public function getShippingTrackingCode () {
 		return $this->shippingTrackingCode;
 	}
 
-	public function getShippingTrackingUrl() {
+	public function getShippingTrackingUrl () {
 		return $this->shippingTrackingUrl;
 	}
 
-	public function setShippingCarrier( $shippingCarrier ) {
+	public function setShippingCarrier ( $shippingCarrier ) {
 		$this->shippingCarrier = $shippingCarrier;
 	}
 
-	public function setShippingTrackingCode( $shippingTrackingCode ) {
+	public function setShippingTrackingCode ( $shippingTrackingCode ) {
 		$this->shippingTrackingCode = $shippingTrackingCode;
 	}
 
-	public function setShippingTrackingUrl( $shippingTrackingUrl ) {
+	public function setShippingTrackingUrl ( $shippingTrackingUrl ) {
 		$this->shippingTrackingUrl = $shippingTrackingUrl;
 	}
 
-	public function getTaxAmount() {
+	public function getTaxAmount () {
 		return $this->taxAmount;
 	}
 
-	public function setTaxAmount( $taxAmount ) {
+	public function setTaxAmount ( $taxAmount ) {
 		$this->taxAmount = $taxAmount;
 	}
 

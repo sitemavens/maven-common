@@ -271,26 +271,24 @@ class Cart {
 			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/removeItem: Identifier: ' . $item );
 		}
 
-		
+
 		$item = is_object( $item ) ? $item : $this->getOrder()->getItem( $item );
 
 		$orderApi = new OrdersApi( );
 
-		
+
 //		die(print_r($this->getOrder()->getItems(),true));
 		//TODO: Check if the item exists, we have to remove it and add the new one.
 		if ( $this->getOrder()->itemExists( $item->getIdentifier() ) ) {
-			
+
 			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/removeItem: Item found: ' . $item->getIdentifier() );
-			
+
 			$orderApi->removeItem( $this->order, $item );
-			
+
 			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/removeItem: Updating order after item removed: ' . $item->getIdentifier() );
 			$this->update();
 
 			return Message\MessageManager::createSuccessfulMessage( 'Item removed sucessfully', $this->order );
-			
-			
 		}
 
 		return Message\MessageManager::createSuccessfulMessage( 'Item not found', $this->order );
@@ -343,8 +341,8 @@ class Cart {
 			return $data;
 		}
 
-		$data[ 'itemsCount' ] = count( $order->getItems() );
-		$data[ 'total' ] = $order->getTotal();
+		$data['itemsCount'] = count( $order->getItems() );
+		$data['total'] = $order->getTotal();
 
 		return $data;
 	}
@@ -367,12 +365,13 @@ class Cart {
 
 		//Check if the cc information is valid
 		$order = $this->getOrder();
-
+		$test = $order->isPaidOffline();
 		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Start:' . date( 'h:i:s' ) );
 
-
-		if ( !$order->getCreditCard() || !$order->getCreditCard()->isValid() ) {
-			return $this->setResult( Message\MessageManager::createErrorMessage( 'Invalid credit card' ) );
+		if ( !$order->isPaidOffline() ) {
+			if ( !$order->getCreditCard() || !$order->getCreditCard()->isValid() ) {
+				return $this->setResult( Message\MessageManager::createErrorMessage( 'Invalid credit card' ) );
+			}
 		}
 
 		$promotionApi = new \Maven\Core\PromotionsApi();
@@ -405,59 +404,61 @@ class Cart {
 		// First we need to save the order
 		//$this->update();
 		// Get the gateway 
+
 		$gateway = \Maven\Gateways\GatewayFactory::getGateway( \Maven\Settings\MavenRegistry::instance() );
+		if ( !$order->isPaidOffline() ) {
+			// Contact information
+			$gateway->setFirstName( $order->getBillingContact()->getFirstName() );
+			$gateway->setLastName( $order->getBillingContact()->getLastName() );
+			$gateway->setCity( $order->getBillingContact()->getBillingAddress()->getCity() );
+			$gateway->setState( $order->getBillingContact()->getBillingAddress()->getState() );
+			$gateway->setCountry( $order->getBillingContact()->getBillingAddress()->getCountry() );
+			$gateway->setAddress( $order->getBillingContact()->getBillingAddress()->getFirstLine() . ", " . $order->getBillingContact()->getBillingAddress()->getSecondLine() );
+			$gateway->setEmail( $order->getBillingContact()->getEmail() );
+			$gateway->setPhone( $order->getBillingContact()->getBillingAddress()->getPhone() );
+			$gateway->setZip( $order->getBillingContact()->getBillingAddress()->getZipcode() );
+			$gateway->setAmount( $order->getTotal() );
+			$gateway->setShippingAmount( $order->getShippingAmount() );
 
-		// Contact information
-		$gateway->setFirstName( $order->getBillingContact()->getFirstName() );
-		$gateway->setLastName( $order->getBillingContact()->getLastName() );
-		$gateway->setCity( $order->getBillingContact()->getBillingAddress()->getCity() );
-		$gateway->setState( $order->getBillingContact()->getBillingAddress()->getState() );
-		$gateway->setCountry( $order->getBillingContact()->getBillingAddress()->getCountry() );
-		$gateway->setAddress( $order->getBillingContact()->getBillingAddress()->getFirstLine() . ", " . $order->getBillingContact()->getBillingAddress()->getSecondLine() );
-		$gateway->setEmail( $order->getBillingContact()->getEmail() );
-		$gateway->setPhone( $order->getBillingContact()->getBillingAddress()->getPhone() );
-		$gateway->setZip( $order->getBillingContact()->getBillingAddress()->getZipcode() );
-		$gateway->setAmount( $order->getTotal() );
-		$gateway->setShippingAmount( $order->getShippingAmount() );
+			$gateway->setDescription( $order->getDescription() );
 
-		$gateway->setDescription( $order->getDescription() );
+			// Lets add the items
+			$items = $order->getItems();
 
-		// Lets add the items
-		$items = $order->getItems();
+			foreach ( $items as $item ) {
 
-		foreach ( $items as $item ) {
+				$gatewayItem = new \Maven\Gateways\GatewayOrderItem();
+				$gatewayItem->setName( $item->getName() );
+				$gatewayItem->setItemId( $item->getId() );
+				$gatewayItem->setQuantity( $item->getQuantity() );
+				$gatewayItem->setUnitPrice( $item->getPrice() );
 
-			$gatewayItem = new \Maven\Gateways\GatewayOrderItem();
-			$gatewayItem->setName( $item->getName() );
-			$gatewayItem->setItemId( $item->getId() );
-			$gatewayItem->setQuantity( $item->getQuantity() );
-			$gatewayItem->setUnitPrice( $item->getPrice() );
+				$gateway->addOrderItem( $gatewayItem );
+			}
 
-			$gateway->addOrderItem( $gatewayItem );
+			$gateway->setDiscountAmount( $order->getDiscountAmount() );
+
+			// Credit card information
+			$gateway->setCCHolderName( $order->getCreditCard()->getHolderName() );
+			$gateway->setCCMonth( $order->getCreditCard()->getMonth() );
+			$gateway->setCCYear( $order->getCreditCard()->getYear() );
+			$gateway->setCCVerificationCode( $order->getCreditCard()->getSecurityCode() );
+			$gateway->setCCNumber( $order->getCreditCard()->getNumber() );
+			$gateway->setCcType( $order->getCreditCard()->getType() );
+
+			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Gateway Execute:' . date( 'h:i:s' ) );
+			//if ( $order->getTotal() !== 0 ) {
+			$gateway->execute();
+			//}
+
+			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Gateway Finish Execute:' . date( 'h:i:s' ) );
 		}
-
-		$gateway->setDiscountAmount( $order->getDiscountAmount() );
-
-		// Credit card information
-		$gateway->setCCHolderName( $order->getCreditCard()->getHolderName() );
-		$gateway->setCCMonth( $order->getCreditCard()->getMonth() );
-		$gateway->setCCYear( $order->getCreditCard()->getYear() );
-		$gateway->setCCVerificationCode( $order->getCreditCard()->getSecurityCode() );
-		$gateway->setCCNumber( $order->getCreditCard()->getNumber() );
-		$gateway->setCcType( $order->getCreditCard()->getType() );
-
-		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Gateway Execute:' . date( 'h:i:s' ) );
-		//if ( $order->getTotal() !== 0 ) {
-		$gateway->execute();
-		//}
-
-		\Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Gateway Finish Execute:' . date( 'h:i:s' ) );
-
 		// If it was approved, then we need to clean the order
-		if ( $gateway->isApproved() ) {//|| $order->getTotal() === 0 ) {
+		if ( $gateway->isApproved() || $order->isPaidOffline() ) {//|| $order->getTotal() === 0 ) {
 			$order->setStatus( OrdersApi::getCompletedStatus() );
 
-			$order->setTransactionId( $gateway->getTransactionId() );
+			if ( !$order->isPaidOffline() )
+				$order->setTransactionId( $gateway->getTransactionId() );
 
 			//update promotions user count
 			foreach ( $order->getPromotions() as $promotion ) {
@@ -667,13 +668,13 @@ class Cart {
 		if ( !$order ) {
 			throw new \Maven\Exceptions\MavenException( ' The order was not initialized' );
 		}
-		
+
 		$session = \Maven\Session\SessionManager::get();
 
 		$this->saveOrder( false );
-		
+
 		//die(print_r($message,true));
-			
+
 		$session->addData( $this->getSessionKey(), $order );
 
 		return $this->order;

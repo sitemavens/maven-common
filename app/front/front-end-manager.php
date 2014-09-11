@@ -3,7 +3,7 @@
 namespace Maven\Front;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class FrontEndManager {
@@ -21,32 +21,31 @@ class FrontEndManager {
 	 * @param \Maven\Settings\Registry $registry
 	 * @param string $inputKey
 	 */
-	public function __construct() {
+	public function __construct () {
 		$this->request = \Maven\Core\Request::current();
 		$this->registry = \Maven\Settings\MavenRegistry::instance();
 	}
 
-	public static function init() {
+	public static function init () {
 		self::current()->manageRequest();
 	}
-	
-	public function registerRestApi(  ){
+
+	public function registerRestApi () {
 		\Maven\Core\HookManager::instance()->addFilter( 'json_endpoints', array( $this, 'registerRouters' ) );
-		
 	}
-	
-	public function registerRouters( $routes ){
-		
-		$routes[ '/maven/v1/cart/do-action' ] = array(
-			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
+
+	public function registerRouters ( $routes ) {
+
+		$routes['/maven/v1/cart/do-action'] = array(
+			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
-		
-		
-		
+
+
+
 //		$routes[ '/maven/cart/do-action' ] = array(
 //			array( array( $this, 'manageJsonRequest' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON)
 //		);
-		 
+
 		return $routes;
 	}
 
@@ -54,9 +53,9 @@ class FrontEndManager {
 	 * 
 	 * @return \Maven\Front\Step
 	 */
-	private static function setCurrentStep( $data = array() ) {
+	private static function setCurrentStep ( $data = array() ) {
 
-		if ( ! self::$currentStep ) {
+		if ( !self::$currentStep ) {
 			self::$currentStep = new Step( $data );
 		}
 
@@ -67,9 +66,9 @@ class FrontEndManager {
 	 * 
 	 * @return \Maven\Front\FrontEndManager
 	 */
-	public static function current() {
+	public static function current () {
 
-		if ( ! self::$instance ) {
+		if ( !self::$instance ) {
 			self::$instance = new FrontEndManager();
 		}
 
@@ -80,7 +79,7 @@ class FrontEndManager {
 	 * Return the step
 	 * @return \Maven\Front\Step
 	 */
-	public static function getCurrentStep() {
+	public static function getCurrentStep () {
 
 		if ( self::$currentStep ) {
 			return self::$currentStep;
@@ -89,21 +88,21 @@ class FrontEndManager {
 		return false;
 	}
 
-	public function getRequest() {
+	public function getRequest () {
 		return $this->request;
 	}
 
-	public function getRegistry() {
+	public function getRegistry () {
 		return $this->registry;
 	}
 
-	public function isMavenTransactionRequest() {
+	public function isMavenTransactionRequest () {
 		$nonce = $this->request->getProperty( self::MavenTransactionKey );
-		
+
 		return ( $this->getRequest()->isPost() && wp_verify_nonce( $nonce, self::MavenTransactionKey ) );
 	}
 
-	public function getOptions() {
+	public function getOptions () {
 
 		$options = $this->getRequest()->getProperty( $this->inputKey );
 
@@ -114,53 +113,57 @@ class FrontEndManager {
 	 * 
 	 * @return \Maven\Front\Step
 	 */
-	public function newStep() {
+	public function newStep () {
 		$step = new \Maven\Front\Step( $this->getMavenTransactionRequestKey(), $this->inputKey );
 
 		return $step;
 	}
 
-	public static function writeTransactionFields() {
+	public static function writeTransactionFields () {
 
 		wp_nonce_field( self::MavenTransactionKey, self::MavenTransactionKey );
 	}
-	
-	public static function getTransactionNonce() {
+
+	public static function getTransactionNonce () {
 		return wp_create_nonce( self::MavenTransactionKey );
 	}
 
-	function manageJsonRequest( $data  ){
-		
+	function manageJsonRequest ( $data ) {
+
 		$simulatedRequest = array();
 		$simulatedRequest[self::MavenTransactionKey] = $data['transaction'];
 		$simulatedRequest['mvn']['thing'] = $data['thing'];
 		$simulatedRequest['mvn']['step'] = $data['step'];
-		$simulatedRequest['mvn']['billingContact'] = isset($data['billingContact'])?$data['billingContact']:array();
-		$simulatedRequest['mvn']['shippingContact'] = isset($data['shippingContact'])?$data['shippingContact']:array();
-		$simulatedRequest['mvn']['contact'] = isset($data['contact'])?$data['contact']:array();
-		$simulatedRequest['mvn']['creditCard'] = isset($data['creditCard'])?$data['creditCard']:array();
+		$simulatedRequest['mvn']['billingContact'] = isset( $data['billingContact'] ) ? $data['billingContact'] : array();
+		$simulatedRequest['mvn']['shippingContact'] = isset( $data['shippingContact'] ) ? $data['shippingContact'] : array();
+		$simulatedRequest['mvn']['contact'] = isset( $data['contact'] ) ? $data['contact'] : array();
+		$simulatedRequest['mvn']['creditCard'] = isset( $data['creditCard'] ) ? $data['creditCard'] : array();
+		$simulatedRequest['mvn']['paidOffline'] = isset( $data['order']['paidOffline'] ) ? $data['order']['paidOffline'] : false;
 		//$simulatedRequest['_wp_json_nonce'] = $data['step'];
-		
-		\Maven\Core\Request::simulate($simulatedRequest);
-		
-		$result = $this->manageRequest();
-		 
-	}
-	
-	
-	function manageRequest(  ) {
-		
 
-		if ( ! $this->isMavenTransactionRequest() ) {
-			
+		\Maven\Core\Request::simulate( $simulatedRequest );
+
+		$result = $this->manageRequest();
+	}
+
+	function manageRequest () {
+
+
+		if ( !$this->isMavenTransactionRequest() ) {
+
 			return false;
 		}
+
 
 		$cart = \Maven\Core\Cart::current();
 		$request = \Maven\Core\Request::current();
 
 		// Do we need to add some kind of validation?
 		$data = $request->getProperty( 'mvn' );
+
+		if ( isset( $data['paidOffline'] ) )
+			$cart->getOrder()->setPaidOffline( $data['paidOffline'] );
+
 
 		$step = self::setCurrentStep( $data );
 
@@ -176,18 +179,18 @@ class FrontEndManager {
 		// Save the result in the step
 		$step->setActionResult( $result );
 
-		if ( $request->isDoingAjax() || $request->isDoingJSon()) {
-			
+		if ( $request->isDoingAjax() || $request->isDoingJSon() ) {
+
 			$output = new \Maven\Core\UI\OutputTranslator();
 			$transformedOrder = $output->convert( $cart->getOrder() );
-			
+
 			if ( $result->isSuccessful() ) {
 				$result = array( 'successful' => true, 'error' => false, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
 			} else {
 				$result = array( 'successful' => false, 'error' => true, 'description' => $result->getContent(), 'data' => $result->getData(), 'order' => $transformedOrder );
 			}
 
-			die(json_encode( $result ) );
+			die( json_encode( $result ) );
 		}
 
 
