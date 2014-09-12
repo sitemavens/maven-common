@@ -162,7 +162,8 @@ class ShippingMethodManager extends Manager{
 	 * @return void
 	 */
 	private function sortMethodTypeDestinations ( \Maven\Core\Domain\ShippingMethodType $methodType ) {
-		usort( $methodType->getDestinations(), function($a, $b) {
+		$destinations = $methodType->getDestinations();
+		usort( $destinations, function($a, $b) {
 			return $a->getMinValue() > $b->getMinValue();
 		}
 		);

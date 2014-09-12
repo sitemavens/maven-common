@@ -22,8 +22,8 @@ class Utils {
 	 */
 	public static function unCamelize( $camel, $splitter = "-" ) {
 
-		return preg_replace(
-			'/(^|[a-z])([A-Z])/e', 'strtolower(strlen("\\1") ? "\\1' . $splitter . '\\2" : "\\2")', $camel
+		return preg_replace_callback(
+				'/(^|[a-z])([A-Z])/', function($found) use ($splitter)  { return strtolower(strlen($found[1]) ? $found[1] . $splitter . $found[2] : $found[2]); }, $camel
 		);
 	}
 
