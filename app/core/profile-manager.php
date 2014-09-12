@@ -3,7 +3,7 @@
 namespace Maven\Core;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
+if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class ProfileManager {
@@ -18,7 +18,7 @@ class ProfileManager {
 	 */
 	private $mapper;
 
-	public function __construct() {
+	public function __construct () {
 		$this->mapper = new Mappers\ProfileMapper( $this->profileTableName );
 	}
 
@@ -28,9 +28,9 @@ class ProfileManager {
 	 * @return \Maven\Core\Domain\Profile
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function get( $id ) {
+	public function get ( $id ) {
 
-		if ( ! $id ) {
+		if ( !$id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Profile Id is required' );
 		}
 
@@ -50,17 +50,17 @@ class ProfileManager {
 	 * @param string $email
 	 * @return \Maven\Core\Domain\Profile
 	 */
-	public function getProfileOnly( $email ) {
+	public function getProfileOnly ( $email ) {
 
 		$profile = $this->mapper->getProfileByEmail( $email );
 
 		return $profile;
 	}
 
-	private function addAddresses( \Maven\Core\Domain\Profile $profile ) {
+	private function addAddresses ( \Maven\Core\Domain\Profile $profile ) {
 		\Maven\Loggers\Logger::log()->message( '\Maven\Core\ProfileManager: addAddresses: Profile Id' . $profile->getProfileId() );
 
-		if ( ! $profile->getProfileId() ) {
+		if ( !$profile->getProfileId() ) {
 			return $profile;
 		}
 
@@ -71,9 +71,9 @@ class ProfileManager {
 		return $profile;
 	}
 
-	private function addRoles( \Maven\Core\Domain\Profile $profile ) {
+	private function addRoles ( \Maven\Core\Domain\Profile $profile ) {
 
-		if ( ! $profile->getUserId() )
+		if ( !$profile->getUserId() )
 			return $profile;
 
 		$roleManager = new \Maven\Security\RoleManager();
@@ -83,8 +83,8 @@ class ProfileManager {
 		return $profile;
 	}
 
-	private function addWishlist( Domain\Profile $profile ) {
-		if ( ! $profile->getUserId() )
+	private function addWishlist ( Domain\Profile $profile ) {
+		if ( !$profile->getUserId() )
 			return $profile;
 
 		$profile->setWishlist( $this->mapper->getWishlistItems( $profile->getProfileId() ) );
@@ -98,9 +98,9 @@ class ProfileManager {
 	 * @return \Maven\Core\Domain\Profile
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function getByEmail( $email ) {
+	public function getByEmail ( $email ) {
 
-		if ( ! $email ) {
+		if ( !$email ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Profile email is required' );
 		}
 
@@ -123,9 +123,9 @@ class ProfileManager {
 	 * @return boolean \ int
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function exists( $email ) {
+	public function exists ( $email ) {
 
-		if ( ! $email ) {
+		if ( !$email ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Profile email is required' );
 		}
 
@@ -134,18 +134,18 @@ class ProfileManager {
 		return $this->mapper->existsProfile( $email );
 	}
 
-	public function isWPUser( $email ) {
+	public function isWPUser ( $email ) {
 
-		if ( ! $email ) {
+		if ( !$email ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Email is required' );
 		}
 
 		return $this->mapper->isWPUser( $email );
 	}
 
-	public function populateProfileByEmail( \Maven\Core\Domain\Profile $profile ) {
+	public function populateProfileByEmail ( \Maven\Core\Domain\Profile $profile ) {
 
-		if ( ! $profile->getEmail() ) {
+		if ( !$profile->getEmail() ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Email is required' );
 		}
 
@@ -163,14 +163,14 @@ class ProfileManager {
 	 * @param \Maven\Core\Domain\Profile or array $profile $profile
 	 * @return \Maven\Core\Domain\Profile
 	 */
-	public function updateProfile( $profile ) {
+	public function updateProfile ( $profile ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/ProfileManager/updateProfile: Updating profile: ' . $profile->getProfileId() );
 
 		return $this->addProfile( $profile );
 	}
 
-	public function addProfile( $profile, $registerWp = null, $username = null, $password = null ) {
+	public function addProfile ( $profile, $registerWp = null, $username = null, $password = null ) {
 
 		$profileToUpdate = null;
 
@@ -194,7 +194,7 @@ class ProfileManager {
 
 			if ( $wpUser === FALSE ) {
 				$userId = $registrationManager->addWordpressUser( $profileToUpdate, $username, $password );
-				if ( ! is_wp_error( $userId ) ) {
+				if ( !is_wp_error( $userId ) ) {
 					$defaultRole[] = $roleManager->get( (get_option( 'default_role' ) ) );
 					$allRoles = $profileToUpdate->getRoles();
 					if ( count( ( array ) $allRoles ) !== 0 ) {
@@ -218,7 +218,7 @@ class ProfileManager {
 		return $profileToUpdate;
 	}
 
-	public function updateProfileAddresses( \Maven\Core\Domain\Profile $profile ) {
+	public function updateProfileAddresses ( \Maven\Core\Domain\Profile $profile ) {
 		$addressMapper = new Mappers\AddressMapper();
 
 		$addresses = $profile->getAddresses();
@@ -233,7 +233,7 @@ class ProfileManager {
 	 * @param string $email
 	 * @return boolean
 	 */
-	public function convertWpUserToMaven( $email ) {
+	public function convertWpUserToMaven ( $email ) {
 
 		//First, verify that the user isn't already a Maven user
 
@@ -244,7 +244,7 @@ class ProfileManager {
 
 		$wpUser = get_user_by( 'email', $email );
 
-		if ( ! $wpUser ) {
+		if ( !$wpUser ) {
 			return false;
 		}
 
@@ -261,7 +261,7 @@ class ProfileManager {
 		return true;
 	}
 
-	public function addProfiles( $profiles ) {
+	public function addProfiles ( $profiles ) {
 
 		foreach ( $profiles as $profile ) {
 			$this->addProfile( $profile );
@@ -270,28 +270,28 @@ class ProfileManager {
 		return $profiles;
 	}
 
-	public function getAll() {
+	public function getAll () {
 
 		$this->mapper = new Mappers\ProfileMapper( $this->profileTableName );
 
 		return $this->mapper->getAll();
 	}
 
-	public function getPage( Domain\ProfileFilter $filter, $orderBy = 'email', $orderType = 'desc', $start = 0, $limit = 1000 ) {
+	public function getPage ( Domain\ProfileFilter $filter, $orderBy = 'email', $orderType = 'desc', $start = 0, $limit = 1000 ) {
 		$this->mapper = new Mappers\ProfileMapper( $this->profileTableName );
 
 		return $this->mapper->getPage( $filter, $orderBy, $orderType, $start, $limit );
 	}
 
-	public function getCount( Domain\ProfileFilter $filter ) {
+	public function getCount ( Domain\ProfileFilter $filter ) {
 		$this->mapper = new Mappers\ProfileMapper( $this->profileTableName );
 
 		return $this->mapper->getCount( $filter );
 	}
 
-	public function delete( $id ) {
+	public function delete ( $id ) {
 
-		if ( ! $id ) {
+		if ( !$id ) {
 			throw new \Maven\Exceptions\MissingParameterException( 'Id is required' );
 		}
 
@@ -309,11 +309,11 @@ class ProfileManager {
 	 * @param string $email
 	 * @throws \Maven\Exceptions\NotFoundException
 	 */
-	public function generateAutoLoginKey( $email ) {
+	public function generateAutoLoginKey ( $email ) {
 
 		$profile = $this->getByEmail( $email );
 
-		if ( ! $profile ) {
+		if ( !$profile ) {
 			throw new \Maven\Exceptions\NotFoundException( 'Profile not found: ' . $email );
 		}
 
@@ -326,9 +326,13 @@ class ProfileManager {
 		return $key;
 	}
 
-	public function generateWpPassword() {
+	public function generateWpPassword () {
 		$newPassword = wp_generate_password();
 		return $newPassword;
+	}
+
+	public function changeWpPassword ( $password, $userId ) {
+		wp_set_password( $password, $userId );
 	}
 
 	/**
@@ -336,22 +340,22 @@ class ProfileManager {
 	 * @param string $email
 	 * @throws \Maven\Exceptions\MissingParameterException
 	 */
-	public function resetAutoLoginKey( $email ) {
+	public function resetAutoLoginKey ( $email ) {
 
 		$profile = $this->getByEmail( $email );
 
-		if ( ! $profile ) {
+		if ( !$profile ) {
 			throw new \Maven\Exceptions\NotFoundException( 'Profile not found: ' . $email );
 		}
 
 		$this->mapper->resetAutoLoginKey( $profile->getProfileId() );
 	}
 
-	public function validateAutoLoginKey( $email, $key ) {
+	public function validateAutoLoginKey ( $email, $key ) {
 
 		$profile = $this->getByEmail( $email );
 
-		if ( ! $profile ) {
+		if ( !$profile ) {
 			throw new \Maven\Exceptions\NotFoundException( 'Profile not found: ' . $email );
 		}
 
@@ -368,7 +372,7 @@ class ProfileManager {
 		return false;
 	}
 
-	public function addWishlistItem( \Maven\Core\Domain\Profile $profile, \Maven\Core\Domain\WishlistItem $item ) {
+	public function addWishlistItem ( \Maven\Core\Domain\Profile $profile, \Maven\Core\Domain\WishlistItem $item ) {
 
 		\Maven\Loggers\Logger::log()->message( 'Maven/ProfileManager/addWishlistItem: Name: ' . $item->getName() );
 
@@ -378,7 +382,7 @@ class ProfileManager {
 		return $profile;
 	}
 
-	public function removeWishlistItem( \Maven\Core\Domain\Profile $profile, \Maven\Core\Domain\WishlistItem $item ) {
+	public function removeWishlistItem ( \Maven\Core\Domain\Profile $profile, \Maven\Core\Domain\WishlistItem $item ) {
 
 		$profile->removeWishlistItem( $item->getIdentifier() );
 

@@ -36,15 +36,19 @@ class Profile {
 
 	public function registerRouters ( $routes ) {
 
-		$routes[ '/maven/v2/profile' ] = array(
+		$routes['/maven/v2/profile'] = array(
 			array( array( $this, 'add' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
 
-		$routes[ '/maven/v2/profile/(?P<identifier>\d+)' ] = array(
+		$routes['/maven/v2/profile/(?P<identifier>\d+)'] = array(
 			array( array( $this, 'update' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
 
-		$routes[ '/maven/v2/profile/convert-from-user' ] = array(
+		$routes['/maven/v2/profile/(?P<identifier>\d+)/password'] = array(
+			array( array( $this, 'changePassword' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
+		);
+
+		$routes['/maven/v2/profile/convert-from-user'] = array(
 			array( array( $this, 'convertFromUser' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON )
 		);
 
@@ -55,9 +59,9 @@ class Profile {
 
 		if ( $this->userCan() ) {
 
-			if ( isset( $data[ 'email' ] ) ) {
-				$result = $this->profileManager->convertWpUserToMaven( $data[ 'email' ] );
-				
+			if ( isset( $data['email'] ) ) {
+				$result = $this->profileManager->convertWpUserToMaven( $data['email'] );
+
 				$this->sendResponse( \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'User converted' ) );
 			} else {
 				$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'You need to specify the email' ) );
@@ -67,7 +71,7 @@ class Profile {
 
 	private function userCan () {
 
-		if ( !current_user_can( 'edit_users' ) ) {
+		if ( !current_user_can( 'read' ) ) {
 			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'You don\'t have permissions to do it' ) );
 		}
 
@@ -89,6 +93,26 @@ class Profile {
 		}
 	}
 
+	public function changePassword ( $identifier, $data ) {
+
+		if ( $this->userCan() ) {
+
+			$this->isValid();
+
+			$profile = new \Maven\Core\Domain\Profile();
+			$profile->load( $data );
+
+			if ( $this->profileManager->isWPUser( $profile->getEmail() ) && !empty( $data['password'] ) ) {
+				$this->profileManager->changeWpPassword( $data['password'], $profile->getUserId() );
+				$autoLoginKey = $this->profileManager->generateAutoLoginKey( $profile->getEmail() );
+				\Maven\Core\UserManager::autoLogin( $profile->getEmail(), $autoLoginKey );
+				$this->sendResponse( \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Password saved' ) );
+			} else {
+				$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'Password missing' ) );
+			}
+		}
+	}
+
 	public function addItem ( $data ) {
 
 		$defaultItem = array(
@@ -101,16 +125,16 @@ class Profile {
 
 		$item = wp_parse_args( $data, $defaultItem );
 
-		if ( !$item[ 'pluginKey' ] ) {
+		if ( !$item['pluginKey'] ) {
 			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'Plugin Key is required' ) );
 		}
 
 		$orderItem = new \Maven\Core\Domain\OrderItem();
-		$orderItem->setName( $item[ 'name' ] );
-		$orderItem->setPluginKey( $item[ 'pluginKey' ] );
-		$orderItem->setThingId( $item[ 'id' ] );
-		$orderItem->setPrice( $item[ 'price' ] );
-		$orderItem->setQuantity( $item[ 'quantity' ] );
+		$orderItem->setName( $item['name'] );
+		$orderItem->setPluginKey( $item['pluginKey'] );
+		$orderItem->setThingId( $item['id'] );
+		$orderItem->setPrice( $item['price'] );
+		$orderItem->setQuantity( $item['quantity'] );
 
 
 		$this->sendResponse( $this->getCurrentCart()->addToCart( $orderItem ) );
