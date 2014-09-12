@@ -71,14 +71,12 @@ class Profile {
 
 	private function userCan () {
 		//maven create roles with the capabilities's name the same as the role name
-		$defaultRole = get_option('default_role');
-		if ( !current_user_can( 'read' ) ) {
-			if ( !current_user_can( $defaultRole ) ) {
-				$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'You don\'t have permissions to do it' ) );
-			}
+		$defaultRole = apply_filters( 'maven/api/profile/capabilities', '' );
+		if ( current_user_can( 'read' ) || current_user_can( $defaultRole ) ) {
+			return true;
+		} else {
+			$this->sendResponse( \Maven\Core\Message\MessageManager::createErrorMessage( 'You don\'t have permissions to do it' ) );
 		}
-
-		return true;
 	}
 
 	public function update ( $identifier, $data ) {
