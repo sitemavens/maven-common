@@ -20,37 +20,35 @@ class MailFormatter {
 	public static function processEmail ( $args ) {
 
 		$messageContent = "";
-		if ( isset( $args[ 'message' ] ) ) {
-			$messageContent = $args[ 'message' ];
-		} else if ( isset( $args[ 'html' ] ) ) {
-			$messageContent = $args[ 'html' ];
+		if ( isset( $args['message'] ) ) {
+			$messageContent = $args['message'];
+		} else if ( isset( $args['html'] ) ) {
+			$messageContent = $args['html'];
 		}
 
 		$message = self::prepareContentEmail( $messageContent );
-
+//		
 		//Change content to html
-		$newHeaders = $args[ 'headers' ];
+		$newHeaders = $args['headers'];
 		if ( !is_array( $newHeaders ) ) {
-			$newHeaders = explode( "\n", str_replace( "\r\n", "\n", $args[ 'headers' ] ) );
+			$newHeaders = explode( "\n", str_replace( "\r\n", "\n", $args['headers'] ) );
 		}
 		$newHeaders[] = "Content-type:text/html;";
 
 		$newMailArgs = array(
-			'to' => $args[ 'to' ],
-			'subject' => $args[ 'subject' ],
+			'to' => $args['to'],
+			'subject' => $args['subject'],
 			'message' => $message,
 			'headers' => $newHeaders,
-			'attachments' => $args[ 'attachments' ]
+			'attachments' => $args['attachments']
 		);
-
+		die( print_r( $newMailArgs['message'], true ) );
 		return $newMailArgs;
 	}
 
 	public static function prepareContentEmail ( $message, $useTemplate = true ) {
 
 		$registry = \Maven\Settings\MavenRegistry::instance();
-
-
 
 		$templateContent = "";
 		if ( $useTemplate ) {
@@ -82,14 +80,13 @@ class MailFormatter {
 		if ( $useTemplate ) {
 			// Process the whole template
 			$filledTemplate = $templateProcessor->getProcessedTemplate( $templateContent );
-			\Maven\Loggers\Logger::log()->message("\Maven\Core\MailFormatter\PrepareContentEmail: With template");
+			\Maven\Loggers\Logger::log()->message( "\Maven\Core\MailFormatter\PrepareContentEmail: With template" );
+//			die( print_r( $filledTemplate, true ) );
 			return $filledTemplate;
-			
 		} else {
-			\Maven\Loggers\Logger::log()->message("\Maven\Core\MailFormatter\PrepareContentEmail: Without template");
+			\Maven\Loggers\Logger::log()->message( "\Maven\Core\MailFormatter\PrepareContentEmail: Without template" );
 			$message = $templateProcessor->getProcessedTemplate();
 		}
-
 		return $message;
 	}
 
