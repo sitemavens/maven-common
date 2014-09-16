@@ -42,7 +42,7 @@ class MailFormatter {
 			'headers' => $newHeaders,
 			'attachments' => $args['attachments']
 		);
-		die( print_r( $newMailArgs['message'], true ) );
+
 		return $newMailArgs;
 	}
 
@@ -81,7 +81,6 @@ class MailFormatter {
 			// Process the whole template
 			$filledTemplate = $templateProcessor->getProcessedTemplate( $templateContent );
 			\Maven\Loggers\Logger::log()->message( "\Maven\Core\MailFormatter\PrepareContentEmail: With template" );
-//			die( print_r( $filledTemplate, true ) );
 			return $filledTemplate;
 		} else {
 			\Maven\Loggers\Logger::log()->message( "\Maven\Core\MailFormatter\PrepareContentEmail: Without template" );
