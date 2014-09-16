@@ -61,12 +61,14 @@ class Cart {
 	}
 
 	public function applyShipping ( $identifier ) {
+		\Maven\Loggers\Logger::log()->message( "Maven/Api/Cart/applyShipping::{$identifier}" );
 		$this->isValid();
 		$shippingManager = new \Maven\Core\ShippingMethodManager();
 		$orderManager = new \Maven\Core\OrderManager();
 		$shippingMethod = $shippingManager->getEnabledMethodById( $identifier );
 		if ( $shippingMethod ) {
 			$this->getCurrentCart()->getOrder()->setShippingMethod( $shippingMethod );
+			\Maven\Loggers\Logger::log()->message( "Maven/Api/Cart/applyShipping::postGetOrder" );
 			$orderManager->reCalculateOrderTotals( $this->getCurrentCart()->getOrder() );
 		}
 

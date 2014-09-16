@@ -57,8 +57,8 @@ class MailFormatter {
 
 			// We need to get the template file  
 			$templateFile = $registry->getCurrentEmailThemePath();
-
-			$templateContent = \Maven\Core\Loader::getFileContent( $templateFile );
+			$templateFileFullPath = HookManager::instance()->applyFilters( 'maven/cart/emailHeaderFullPath', '' );
+			$templateContent = $templateFileFullPath ? \Maven\Core\Loader::getFileContent( $templateFileFullPath ) : \Maven\Core\Loader::getFileContent( $templateFile );
 		}
 
 		$date = new \Maven\Core\MavenDateTime();
