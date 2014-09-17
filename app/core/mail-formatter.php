@@ -15,6 +15,7 @@ class MailFormatter {
 	public static function init () {
 
 		HookManager::instance()->addFilter( 'wp_mail', array( __CLASS__, 'processEmail' ) );
+		HookManager::instance()->addFilter( 'mandrill_payload', array( __CLASS__, 'processWpMandrillEmail' ) );
 	}
 
 	public static function processEmail ( $args ) {
@@ -42,7 +43,19 @@ class MailFormatter {
 			'headers' => $newHeaders,
 			'attachments' => $args['attachments']
 		);
+
 		return $newMailArgs;
+	}
+
+	public static function processWpMandrillEmail ( $args ) {
+
+		if ( isset( $args['message'] ) ) {
+			$args['message'] = self::prepareContentEmail( $args['message'] );
+		} else if ( isset( $args['html'] ) ) {
+			$args['html'] = self::prepareContentEmail( $args['html'] );
+		}
+
+		return $args;
 	}
 
 	public static function prepareContentEmail ( $message, $useTemplate = true ) {
