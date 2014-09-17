@@ -28,6 +28,7 @@ class Consts {
 	const Year = "year";
 	const CreditCardType = "type";
 	const Contact = "contact";
+	const Salutation = "salutation";
 	const FirstName = "firstName";
 	const LastName = "lastName";
 	const AddressFirstLine = "addressFirstLine";
@@ -54,5 +55,5 @@ class Consts {
 	const SameAsBilling = "sameAsBilling";
 	const Attribute = "attribute";
 	const Notes = "notes";
-	
+
 }
