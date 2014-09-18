@@ -38,7 +38,7 @@ class Consts {
 	const AddressPhone = "addressPhone";
 	const AddressState = "addressState";
 	const AddressZipCode = "addressZipCode";
-	const Phone = "Phone";
+	const Phone = "phone";
 	const Email = "email";
 	const BillingContact = "billingContact";
 	const ShippingContact = "shippingContact";
