@@ -18,8 +18,7 @@ class Profile extends Base {
 	}
 
 	public function getProfileData ( $attrs ) {
-
-		$attrs = shortcode_atts( array( 'prop' => 'firstName', 'emptyPropMessage' => ''  ), $attrs );
+		$attrs = shortcode_atts($attrs,  array( 'prop' => 'firstName', 'emptyPropMessage' => ''  ) );
 		$loggedProfiled = $this->getLoggedProfile();
 
         $prop = '';
@@ -34,7 +33,6 @@ class Profile extends Base {
 				$prop = $loggedProfiled->getFullName();
                 break;
 		}
-        
         if( empty( $prop ) && isset( $attrs[strtolower( 'emptyPropMessage' )] ) ){
             return $attrs[strtolower( 'emptyPropMessage' )];
         }
