@@ -19,19 +19,27 @@ class Profile extends Base {
 
 	public function getProfileData ( $attrs ) {
 
-		$attrs = shortcode_atts( array( 'prop' => 'firstName' ), $attrs );
+		$attrs = shortcode_atts( array( 'prop' => 'firstName', 'emptyPropMessage' => ''  ), $attrs );
 		$loggedProfiled = $this->getLoggedProfile();
 
+        $prop = '';
 		switch ( strtolower( $attrs[ 'prop' ] ) ) {
 			case "firstname";
-				return $loggedProfiled->getFirstName();
+				$prop =  $loggedProfiled->getFirstName();
+                break;
 			case "lastname";
-				return $loggedProfiled->getLastName();
+				$prop = $loggedProfiled->getLastName();
+                break;
 			case "fullname";
-				return $loggedProfiled->getFullName();
+				$prop = $loggedProfiled->getFullName();
+                break;
 		}
+        
+        if( empty( $prop ) && isset( $attrs[strtolower( 'emptyPropMessage' )] ) ){
+            return $attrs[strtolower( 'emptyPropMessage' )];
+        }
 
-		return;
+		return $prop;
 	}
 
 	private function getLoggedProfile () {
