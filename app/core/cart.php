@@ -421,7 +421,6 @@ class Cart {
 			$gateway->setShippingAmount( $order->getShippingAmount() );
 			$gateway->setInvoiceNumber($order->getId());
 			$gateway->setDescription( $order->getDescription() );
-
 			// Lets add the items
 			$items = $order->getItems();
 
