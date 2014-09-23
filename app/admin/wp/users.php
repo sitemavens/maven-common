@@ -8,9 +8,9 @@ if ( !defined( 'ABSPATH' ) )
 
 class Users extends \Maven\Core\Domain\WpBase {
 
-	const LogoOn= "logo-on.png";
-	const LogoOff="logo-off.png";
-	
+	const LogoOn = "logo-on.png";
+	const LogoOff = "logo-off.png";
+
 	public function __construct () {
 
 		parent::__construct();
@@ -28,36 +28,38 @@ class Users extends \Maven\Core\Domain\WpBase {
 
 		$userEmail = $this->getRequest()->getProperty( 'email' );
 		$nonce = $this->getRequest()->getProperty( 'nonce' );
-		if ( ! wp_verify_nonce( $nonce , 'convertUser') ) {
-			$result = array('success' => false, 'data'=>'Invalid Nonce');
-		
-			$result = json_encode($result);
-			die($result);
+		if ( !wp_verify_nonce( $nonce, 'convertUser' ) ) {
+			$result = array( 'success' => false, 'data' => 'Invalid Nonce' );
+
+			$result = json_encode( $result );
+			die( $result );
 		}
-		
+
 		$profileManager = new \Maven\Core\ProfileManager();
-		$result = $profileManager->convertWpUserToMaven($userEmail);
-		
-		$result = array('success' => true, 'data'=>$this->getLogoOnUrl());
-		
-		$result = json_encode($result);
-		
-		die($result);
+		$result = $profileManager->convertWpUserToMaven( $userEmail );
+
+		$result = array( 'success' => true, 'data' => $this->getLogoOnUrl() );
+
+		$result = json_encode( $result );
+
+		die( $result );
 	}
 
 	function enqueueScript ( $hook ) {
-
+		$registry = \Maven\Settings\MavenRegistry::instance();
 		if ( 'users.php' !== $hook )
 			return;
-
-		wp_enqueue_script( 'wp-users-script', $this->getRegistry()->getAdminWpScriptsUrl() . 'users.js', array( 'maven' ) );
-
-		wp_localize_script( 'wp-users-script', 'Users', array( 'action' => 'convertUser', 'nonce' => wp_create_nonce( 'wp_json' ) ) );
-		
+		if ( $registry->isDevEnv() ) {
+			wp_enqueue_script( 'wp-users-script', $this->getRegistry()->getAdminWpScriptsUrl() . 'users.js', array( 'maven' ) );
+			wp_localize_script( 'wp-users-script', 'Users', array( 'action' => 'convertUser', 'nonce' => wp_create_nonce( 'wp_json' ) ) );
+		} else {
+			wp_enqueue_script( 'mainApp', $registry->getScriptsUrl() . "main.min.js", 'angular', $registry->getPluginVersion() );
+			wp_localize_script( 'mainApp', 'Users', array( 'action' => 'convertUser', 'nonce' => wp_create_nonce( 'wp_json' ) ) );
+		}
 	}
 
 	public function addIsMavenColumn ( $columns ) {
-		$columns[ 'isMaven' ] = 'Is Maven';
+		$columns['isMaven'] = 'Is Maven';
 		return $columns;
 	}
 
@@ -81,12 +83,12 @@ class Users extends \Maven\Core\Domain\WpBase {
 
 		return $image;
 	}
-	
-	private function getLogoOnUrl(){
+
+	private function getLogoOnUrl () {
 		return $this->getRegistry()->getImagesUrl() . self::LogoOn;
 	}
-	
-	private function getLogoOffUrl(){
+
+	private function getLogoOffUrl () {
 		return $this->getRegistry()->getImagesUrl() . self::LogoOff;
 	}
 
