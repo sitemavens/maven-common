@@ -419,7 +419,7 @@ class Cart {
 			$gateway->setZip( $order->getBillingContact()->getBillingAddress()->getZipcode() );
 			$gateway->setAmount( $order->getTotal() );
 			$gateway->setShippingAmount( $order->getShippingAmount() );
-
+			$gateway->setInvoiceNumber($order->getId());
 			$gateway->setDescription( $order->getDescription() );
 
 			// Lets add the items
@@ -448,6 +448,7 @@ class Cart {
 
 			\Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Gateway Execute:' . date( 'h:i:s' ) );
 			//if ( $order->getTotal() !== 0 ) {
+
 			$gateway->execute();
 			//}
 
