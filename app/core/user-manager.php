@@ -47,8 +47,8 @@ class UserManager extends \Maven\Core\Manager {
 			'userLogin' => $userLogin,
 			'autoLoginLink' => $autoLoginLink )
 		);
-		$message = $output->getTemplate( 'email-reset-password.html' );
-
+		$themeTemplateFullPath = HookManager::instance()->applyFilters( 'maven/user/resetPasswordTemplateFullPath', '' );
+		$message = $themeTemplateFullPath ? $output->getExternalTemplate( $themeTemplateFullPath ) : $output->getTemplate( 'email-reset-password.html' );
 //		$message = \Maven\Core\MailFormatter::prepareContentEmail( $message );
 
 		return $message;
