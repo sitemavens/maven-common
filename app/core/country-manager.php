@@ -28,7 +28,7 @@ class CountryManager {
 		$countries[ '*' ] = array( 'name' => __( 'Worldwide', 'maven' ),'code'=>'CA', 'currency' => array( 'code' => 'USD', 'symbol' => '$' ), 'units' => 'metric' );
 
 		$countries[ 'CA' ] = array( 'name' => __( 'Canada', 'maven' ),'code'=>'CA',  'currency' => array( 'code' => 'CAD', 'symbol' => '$' ), 'units' => 'metric' );
-		$countries[ 'US' ] = array( 'name' => __( 'USA', 'maven' ), 'code'=>'US', 'currency' => array( 'code' => 'USD', 'symbol' => '$' ), 'units' => 'imperial' );
+		$countries[ 'US' ] = array( 'name' => __( 'United States', 'maven' ), 'code'=>'US', 'currency' => array( 'code' => 'USD', 'symbol' => '$' ), 'units' => 'imperial' );
 
 		// Specialized countries for US Armed Forces and US Territories
 		//$countries[ 'USAF' ] = array( 'name' => __( 'US Armed Forces', 'maven' ),'code'=>'CA', 'currency' => array( 'code' => 'USD', 'symbol' => '$' ), 'units' => 'imperial' );
@@ -258,7 +258,7 @@ class CountryManager {
 		$countries[ 'TV' ] = array( 'name' => __( 'Tuvalu', 'maven' ),'code'=>'TV', 'currency' => array( 'code' => 'AUD', 'symbol' => '$' ), 'units' => 'metric' );
 		$countries[ 'UG' ] = array( 'name' => __( 'Uganda', 'maven' ),'code'=>'UG', 'currency' => array( 'code' => 'UGX', 'symbol' => 'USh' ), 'units' => 'metric' );
 		$countries[ 'UA' ] = array( 'name' => __( 'Ukraine', 'maven' ),'code'=>'UA', 'currency' => array( 'code' => 'UAH', 'symbol' => '₴' ), 'units' => 'metric' );
-		$countries[ 'AE' ] = array( 'name' => __( 'United Arab Emirates', 'maven' ),'code'=>'CA', 'currency' => array( 'code' => 'AED', 'symbol' => 'Dhs.' ), 'units' => 'metric' );
+		$countries[ 'AE' ] = array( 'name' => __( 'United Arab Emirates', 'maven' ),'code'=>'AE', 'currency' => array( 'code' => 'AED', 'symbol' => 'Dhs.' ), 'units' => 'metric' );
 		$countries[ 'UY' ] = array( 'name' => __( 'Uruguay', 'maven' ),'code'=>'UY', 'currency' => array( 'code' => 'UYP', 'symbol' => '$' ), 'units' => 'metric' );
 		$countries[ 'UZ' ] = array( 'name' => __( 'Uzbekistan', 'maven' ),'code'=>'UZ', 'currency' => array( 'code' => 'UZS', 'symbol' => '$' ), 'units' => 'metric' );
 		$countries[ 'VU' ] = array( 'name' => __( 'Vanuatu', 'maven' ),'code'=>'VU', 'currency' => array( 'code' => 'VUV', 'symbol' => '$' ), 'units' => 'metric' );
