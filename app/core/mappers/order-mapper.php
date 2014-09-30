@@ -413,8 +413,8 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 
 
 		if ( $order->getUser() && $order->getUser()->getEmail() ) {
-			$data[ 'user' ] = serialize( $order->getUser() );
-			$data[ 'user_id' ] = $order->getUser()->getId();
+			$data['user'] = serialize( $order->getUser() );
+			$data['user_id'] = $order->getUser()->getId();
 		}
 
 		if ( !$order->getId() ) {
@@ -588,7 +588,9 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		foreach ( $results as $row ) {
 			$instance = new \Maven\Core\Domain\Order();
 			$this->fillObject( $instance, $row );
+			$items = $this->getOrderItems( $instance->getId() );
 
+			$instance->setItems( $items );
 			//Set Status
 			if ( $instance->getStatusId() ) {
 				$instance->setStatus( $statusMapper->get( $instance->getStatusId() ) );
