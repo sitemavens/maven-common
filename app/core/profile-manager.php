@@ -332,6 +332,8 @@ class ProfileManager {
 	}
 
 	public function changeWpPassword ( $password, $userId ) {
+		$user = get_user_by('id', $userId );
+		do_action('mavenUserChangedWpPassword', $user->user_email, $password);
 		wp_set_password( $password, $userId );
 	}
 

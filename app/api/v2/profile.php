@@ -102,7 +102,6 @@ class Profile {
 
 			$profile = new \Maven\Core\Domain\Profile();
 			$profile->load( $data );
-
 			if ( $this->profileManager->isWPUser( $profile->getEmail() ) && !empty( $data['password'] ) ) {
 				$this->profileManager->changeWpPassword( $data['password'], $profile->getUserId() );
 				$autoLoginKey = $this->profileManager->generateAutoLoginKey( $profile->getEmail() );
