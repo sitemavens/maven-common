@@ -147,8 +147,7 @@ class OutputTranslator {
 		return $return;
 	}
 
-	public function convert ( $object ) {
-
+	public function convert ( $object ) {	
 		if ( !is_object( $object ) && !is_array( $object ) ) {
 			return $object;
 		}
