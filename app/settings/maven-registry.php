@@ -3,406 +3,412 @@
 namespace Maven\Settings;
 
 // Exit if accessed directly 
-if ( ! defined( 'ABSPATH' ) )
-	exit;
+if ( !defined( 'ABSPATH' ) )
+    exit;
 
 use Maven\Settings\Option;
 
 class MavenRegistry extends WordpressRegistry {
 
-	private static $instance;
-
-	protected function __construct() {
-
-		parent::__construct();
-	}
-
-	/**
-	 * 
-	 * @return \Maven\Settings\MavenRegistry
-	 */
-	static function instance() {
-		if ( ! isset( self::$instance ) ) {
-			$adminEmail = get_bloginfo( 'admin_email' );
-
-			$defaultOptions = array(
-			     new Option(
-				    "emailProvider", "Email Provider", 'wordpress', '', OptionType::Input
-			    ), new Option(
-				    "exceptionNotification", "Exception Notification", $adminEmail, '', OptionType::Input
-			    ), new Option(
-				    "registeredPluginsGateway", "Registered plugins for gateway", '', '', OptionType::Input
-			    ), new Option(
-				    "registeredPluginsLicensing", "Registered plugins for licensing", '', '', OptionType::Input
-			    ), new Option(
-				    "activeGateway", "Active Gateway", 'dummy', '', OptionType::Input
-			    ), new Option(
-				    "recurringEnabled", "Recurring Enabled", false, '', OptionType::Input
-			    ), new Option(
-				    "enabledTrackers", "Enabled Trackers", array(
-				'googleanalytics' => 0,
-				'segment.io' => 0
-				    ), '', OptionType::Input
-			    ), new Option(
-				    "enabledSocialNetworks", "Enabled Social Networks", array(
-				'facebook' => 0
-				    ), '', OptionType::Input
-			    ), new Option(
-				    "bccNotificationsTo", "BCC Notifications to", $adminEmail, '', OptionType::Input
-			    ), new Option(
-				    "organizationLogo", "Organization Logo", '', '', OptionType::Input
-			    ), new Option(
-				    "organizationName", "Organization Name", 'My Organization', '', OptionType::Input
-			    ), new Option(
-				    "contactEmail", "Contact Email", 'contact@myorganization.com', '', OptionType::Input
-			    ), new Option(
-				    "emailTemplate", "Email Template", 'simple-basic', '', OptionType::Input
-			    ), new Option(
-				    "signature", "Signature", 'My Organization team', '', OptionType::Input
-			    ), new Option(
-				    "senderEmail", "Sender Email", 'email@myorganization.com', '', OptionType::Input
-			    ), new Option(
-				    "senderName", "Sender Name", 'My Organization', '', OptionType::Input
-			    ), new Option(
-				    "activeMaillist", "Active Maillist", '', '', OptionType::Input
-			    ), new Option(
-				    "emailBackgroundColor", "Email template background color", '#6CAACC', '', OptionType::Input
-			    ), new Option(
-				    "httpsPages", "HTTPS Pages", '', '', OptionType::Input
-			    ), new Option(
-				    "loginPage", "Login Page", '', '', OptionType::Input
-			    ), new Option(
-				    "registrationThankYouPage", "Registration Thank You Page", '', '', OptionType::Input
-			    ), new Option(
-				    "gridRows", "Rows to show on Grid", '10', '', OptionType::Input
-			    ), new Option(
-				    "cartUrl", "Cart Url", 'cart/', '', OptionType::Input
-			    ),new Option(
-				    "gatewayTestingMode", "Gateway Testing Mode", true, true, OptionType::CheckBox
-			    ),new Option(
-				    "orderHandlingFee", "Order Handling Fee", 0, 0, OptionType::Input
-			    ),new Option(
-				    "currencyDecimalDigits", "Currency Number of Decimal Digits", 2, 2, OptionType::Input
-				),new Option(
-				    "currencyDecimalSeparator", "Currency Decimal Separator", '.', '.', OptionType::Input
-			    ),new Option(
-				    "currencyThousandSeparator", "Currency Thousand Separator", ' ', ' ', OptionType::Input
-			    ),new Option(
-					"currencyCountry", "Currency Country", 'US', 'US', OptionType::DropDown
-				),new Option(
-					"currencyDisplayFormat", "Currency Display Format", 'symbol_number', 'symbol_number', OptionType::DropDown
-				),new Option(
-				    "mandrillApiKey", "Mandrill Api Key", '', '', OptionType::Input
-			    )
-			);
-			self::$instance = new self( );
-			self::$instance->setOptions( $defaultOptions );
-		}
-
-		return self::$instance;
-	}
-	
-	public function getMandrillApiKey(){
-		
-		$apiKey = $this->getValue( 'mandrillApiKey' );
-		$apiKey = \Maven\Core\HookManager::instance()->applyFilters( 'maven/mail/mandrill/api-key', $apiKey );
-		
-		return $apiKey;
-	}
-
-	public function getHttpsPages() {
-		return $this->getValue( 'httpsPages' );
-	}
-
-	public function getActiveMaillist() {
-		return $this->getValue( 'activeMaillist' );
-	}
-
-	public function getEmailProvider() {
-		return $this->getValue( 'emailProvider' );
-	}
-
-	public function getSenderEmail() {
-		return $this->getValue( 'senderEmail' );
-	}
-
-	public function getSenderName() {
-		return $this->getValue( 'senderName' );
-	}
-
-	public function getExceptionNotification() {
-		return $this->getValue( 'exceptionNotification' );
-	}
+    private static $instance;
+
+    protected function __construct () {
+
+        parent::__construct();
+    }
+
+    /**
+     * 
+     * @return \Maven\Settings\MavenRegistry
+     */
+    static function instance () {
+        if ( !isset( self::$instance ) ) {
+            $adminEmail = get_bloginfo( 'admin_email' );
+
+            $defaultOptions = array(
+                new Option(
+                        "emailProvider", "Email Provider", 'wordpress', '', OptionType::Input
+                ), new Option(
+                        "exceptionNotification", "Exception Notification", $adminEmail, '', OptionType::Input
+                ), new Option(
+                        "registeredPluginsGateway", "Registered plugins for gateway", '', '', OptionType::Input
+                ), new Option(
+                        "registeredPluginsLicensing", "Registered plugins for licensing", '', '', OptionType::Input
+                ), new Option(
+                        "activeGateway", "Active Gateway", 'dummy', '', OptionType::Input
+                ), new Option(
+                        "recurringEnabled", "Recurring Enabled", false, '', OptionType::Input
+                ), new Option(
+                        "enabledTrackers", "Enabled Trackers", array(
+                    'googleanalytics' => 0,
+                    'segment.io' => 0
+                        ), '', OptionType::Input
+                ), new Option(
+                        "enabledSocialNetworks", "Enabled Social Networks", array(
+                    'facebook' => 0
+                        ), '', OptionType::Input
+                ), new Option(
+                        "bccNotificationsTo", "BCC Notifications to", $adminEmail, '', OptionType::Input
+                ), new Option(
+                        "organizationLogo", "Organization Logo", '', '', OptionType::Input
+                ), new Option(
+                        "useGravityFormTemplate", "Use Gravity Forms Templates", '', '', OptionType::CheckBox
+                ), new Option(
+                        "organizationName", "Organization Name", 'My Organization', '', OptionType::Input
+                ), new Option(
+                        "contactEmail", "Contact Email", 'contact@myorganization.com', '', OptionType::Input
+                ), new Option(
+                        "emailTemplate", "Email Template", 'simple-basic', '', OptionType::Input
+                ), new Option(
+                        "signature", "Signature", 'My Organization team', '', OptionType::Input
+                ), new Option(
+                        "senderEmail", "Sender Email", 'email@myorganization.com', '', OptionType::Input
+                ), new Option(
+                        "senderName", "Sender Name", 'My Organization', '', OptionType::Input
+                ), new Option(
+                        "activeMaillist", "Active Maillist", '', '', OptionType::Input
+                ), new Option(
+                        "emailBackgroundColor", "Email template background color", '#6CAACC', '', OptionType::Input
+                ), new Option(
+                        "httpsPages", "HTTPS Pages", '', '', OptionType::Input
+                ), new Option(
+                        "loginPage", "Login Page", '', '', OptionType::Input
+                ), new Option(
+                        "registrationThankYouPage", "Registration Thank You Page", '', '', OptionType::Input
+                ), new Option(
+                        "gridRows", "Rows to show on Grid", '10', '', OptionType::Input
+                ), new Option(
+                        "cartUrl", "Cart Url", 'cart/', '', OptionType::Input
+                ), new Option(
+                        "gatewayTestingMode", "Gateway Testing Mode", true, true, OptionType::CheckBox
+                ), new Option(
+                        "orderHandlingFee", "Order Handling Fee", 0, 0, OptionType::Input
+                ), new Option(
+                        "currencyDecimalDigits", "Currency Number of Decimal Digits", 2, 2, OptionType::Input
+                ), new Option(
+                        "currencyDecimalSeparator", "Currency Decimal Separator", '.', '.', OptionType::Input
+                ), new Option(
+                        "currencyThousandSeparator", "Currency Thousand Separator", ' ', ' ', OptionType::Input
+                ), new Option(
+                        "currencyCountry", "Currency Country", 'US', 'US', OptionType::DropDown
+                ), new Option(
+                        "currencyDisplayFormat", "Currency Display Format", 'symbol_number', 'symbol_number', OptionType::DropDown
+                ), new Option(
+                        "mandrillApiKey", "Mandrill Api Key", '', '', OptionType::Input
+                )
+            );
+            self::$instance = new self( );
+            self::$instance->setOptions( $defaultOptions );
+        }
+
+        return self::$instance;
+    }
+
+    public function getMandrillApiKey () {
+
+        $apiKey = $this->getValue( 'mandrillApiKey' );
+        $apiKey = \Maven\Core\HookManager::instance()->applyFilters( 'maven/mail/mandrill/api-key', $apiKey );
+
+        return $apiKey;
+    }
 
-	public function getActiveGateway() {
-		return $this->getValue( 'activeGateway' );
-	}
+    public function getHttpsPages () {
+        return $this->getValue( 'httpsPages' );
+    }
 
-	public function getOrganizationLogo() {
-		return $this->getValue( 'organizationLogo' );
-	}
-
-	public function getOrganizationLogoFullUrl() {
-		return wp_get_attachment_url( $this->getOrganizationLogo() );
-	}
+    public function getActiveMaillist () {
+        return $this->getValue( 'activeMaillist' );
+    }
 
-	public function getSignature() {
-		return $this->getValue( 'signature' );
-	}
+    public function getEmailProvider () {
+        return $this->getValue( 'emailProvider' );
+    }
 
-	public function getWebSiteUrl() {
-		return get_site_url();
-	}
+    public function getSenderEmail () {
+        return $this->getValue( 'senderEmail' );
+    }
 
-	public function setLoginPage( $loginPage ) {
-		$this->set( 'loginPage', $loginPage );
-	}
+    public function getSenderName () {
+        return $this->getValue( 'senderName' );
+    }
 
-	public function getOrganizationName() {
-		return $this->getValue( 'organizationName' );
-	}
+    public function getExceptionNotification () {
+        return $this->getValue( 'exceptionNotification' );
+    }
 
-	public function getContactEmail() {
-		return $this->getValue( 'contactEmail' );
-	}
+    public function getActiveGateway () {
+        return $this->getValue( 'activeGateway' );
+    }
 
-	public function getEmailTemplate() {
-		return $this->getValue( 'emailTemplate' );
-	}
+    public function getOrganizationLogo () {
+        return $this->getValue( 'organizationLogo' );
+    }
 
-	public function getBccNotificationsTo() {
-		return $this->getValue( 'bccNotificationsTo' );
-	}
+    public function getOrganizationLogoFullUrl () {
+        return wp_get_attachment_url( $this->getOrganizationLogo() );
+    }
 
-	public function isRecurringEnabled() {
-		return $this->getValue( 'recurringEnabled' );
-	}
+    public function getSignature () {
+        return $this->getValue( 'signature' );
+    }
 
-	public function isGatewayTestingMode(){
-		return $this->getValue( 'gatewayTestingMode' );
-	}
-	
-	public function getOrderHandlingFee(){
-		return $this->getValue('orderHandlingFee');
-	}
-	
-	public function getEnabledTrackers() {
-		$trackers = $this->getValue( 'enabledTrackers' );
+    public function getWebSiteUrl () {
+        return get_site_url();
+    }
 
-		$enabledTrackers = array();
+    public function setLoginPage ( $loginPage ) {
+        $this->set( 'loginPage', $loginPage );
+    }
 
-		foreach ( $trackers as $key => $value ) {
-			if ( true === $value || 'true' === $value || '1' === $value || 1 === $value ) {
-				$enabledTrackers[] = $key;
-			}
-		}
+    public function getOrganizationName () {
+        return $this->getValue( 'organizationName' );
+    }
 
-		return $enabledTrackers;
-	}
+    public function getContactEmail () {
+        return $this->getValue( 'contactEmail' );
+    }
 
-	public function getEnabledSocialNetworks() {
-		$socialNetworks = $this->getValue( 'enabledSocialNetworks' );
+    public function getEmailTemplate () {
+        return $this->getValue( 'emailTemplate' );
+    }
 
-		$enabledSocialNetworks = array();
+    public function getBccNotificationsTo () {
+        return $this->getValue( 'bccNotificationsTo' );
+    }
 
-		foreach ( $socialNetworks as $key => $value ) {
-			if ( true === $value || 'true' === $value || '1' === $value || 1 === $value ) {
-				$enabledSocialNetworks[] = $key;
-			}
-		}
+    public function isDisabledTemplate () {
+        return $this->getValue( 'useGravityFormTemplate' );
+    }
 
-		return $enabledSocialNetworks;
-	}
+    public function isRecurringEnabled () {
+        return $this->getValue( 'recurringEnabled' );
+    }
 
-	public function registerPlugin( \Maven\Settings\Registry $registry ) {
+    public function isGatewayTestingMode () {
+        return $this->getValue( 'gatewayTestingMode' );
+    }
 
-		// Register the plugin for gateways
-		$registedPlugins = $this->getValue( 'registeredPluginsGateway' );
+    public function getOrderHandlingFee () {
+        return $this->getValue( 'orderHandlingFee' );
+    }
 
-		if ( ! is_array( $registedPlugins ) ) {
-			$registedPlugins = array();
-		}
+    public function getEnabledTrackers () {
+        $trackers = $this->getValue( 'enabledTrackers' );
 
-		if ( ! isset( $registedPlugins[ $registry->getPluginKey() ] ) ) {
-			//By default is testing mode
-			$registedPlugins[ $registry->getPluginKey() ] = true;
-		}
+        $enabledTrackers = array();
 
-		$this->set( 'registeredPluginsGateway', $registedPlugins );
+        foreach ( $trackers as $key => $value ) {
+            if ( true === $value || 'true' === $value || '1' === $value || 1 === $value ) {
+                $enabledTrackers[] = $key;
+            }
+        }
 
-		// Register the plugin for licensing
-		$registedPlugins = $this->getValue( 'registeredPluginsLicensing' );
+        return $enabledTrackers;
+    }
 
-		if ( ! is_array( $registedPlugins ) ) {
-			$registedPlugins = array();
-		}
+    public function getEnabledSocialNetworks () {
+        $socialNetworks = $this->getValue( 'enabledSocialNetworks' );
 
-		if ( ! isset( $registedPlugins[ $registry->getPluginKey() ] ) ) {
-			//By default is testing mode
-			$registedPlugins[ $registry->getPluginKey() ] = '';
-		}
+        $enabledSocialNetworks = array();
 
-		$this->set( 'registeredPluginsLicensing', $registedPlugins );
+        foreach ( $socialNetworks as $key => $value ) {
+            if ( true === $value || 'true' === $value || '1' === $value || 1 === $value ) {
+                $enabledSocialNetworks[] = $key;
+            }
+        }
 
-		$this->addRegistry( $registry );
-	}
+        return $enabledSocialNetworks;
+    }
 
-	public function getLicensePlugin( \Maven\Settings\Registry $registry ) {
+    public function registerPlugin ( \Maven\Settings\Registry $registry ) {
 
-		$registedPlugins = $this->getRegisteredPluginsLicensing();
+        // Register the plugin for gateways
+        $registedPlugins = $this->getValue( 'registeredPluginsGateway' );
 
-		if ( $registedPlugins && isset( $registedPlugins[ $registry->getPluginKey() ] ) )
-			return $registedPlugins[ $registry->getPluginKey() ];
+        if ( !is_array( $registedPlugins ) ) {
+            $registedPlugins = array();
+        }
 
-		return '';
-	}
+        if ( !isset( $registedPlugins[$registry->getPluginKey()] ) ) {
+            //By default is testing mode
+            $registedPlugins[$registry->getPluginKey()] = true;
+        }
 
-	public function getRegisteredPluginsLicensing() {
-		return $this->getValue( 'registeredPluginsLicensing' );
-	}
+        $this->set( 'registeredPluginsGateway', $registedPlugins );
 
-	public function isPluginTestingGatewayMode( \Maven\Settings\Registry $registry ) {
+        // Register the plugin for licensing
+        $registedPlugins = $this->getValue( 'registeredPluginsLicensing' );
 
-		$registedPlugins = $this->getValue( 'registeredPluginsGateway' );
+        if ( !is_array( $registedPlugins ) ) {
+            $registedPlugins = array();
+        }
 
-		if ( $registedPlugins && isset( $registedPlugins[ $registry->getPluginKey() ] ) ) {
-			return $registedPlugins[ $registry->getPluginKey() ];
-		}
+        if ( !isset( $registedPlugins[$registry->getPluginKey()] ) ) {
+            //By default is testing mode
+            $registedPlugins[$registry->getPluginKey()] = '';
+        }
 
-		return true;
-	}
+        $this->set( 'registeredPluginsLicensing', $registedPlugins );
 
-	public function getTimeZone() {
+        $this->addRegistry( $registry );
+    }
 
-		if ( ! parent::getTimeZone() ) {
+    public function getLicensePlugin ( \Maven\Settings\Registry $registry ) {
 
-			$current_offset = get_option( 'gmt_offset' );
-			$tzstring = get_option( 'timezone_string' );
+        $registedPlugins = $this->getRegisteredPluginsLicensing();
 
-			if ( empty( $tzstring ) ) { // Create a UTC+- zone if no timezone string exists
-				if ( 0 == $current_offset )
-					$tzstring = 'UTC+0';
-				elseif ( $current_offset < 0 )
-					$tzstring = 'UTC' . $current_offset;
-				else
-					$tzstring = 'UTC+' . $current_offset;
-			}
+        if ( $registedPlugins && isset( $registedPlugins[$registry->getPluginKey()] ) )
+            return $registedPlugins[$registry->getPluginKey()];
 
-			$allowed_zones = timezone_identifiers_list();
+        return '';
+    }
 
-			if ( in_array( $tzstring, $allowed_zones ) ) {
-				parent::setTimeZone( new \DateTimeZone( $tzstring ) );
-			} else
-				parent::setTimeZone( new \DateTimeZone( 'UTC' ) );
-		}
+    public function getRegisteredPluginsLicensing () {
+        return $this->getValue( 'registeredPluginsLicensing' );
+    }
 
-		return parent::getTimeZone();
-	}
+    public function isPluginTestingGatewayMode ( \Maven\Settings\Registry $registry ) {
 
-	public function getOrderStatusImagesUrl() {
-		return $this->getImagesUrl() . "order-status/";
-	}
+        $registedPlugins = $this->getValue( 'registeredPluginsGateway' );
 
-	public function getPromotionStatusImageUrl() {
-		return $this->getImagesUrl() . "promotion-status/";
-	}
+        if ( $registedPlugins && isset( $registedPlugins[$registry->getPluginKey()] ) ) {
+            return $registedPlugins[$registry->getPluginKey()];
+        }
 
-	public function getProfileStatusImageUrl() {
-		return $this->getImagesUrl() . "profile-status/";
-	}
+        return true;
+    }
 
-	public function getPrintUrl() {
-		return "maven/print/";
-	}
-	
-	public function getAdminViewHandlerUrl() {
-		return "wp-admin/maven/view/";
-	}
-	
-	public function getFullViewHandlerUrl() {
-		return $this->getPluginUrl()."maven/view/";
-	}
+    public function getTimeZone () {
 
-	public function getAutoLoginUrl() {
-		return "maven/auto-login/";
-	}
+        if ( !parent::getTimeZone() ) {
 
-	public function getDateFormat() {
+            $current_offset = get_option( 'gmt_offset' );
+            $tzstring = get_option( 'timezone_string' );
 
-		if ( ! parent::getDateFormat() ) {
-			parent::setDateFormat( get_option( 'date_format' ) );
-		}
+            if ( empty( $tzstring ) ) { // Create a UTC+- zone if no timezone string exists
+                if ( 0 == $current_offset )
+                    $tzstring = 'UTC+0';
+                elseif ( $current_offset < 0 )
+                    $tzstring = 'UTC' . $current_offset;
+                else
+                    $tzstring = 'UTC+' . $current_offset;
+            }
 
-		return parent::getDateFormat();
-	}
+            $allowed_zones = timezone_identifiers_list();
 
-	public function getEmailThemesPath() {
-		return $this->getPluginDir() . 'assets/email-templates/';
-	}
+            if ( in_array( $tzstring, $allowed_zones ) ) {
+                parent::setTimeZone( new \DateTimeZone( $tzstring ) );
+            } else
+                parent::setTimeZone( new \DateTimeZone( 'UTC' ) );
+        }
 
-	public function getEmailThemesUrl() {
-		return $this->getPluginUrl() . 'assets/email-templates/';
-	}
+        return parent::getTimeZone();
+    }
 
-	public function getCurrentEmailThemePath() {
-		return $this->getEmailThemesPath() . $this->getEmailTemplate() . ".html";
-	}
+    public function getOrderStatusImagesUrl () {
+        return $this->getImagesUrl() . "order-status/";
+    }
 
-	public function getNoPhotoUrl() {
-		return $this->getPluginUrl() . 'assets/images/nophoto.jpg';
-	}
+    public function getPromotionStatusImageUrl () {
+        return $this->getImagesUrl() . "promotion-status/";
+    }
 
-	public function getEmailBackgroundColor() {
-		return $this->getValue( 'emailBackgroundColor' );
-	}
+    public function getProfileStatusImageUrl () {
+        return $this->getImagesUrl() . "profile-status/";
+    }
 
-	public function getSecurityMetaKey() {
-		return "_mvnSecurity";
-	}
+    public function getPrintUrl () {
+        return "maven/print/";
+    }
 
-	public function getLoginPage() {
-		return $this->getValue( 'loginPage' );
-	}
+    public function getAdminViewHandlerUrl () {
+        return "wp-admin/maven/view/";
+    }
 
-	public function getRegistrationThankYouPage() {
-		return $this->getValue( 'registrationThankYouPage' );
-	}
+    public function getFullViewHandlerUrl () {
+        return $this->getPluginUrl() . "maven/view/";
+    }
 
-	public function getGridRows() {
-		return $this->getValue( 'gridRows' );
-	}
+    public function getAutoLoginUrl () {
+        return "maven/auto-login/";
+    }
 
-	public function getCartUrl() {
-		return $this->getValue( 'cartUrl' );
-	}
+    public function getDateFormat () {
 
-	public function getCurrencyDisplayFormat() {
-		return $this->getValue( 'currencyDisplayFormat' );
-	}
+        if ( !parent::getDateFormat() ) {
+            parent::setDateFormat( get_option( 'date_format' ) );
+        }
 
-	public function getCurrencyCountry() {
-		return $this->getValue( 'currencyCountry' );
-	}
+        return parent::getDateFormat();
+    }
 
-	public function getCurrencyDecimalDigits() {
-		return $this->getValue( 'currencyDecimalDigits' );
-	}
+    public function getEmailThemesPath () {
+        return $this->getPluginDir() . 'assets/email-templates/';
+    }
 
-	public function getCurrencyDecimalSeparator() {
-		return $this->getValue( 'currencyDecimalSeparator' );
-	}
+    public function getEmailThemesUrl () {
+        return $this->getPluginUrl() . 'assets/email-templates/';
+    }
 
-	public function getCurrencyThousandSeparator() {
-		return $this->getValue( 'currencyThousandSeparator' );
-	}
-	
-	public function init() {
+    public function getCurrentEmailThemePath () {
+        return $this->getEmailThemesPath() . $this->getEmailTemplate() . ".html";
+    }
 
-		// We need to build the logo path in the init method
-		// Because we don't have the full path yet in the constructor.
-		$this->set( 'organizationLogo', $this->getPluginUrl() . "assets/images/default-logo.gif" );
+    public function getNoPhotoUrl () {
+        return $this->getPluginUrl() . 'assets/images/nophoto.jpg';
+    }
 
-		parent::init();
-	}
+    public function getEmailBackgroundColor () {
+        return $this->getValue( 'emailBackgroundColor' );
+    }
+
+    public function getSecurityMetaKey () {
+        return "_mvnSecurity";
+    }
+
+    public function getLoginPage () {
+        return $this->getValue( 'loginPage' );
+    }
+
+    public function getRegistrationThankYouPage () {
+        return $this->getValue( 'registrationThankYouPage' );
+    }
+
+    public function getGridRows () {
+        return $this->getValue( 'gridRows' );
+    }
+
+    public function getCartUrl () {
+        return $this->getValue( 'cartUrl' );
+    }
+
+    public function getCurrencyDisplayFormat () {
+        return $this->getValue( 'currencyDisplayFormat' );
+    }
+
+    public function getCurrencyCountry () {
+        return $this->getValue( 'currencyCountry' );
+    }
+
+    public function getCurrencyDecimalDigits () {
+        return $this->getValue( 'currencyDecimalDigits' );
+    }
+
+    public function getCurrencyDecimalSeparator () {
+        return $this->getValue( 'currencyDecimalSeparator' );
+    }
+
+    public function getCurrencyThousandSeparator () {
+        return $this->getValue( 'currencyThousandSeparator' );
+    }
+
+    public function init () {
+
+        // We need to build the logo path in the init method
+        // Because we don't have the full path yet in the constructor.
+        $this->set( 'organizationLogo', $this->getPluginUrl() . "assets/images/default-logo.gif" );
+
+        parent::init();
+    }
 
 }
