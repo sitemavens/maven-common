@@ -5,7 +5,7 @@
   Plugin URI:
   Description:
   Author: SiteMavens.com
-  Version: 0.4.2.1
+  Version: 0.4.3
   Author URI: http://www.sitemavens.com/
  */
 
