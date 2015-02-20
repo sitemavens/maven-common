@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) )
  * @author mustela
  */
 class Profile {
-
+ 
 	private static $instance;
 
 	public static function current () {
