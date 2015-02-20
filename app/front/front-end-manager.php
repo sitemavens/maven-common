@@ -161,7 +161,7 @@ class FrontEndManager {
 		// Do we need to add some kind of validation?
 		$data = $request->getProperty( 'mvn' );
 
-		if ( isset( $data['paidOffline'] )  && $data['paidOffline'] )
+		if ( isset( $data['paidOffline'] ) && $data['paidOffline'] )
 			$cart->getOrder()->setPaidOffline( $data['paidOffline'] );
 
 
