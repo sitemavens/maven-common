@@ -11,7 +11,7 @@ class ProfileManager {
 	const AutoLoginKeyAction = 'auto-login-key';
 
 	protected $profileTableName = 'mvn_profile';
-
+ 
 	/**
 	 *
 	 * @var \Maven\Core\Mappers\ProfileMapper 
