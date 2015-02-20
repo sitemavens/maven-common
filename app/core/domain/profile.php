@@ -361,7 +361,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 */
 	public function setHomeAddress ( \Maven\Core\Domain\Address $homeAddress ) {
 
-		foreach ( $this->addresses as $address ) {
+		foreach ( $this->addresses as &$address ) {
 			if ( $address->getType() == AddressType::Home ) {
 				$address = $homeAddress;
 				return;
@@ -379,7 +379,7 @@ class Profile extends \Maven\Core\DomainObject {
 	 */
 	public function setBillingAddress ( \Maven\Core\Domain\Address $billingAddress ) {
 
-		foreach ( $this->addresses as $address ) {
+		foreach ( $this->addresses as &$address ) {
 			if ( $address->getType() == AddressType::Billing ) {
 				$address = $billingAddress;
 				return;
@@ -393,7 +393,7 @@ class Profile extends \Maven\Core\DomainObject {
 
 	public function setShippingAddress ( \Maven\Core\Domain\Address $shippingAddress ) {
 
-		foreach ( $this->addresses as $address ) {
+		foreach ( $this->addresses as &$address ) {
 			if ( $address->getType() == AddressType::Shipping ) {
 				$address = $shippingAddress;
 				return;
