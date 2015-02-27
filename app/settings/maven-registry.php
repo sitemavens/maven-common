@@ -105,7 +105,6 @@ class MavenRegistry extends WordpressRegistry {
     }
 
     public function getMandrillApiKey () {
-
         $apiKey = $this->getValue( 'mandrillApiKey' );
         $apiKey = \Maven\Core\HookManager::instance()->applyFilters( 'maven/mail/mandrill/api-key', $apiKey );
 

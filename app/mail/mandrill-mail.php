@@ -35,7 +35,7 @@ class MandrillMail extends MailBase {
 
 		require_once __DIR__ . '/../libs/mandrill/Mandrill.php';
 
-		$apiKey = \Maven\Settings\MavenRegistry::getMandrillApiKey();
+		$apiKey = \Maven\Settings\MavenRegistry::instance()->getMandrillApiKey();
 		 
 		if ( !$apiKey ) {
 			throw new \Maven\Exceptions\RequiredException( 'Mandrill Api Key is required' );
