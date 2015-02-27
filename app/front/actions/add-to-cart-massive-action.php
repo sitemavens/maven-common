@@ -118,16 +118,16 @@ class AddToCartMassiveAction extends Action {
 			}
 
 			$thing = new \Maven\Front\Thing( $dataThing [ Consts::PluginKey ] );
-			$thing->setId( $data[ Consts::Id] );
-			$thing->setQuantity( $data[ Consts::Quantity ] );
-			$thing->setPrice( $data[ Consts::Price ] );
-			$thing->setName( $data[ Consts::Name] );
+			$thing->setId( $dataThing[ Consts::Id] );
+			$thing->setQuantity( $dataThing[ Consts::Quantity ] );
+			$thing->setPrice( $dataThing[ Consts::Price ] );
+			$thing->setName( $dataThing[ Consts::Name] );
 
 			foreach ( $dataThing[ Consts::Variation ] as $key => $value ) {
 
 				$value = wp_parse_args( $value, $defaultVariation );
 				$variation = new \Maven\Front\ThingVariation();
-				$variation->setId( $key );
+				$variation->setId( $value[ Consts::Id ] );
 				$variation->setQuantity( $value[ Consts::Quantity ] );
 				$variation->setPrice( $value[ Consts::Price ] );
 				$variation->setName( $value[ Consts::Name ] );
