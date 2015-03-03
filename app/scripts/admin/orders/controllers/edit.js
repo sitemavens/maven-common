@@ -40,7 +40,7 @@ angular.module('mavenApp')
 				
 				$scope.shippingContactAddress = $scope.getShippingAddress();
 				$scope.billingContactAddress = $scope.getBillingAddress();
-				console.log($scope);
+				
 				$scope.calculateTotal = function(item) {
 					return item.quantity * item.price;
 				};
