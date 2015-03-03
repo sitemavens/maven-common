@@ -5,10 +5,8 @@ angular.module('mavenApp')
 		['$scope', '$location', 'order',
 			function($scope, $location, order) {
 				var prevShippingInfo = {};
-
 				$scope.order = order;
 				$scope.showSendShipment = false;
-
 				prevShippingInfo.shippingCarrier = $scope.order.shippingCarrier;
 				prevShippingInfo.shippingTrackingCode = $scope.order.shippingTrackingCode;
 				prevShippingInfo.shippingTrackingUrl = $scope.order.shippingTrackingUrl;
@@ -19,6 +17,30 @@ angular.module('mavenApp')
 
 					$scope.order.$save();					
 				};
+				
+				$scope.getShippingAddress = function() {
+					var shippingAddress = {};
+					angular.forEach($scope.order.shippingContact.addresses, function(address) {
+						if (address.type === 'shipping') {
+							shippingAddress = address;
+						};
+					});
+					return shippingAddress;
+				};
+				
+				$scope.getBillingAddress = function() {
+					var billingAddress = {};
+					angular.forEach($scope.order.billingContact.addresses, function(address) {
+						if (address.type === 'billing') {
+							billingAddress =  address;
+						};
+					});
+					return billingAddress;
+				};
+				
+				$scope.shippingContactAddress = $scope.getShippingAddress();
+				$scope.billingContactAddress = $scope.getBillingAddress();
+				console.log($scope);
 				$scope.calculateTotal = function(item) {
 					return item.quantity * item.price;
 				};

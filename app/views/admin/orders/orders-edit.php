@@ -67,13 +67,13 @@
 			<div class="panel-body">
 				<div class="pull-right"><img ng-src="{{order.billingContact.profileImage}}"/></div>
 				<p><strong>{{order.billingContact.firstName}} {{order.billingContact.lastName}}</strong></p>
-				<p>{{order.billingContact.addresses[0].phone}}</p>
+				<p>{{billingContactAddress.phone}}</p>
 				<p><em>{{order.billingContact.email}}</em></p>
 				<p>{{order.billingContact.company}}</p>
-				<p>{{order.billingContact.addresses[0].firstLine}}</p>
-				<p>{{order.billingContact.addresses[0].secondLine}}</p>
-				<p>{{order.billingContact.addresses[0].city}} {{order.billingContact.addresses[0].state}} {{order.billingContact.addresses[0].zipcode}}</p>
-				<p>{{order.billingContact.addresses[0].country}}</p>	
+				<p>{{billingContactAddress.firstLine}}</p>
+				<p>{{billingContactAddress.secondLine}}</p>
+				<p>{{billingContactAddress.city}} {{billingContactAddress.state}} {{billingContactAddress.zipcode}}</p>
+				<p>{{billingContactAddress.country}}</p>	
 			</div>		
 		</div>
 	</div>
@@ -83,13 +83,13 @@
 			<div class="panel-body">
 				<div class="pull-right"><img ng-src="{{order.shippingContact.profileImage}}"/></div>
 				<p><strong>{{order.shippingContact.firstName}} {{order.shippingContact.lastName}}</strong></p>
-				<p>{{order.shippingContact.addresses[0].phone}}</p>
+				<p>{{shippingContactAddress.phone}}</p>
 				<p><em>{{order.shippingContact.email}}</em></p>
 				<p>{{order.shippingContact.company}}</p>
-				<p>{{order.shippingContact.addresses[0].firstLine}}</p>
-				<p>{{order.shippingContact.addresses[0].secondLine}}</p>
-				<p>{{order.shippingContact.addresses[0].city}} {{order.shippingContact.addresses[0].state}} {{order.shippingContact.addresses[0].zipcode}}</p>
-				<p>{{order.shippingContact.addresses[0].country}}</p>
+				<p>{{shippingContactAddress.firstLine}}</p>
+				<p>{{shippingContactAddress.secondLine}}</p>
+				<p>{{shippingContactAddress.city}} {{shippingContactAddress.state}} {{shippingContactAddress.zipcode}}</p>
+				<p>{{shippingContactAddress.country}}</p>
 			</div>		
 		</div>
 	</div>
