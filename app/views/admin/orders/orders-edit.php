@@ -67,7 +67,7 @@
 			<div class="panel-body">
 				<div class="pull-right"><img ng-src="{{order.billingContact.profileImage}}"/></div>
 				<p><strong>{{order.billingContact.firstName}} {{order.billingContact.lastName}}</strong></p>
-				<p>{{order.billingContact.phone}}</p>
+				<p>{{order.billingContact.addresses[0].phone}}</p>
 				<p><em>{{order.billingContact.email}}</em></p>
 				<p>{{order.billingContact.company}}</p>
 				<p>{{order.billingContact.addresses[0].firstLine}}</p>
@@ -83,7 +83,7 @@
 			<div class="panel-body">
 				<div class="pull-right"><img ng-src="{{order.shippingContact.profileImage}}"/></div>
 				<p><strong>{{order.shippingContact.firstName}} {{order.shippingContact.lastName}}</strong></p>
-				<p>{{order.shippingContact.phone}}</p>
+				<p>{{order.shippingContact.addresses[0].phone}}</p>
 				<p><em>{{order.shippingContact.email}}</em></p>
 				<p>{{order.shippingContact.company}}</p>
 				<p>{{order.shippingContact.addresses[0].firstLine}}</p>

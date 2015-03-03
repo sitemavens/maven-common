@@ -51,6 +51,7 @@ class GatewayFactory {
 		$gateway->setTestMode( $testingMode );
 
 		return $gateway;
+        
 	}
 
 	/**
