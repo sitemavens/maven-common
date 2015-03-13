@@ -132,16 +132,12 @@ class AddressMapper extends \Maven\Core\Db\WordpressMapper {
 		    '%s', // type
 		    '%d', // profile_id
 		);
-
-		if ( ! $address->getId() ) {
-
 			//First let's check if the address combination => type/profile id exists. 
 			$existingAddress = $this->getQueryRow( $this->prepare( "SELECT id FROM {$this->tableName} WHERE profile_id= %d and type=%s", array( $address->getProfileId(), $address->getType() ) ) );
 
 			if ( $existingAddress ) {
 				$address->setId( $existingAddress->id );
 			}
-		}
 
 		if ( ! $address->getId() ) {
 			$id = $this->insert( $data, $format );

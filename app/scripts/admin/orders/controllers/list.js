@@ -1,8 +1,8 @@
 'use strict';
 angular.module('mavenApp')
 		.controller('OrdersCtrl',
-				['$scope', '$location', 'Order', 'OrderFilter',
-					function($scope, $location, Order, OrderFilter) {
+				['$scope', '$http', '$location', 'Order', 'OrderFilter',
+					function($scope, $http, $location, Order, OrderFilter) {
 						$scope.cachedStatuses = CachedStatuses;
 						$scope.isDisabledRange = true;
 						$scope.rangeFilter = "No Date Range Selected";
@@ -52,6 +52,13 @@ angular.module('mavenApp')
 						};
 
 						$scope.getPage();
+
+						$scope.deleteOrder = function(idx) {
+							var order = $scope.orders[idx];
+							$http.delete('/wp-json/maven/orders/' + order.id).then(function(response) {
+								$scope.orders.splice(idx,1);
+							});
+						};
 
 						$scope.editOrder = function(orderId) {
 							$location.path('orders/edit/' + orderId);
