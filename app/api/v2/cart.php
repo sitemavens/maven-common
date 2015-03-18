@@ -95,9 +95,9 @@ class Cart {
 	}
 
 	public function addItem ( $data ) {
-
 		$defaultItem = array(
 			'id' => '',
+            'thingVariationId' => 0,
 			'pluginKey' => '',
 			'name' => '',
 			'quantity' => 0,
@@ -112,6 +112,7 @@ class Cart {
 		}
 
 		$orderItem = new \Maven\Core\Domain\OrderItem();
+        $orderItem->setThingVariationId($item['thingVariationId']);
 		$orderItem->setName( $item['name'] );
 		$orderItem->setPluginKey( $item['pluginKey'] );
 		$orderItem->setThingId( $item['id'] );
