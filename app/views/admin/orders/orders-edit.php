@@ -1,4 +1,7 @@
-<h2>Order #{{order.number}} <span ng-show="order.transactionId !== ''">| <small>Transaction ID:<em>{{order.transactionId}}</em></small></span> | <small>Status: {{order.status.name}} <img ng-src="{{order.status.imageUrl}}"/></small></h2>
+<h2>Order #{{order.number}} 
+    <span ng-show="order.transactionId !== ''">| <small>Transaction ID:<em>{{order.transactionId}}</em></small>
+    </span> | <small>Status: <select id="statusDropdown" class="status-dropdown" ng-model="order.newStatus" ng-change="changedStatus()" style="background: url({{order.currentStatus.imageUrl}}) no-repeat;"><option id="{{orderStatus.id}}" style="background: url({{orderStatus.imageUrl}}) no-repeat right center;" ng-repeat="orderStatus in orderStatuses" ng-value="orderStatus.id" ng-selected="{{orderStatus.id == order.statusId ? 'true' : 'false'}}">{{orderStatus.name}}</option></select></small>
+</h2>
 <table class="table panel panel-default">
 	<thead class="panel-heading">
 		<tr>

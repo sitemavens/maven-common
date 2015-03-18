@@ -2,20 +2,28 @@
 
 angular.module('mavenApp')
 	.controller('OrdersEditCtrl',
-		['$scope', '$location', 'order',
-			function($scope, $location, order) {
+		['$scope', '$location', '$http', '$route', 'order',
+			function($scope, $location, $http, $route, order) {
 				var prevShippingInfo = {};
+				$scope.orderStatuses = [];
 				$scope.order = order;
+				$scope.order.currentStatus = $scope.order.status;
+				$scope.order.newStatus = $scope.order.currentStatus.id;
 				$scope.showSendShipment = false;
 				prevShippingInfo.shippingCarrier = $scope.order.shippingCarrier;
 				prevShippingInfo.shippingTrackingCode = $scope.order.shippingTrackingCode;
 				prevShippingInfo.shippingTrackingUrl = $scope.order.shippingTrackingUrl;
-
+				
+				$http.get('/wp-json/maven/orders/statuses').then(function(response) {
+					$scope.orderStatuses = response.data;
+				});
+				
 				$scope.saveOrder = function() {
 					//disable send notice
 					$scope.order.sendNotice = false;
-
-					$scope.order.$save();					
+					$scope.order.$save().then(function(response) {
+						$route.reload();
+					});					
 				};
 				
 				$scope.getShippingAddress = function() {
@@ -68,4 +76,9 @@ angular.module('mavenApp')
 					$scope.order.shippingTrackingCode = prevShippingInfo.shippingTrackingCode;
 					$scope.order.shippingTrackingUrl = prevShippingInfo.shippingTrackingUrl;
 				};
+				
+				$scope.changedStatus = function() {
+					$scope.order.currentStatus = $scope.orderStatuses[$scope.order.newStatus];
+				};
+				
 			}]);

@@ -400,6 +400,21 @@ class Cart {
 
             return $result;
         }
+        
+        if ( !empty( $this->order->getItems() ) ) {
+            
+            $hasStock = HookManager::instance()->applyFilters( "maven/cart/checkStock",  $this->order->getItems() );
+            if (!$hasStock){
+                $this->update();
+
+                //notify the user, that order has changed
+                $result = $this->setResult( Message\MessageManager::createErrorMessage( "One or more products doesn't have the required stock anymore" ) );
+
+                \Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Stock invalid error: ' . date( 'h:i:s' ) );
+
+                return $result;
+            }
+        }
 
         // First we need to save the order
         //$this->update();

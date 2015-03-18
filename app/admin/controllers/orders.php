@@ -18,6 +18,10 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 			array( array( $this, 'getOrders' ), \WP_JSON_Server::READABLE ),
 				//array( array( $this, 'newOrder' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
+        $routes[ '/maven/orders/statuses' ] = array(
+			array( array( $this, 'getOrdersStatuses' ), \WP_JSON_Server::READABLE ),
+				//array( array( $this, 'newOrder' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		);
 		$routes[ '/maven/orders/(?P<id>\d+)' ] = array(
 			array( array( $this, 'getOrder' ), \WP_JSON_Server::READABLE ),
 			array( array( $this, 'editOrder' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
@@ -104,14 +108,37 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 			$this->getOutput()->sendApiError( $id, "An error has ocurred" );
 		}
 	}
+    
+    public function getOrdersStatuses() {
+		try {
+			$statusMapper = new \Maven\Core\Mappers\OrderStatusMapper();
+
+			$this->getOutput()->sendApiResponse( $statusMapper->getAll() );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $e, "An error has ocurred" );
+		}
+	}
 
 	public function editOrder( $id, $data ) {
 		try {
 			$manager = new \Maven\Core\OrderManager();
 
 			$order = new \Maven\Core\Domain\Order();
-
+            $shippingMethod = new \Maven\Core\Domain\ShippingMethod();
+            $shippingMethod->setName($data['shippingMethod']['name'] ? $data['shippingMethod']['name'] : '');
+            $shippingMethod->setMethod($data['shippingMethod']['method'] ? $data['shippingMethod']['method'] : '');
+            $shippingMethod->setId($data['shippingMethod']['id'] ? $data['shippingMethod']['id'] : '');
+            $shippingMethod->setEnabled($data['shippingMethod']['enabled'] ? $data['shippingMethod']['enabled'] : '');
+            $data['shippingMethod'] = $shippingMethod;
 			$order->load( $data );
+            if (isset($data['newStatus']) && $data['newStatus'] != $data['statusId']) {
+                $statusMapper = new \Maven\Core\Mappers\OrderStatusMapper();
+                $newStatus = $statusMapper->get($data['newStatus']);
+                $newStatus->setStatusDescription('Changed by admin');
+                $statusMapper->addStatus($newStatus, $order);
+                $order->setStatus($newStatus);
+            }
 			$addStatus = false;
 			if ( key_exists( 'sendNotice', $data ) && $data[ 'sendNotice' ] ) {
 
