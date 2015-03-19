@@ -100,13 +100,17 @@
 <div class="row">
 	<div class="col-md-4">
 		<div class="panel panel-default">
-			<div class="panel-heading">Credit Card</div>
-			<div class="panel-body">
-				<p>{{order.creditCard.type}} XXXX-XXXX-XXXX-{{order.creditCard.number}} </p>
+			<div class="panel-heading">Payment Method</div>
+			<div class="panel-body" ng-if="order.creditCard.number">
+				<p>Credit Card N° XXXX-XXXX-XXXX-{{order.creditCard.number}} </p>
 				<p>Expiration {{order.creditCard.month}}/{{order.creditCard.year}}</p>
-			</div>		
+            </div>
+            <div class="panel-body" ng-if="!order.creditCard.number">
+				<p>Offline Payment</p>
+			</div>
 		</div>
 	</div>
+    <!--
 	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">Shipment Information <button class="btn btn-xs pull-right" ng-hide="showSendShipment" ng-click="showSendForm()">Send</button></div>
@@ -132,6 +136,7 @@
 			</form>
 		</div>
 	</div>
+    -->
 </div>
 <div class="row">
 	<div class="col-md-12">

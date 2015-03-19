@@ -470,10 +470,16 @@ class Cart {
         }
         // If it was approved, then we need to clean the order
         if ( $gateway->isApproved() || $order->isPaidOffline() ) {//|| $order->getTotal() === 0 ) {
-            $order->setStatus( OrdersApi::getCompletedStatus() );
+            $statusMessage = $order->isPaidOffline() ? 'Completed by offline method' : 'Completed';
+            $completedStatus = OrdersApi::getCompletedStatus();
+            $completedStatus->setStatusDescription($statusMessage);
+            $order->setStatus( $completedStatus );
 
             if ( !$order->isPaidOffline() )
                 $order->setTransactionId( $gateway->getTransactionId() );
+            else
+                $order->setTransactionId ( $order->getId() );
+             
 
             //update promotions user count
             foreach ( $order->getPromotions() as $promotion ) {
