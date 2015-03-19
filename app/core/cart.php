@@ -401,7 +401,7 @@ class Cart {
             return $result;
         }
         
-        if ( !empty( $this->order->getItems() ) ) {
+        if ( count( $this->order->getItems() ) > 0) {
             
             $hasStock = HookManager::instance()->applyFilters( "maven/cart/checkStock",  $this->order->getItems() );
             if (!$hasStock){
