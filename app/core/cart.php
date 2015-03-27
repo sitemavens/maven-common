@@ -19,7 +19,6 @@ class Cart {
      */
     private $order = false;
     private $result = false;
-
     /**
      * Hold the cart instance
      * @var \Maven\Core\Cart 
@@ -170,8 +169,8 @@ class Cart {
      * 
      */
     public function isReadyToBePaid () {
-
-        $result = $this->orderExists() && $this->order->hasItems();
+        $orderManager = new OrderManager();
+        $result = $this->orderExists() && $orderManager->orderExists($this->order->getId()) && $this->order->hasItems();
         $result = $result && !$this->order->getContact()->isCompleted() && !$this->order->getBillingContact()->isCompleted() && !$this->order->getShippingContact()->isCompleted();
 
         return $result;
@@ -189,13 +188,14 @@ class Cart {
 
             // Check if it exists in session
             $session = \Maven\Session\SessionManager::get();
-
+            $orderManager = new OrderManager();
+            
             $order = $session->getData( $this->getSessionKey() );
 
 
-            if ( $order && !$order->isEmpty() ) {
+            if ( $order && !$order->isEmpty() && $orderManager->orderExists( $order->getId() )) {
 
-                \Maven\Loggers\Logger::log()->message( 'Cart: getOrder - Order exists in session' );
+                \Maven\Loggers\Logger::log()->message( 'Cart: getOrder - Order exists in session and in DB' );
 
 
                 $this->order = $order;
