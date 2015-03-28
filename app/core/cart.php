@@ -613,7 +613,7 @@ class Cart {
 
         $message = $emailReceiptFullPath ? $output->getExternalTemplate( $emailReceiptFullPath ) : $output->getTemplate( $emailReceipt );
 
-        $subject = "Receipt for Order " . $order->getNumber();
+        $subject = "Receipt for Order #" . $order->getNumber();
         $subject = HookManager::instance()->applyFilters( 'maven/cart/receipOrderSubject', $subject, $order );
 
         $mail = \Maven\Mail\MailFactory::build();
@@ -633,7 +633,8 @@ class Cart {
 
         $mavenSettings = \Maven\Settings\MavenRegistry::instance();
 
-
+        $subject = HookManager::instance()->applyFilters( 'maven/cart/emailAdminTitleNotification', $subject, $order);
+        
         //Process the form
         $url = $mavenSettings->getPluginUrl() . 'templates';
         $admin = TRUE;
