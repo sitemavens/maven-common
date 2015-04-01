@@ -51,6 +51,7 @@ class MandrillMail extends MailBase {
 		}
 
 		$toSenders = $this->getEmailTo();
+        $replyTo = $this->getReplyTo();
 
 		//Check if there are more than one. 
 		$receivers = explode( ',', $toSenders );
@@ -91,7 +92,10 @@ class MandrillMail extends MailBase {
 			'html' => $this->getFullMessage(),
 			'to' => $to,
 			'bcc_address' => $bcc,
-			'tags' => array( get_bloginfo(), get_bloginfo( 'url' ) )
+			'tags' => array( get_bloginfo(), get_bloginfo( 'url' ) ),
+            "headers" => array(
+                "Reply-To" => $replyTo
+            )
 		);
 
 

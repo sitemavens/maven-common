@@ -14,6 +14,7 @@ abstract class MailBase {
 	
 	private $errorDescription = "";
 	private $html = true;
+    private $replyTo = "";
 	private $emailTo = "";
 	private $bcc = array( );
 	private $cc = array( );
@@ -42,6 +43,10 @@ abstract class MailBase {
 
 	public function getEmailTo() {
 		return $this->emailTo;
+	}
+    
+    public function getReplyTo() {
+		return $this->replyTo;
 	}
 
 	public function getBcc() {
@@ -113,6 +118,13 @@ abstract class MailBase {
 	public function to( $emailTo ) {
 
 		$this->emailTo = $emailTo;
+
+		return $this;
+	}
+    
+    public function replyTo( $replyTo ) {
+
+		$this->replyTo = $replyTo;
 
 		return $this;
 	}

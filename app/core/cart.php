@@ -623,6 +623,7 @@ class Cart {
         $mail->bcc( $mavenSettings->getBccNotificationsTo() )
                 ->useTemplate( $useTemplate )
                 ->to( $order->getContact()->getEmail() )
+                ->replyTo($mavenSettings->getSenderEmail())
                 ->message( $message )
                 ->subject( $subject )
                 ->fromAccount( $mavenSettings->getSenderEmail() )
@@ -658,6 +659,7 @@ class Cart {
 
         $mail = \Maven\Mail\MailFactory::build();
         $mail->to( $mavenSettings->getBccNotificationsTo() )
+                ->replyTo($order->getContact()->getEmail())
                 ->useTemplate( $useTemplate )
                 ->message( $message )
                 ->subject( $mavenSettings->getLanguage()->__( $subject ) )
