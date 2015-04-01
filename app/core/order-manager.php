@@ -379,7 +379,6 @@ class OrderManager {
 //		if ( $profile ) {
 		$orders = $this->mapper->getProfileOrders( $profileId );
 //		}
-
 		return $orders;
 	}
 

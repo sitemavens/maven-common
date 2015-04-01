@@ -43,6 +43,10 @@ class Order extends \Maven\Core\DomainObject {
 	//Boolean to check if the order is paid with credit card of offline method
 	private $paidOffline = false;
 
+    //Boolean to check if the order is paid with credit card of offline method
+	private $payNonce = '';
+    private $payToken = '';
+    
 	/**
 	 *
 	 * @var \Maven\Core\Domain\Contact 
@@ -284,7 +288,23 @@ class Order extends \Maven\Core\DomainObject {
 	public function isPaidOffline () {
 		return $this->paidOffline;
 	}
+    
+    public function setPayNonce ($payNonce) {
+        $this->payNonce = $payNonce;
+    }
 
+    public function getPayNonce () {
+        return $this->payNonce;
+    }
+    
+    public function setPayToken ($payToken) {
+        $this->payToken = $payToken;
+    }
+    
+    public function getPayToken () {
+        return $this->payToken;
+    }
+    
 	public function setNumber ( $number ) {
 		$this->number = $number;
 	}

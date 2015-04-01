@@ -370,7 +370,9 @@ class Cart {
 
         if ( !$order->isPaidOffline() ) {
             if ( !$order->getCreditCard() || !$order->getCreditCard()->isValid() ) {
-                return $this->setResult( Message\MessageManager::createErrorMessage( 'Invalid credit card' ) );
+                if (!$order->getPayNonce() && !$order->getPayToken()) {
+                    return $this->setResult( Message\MessageManager::createErrorMessage( 'Invalid credit card' ) );
+                }
             }
         }
 
@@ -462,7 +464,7 @@ class Cart {
 
             \Maven\Loggers\Logger::log()->message( 'Maven/Cart/pay: Order: ' . $order->getId() . ' Gateway Execute:' . date( 'h:i:s' ) );
             //if ( $order->getTotal() !== 0 ) {
-
+            HookManager::instance()->doAction( "maven/cart/beforeGatewayExecute", $order );
             $gateway->execute();
             //}
 
@@ -471,6 +473,7 @@ class Cart {
         // If it was approved, then we need to clean the order
         if ( $gateway->isApproved() || $order->isPaidOffline() ) {//|| $order->getTotal() === 0 ) {
             $statusMessage = $order->isPaidOffline() ? 'Completed by offline method' : 'Completed';
+            $statusMessage .= $order->getPayNonce() ? ' using Ipad' : '';
             $completedStatus = OrdersApi::getCompletedStatus();
             $completedStatus->setStatusDescription($statusMessage);
             $order->setStatus( $completedStatus );

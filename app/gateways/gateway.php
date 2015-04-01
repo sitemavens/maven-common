@@ -94,6 +94,10 @@ abstract class Gateway {
 
 	/*	 * **   These properties are for CIM methods *** */
 
+    public function setCustomFields ($order) {
+        
+    }
+    
 	public function getCustomerId() {
 		return $this->customerId;
 	}
