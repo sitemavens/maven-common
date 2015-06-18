@@ -2,6 +2,7 @@
 <h2>Orders</h2>
 <p class="orders-header"><span class="col-md-2"><b>{{totalItems}}</b> Orders</span><span class="col-md-2"><b>{{ordersTotal|currency}}</b> Total Sales</span><span class="col-md-2"><b>{{ordersTotal / totalItems|currency}}</b> Average Sale</span></p>
 <input placeholder="Number" ng-change="applyFilters()"  ng-model="OrderFilter.number"/>
+<input placeholder="Customer Name" ng-change="applyFilters()"  ng-model="OrderFilter.customer"/>
 <select ng-change="applyFilters()" ng-model="OrderFilter.status" ng-init=""
 		ng-options="statusI as status.name for (statusI,status) in cachedStatuses">
 	<option value="">Show All</option>

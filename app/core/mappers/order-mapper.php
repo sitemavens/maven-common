@@ -513,7 +513,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 	}
 
 	public function getOrders ( \Maven\Core\Domain\OrderFilter $filter, $orderBy = 'id', $orderType = 'desc', $start = 0, $limit = 1000 ) {
-
+		$profileTable = ProfileMapper::getTableName();
 		$where = '';
 		$values = array();
 		//first value is plugin key
@@ -523,6 +523,12 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		if ( $number ) {
 			$values[] = $number;
 			$where.=" AND number =%d";
+		}
+
+		$customer = $filter->getCustomer();
+		if ( $customer ) {
+			$values[] = '%'.$customer.'%';
+			$where.=" AND CONCAT(pro.first_name, ' ', pro.last_name) LIKE %s";
 		}
 
 		$statusId = $filter->getStatusID();
@@ -567,8 +573,9 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 			$orderBy = 'id';
 
 
-		$query = "select	{$this->tableName}.*
+		$query = "select {$this->tableName}.*
 					from {$this->tableName} 
+					INNER JOIN {$profileTable} as pro ON pro.id = contact_id
 					where 1=1 
 					{$where} order by {$orderBy} {$orderType}
 					LIMIT %d , %d;";
@@ -580,9 +587,7 @@ class OrderMapper extends \Maven\Core\Db\WordpressMapper {
 		$values[] = $limit;
 		//$query = $this->prepare( $query, $filter->getPluginKey(), $orderBy, $orderType, $start, $limit );
 		$query = $this->prepare( $query, $values );
-
 		$results = $this->getQuery( $query );
-
 		$statusMapper = new OrderStatusMapper();
 		$instances = array();
 		foreach ( $results as $row ) {

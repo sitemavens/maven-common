@@ -38,6 +38,10 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 			$orderFilter->setNumber( $_GET[ 'number' ] );
 		}
 
+		if ( key_exists( 'customer', $_GET ) && $_GET[ 'customer' ] ) {
+			$orderFilter->setCustomer( $_GET[ 'customer' ] );
+		}
+
 		if ( key_exists( 'start', $_GET ) && $_GET[ 'start' ] ) {
 			$startDate = $_GET[ 'start' ];
 			$fixed = date( 'Y-m-d', strtotime( $startDate ) );

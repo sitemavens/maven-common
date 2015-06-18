@@ -10,6 +10,7 @@ class OrderFilter extends BaseFilter{
 
 	private $pluginKey;
 	private $number;
+	private $customer;
 	private $orderDateFrom;
 	private $orderDateTo;
 	private $userID;
@@ -33,6 +34,14 @@ class OrderFilter extends BaseFilter{
 
 	public function setNumber( $number ) {
 		$this->number = $number;
+	}
+
+	public function getCustomer() {
+		return $this->customer;
+	}
+
+	public function setCustomer( $customer ) {
+		$this->customer = $customer;
 	}
 
 	public function getOrderDateFrom() {
