@@ -713,7 +713,7 @@ class Order extends \Maven\Core\DomainObject {
 		\Maven\Loggers\Logger::log()->message( 'Order/calculateTotal: Cart Discount: ' . $cartDiscount );
 
 		$handlingFee = $this->getHandlingFee();
-
+		
 		$total = ($subtotal + $taxAmount - $itemDiscount + $handlingFee) + ($shippingAmount - $shippingDiscount);
 
 		if ( $cartDiscount > $total ) {
@@ -721,7 +721,7 @@ class Order extends \Maven\Core\DomainObject {
 		}
 
 		$discountAmount = $itemDiscount + $shippingDiscount + $cartDiscount;
-
+		
 		$this->setDiscountAmount( $discountAmount );
 
 		$total = $total - $cartDiscount;

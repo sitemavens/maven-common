@@ -189,7 +189,7 @@ class Promotion extends \Maven\Core\DomainObject {
 				$discount = $this->calculatePromo( $order->getSubtotal() + $order->getTaxAmount() + $order->getShippingAmount() );
 				break;
 			case 'item':
-				$discount = $this->calculatePromo( $order->getSubtotal() + $order->getTaxAmount() );
+				$discount = \Maven\Core\PromotionManager::applyItemsRules($this, $order);
 				break;
 			case 'shipping':
 				$discount = $this->calculatePromo( $order->getShippingAmount() );

@@ -422,28 +422,28 @@ class PromotionManager {
 				switch ( $rule['rule'] ) {
 					case 'item_name':
 						$match = self::matchRuleCondition( $item->getName(), $rule['value'], $rule['condition'] );
-                        $price = $item->getPrice();
+                        $price = $item->getTotal();
 						break;
 					case 'item_id':
 						$match = self::matchRuleCondition( $item->getThingId(), $rule['value'], $rule['condition'] );
-                        $price = $item->getPrice();
+                        $price = $item->getTotal();
 						break;
 					case 'item_quantity':
 						$match = self::matchRuleCondition( $item->getQuantity(), $rule['value'], $rule['condition'], 'float' );
-                        $price = $item->getPrice();
+                        $price = $item->getTotal();
 						break;
 					case 'item_amount':
 						$match = self::matchRuleCondition( $item->getTotal(), $rule['value'], $rule['condition'], 'float' );
-                        $price = $item->getPrice();
+                        $price = $item->getTotal();
 						break;
 					case 'item_category':
 						$match = self::matchRuleCondition( $item->getThingId(), $rule['value'], $rule['condition'] );
-                        $price = $item->getPrice();
+                        $price = $item->getTotal();
 						break;
 
 					default:
                         $match = apply_filters('maven_apply_item_promotions', $match, $rule, $item);
-                        $price = $item->getPrice();
+                        $price = $item->getTotal();
 						continue;
 						break;
 				}
@@ -451,23 +451,24 @@ class PromotionManager {
 					break;
 				}
 			}
-		}
-        if ($match) {
-            switch ( $type ) {
-                case 'percentage':
-                    $discount = (($price * $promotion->getValue()) / 100.00);
-                    break;
-                case 'amount':
-                    $discount = $promotion->getValue();
-                    break;
-                default:
-                    break;
-            }
+			if ($match) {
+	            switch ( $type ) {
+	                case 'percentage':
+	                    $discount += (($price * $promotion->getValue()) / 100.00);
+	                    break;
+	                case 'amount':
+	                    $discount += $promotion->getValue();
+	                    break;
+	                default:
+	                    break;
+	            }
 
-            if ( $discount > $price ) {
-                $discount = $price;
-            }
-        }
+	            if ( $discount > $price ) {
+	                $discount = $price;
+	            }
+	        }
+		}
+        $promotion->setDiscountAmount($discount);
         return $discount;
 	}
 

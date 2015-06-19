@@ -13,8 +13,12 @@
 						<tr>
 							<td bgcolor="#ffffff;" style="background-color:#ffffff;">
 								<?php if($admin): ?>
-								<p style="padding:20px; width: 520px; font-size: 20px; color: red;">
-									<?php echo $gateway->getErrorDescription();?>
+								<p style="padding:20px; width: 520px; font-size: 18px; color: red;">
+									Gateway error: <?php echo $gateway->getErrorDescription();?>
+									<br>
+									Card type: <?php echo ($gateway->getCcType()) ? $gateway->getCcType() : "This card doesn't have a type associated";?>
+									<br>
+									Card cvv length: <?php echo strlen($gateway->getCCVerificationCode());?>
 								</p>
 								<?php endif; ?>
 								<table cellpadding="0" cellspacing="0" border="0" align="center" width="560" style="line-height:20px;">

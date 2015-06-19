@@ -96,13 +96,13 @@ class Cart {
 
             $orderItem->setQuantity( $newQuantity );
 
-            $this->update();
-
             foreach($this->getOrder()->getPromotions() as $promotion) {
                 if (PromotionManager::applyItemsRules($promotion, $this->getOrder()) == 0) {
                     $this->getOrder()->removePromotion($promotion);
                 }
             }
+
+            $this->update();
 
             return \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Item updated' );
         }
