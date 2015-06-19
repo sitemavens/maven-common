@@ -98,6 +98,12 @@ class Cart {
 
             $this->update();
 
+            foreach($this->getOrder()->getPromotions() as $promotion) {
+                if (PromotionManager::applyItemsRules($promotion, $this->getOrder()) == 0) {
+                    $this->getOrder()->removePromotion($promotion);
+                }
+            }
+
             return \Maven\Core\Message\MessageManager::createSuccessfulMessage( 'Item updated' );
         }
 
@@ -741,12 +747,14 @@ class Cart {
 
         $result = $promotionApi->isValid( $promotionCode );
         if ( $result->isSuccessful() ) {
-
+            $promotionCount = count($this->order->getPromotions());
             $promotionApi->applyPromotion( $promotionCode, $order );
-
+            $newPromotionCount = count($this->order->getPromotions());
             $this->update();
-
-            return Message\MessageManager::createSuccessfulMessage( 'Promotion added' );
+            if ($newPromotionCount > $promotionCount)
+                return Message\MessageManager::createSuccessfulMessage( 'Promotion added' );
+            else
+                return Message\MessageManager::createErrorMessage( "Your cart doesn't met the conditions for this promotion." );
         } else {
             $this->result = Message\MessageManager::createErrorMessage( 'Invalid promotion' );
         }

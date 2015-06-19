@@ -133,7 +133,6 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 	public function newPromotion( $data ) {
 		try {
 			$manager = new \Maven\Core\PromotionManager();
-
 			$promotion = new \Maven\Core\Domain\Promotion();
 
 			if ( is_array( $data ) && key_exists( 'quantity', $data ) && $data[ 'quantity' ] ) {
@@ -141,12 +140,10 @@ class Promotions extends \Maven\Admin\Controllers\MavenAdminController implement
 				$quantity = $data[ 'quantity' ];
 
 				$promotion->load( $data );
-
 				$response = $manager->addMultiplePromotions( $promotion, $quantity );
 			} else {
 
 				$promotion->load( $data );
-
 				$response = $manager->addPromotion( $promotion );
 			}
 

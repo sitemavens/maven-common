@@ -228,3 +228,18 @@ select.status-dropdown option {
     height: 37px;
     width: 125px;
 }
+div.form-group.promo-rules select, div.form-group.promo-rules input,  div.form-group.promo-rules span{
+    height: 34px;
+    padding: 6px 12px;
+}
+div.form-group.promo-rules input {
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    font-size: 14px;
+
+}
+div.form-group.promo-rules span.trash a{
+    color: red;
+}

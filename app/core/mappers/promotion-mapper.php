@@ -90,6 +90,7 @@ class PromotionMapper extends \Maven\Core\Db\WordpressMapper {
 
 		$data = array(
 		    'section' => $promotion->getSection(),
+		    'rules' => serialize($promotion->getRules()),
 		    'name' => $promotion->getName(),
 		    'description' => $promotion->getDescription(),
 		    'code' => $promotion->getCode(),
@@ -107,6 +108,7 @@ class PromotionMapper extends \Maven\Core\Db\WordpressMapper {
 
 		$format = array(
 		    '%s', //section
+		    '%s', //Rules
 		    '%s', //name
 		    '%s', //description
 		    '%s', //code

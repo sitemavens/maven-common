@@ -89,6 +89,19 @@
 				<textarea class="form-control" id="description" ng-model="promotion.description" />
 			</div>
 		</div>
+		<div class="form-group promo-rules" ng-if="promotion.section === 'item'">
+			<a for="description" class="col-sm-2 control-label" style="cursor:pointer;" ng-click="addRule()">Add Rules</a>
+			<div class="col-sm-6">
+				<div ng-repeat="promoRule in rules" ng-form="ruleForm" required>
+					<select required class="col-sm-4" ng-model="promoRule.rule" ng-options="rule.value as rule.label for rule in promotionRules"></select>
+					<select required class="col-sm-4" ng-model="promoRule.condition" ng-options="condition.value as condition.label for condition in promotionConditions"></select>
+					<input required class="col-sm-3" ng-model="promoRule.value"/>
+					<span ng-hide="rol.systemRole" class="trash col-sm-1">
+						<a ng-click="removeRule($index)" class="list-view delete">Remove</a>
+					</span>
+				</div>
+			</div>
+		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<button ng-click="savePromotion()" class="btn btn-primary">Save</button>

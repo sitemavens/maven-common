@@ -28,7 +28,6 @@ class FillerHelper {
 			$setter = 'set' . $propName;
 			$getter = 'get' . $propName;
 			$isGetter = 'is' . $propName;
-
 			if ( is_callable( array( $object, $isGetter ) ) ) {
 
 				if ( ! is_bool( $value ) ) {

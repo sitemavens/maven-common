@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) )
 class Promotion extends \Maven\Core\DomainObject {
 
 	private $section;
+	private $rules = array();
 	private $name;
 	private $description;
 	private $code;
@@ -30,6 +31,7 @@ class Promotion extends \Maven\Core\DomainObject {
 
 		$rules = array(
 		    'section' => \Maven\Core\SanitizationRule::Text,
+		    'rules' => \Maven\Core\SanitizationRule::SerializedObject,
 		    'name' => \Maven\Core\SanitizationRule::Text,
 		    'description' => \Maven\Core\SanitizationRule::TextWithHtml,
 		    'code' => \Maven\Core\SanitizationRule::Text,
@@ -54,6 +56,17 @@ class Promotion extends \Maven\Core\DomainObject {
 
 	public function setSection( $section ) {
 		$this->section = $section;
+	}
+
+	/**
+	 * @serialized
+	*/
+	public function getRules() {
+		return $this->rules;
+	}
+
+	public function setRules( $rules ) {
+		$this->rules = $rules;
 	}
 
 	public function getName() {
