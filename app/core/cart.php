@@ -573,7 +573,7 @@ class Cart {
 
     public function sendInvalidTransactionEmail ( \Maven\Core\Domain\Order $order, \Maven\Gateways\Gateway $gateway ) {
         $mavenSettings = \Maven\Settings\MavenRegistry::instance();
-
+        $gateway->browser = \Maven\Core\Utils::getUserBrowser();
         $admin = TRUE;
         $output = new Ui\Output( "", array(
             'order' => $order,
