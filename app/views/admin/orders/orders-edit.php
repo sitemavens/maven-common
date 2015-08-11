@@ -60,7 +60,7 @@
 				<p>{{order.contact.addresses[0].firstLine}}</p>
 				<p>{{order.contact.addresses[0].secondLine}}</p>
 				<p>{{order.contact.addresses[0].city}} {{order.contact.addresses[0].state}} {{order.contact.addresses[0].zipcode}}</p>
-				<p>{{order.contact.addresses[0].country}}</p>				
+				<p ng-if="order.contact.addresses[0].country">{{countriesNames[order.contact.addresses[0].country].name}}</p>
 			</div>		
 		</div>
 	</div>
@@ -76,7 +76,7 @@
 				<p>{{billingContactAddress.firstLine}}</p>
 				<p>{{billingContactAddress.secondLine}}</p>
 				<p>{{billingContactAddress.city}} {{billingContactAddress.state}} {{billingContactAddress.zipcode}}</p>
-				<p>{{billingContactAddress.country}}</p>	
+				<p ng-if="billingContactAddress.country">{{countriesNames[billingContactAddress.country].name}}</p>
 			</div>		
 		</div>
 	</div>
@@ -92,7 +92,7 @@
 				<p>{{shippingContactAddress.firstLine}}</p>
 				<p>{{shippingContactAddress.secondLine}}</p>
 				<p>{{shippingContactAddress.city}} {{shippingContactAddress.state}} {{shippingContactAddress.zipcode}}</p>
-				<p>{{shippingContactAddress.country}}</p>
+				<p ng-if="shippingContactAddress.country">{{countriesNames[shippingContactAddress.country].name}}</p>
 			</div>		
 		</div>
 	</div>

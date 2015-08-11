@@ -17,6 +17,10 @@ angular.module('mavenApp')
 				$http.get('/wp-json/maven/orders/statuses').then(function(response) {
 					$scope.orderStatuses = response.data;
 				});
+
+				$http.get('/wp-json/maven/orders/countries').then(function(response) {
+					$scope.countriesNames = response.data;
+				});
 				
 				$scope.saveOrder = function() {
 					//disable send notice

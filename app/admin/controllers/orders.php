@@ -22,6 +22,10 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 			array( array( $this, 'getOrdersStatuses' ), \WP_JSON_Server::READABLE ),
 				//array( array( $this, 'newOrder' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
 		);
+		$routes[ '/maven/orders/countries' ] = array(
+			array( array( $this, 'getCountries' ), \WP_JSON_Server::READABLE ),
+				//array( array( $this, 'newOrder' ), \WP_JSON_Server::CREATABLE | \WP_JSON_Server::ACCEPT_JSON ),
+		);
 		$routes[ '/maven/orders/(?P<id>\d+)' ] = array(
 			array( array( $this, 'getOrder' ), \WP_JSON_Server::READABLE ),
 			array( array( $this, 'editOrder' ), \WP_JSON_Server::EDITABLE | \WP_JSON_Server::ACCEPT_JSON ),
@@ -102,7 +106,6 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 			$manager = new \Maven\Core\OrderManager();
 
 			$order = $manager->get( $id );
-
 			$this->getOutput()->sendApiResponse( $order );
 		} catch ( \Maven\Exceptions\NotFoundException $e ) {
 			//Specific exception
@@ -118,6 +121,17 @@ class Orders extends \Maven\Admin\Controllers\MavenAdminController implements \M
 			$statusMapper = new \Maven\Core\Mappers\OrderStatusMapper();
 
 			$this->getOutput()->sendApiResponse( $statusMapper->getAll() );
+		} catch ( \Exception $e ) {
+			//General exception, send general error
+			$this->getOutput()->sendApiError( $e, "An error has ocurred" );
+		}
+	}
+
+	public function getCountries() {
+		try {
+			$countries = \Maven\Core\CountriesApi::getAllCountries();
+
+			$this->getOutput()->sendApiResponse( $countries );
 		} catch ( \Exception $e ) {
 			//General exception, send general error
 			$this->getOutput()->sendApiError( $e, "An error has ocurred" );
